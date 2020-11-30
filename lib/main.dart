@@ -22,7 +22,7 @@ class PocketFaME extends StatelessWidget {
       title: 'FaME',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        textTheme: GoogleFonts.ibmPlexSansTextTheme(
+        textTheme: GoogleFonts.nunitoTextTheme(
           Theme.of(context).textTheme,
         ),
         visualDensity: VisualDensity.adaptivePlatformDensity,
