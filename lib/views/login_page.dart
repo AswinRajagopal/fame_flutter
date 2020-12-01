@@ -1,5 +1,13 @@
+import 'package:progress_dialog/progress_dialog.dart';
+
+import '../controllers/login_controller.dart';
+
+import 'forgot_password_page.dart';
+
+import 'signup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:get/get.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -7,8 +15,55 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final LoginController loginController = Get.put(LoginController());
   bool rememberMe = true;
-  var cf = 'login';
+  TextEditingController username = TextEditingController();
+  TextEditingController empid = TextEditingController();
+  TextEditingController password = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    loginController.pr = ProgressDialog(
+      context,
+      type: ProgressDialogType.Normal,
+      isDismissible: false,
+      showLogs: false,
+      customBody: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20.0,
+          vertical: 15.0,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(
+              width: 20.0,
+            ),
+            Text(
+              'Processing please wait...',
+              style: TextStyle(
+                fontSize: 18.0,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+    loginController.pr.style(
+      backgroundColor: Colors.black,
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    username.dispose();
+    empid.dispose();
+    password.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
                   color: Colors.white,
                   elevation: 6.0,
                   margin: EdgeInsets.only(
-                    top: 120.0,
+                    top: 100.0,
                     right: 20.0,
                     left: 20.0,
                   ),
@@ -84,43 +139,28 @@ class _LoginPageState extends State<LoginPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             GestureDetector(
-                              onTap: () {
-                                if (cf == 'signup') {
-                                  setState(() {
-                                    cf = 'login';
-                                  });
-                                }
-                              },
+                              onTap: () {},
                               child: Column(
                                 children: [
                                   Text(
                                     'LOGIN',
                                     style: TextStyle(
                                       fontSize: 18.0,
-                                      color: cf == 'login'
-                                          ? Colors.blue
-                                          : Colors.grey,
+                                      color: Colors.blue,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  Visibility(
-                                    visible: cf == 'login' ? true : false,
-                                    child: Container(
-                                      color: Colors.yellowAccent,
-                                      height: 4.0,
-                                      width: 50.0,
-                                    ),
+                                  Container(
+                                    color: Colors.yellowAccent,
+                                    height: 4.0,
+                                    width: 50.0,
                                   ),
                                 ],
                               ),
                             ),
                             GestureDetector(
                               onTap: () {
-                                if (cf == 'login') {
-                                  setState(() {
-                                    cf = 'signup';
-                                  });
-                                }
+                                Get.offAll(SignupPage());
                               },
                               child: Column(
                                 children: [
@@ -128,18 +168,8 @@ class _LoginPageState extends State<LoginPage> {
                                     'SIGNUP',
                                     style: TextStyle(
                                       fontSize: 18.0,
-                                      color: cf == 'signup'
-                                          ? Colors.blue
-                                          : Colors.grey,
+                                      color: Colors.grey,
                                       fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Visibility(
-                                    visible: cf == 'signup' ? true : false,
-                                    child: Container(
-                                      color: Colors.yellowAccent,
-                                      height: 4.0,
-                                      width: 60.0,
                                     ),
                                   ),
                                 ],
@@ -152,16 +182,19 @@ class _LoginPageState extends State<LoginPage> {
                         'Username',
                         'assets/images/person_male.png',
                         'text',
+                        username,
                       ),
                       CommonTextField(
                         'Employee Id',
                         'assets/images/emp_id_icon.png',
                         'text',
+                        empid,
                       ),
                       CommonTextField(
                         '*********',
                         'assets/images/password.png',
                         'password',
+                        password,
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
@@ -188,7 +221,9 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             Spacer(),
                             FlatButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Get.to(ForgotPasswordPage());
+                              },
                               child: Text(
                                 'Forgot password?',
                                 style: TextStyle(
@@ -210,7 +245,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             Positioned(
-              top: 415.0,
+              top: 400.0,
               child: Container(
                 width: 100.0,
                 height: 100.0,
@@ -219,11 +254,12 @@ class _LoginPageState extends State<LoginPage> {
                   shape: BoxShape.circle,
                   boxShadow: <BoxShadow>[
                     BoxShadow(
-                      color: Colors.black38,
-                      blurRadius: 15.0,
+                      color: Colors.black26,
+                      blurRadius: 0.5,
+                      spreadRadius: 0.5,
                       offset: Offset(
                         0.0,
-                        18.0,
+                        5.0,
                       ),
                     ),
                   ],
@@ -232,14 +268,41 @@ class _LoginPageState extends State<LoginPage> {
                   child: MaterialButton(
                     color: Colors.orangeAccent,
                     shape: CircleBorder(),
-                    onPressed: () {},
+                    onPressed: () {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                      if (username.text == null ||
+                          username.text == '' ||
+                          empid.text == null ||
+                          empid.text == '' ||
+                          password.text == null ||
+                          password.text == '') {
+                        Get.snackbar(
+                          'Error',
+                          'Please provide all detail',
+                          colorText: Colors.white,
+                          backgroundColor: Colors.red,
+                          snackPosition: SnackPosition.BOTTOM,
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 10.0,
+                          ),
+                        );
+                      } else {
+                        // Call Login Controller's Function
+                        print('Login Pressed');
+                        loginController.loginUser(
+                          username.text,
+                          empid.text,
+                          password.text,
+                        );
+                      }
+                    },
                     child: Padding(
                       padding: const EdgeInsets.all(
                         20.0,
                       ),
                       child: Image.asset(
                         'assets/images/arrow_right.png',
-                        // scale: 0.5,
                       ),
                     ),
                   ),
@@ -257,10 +320,12 @@ class CommonTextField extends StatelessWidget {
   final String hintText;
   final String prefixIcon;
   final String type;
+  final TextEditingController inputController;
   CommonTextField(
     this.hintText,
     this.prefixIcon,
     this.type,
+    this.inputController,
   );
 
   @override
@@ -274,6 +339,7 @@ class CommonTextField extends StatelessWidget {
           bottom: 12.0,
         ),
         child: TextField(
+          controller: inputController,
           obscureText: type == 'password' ? true : false,
           decoration: InputDecoration(
             isDense: true,

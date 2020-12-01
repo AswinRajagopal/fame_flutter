@@ -35,6 +35,19 @@ dependencies:
   hive_flutter: ^0.3.1
   path_provider: ^1.6.24
   flutter_custom_clippers: ^1.1.2
+  flutter_native_splash: ^0.1.9
+  flutter_launcher_icons: ^0.8.1
+  progress_dialog: ^1.2.4
+
+flutter_icons:
+  image_path: "assets/images/icon.png"
+  android: true
+  ios: true
+
+flutter_native_splash:
+  image: assets/images/splash.png
+  color: "#FFFFFF"
+  android_disable_fullscreen: true
 
 dev_dependencies:
   flutter_test:
