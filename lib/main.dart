@@ -1,3 +1,5 @@
+import 'connection/remote_services.dart';
+import 'views/profile_page.dart';
 import 'package:flutter/services.dart';
 
 import 'views/welcome_page.dart';
@@ -15,11 +17,11 @@ import 'package:get/get.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(PocketFaME());
-
   final appDocumentDir = await getApplicationDocumentsDirectory();
+
   Hive.init(appDocumentDir.path);
   await Hive.openBox('fame_pocket');
+  runApp(PocketFaME());
 }
 
 class PocketFaME extends StatelessWidget {
@@ -46,7 +48,10 @@ class PocketFaME extends StatelessWidget {
           child: child,
         );
       },
-      home: WelcomePage(),
+      home: RemoteServices().box.get('empid') != null &&
+              RemoteServices().box.get('empid') != ''
+          ? ProfilePage()
+          : WelcomePage(),
       getPages: [
         GetPage(
           name: 'welcome',

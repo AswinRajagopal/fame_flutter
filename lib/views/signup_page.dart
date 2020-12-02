@@ -1,3 +1,7 @@
+import 'package:progress_dialog/progress_dialog.dart';
+
+import '../controllers/signup_controller.dart';
+
 import 'login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
@@ -9,6 +13,7 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
+  final SignupController signupController = Get.put(SignupController());
   TextEditingController username = TextEditingController();
   TextEditingController empid = TextEditingController();
   TextEditingController password = TextEditingController();
@@ -16,6 +21,54 @@ class _SignupPageState extends State<SignupPage> {
   TextEditingController company = TextEditingController();
   TextEditingController fullname = TextEditingController();
   TextEditingController email = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    signupController.pr = ProgressDialog(
+      context,
+      type: ProgressDialogType.Normal,
+      isDismissible: false,
+      showLogs: false,
+      customBody: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20.0,
+          vertical: 15.0,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(
+              width: 20.0,
+            ),
+            Text(
+              'Processing please wait...',
+              style: TextStyle(
+                fontSize: 18.0,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+    signupController.pr.style(
+      backgroundColor: Colors.black,
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    username.dispose();
+    empid.dispose();
+    password.dispose();
+    mobile.dispose();
+    fullname.dispose();
+    email.dispose();
+    company.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -233,7 +286,73 @@ class _SignupPageState extends State<SignupPage> {
                   child: MaterialButton(
                     color: Colors.orangeAccent,
                     shape: CircleBorder(),
-                    onPressed: () {},
+                    onPressed: () {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                      if (username.text == null ||
+                          username.text == '' ||
+                          empid.text == null ||
+                          empid.text == '' ||
+                          password.text == null ||
+                          password.text == '' ||
+                          fullname.text == null ||
+                          fullname.text == '' ||
+                          email.text == null ||
+                          email.text == '' ||
+                          mobile.text == null ||
+                          mobile.text == '' ||
+                          company.text == null ||
+                          company.text == '') {
+                        Get.snackbar(
+                          'Error',
+                          'Please provide all detail',
+                          colorText: Colors.white,
+                          backgroundColor: Colors.red,
+                          snackPosition: SnackPosition.BOTTOM,
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 10.0,
+                          ),
+                        );
+                      } else if (email.text != '' &&
+                          !GetUtils.isEmail(email.text)) {
+                        Get.snackbar(
+                          'Error',
+                          'Please provide valid email',
+                          colorText: Colors.white,
+                          backgroundColor: Colors.red,
+                          snackPosition: SnackPosition.BOTTOM,
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 10.0,
+                          ),
+                        );
+                      } else if (mobile.text != '' &&
+                          mobile.text.length != 10) {
+                        Get.snackbar(
+                          'Error',
+                          'Please provide valid 10 digit mobile',
+                          colorText: Colors.white,
+                          backgroundColor: Colors.red,
+                          snackPosition: SnackPosition.BOTTOM,
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 10.0,
+                          ),
+                        );
+                      } else {
+                        // Call Signup Controller's Function
+                        print('Signup Pressed');
+                        signupController.registerUser(
+                          username.text,
+                          empid.text,
+                          password.text,
+                          mobile.text,
+                          fullname.text,
+                          email.text,
+                          company.text,
+                        );
+                      }
+                    },
                     child: Padding(
                       padding: const EdgeInsets.all(
                         20.0,

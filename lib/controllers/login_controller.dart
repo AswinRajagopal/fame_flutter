@@ -1,3 +1,4 @@
+import '../views/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
@@ -17,17 +18,18 @@ class LoginController extends GetxController {
         print('loginResponse valid: ${loginResponse.valid}');
         if (loginResponse.valid) {
           storeDetail(loginResponse);
-          Get.snackbar(
-            'Success',
-            'Employee found',
-            colorText: Colors.white,
-            backgroundColor: Colors.green,
-            snackPosition: SnackPosition.BOTTOM,
-            margin: EdgeInsets.symmetric(
-              horizontal: 8.0,
-              vertical: 10.0,
-            ),
-          );
+          // Get.snackbar(
+          //   'Success',
+          //   'Employee found',
+          //   colorText: Colors.white,
+          //   backgroundColor: Colors.green,
+          //   snackPosition: SnackPosition.BOTTOM,
+          //   margin: EdgeInsets.symmetric(
+          //     horizontal: 8.0,
+          //     vertical: 10.0,
+          //   ),
+          // );
+          await Get.to(ProfilePage());
         } else {
           Get.snackbar(
             'Error',
@@ -42,6 +44,20 @@ class LoginController extends GetxController {
           );
         }
       }
+    } catch (e) {
+      print(e);
+      await pr.hide();
+      Get.snackbar(
+        'Error',
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+      );
     } finally {
       await pr.hide();
     }
