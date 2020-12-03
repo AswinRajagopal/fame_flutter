@@ -38,6 +38,8 @@ dependencies:
   flutter_native_splash: ^0.1.9
   flutter_launcher_icons: ^0.8.1
   progress_dialog: ^1.2.4
+  intl: ^0.16.1
+  percent_indicator: ^2.1.8
 
 flutter_icons:
   image_path: "assets/images/icon.png"

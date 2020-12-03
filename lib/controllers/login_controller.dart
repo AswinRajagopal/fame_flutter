@@ -1,4 +1,5 @@
-import '../views/profile_page.dart';
+import '../views/dashboard_page.dart';
+
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
@@ -29,7 +30,7 @@ class LoginController extends GetxController {
           //     vertical: 10.0,
           //   ),
           // );
-          await Get.to(ProfilePage());
+          await Get.to(DashboardPage());
         } else {
           Get.snackbar(
             'Error',
@@ -69,5 +70,6 @@ class LoginController extends GetxController {
     RemoteServices().box.put('email', loginResponse.loginDetails.emailId);
     RemoteServices().box.put('role', loginResponse.loginDetails.role);
     RemoteServices().box.put('companyid', loginResponse.loginDetails.companyId);
+    RemoteServices().box.put('userName', loginResponse.loginDetails.userName);
   }
 }

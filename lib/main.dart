@@ -1,5 +1,6 @@
+import 'views/dashboard_page.dart';
+
 import 'connection/remote_services.dart';
-import 'views/profile_page.dart';
 import 'package:flutter/services.dart';
 
 import 'views/welcome_page.dart';
@@ -50,7 +51,7 @@ class PocketFaME extends StatelessWidget {
       },
       home: RemoteServices().box.get('empid') != null &&
               RemoteServices().box.get('empid') != ''
-          ? ProfilePage()
+          ? DashboardPage()
           : WelcomePage(),
       getPages: [
         GetPage(
