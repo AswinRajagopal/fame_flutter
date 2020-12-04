@@ -30,7 +30,7 @@ class LoginController extends GetxController {
           //     vertical: 10.0,
           //   ),
           // );
-          await Get.to(DashboardPage());
+          await Get.offAll(DashboardPage());
         } else {
           Get.snackbar(
             'Error',

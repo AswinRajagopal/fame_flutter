@@ -1,4 +1,9 @@
-import 'package:percent_indicator/percent_indicator.dart';
+import '../widgets/custom_fab.dart';
+import '../widgets/home_calendar.dart';
+
+import '../widgets/bottom_nav.dart';
+
+import '../widgets/progress_indicator.dart';
 
 import '../connection/remote_services.dart';
 import 'package:flutter/material.dart';
@@ -19,91 +24,15 @@ class _DashboardPageState extends State<DashboardPage> {
       ', ' +
       DateFormat().add_jm().format(DateTime.now()).toString();
 
+  var calendarType = 'myCal'; // myCal & myRos
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[300],
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(
-          bottom: 6.0,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            FloatingActionButton(
-              onPressed: () {},
-              child: Icon(
-                Icons.widgets_sharp,
-                size: 32.0,
-              ),
-            ),
-            SizedBox(
-              height: 5.0,
-            ),
-            Text(
-              'Dashboard',
-              style: TextStyle(
-                fontSize: 14.0,
-              ),
-            ),
-          ],
-        ),
-      ),
+      floatingActionButton: CustomFab('dashboard'),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: 2,
-        fixedColor: Colors.blue,
-        unselectedItemColor: Colors.black,
-        unselectedLabelStyle: TextStyle(
-          color: Colors.black,
-        ),
-        selectedLabelStyle: TextStyle(
-          color: Colors.black,
-        ),
-        unselectedFontSize: 14.0,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.date_range,
-              size: 30.0,
-            ),
-            label: 'Leave',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person_outline,
-              size: 30.0,
-            ),
-            label: 'Profile',
-          ),
-          BottomNavigationBarItem(
-            icon: Visibility(
-              visible: false,
-              child: Icon(
-                Icons.widgets_sharp,
-                size: 30.0,
-              ),
-            ),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.settings_outlined,
-              size: 30.0,
-            ),
-            label: 'Settings',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.more_vert,
-              size: 30.0,
-            ),
-            label: 'More',
-          ),
-        ],
-      ),
+      bottomNavigationBar: BottomNav('dashboard'),
       body: SafeArea(
         child: Stack(
           alignment: Alignment.center,
@@ -372,77 +301,23 @@ class _DashboardPageState extends State<DashboardPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              CircularPercentIndicator(
-                                center: Text(
-                                  '23',
-                                  style: TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                radius: 80.0,
-                                percent: 0.75,
-                                animation: true,
-                                animationDuration: 2000,
-                                curve: Curves.easeInOut,
-                                backgroundColor: Colors.grey[350],
-                                progressColor: Colors.blue,
-                                circularStrokeCap: CircularStrokeCap.round,
-                                footer: Text(
-                                  'Total Days',
-                                  style: TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                              CustomProgressIndicator(
+                                '23',
+                                'Total Days',
+                                80.0,
+                                0.75,
                               ),
-                              CircularPercentIndicator(
-                                center: Text(
-                                  '22',
-                                  style: TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                radius: 80.0,
-                                percent: 0.60,
-                                animation: true,
-                                animationDuration: 2000,
-                                curve: Curves.easeInOut,
-                                backgroundColor: Colors.grey[350],
-                                progressColor: Colors.blue,
-                                circularStrokeCap: CircularStrokeCap.round,
-                                footer: Text(
-                                  'Present',
-                                  style: TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                              CustomProgressIndicator(
+                                '22',
+                                'Present',
+                                80.0,
+                                0.60,
                               ),
-                              CircularPercentIndicator(
-                                center: Text(
-                                  '1',
-                                  style: TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                radius: 80.0,
-                                percent: 0.10,
-                                animation: true,
-                                animationDuration: 2000,
-                                curve: Curves.easeInOut,
-                                backgroundColor: Colors.grey[350],
-                                progressColor: Colors.blue,
-                                circularStrokeCap: CircularStrokeCap.round,
-                                footer: Text(
-                                  'Absent',
-                                  style: TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                              CustomProgressIndicator(
+                                '1',
+                                'Absent',
+                                80.0,
+                                0.10,
                               ),
                             ],
                           ),
@@ -624,25 +499,170 @@ class _DashboardPageState extends State<DashboardPage> {
                                 ),
                               ),
                             ),
-                            SizedBox(
-                              width: 20.0,
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20.0,
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0,
+                          vertical: 18.0,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Image.asset(
+                                  'assets/images/dummy_location.png',
+                                  height: 40.0,
+                                  width: 40.0,
+                                ),
+                                SizedBox(
+                                  width: 6.0,
+                                ),
+                                Text(
+                                  'My Route Plan',
+                                  style: TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Spacer(),
+                                Text(
+                                  'Create new route plan',
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {},
+                                  child: Icon(
+                                    Icons.chevron_right,
+                                    size: 35.0,
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
                       ),
                     ),
-                    Text(
-                      'Working on...',
-                      style: TextStyle(
-                        fontSize: 20.0,
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 15.0,
                       ),
+                      child: Container(
+                        height: 50.0,
+                        width: MediaQuery.of(context).size.width / 1.3,
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(
+                              50.0,
+                            ),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  calendarType = 'myCal';
+                                });
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: calendarType == 'myCal'
+                                      ? Colors.white
+                                      : Colors.blue,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(
+                                      50.0,
+                                    ),
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 7.0,
+                                    horizontal: 25.0,
+                                  ),
+                                  child: Text(
+                                    'My Calendar',
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: calendarType == 'myCal'
+                                          ? Colors.blue
+                                          : Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  calendarType = 'myRos';
+                                });
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: calendarType == 'myRos'
+                                      ? Colors.white
+                                      : Colors.blue,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(
+                                      50.0,
+                                    ),
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 7.0,
+                                    horizontal: 25.0,
+                                  ),
+                                  child: Text(
+                                    'My Roster',
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: calendarType == 'myRos'
+                                          ? Colors.blue
+                                          : Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    HomeCalendar(
+                      calendarType,
+                    ),
+                    SizedBox(
+                      height: 50.0,
                     ),
                   ],
                 ),
               ),
-            ),
-            SizedBox(
-              width: 50.0,
             ),
           ],
         ),

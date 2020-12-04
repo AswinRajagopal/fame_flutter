@@ -40,6 +40,7 @@ dependencies:
   progress_dialog: ^1.2.4
   intl: ^0.16.1
   percent_indicator: ^2.1.8
+  table_calendar: ^2.3.1
 
 flutter_icons:
   image_path: "assets/images/icon.png"
