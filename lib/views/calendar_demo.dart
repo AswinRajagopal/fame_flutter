@@ -13,6 +13,7 @@ class _CalendarDemoState extends State<CalendarDemo>
   AnimationController _animationController;
   CalendarController _calendarController;
 
+  @override
   void initState() {
     super.initState();
     final _selectedDay = DateTime.now();
@@ -35,7 +36,7 @@ class _CalendarDemoState extends State<CalendarDemo>
       _selectedDay.add(Duration(days: 1)): [
         'EE',
       ],
-      _selectedDay.add(Duration(days: 3)): Set.from(['LT']).toList(),
+      _selectedDay.add(Duration(days: 3)): ['LT'],
       _selectedDay.add(Duration(days: 7)): ['EE'],
       _selectedDay.add(Duration(days: 11)): ['EE'],
       _selectedDay.add(Duration(days: 17)): [

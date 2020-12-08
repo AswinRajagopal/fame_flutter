@@ -1,43 +1,30 @@
 import 'dart:async';
 
 import '../connection/remote_services.dart';
+import '../views/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
-class SignupController extends GetxController {
+class OTPController extends GetxController {
   var isLoading = true.obs;
   ProgressDialog pr;
-  var signupResponse;
 
-  Future<bool> registerUser(
-    username,
-    empid,
-    password,
-    mobile,
-    fullname,
-    email,
-    companyname,
-  ) async {
+  void verifyOTP(mobile, otp) async {
     try {
       await pr.show();
-      signupResponse = await RemoteServices.signup(
-        username,
-        empid,
-        password,
+      var otpResponse = await RemoteServices.otpverify(
         mobile,
-        fullname,
-        email,
-        companyname,
+        otp,
       );
-      if (signupResponse != null) {
+      if (otpResponse != null) {
         await pr.hide();
-        print('signupResponse valid: ${signupResponse.success}');
-        if (signupResponse.success) {
-          // storeDetail(signupResponse);
+        print('otpResponse valid: ${otpResponse.success}');
+        if (otpResponse.success) {
+          // storeDetail(otpResponse);
           Get.snackbar(
             'Success',
-            'Account created, please verify mobile by otp',
+            'OTP verified successfully. You will be redirected shortly',
             colorText: Colors.white,
             backgroundColor: Colors.green,
             snackPosition: SnackPosition.BOTTOM,
@@ -46,14 +33,14 @@ class SignupController extends GetxController {
               vertical: 10.0,
             ),
           );
-          // Timer(Duration(seconds: 4), () {
-          //   Get.offAll(LoginPage());
-          // });
-          return true;
+          Timer(Duration(seconds: 4), () {
+            Get.offAll(LoginPage());
+          });
+          // return true;
         } else {
           Get.snackbar(
             'Error',
-            'Account not created',
+            'OTP is wrong',
             colorText: Colors.white,
             backgroundColor: Colors.red,
             snackPosition: SnackPosition.BOTTOM,
@@ -62,7 +49,7 @@ class SignupController extends GetxController {
               vertical: 10.0,
             ),
           );
-          return false;
+          // return false;
         }
       }
     } catch (e) {
@@ -79,10 +66,10 @@ class SignupController extends GetxController {
           vertical: 10.0,
         ),
       );
-      return false;
+      // return false;
     } finally {
       await pr.hide();
-      return signupResponse.success;
+      // return false;
     }
   }
 }

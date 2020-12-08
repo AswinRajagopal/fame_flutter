@@ -1,5 +1,9 @@
 import 'dart:convert';
 
+import '../models/forgot_password.dart';
+
+import '../models/otp.dart';
+
 import '../views/welcome_page.dart';
 import 'package:get/get.dart';
 
@@ -94,6 +98,47 @@ class RemoteServices {
     if (response.statusCode == 200) {
       var jsonString = response.body;
       return profileFromJson(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  static Future<Otp> otpverify(mobile, otp) async {
+    var response = await client.post(
+      '$baseURL/user/verify_regotp',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'mobile': mobile,
+          'otp': otp,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return otpFromJson(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  static Future<ForgotPassword> forgorPassword(email) async {
+    var response = await client.post(
+      '$baseURL/user/forgot_pass',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'emailId': email,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return forgotPasswordFromJson(jsonString);
     } else {
       //show error message
       return null;

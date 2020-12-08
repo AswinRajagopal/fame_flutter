@@ -1,5 +1,8 @@
+import '../controllers/forgot_password_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:get/get.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   @override
@@ -7,7 +10,52 @@ class ForgotPasswordPage extends StatefulWidget {
 }
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
+  final ForgotPasswordController fpController =
+      Get.put(ForgotPasswordController());
   bool rememberMe = true;
+  TextEditingController email = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    fpController.pr = ProgressDialog(
+      context,
+      type: ProgressDialogType.Normal,
+      isDismissible: false,
+      showLogs: false,
+      customBody: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20.0,
+          vertical: 15.0,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(
+              width: 20.0,
+            ),
+            Text(
+              'Processing please wait...',
+              style: TextStyle(
+                fontSize: 18.0,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+    fpController.pr.style(
+      backgroundColor: Colors.black,
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    email.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,6 +149,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         'Enter your email address',
                         'assets/images/email.png',
                         'email',
+                        email,
                       ),
                       SizedBox(
                         height: 120.0,
@@ -134,7 +183,39 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   child: MaterialButton(
                     color: Colors.orangeAccent,
                     shape: CircleBorder(),
-                    onPressed: () {},
+                    onPressed: () {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                      if (email.text == null || email.text == '') {
+                        Get.snackbar(
+                          'Error',
+                          'Please provide email',
+                          colorText: Colors.white,
+                          backgroundColor: Colors.red,
+                          snackPosition: SnackPosition.BOTTOM,
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 10.0,
+                          ),
+                        );
+                      } else if (email.text != '' &&
+                          !GetUtils.isEmail(email.text)) {
+                        Get.snackbar(
+                          'Error',
+                          'Please provide valid email',
+                          colorText: Colors.white,
+                          backgroundColor: Colors.red,
+                          snackPosition: SnackPosition.BOTTOM,
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 10.0,
+                          ),
+                        );
+                      } else {
+                        fpController.forgotPassword(
+                          email.text,
+                        );
+                      }
+                    },
                     child: Padding(
                       padding: const EdgeInsets.all(
                         20.0,
@@ -158,10 +239,12 @@ class CommonTextField extends StatelessWidget {
   final String hintText;
   final String prefixIcon;
   final String type;
+  final TextEditingController tec;
   CommonTextField(
     this.hintText,
     this.prefixIcon,
     this.type,
+    this.tec,
   );
 
   @override
@@ -181,6 +264,7 @@ class CommonTextField extends StatelessWidget {
               : type == 'email'
                   ? TextInputType.emailAddress
                   : TextInputType.text,
+          controller: tec,
           decoration: InputDecoration(
             isDense: true,
             contentPadding: EdgeInsets.all(10),

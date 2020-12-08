@@ -41,6 +41,10 @@ dependencies:
   intl: ^0.16.1
   percent_indicator: ^2.1.8
   table_calendar: ^2.3.1
+  shimmer: ^1.1.2
+  flutter_spinkit: ^4.1.2+1
+  pin_code_fields: ^6.0.1
+  camera: ^0.5.8+17
 
 flutter_icons:
   image_path: "assets/images/icon.png"

@@ -1,3 +1,5 @@
+import '../controllers/otp_controller.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
 import '../controllers/signup_controller.dart';
@@ -14,6 +16,7 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
   final SignupController signupController = Get.put(SignupController());
+  final OTPController otpController = Get.put(OTPController());
   TextEditingController username = TextEditingController();
   TextEditingController empid = TextEditingController();
   TextEditingController password = TextEditingController();
@@ -21,6 +24,7 @@ class _SignupPageState extends State<SignupPage> {
   TextEditingController company = TextEditingController();
   TextEditingController fullname = TextEditingController();
   TextEditingController email = TextEditingController();
+  TextEditingController otp = TextEditingController();
 
   @override
   void initState() {
@@ -54,6 +58,38 @@ class _SignupPageState extends State<SignupPage> {
       ),
     );
     signupController.pr.style(
+      backgroundColor: Colors.black,
+    );
+
+    otpController.pr = ProgressDialog(
+      context,
+      type: ProgressDialogType.Normal,
+      isDismissible: false,
+      showLogs: false,
+      customBody: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20.0,
+          vertical: 15.0,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(
+              width: 20.0,
+            ),
+            Text(
+              'Processing please wait...',
+              style: TextStyle(
+                fontSize: 18.0,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+    otpController.pr.style(
       backgroundColor: Colors.black,
     );
   }
@@ -286,7 +322,7 @@ class _SignupPageState extends State<SignupPage> {
                   child: MaterialButton(
                     color: Colors.orangeAccent,
                     shape: CircleBorder(),
-                    onPressed: () {
+                    onPressed: () async {
                       FocusScope.of(context).requestFocus(FocusNode());
                       if (username.text == null ||
                           username.text == '' ||
@@ -342,7 +378,7 @@ class _SignupPageState extends State<SignupPage> {
                       } else {
                         // Call Signup Controller's Function
                         print('Signup Pressed');
-                        signupController.registerUser(
+                        var signup = await signupController.registerUser(
                           username.text,
                           empid.text,
                           password.text,
@@ -351,6 +387,191 @@ class _SignupPageState extends State<SignupPage> {
                           email.text,
                           company.text,
                         );
+                        print('Signup RES: $signup');
+                        if (signup) {
+                          // ignore: unawaited_futures
+                          Get.bottomSheet(
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 40.0,
+                                // vertical: 20.0,
+                              ),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    SizedBox(
+                                      height: 25.0,
+                                    ),
+                                    Container(
+                                      height: 8.0,
+                                      width: 80.0,
+                                      color: Colors.white38,
+                                    ),
+                                    SizedBox(
+                                      height: 20.0,
+                                    ),
+                                    Text(
+                                      'Verification',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 30.0,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 20.0,
+                                    ),
+                                    Text(
+                                      "Please enter the OTP you've received on your registered email",
+                                      style: TextStyle(
+                                        color: Colors.white54,
+                                        fontSize: 16.0,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    SizedBox(
+                                      height: 30.0,
+                                    ),
+                                    PinCodeTextField(
+                                      appContext: context,
+                                      length: 4,
+                                      obscureText: false,
+                                      animationType: AnimationType.fade,
+                                      controller: otp,
+                                      pinTheme: PinTheme(
+                                        shape: PinCodeFieldShape.underline,
+                                        fieldHeight: 65,
+                                        fieldWidth: 65,
+                                        activeColor: Colors.orange,
+                                        activeFillColor: Colors.orange,
+                                        selectedColor: Colors.orange,
+                                        selectedFillColor: Colors.orange,
+                                      ),
+                                      cursorColor: Colors.transparent,
+                                      cursorHeight: 40.0,
+                                      cursorWidth: 2.0,
+                                      // autoFocus: false,
+                                      backgroundColor: Colors.transparent,
+                                      keyboardType: TextInputType.number,
+                                      textStyle: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16.0,
+                                      ),
+                                      autoDisposeControllers: false,
+                                      onCompleted: (v) {
+                                        print('Completed');
+                                      },
+                                      beforeTextPaste: (text) {
+                                        print('Allowing to paste $text');
+                                        return true;
+                                      },
+                                      onChanged: (String value) {
+                                        print(value);
+                                      },
+                                    ),
+                                    SizedBox(
+                                      height: 20.0,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "If you didn't receive the code!",
+                                          style: TextStyle(
+                                            color: Colors.white54,
+                                            fontSize: 16.0,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        SizedBox(
+                                          width: 5.0,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () async {
+                                            // var signup = await signupController
+                                            //     .registerUser(
+                                            //   username.text,
+                                            //   empid.text,
+                                            //   password.text,
+                                            //   mobile.text,
+                                            //   fullname.text,
+                                            //   email.text,
+                                            //   company.text,
+                                            // );
+                                          },
+                                          child: Text(
+                                            'Resend',
+                                            style: TextStyle(
+                                              color: Colors.red,
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 40.0,
+                                    ),
+                                    RaisedButton(
+                                      onPressed: () async {
+                                        if (otp.text == null ||
+                                            otp.text == '') {
+                                          Get.snackbar(
+                                            'Error',
+                                            'Please enter otp',
+                                            colorText: Colors.white,
+                                            backgroundColor: Colors.red,
+                                            snackPosition: SnackPosition.BOTTOM,
+                                            margin: EdgeInsets.symmetric(
+                                              horizontal: 8.0,
+                                              vertical: 10.0,
+                                            ),
+                                          );
+                                        } else {
+                                          otpController.verifyOTP(
+                                            mobile.text,
+                                            otp.text,
+                                          );
+                                        }
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 50.0,
+                                          vertical: 18.0,
+                                        ),
+                                        child: Text(
+                                          'SUBMIT',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w800,
+                                            fontSize: 16.0,
+                                          ),
+                                        ),
+                                      ),
+                                      color: Colors.red,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                          30.0,
+                                        ),
+                                        side: BorderSide(
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 20.0,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            backgroundColor: Colors.grey[850],
+                          );
+                        }
                       }
                     },
                     child: Padding(

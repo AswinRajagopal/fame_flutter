@@ -1,43 +1,26 @@
 import 'dart:async';
 
+import '../views/login_page.dart';
+
 import '../connection/remote_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
-class SignupController extends GetxController {
-  var isLoading = true.obs;
+class ForgotPasswordController extends GetxController {
   ProgressDialog pr;
-  var signupResponse;
 
-  Future<bool> registerUser(
-    username,
-    empid,
-    password,
-    mobile,
-    fullname,
-    email,
-    companyname,
-  ) async {
+  void forgotPassword(email) async {
     try {
       await pr.show();
-      signupResponse = await RemoteServices.signup(
-        username,
-        empid,
-        password,
-        mobile,
-        fullname,
-        email,
-        companyname,
-      );
-      if (signupResponse != null) {
+      var fpResponse = await RemoteServices.forgorPassword(email);
+      if (fpResponse != null) {
         await pr.hide();
-        print('signupResponse valid: ${signupResponse.success}');
-        if (signupResponse.success) {
-          // storeDetail(signupResponse);
+        print('fpResponse valid: ${fpResponse.success}');
+        if (fpResponse.success) {
           Get.snackbar(
             'Success',
-            'Account created, please verify mobile by otp',
+            'Please check your email. You will be redirected shortly',
             colorText: Colors.white,
             backgroundColor: Colors.green,
             snackPosition: SnackPosition.BOTTOM,
@@ -46,14 +29,13 @@ class SignupController extends GetxController {
               vertical: 10.0,
             ),
           );
-          // Timer(Duration(seconds: 4), () {
-          //   Get.offAll(LoginPage());
-          // });
-          return true;
+          Timer(Duration(seconds: 4), () {
+            Get.offAll(LoginPage());
+          });
         } else {
           Get.snackbar(
             'Error',
-            'Account not created',
+            'Email address is not associated with any account',
             colorText: Colors.white,
             backgroundColor: Colors.red,
             snackPosition: SnackPosition.BOTTOM,
@@ -62,7 +44,6 @@ class SignupController extends GetxController {
               vertical: 10.0,
             ),
           );
-          return false;
         }
       }
     } catch (e) {
@@ -79,10 +60,8 @@ class SignupController extends GetxController {
           vertical: 10.0,
         ),
       );
-      return false;
     } finally {
       await pr.hide();
-      return signupResponse.success;
     }
   }
 }
