@@ -1,4 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
+
+import 'package:dio/dio.dart' as mydio;
+import '../models/dashboard.dart';
+
+import '../models/checkin.dart';
 
 import '../models/forgot_password.dart';
 
@@ -21,6 +27,7 @@ class RemoteServices {
     'Content-Type': 'application/json; charset=UTF-8',
   };
   var box = Hive.box('fame_pocket');
+  static var accessKey = 'diyos2020';
 
   void logout() {
     box.clear();
@@ -139,6 +146,58 @@ class RemoteServices {
     if (response.statusCode == 200) {
       var jsonString = response.body;
       return forgotPasswordFromJson(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future<Checkin> checkinProcess(File imageFile) async {
+    // print('companyid: ${box.get('companyid')}');
+    // print('empid: ${box.get('empid')}');
+    var dio = mydio.Dio();
+
+    var formData = mydio.FormData.fromMap({
+      // 'companyID': box.get('companyid'),
+      // 'empID': box.get('empid'),
+      'companyID': '6',
+      'empID': 'dem000008',
+      'access_key': accessKey,
+      'image': await mydio.MultipartFile.fromFile(
+        imageFile.path,
+        filename: 'image.jpg',
+      ),
+    });
+    var response = await dio.post(
+      '$baseURL/face_rec/verify',
+      data: formData,
+    );
+
+    print(response.data);
+    if (response.statusCode == 200) {
+      var jsonString = response.data;
+      return checkinFromJson(jsonEncode(jsonString));
+    } else {
+      return null;
+    }
+  }
+
+  Future<Dashboard> getDashboardDetails() async {
+    var response = await client.post(
+      '$baseURL/attendance/dashboard_flut',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'empId': box.get('empid'),
+          'companyId': box.get('companyid'),
+          'pushCode': '',
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return dashboardFromJson(jsonString);
     } else {
       //show error message
       return null;

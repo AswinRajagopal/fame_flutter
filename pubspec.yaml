@@ -45,6 +45,8 @@ dependencies:
   flutter_spinkit: ^4.1.2+1
   pin_code_fields: ^6.0.1
   camera: ^0.5.8+17
+  geolocator: ^6.1.13
+  dio: ^3.0.10
 
 flutter_icons:
   image_path: "assets/images/icon.png"

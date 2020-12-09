@@ -22,7 +22,7 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  final DashboardController dbController = Get.put(DashboardController());
+  final DashboardController dbC = Get.put(DashboardController());
   var todayString = DateFormat.E().format(DateTime.now()).toString() +
       ' ' +
       DateFormat.d().format(DateTime.now()).toString() +
@@ -180,7 +180,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           20.0,
                         ),
                         child: Obx(() {
-                          if (dbController.isStatusLoading.value) {
+                          if (dbC.isStatusLoading.value) {
                             return LoadingWidget(
                               containerHeight: 75.0,
                               loaderSize: 30.0,
@@ -303,7 +303,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 child: Column(
                   children: [
                     Obx(() {
-                      if (dbController.isStatusLoading.value) {
+                      if (dbC.isDashboardLoading.value) {
                         return LoadingWidget(
                           containerHeight: 185.0,
                           loaderSize: 30.0,
@@ -341,19 +341,20 @@ class _DashboardPageState extends State<DashboardPage> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   CustomProgressIndicator(
-                                    '23',
+                                    // '23',
+                                    dbC.response.psCount.shifts.toString(),
                                     'Total Days',
                                     80.0,
                                     0.75,
                                   ),
                                   CustomProgressIndicator(
-                                    '22',
+                                    dbC.response.psCount.present.toString(),
                                     'Present',
                                     80.0,
                                     0.60,
                                   ),
                                   CustomProgressIndicator(
-                                    '1',
+                                    dbC.response.psCount.absent.toString(),
                                     'Absent',
                                     80.0,
                                     0.10,
@@ -369,7 +370,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       }
                     }),
                     Obx(() {
-                      if (dbController.isLeaveStatusLoading.value) {
+                      if (dbC.isLeaveStatusLoading.value) {
                         return LoadingWidget(
                           containerColor: Colors.grey[300],
                           containerHeight: 195.0,
@@ -707,7 +708,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       height: 20.0,
                     ),
                     Obx(() {
-                      if (dbController.isCalendarLoading.value) {
+                      if (dbC.isCalendarLoading.value) {
                         return LoadingWidget(
                           containerHeight: 330.0,
                           loaderSize: 30.0,

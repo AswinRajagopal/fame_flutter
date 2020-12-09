@@ -1,4 +1,9 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:camera/camera.dart';
+import 'dashboard_page.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import '../controllers/checkin_controller.dart';
 import 'package:flutter/material.dart';
@@ -76,8 +81,179 @@ class _CheckinPageState extends State<CheckinPage> {
       controller?.dispose();
     } else if (state == AppLifecycleState.resumed) {
       if (controller != null) {
-        // onNewCameraSelected(controller.description);
+        onNewCameraSelected(controller.description);
       }
+    }
+  }
+
+  void takePicture() async {
+    if (!controller.value.isInitialized) {
+      Get.snackbar(
+        'Error',
+        'select a camera first.',
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+      );
+      return null;
+    }
+    final extDir = await getApplicationDocumentsDirectory();
+    final dirPath = '${extDir.path}/Pictures/flutter_test';
+    await Directory(dirPath).create(recursive: true);
+    final filePath = '$dirPath/image.jpg';
+    var dir = Directory(filePath);
+    try {
+      dir.deleteSync(recursive: true);
+    } catch (e) {
+      print(e.toString());
+    }
+    if (controller.value.isTakingPicture) {
+      // A capture is already pending, do nothing.
+      return null;
+    }
+
+    try {
+      await controller.takePicture(filePath);
+    } on CameraException catch (e) {
+      _showCameraException(e);
+      return null;
+    }
+    var file = File(filePath);
+    // networkcall(file);
+    var res = await checkinController.uploadImage(file);
+    print(res);
+    if (res) {
+      // ignore: unawaited_futures
+      Get.bottomSheet(
+        Container(
+          height: MediaQuery.of(context).size.height / 2.3,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10.0),
+              topRight: const Radius.circular(10.0),
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/images/success.png',
+                scale: 2.0,
+                color: Colors.green,
+              ),
+              SizedBox(
+                height: 15.0,
+              ),
+              Text(
+                'Thank you for Login at',
+                style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              Text(
+                DateFormat().add_jm().format(DateTime.now()).toString(),
+                style: TextStyle(
+                  fontSize: 20.0,
+                  color: Colors.blue,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(
+                height: 40.0,
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 22.0,
+                  vertical: 12.0,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(
+                      30.0,
+                    ),
+                  ),
+                ),
+                child: Text(
+                  'Thank You !',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        // isDismissible: false,
+      );
+      Timer(Duration(seconds: 2), () {
+        Get.offAll(DashboardPage());
+      });
+    }
+  }
+
+  void _showCameraException(CameraException e) {
+    print(e.code + e.description);
+    Get.snackbar(
+      'Error',
+      '${e.code}\n${e.description}',
+      colorText: Colors.white,
+      backgroundColor: Colors.red,
+      snackPosition: SnackPosition.BOTTOM,
+      margin: EdgeInsets.symmetric(
+        horizontal: 8.0,
+        vertical: 10.0,
+      ),
+    );
+  }
+
+  void onNewCameraSelected(CameraDescription cameraDescription) async {
+    if (controller != null) {
+      await controller.dispose();
+    }
+    controller = CameraController(
+      cameraDescription,
+      ResolutionPreset.medium,
+    );
+
+    // If the controller is updated then update the UI.
+    controller.addListener(() {
+      if (mounted) setState(() {});
+      if (controller.value.hasError) {
+        Get.snackbar(
+          'Error',
+          '${controller.value.errorDescription}',
+          colorText: Colors.white,
+          backgroundColor: Colors.red,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: EdgeInsets.symmetric(
+            horizontal: 8.0,
+            vertical: 10.0,
+          ),
+        );
+      }
+    });
+
+    try {
+      await controller.initialize();
+    } on CameraException catch (e) {
+      _showCameraException(e);
+    }
+
+    if (mounted) {
+      setState(() {});
     }
   }
 
@@ -229,76 +405,7 @@ class _CheckinPageState extends State<CheckinPage> {
                     ),
                     RaisedButton(
                       onPressed: () {
-                        Get.bottomSheet(
-                          Container(
-                            height: MediaQuery.of(context).size.height / 2.3,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.only(
-                                topLeft: const Radius.circular(10.0),
-                                topRight: const Radius.circular(10.0),
-                              ),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  'assets/images/success.png',
-                                  scale: 2.0,
-                                  color: Colors.green,
-                                ),
-                                SizedBox(
-                                  height: 15.0,
-                                ),
-                                Text(
-                                  'Thank you for Login at',
-                                  style: TextStyle(
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 10.0,
-                                ),
-                                Text(
-                                  currentTime,
-                                  style: TextStyle(
-                                    fontSize: 20.0,
-                                    color: Colors.blue,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 40.0,
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 22.0,
-                                    vertical: 12.0,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.green,
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(
-                                        30.0,
-                                      ),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    'Thank You !',
-                                    style: TextStyle(
-                                      fontSize: 20.0,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          // isDismissible: false,
-                        );
+                        takePicture();
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
