@@ -1,7 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
+// import 'dart:developer' as developer;
+
 import 'package:dio/dio.dart' as mydio;
+import '../models/emp_r_plan.dart';
 import '../models/dashboard.dart';
 
 import '../models/checkin.dart';
@@ -158,10 +161,10 @@ class RemoteServices {
     var dio = mydio.Dio();
 
     var formData = mydio.FormData.fromMap({
-      // 'companyID': box.get('companyid'),
-      // 'empID': box.get('empid'),
-      'companyID': '6',
-      'empID': 'dem000008',
+      'companyID': box.get('companyid'),
+      'empID': box.get('empid'),
+      // 'companyID': '6',
+      // 'empID': 'dem000008',
       'access_key': accessKey,
       'image': await mydio.MultipartFile.fromFile(
         imageFile.path,
@@ -183,21 +186,51 @@ class RemoteServices {
   }
 
   Future<Dashboard> getDashboardDetails() async {
+    // print(box.get('empid'));
+    // print(box.get('companyid'));
     var response = await client.post(
       '$baseURL/attendance/dashboard_flut',
       headers: header,
       body: jsonEncode(
         <String, String>{
-          'empId': box.get('empid'),
-          'companyId': box.get('companyid'),
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
           'pushCode': '',
+        },
+      ),
+    );
+    // print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      // print(response.body.runtimeType);
+      // developer.log('jsonString: ${jsonString.toString()}');
+      return dashboardFromJson(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future<EmpRPlan> getEmprPlan() async {
+    // print(box.get('empid'));
+    // print(box.get('companyid'));
+    // print(box.get('role'));
+    var response = await client.post(
+      '$baseURL/location/get_emp_rplan',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'roleId': box.get('role').toString(),
+          'pending': true,
         },
       ),
     );
     print(response.statusCode);
     if (response.statusCode == 200) {
       var jsonString = response.body;
-      return dashboardFromJson(jsonString);
+      return empRPlanFromJson(jsonString);
     } else {
       //show error message
       return null;

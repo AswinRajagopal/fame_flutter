@@ -1,7 +1,16 @@
+import '../controllers/dbcal_controller.dart';
+
+import '../widgets/db_empr_tile.dart';
+
+import '../controllers/emprplan_controller.dart';
+
+import '../widgets/db_activity_tile.dart';
+
 import 'checkin_page.dart';
 
 import '../controllers/dashboard_controller.dart';
 import '../widgets/loading_widget.dart';
+import '../utils/utils.dart';
 import 'package:get/get.dart';
 
 import '../widgets/custom_fab.dart';
@@ -11,7 +20,6 @@ import '../widgets/bottom_nav.dart';
 
 import '../widgets/progress_indicator.dart';
 
-import '../connection/remote_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:intl/intl.dart';
@@ -23,31 +31,15 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage> {
   final DashboardController dbC = Get.put(DashboardController());
-  var todayString = DateFormat.E().format(DateTime.now()).toString() +
-      ' ' +
-      DateFormat.d().format(DateTime.now()).toString() +
-      ' ' +
-      DateFormat.MMM().format(DateTime.now()).toString() +
-      ', ' +
-      DateFormat().add_jm().format(DateTime.now()).toString();
+  final EmprplanController erpC = Get.put(EmprplanController());
+  final DBCalController calC = Get.put(DBCalController());
 
   var calendarType = 'myCal'; // myCal & myRos
-
-  String greeting() {
-    var hour = DateTime.now().hour;
-    if (hour < 12) {
-      return 'morning';
-    }
-    if (hour < 17) {
-      return 'afternoon';
-    }
-    return 'evening';
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: AppUtils().sccaffoldBg,
       floatingActionButton: CustomFab('dashboard'),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNav('dashboard'),
@@ -85,7 +77,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                 width: 15.0,
                               ),
                               Text(
-                                'Pocket FaME',
+                                AppUtils().appName,
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 25.0,
@@ -106,45 +98,61 @@ class _DashboardPageState extends State<DashboardPage> {
                           SizedBox(
                             height: 20.0,
                           ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.wb_sunny,
-                                color: Colors.yellow,
-                              ),
-                              SizedBox(
-                                width: 10.0,
-                              ),
-                              Text(
-                                // 'Wed 21 Oct, 9:00am',
-                                todayString,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18.0,
+                          Obx(() {
+                            return Row(
+                              children: [
+                                Icon(
+                                  Icons.wb_sunny,
+                                  color: Colors.yellow,
                                 ),
-                              ),
-                            ],
-                          ),
+                                SizedBox(
+                                  width: 10.0,
+                                ),
+                                Text(
+                                  dbC.todayString.value,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18.0,
+                                  ),
+                                ),
+                              ],
+                            );
+                          }),
                           SizedBox(
                             height: 5.0,
                           ),
                           Row(
                             children: [
-                              Text(
-                                'Good ' + greeting() + ', ',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20.0,
-                                ),
-                              ),
-                              Text(
-                                RemoteServices().box.get('userName') ?? 'N/A',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                              Obx(() {
+                                return Text(
+                                  'Good ' + dbC.greetings.value + ', ',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20.0,
+                                  ),
+                                );
+                              }),
+                              Obx(() {
+                                if (dbC.isDashboardLoading.value) {
+                                  return Text(
+                                    '...',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  );
+                                } else {
+                                  return Text(
+                                    dbC.response.clientData.name ?? 'N/A',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  );
+                                }
+                              }),
                             ],
                           ),
                         ],
@@ -172,123 +180,250 @@ class _DashboardPageState extends State<DashboardPage> {
                   ),
                   child: Wrap(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(
-                          10.0,
-                          20.0,
-                          10.0,
-                          20.0,
-                        ),
-                        child: Obx(() {
-                          if (dbC.isStatusLoading.value) {
-                            return LoadingWidget(
+                      Obx(() {
+                        if (dbC.isDashboardLoading.value) {
+                          return Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                              10.0,
+                              20.0,
+                              10.0,
+                              20.0,
+                            ),
+                            child: LoadingWidget(
                               containerHeight: 75.0,
                               loaderSize: 30.0,
                               loaderColor: Colors.black87,
-                            );
-                          } else {
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'You are posted in',
-                                      style: TextStyle(
-                                        fontSize: 16.0,
+                            ),
+                          );
+                        } else {
+                          var chkinDt =
+                              dbC.response.dailyAttendance.checkInDateTime;
+                          var chkoutDt =
+                              dbC.response.dailyAttendance.checkOutDateTime;
+                          return chkinDt != null && chkinDt != ''
+                              ? Padding(
+                                  padding: const EdgeInsets.fromLTRB(
+                                    10.0,
+                                    33.0,
+                                    10.0,
+                                    33.0,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                'Checked in at ',
+                                                style: TextStyle(
+                                                  fontSize: 16.0,
+                                                ),
+                                              ),
+                                              Text(
+                                                DateFormat()
+                                                    .add_jm()
+                                                    .format(dbC
+                                                        .response
+                                                        .dailyAttendance
+                                                        .checkInDateTime)
+                                                    .toString(),
+                                                style: TextStyle(
+                                                  fontSize: 16.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 5.0,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                'Shift ends at ',
+                                                style: TextStyle(
+                                                  fontSize: 16.0,
+                                                ),
+                                              ),
+                                              Text(
+                                                DateFormat()
+                                                    .add_jm()
+                                                    .format(
+                                                        DateFormat('HH:mm:ss')
+                                                            .parse(dbC
+                                                                .response
+                                                                .empdetails
+                                                                .shiftEndTime))
+                                                    .toString(),
+                                                style: TextStyle(
+                                                  fontSize: 16.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 5.0,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'ABC Client ',
+                                      RaisedButton(
+                                        onPressed: () {
+                                          Get.to(CheckinPage());
+                                        },
+                                        child: Text(
+                                          'Check Out',
                                           style: TextStyle(
-                                            fontSize: 16.0,
+                                            fontSize: 18.0,
+                                            color: Colors.white,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                        Text(
-                                          'in ',
-                                          style: TextStyle(
-                                            fontSize: 16.0,
+                                        color: Colors.orange[800],
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            25.0,
+                                          ),
+                                          side: BorderSide(
+                                            color: Colors.orange[800],
                                           ),
                                         ),
-                                        Text(
-                                          'Hitech City.',
-                                          style: TextStyle(
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 5.0,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'Duty Timings:',
-                                          style: TextStyle(
-                                            fontSize: 16.0,
-                                          ),
-                                        ),
-                                        Text(
-                                          '9:30am ',
-                                          style: TextStyle(
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Text(
-                                          'to ',
-                                          style: TextStyle(
-                                            fontSize: 16.0,
-                                          ),
-                                        ),
-                                        Text(
-                                          '6:30pm',
-                                          style: TextStyle(
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                RaisedButton(
-                                  onPressed: () {
-                                    Get.to(CheckinPage());
-                                  },
-                                  child: Text(
-                                    'Check In',
-                                    style: TextStyle(
-                                      fontSize: 18.0,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                      ),
+                                    ],
                                   ),
-                                  color: Colors.green,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                      25.0,
-                                    ),
-                                    side: BorderSide(
-                                      color: Colors.green,
-                                    ),
+                                )
+                              : Padding(
+                                  padding: const EdgeInsets.fromLTRB(
+                                    10.0,
+                                    25.0,
+                                    10.0,
+                                    25.0,
                                   ),
-                                ),
-                              ],
-                            );
-                          }
-                        }),
-                      ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'You are posted in',
+                                            style: TextStyle(
+                                              fontSize: 15.0,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 5.0,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                'ABC Client ',
+                                                style: TextStyle(
+                                                  fontSize: 15.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              Text(
+                                                'in ',
+                                                style: TextStyle(
+                                                  fontSize: 15.0,
+                                                ),
+                                              ),
+                                              Text(
+                                                'Hitech City.',
+                                                style: TextStyle(
+                                                  fontSize: 15.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 5.0,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                'Duty Timings:',
+                                                style: TextStyle(
+                                                  fontSize: 15.0,
+                                                ),
+                                              ),
+                                              Text(
+                                                DateFormat()
+                                                    .add_jm()
+                                                    .format(DateFormat(
+                                                            'HH:mm:ss')
+                                                        .parse(dbC
+                                                            .response
+                                                            .empdetails
+                                                            .shiftStartTime))
+                                                    .toString(),
+                                                style: TextStyle(
+                                                  fontSize: 15.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              Text(
+                                                ' to ',
+                                                style: TextStyle(
+                                                  fontSize: 15.0,
+                                                ),
+                                              ),
+                                              Text(
+                                                DateFormat()
+                                                    .add_jm()
+                                                    .format(
+                                                        DateFormat('HH:mm:ss')
+                                                            .parse(dbC
+                                                                .response
+                                                                .empdetails
+                                                                .shiftEndTime))
+                                                    .toString(),
+                                                style: TextStyle(
+                                                  fontSize: 15.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      RaisedButton(
+                                        onPressed: () {
+                                          Get.to(CheckinPage());
+                                        },
+                                        child: Text(
+                                          'Check In',
+                                          style: TextStyle(
+                                            fontSize: 18.0,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        color: Colors.green,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            25.0,
+                                          ),
+                                          side: BorderSide(
+                                            color: Colors.green,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                        }
+                      }),
                     ],
                   ),
                 ),
@@ -345,19 +480,21 @@ class _DashboardPageState extends State<DashboardPage> {
                                     dbC.response.psCount.shifts.toString(),
                                     'Total Days',
                                     80.0,
-                                    0.75,
+                                    1,
                                   ),
                                   CustomProgressIndicator(
                                     dbC.response.psCount.present.toString(),
                                     'Present',
                                     80.0,
-                                    0.60,
+                                    dbC.response.psCount.present /
+                                        dbC.response.psCount.shifts,
                                   ),
                                   CustomProgressIndicator(
                                     dbC.response.psCount.absent.toString(),
                                     'Absent',
                                     80.0,
-                                    0.10,
+                                    dbC.response.psCount.absent /
+                                        dbC.response.psCount.shifts,
                                   ),
                                 ],
                               ),
@@ -370,187 +507,34 @@ class _DashboardPageState extends State<DashboardPage> {
                       }
                     }),
                     Obx(() {
-                      if (dbC.isLeaveStatusLoading.value) {
+                      if (dbC.isDashboardLoading.value) {
                         return LoadingWidget(
                           containerColor: Colors.grey[300],
-                          containerHeight: 195.0,
+                          containerHeight: 180.0,
                           loaderSize: 30.0,
                           loaderColor: Colors.black87,
                         );
                       } else {
                         return Container(
-                          height: 195.0,
+                          height: 180.0,
                           width: MediaQuery.of(context).size.width,
                           child: Padding(
                             padding: const EdgeInsets.only(
-                              top: 20.0,
-                              bottom: 20.0,
+                              top: 15.0,
+                              bottom: 15.0,
                               // left: 20.0,
                             ),
-                            child: ListView(
+                            child: ListView.builder(
                               scrollDirection: Axis.horizontal,
-                              children: [
-                                SizedBox(
-                                  width: 20.0,
-                                ),
-                                Container(
-                                  width: 330.0,
-                                  decoration: BoxDecoration(
-                                    color: Colors.teal[300],
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(
-                                        15.0,
-                                      ),
-                                    ),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 8.0,
-                                      horizontal: 18.0,
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              'Leave Status',
-                                              style: TextStyle(
-                                                fontSize: 20.0,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            Chip(
-                                              label: Text(
-                                                'Approved',
-                                              ),
-                                              backgroundColor: Colors.teal[200],
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 5.0,
-                                        ),
-                                        Text(
-                                          'Your leave on 22 Oct 2020 is approved by Sandeep on 16 Oct 2020.',
-                                          style: TextStyle(
-                                            fontSize: 16.0,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 5.0,
-                                        ),
-                                        Align(
-                                          alignment: Alignment.centerRight,
-                                          child: Container(
-                                            height: 30.0,
-                                            width: 30.0,
-                                            decoration: BoxDecoration(
-                                              color: Colors.black45,
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(
-                                                  50.0,
-                                                ),
-                                              ),
-                                            ),
-                                            child: GestureDetector(
-                                              onTap: () {},
-                                              child: Icon(
-                                                Icons.chevron_right,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 15.0,
-                                ),
-                                Container(
-                                  width: 330.0,
-                                  decoration: BoxDecoration(
-                                    color: Colors.teal[300],
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(
-                                        15.0,
-                                      ),
-                                    ),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 8.0,
-                                      horizontal: 18.0,
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              'Leave Status',
-                                              style: TextStyle(
-                                                fontSize: 20.0,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            Chip(
-                                              label: Text(
-                                                'Approved',
-                                              ),
-                                              backgroundColor: Colors.teal[200],
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 5.0,
-                                        ),
-                                        Text(
-                                          'Your leave on 22 Oct 2020 is approved by Sandeep on 16 Oct 2020.',
-                                          style: TextStyle(
-                                            fontSize: 16.0,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 5.0,
-                                        ),
-                                        Align(
-                                          alignment: Alignment.centerRight,
-                                          child: Container(
-                                            height: 30.0,
-                                            width: 30.0,
-                                            decoration: BoxDecoration(
-                                              color: Colors.black45,
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(
-                                                  50.0,
-                                                ),
-                                              ),
-                                            ),
-                                            child: GestureDetector(
-                                              onTap: () {},
-                                              child: Icon(
-                                                Icons.chevron_right,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
+                              itemCount: dbC.response.empActivities.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                var empAct = dbC.response.empActivities[index];
+                                return DBActivityTile(
+                                  empAct,
+                                  index,
+                                  dbC.response.empActivities.length,
+                                );
+                              },
                             ),
                           ),
                         );
@@ -561,56 +545,61 @@ class _DashboardPageState extends State<DashboardPage> {
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width,
-                      color: Colors.white,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0,
-                          vertical: 18.0,
+                          horizontal: 20.0,
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Image.asset(
-                                  'assets/images/dummy_location.png',
-                                  height: 40.0,
-                                  width: 40.0,
-                                ),
-                                SizedBox(
-                                  width: 6.0,
-                                ),
-                                Text(
-                                  'My Route Plan',
-                                  style: TextStyle(
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Spacer(),
-                                Text(
-                                  'Create new route plan',
-                                  style: TextStyle(
-                                    fontSize: 16.0,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {},
-                                  child: Icon(
-                                    Icons.chevron_right,
-                                    size: 35.0,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                        child: Text(
+                          'My Route Plan',
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
+                    Obx(() {
+                      if (erpC.isEmpLoading.value) {
+                        return LoadingWidget(
+                          containerColor: Colors.grey[300],
+                          containerHeight: 210.0,
+                          loaderSize: 30.0,
+                          loaderColor: Colors.black87,
+                        );
+                      } else {
+                        return Container(
+                          height: 210.0,
+                          width: MediaQuery.of(context).size.width,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              bottom: 15.0,
+                            ),
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: erpC.empRes.routePlanList.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                var empRoute = erpC.empRes.routePlanList[index];
+                                return DBEmprTile(
+                                  empRoute,
+                                  index,
+                                  erpC.empRes.routePlanList.length,
+                                );
+                              },
+                            ),
+                          ),
+                        );
+                      }
+                    }),
+                    // DotsIndicator(
+                    //   dotsCount: erpC.empRes.routePlanList.length,
+                    //   position: 0,
+                    //   decorator: DotsDecorator(
+                    //     activeColor: Colors.grey,
+                    //   ),
+                    // ),
+                    // SizedBox(
+                    //   height: 20.0,
+                    // ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         vertical: 15.0,
@@ -708,7 +697,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       height: 20.0,
                     ),
                     Obx(() {
-                      if (dbC.isCalendarLoading.value) {
+                      if (dbC.isDashboardLoading.value) {
                         return LoadingWidget(
                           containerHeight: 330.0,
                           loaderSize: 30.0,

@@ -258,10 +258,10 @@ class Empdetails {
     this.gpsTracking,
     this.name,
     this.address,
-    this.companyId,
-    this.empId,
     this.gender,
     this.phone,
+    this.empId,
+    this.companyId,
     this.createdBy,
     this.roleId,
     this.shift,
@@ -279,15 +279,15 @@ class Empdetails {
     this.createdDateTime,
   });
 
-  dynamic sosNumber;
+  String sosNumber;
   int empStatus;
   bool gpsTracking;
   String name;
   String address;
-  String companyId;
-  String empId;
   String gender;
   String phone;
+  String empId;
+  String companyId;
   String createdBy;
   String roleId;
   String shift;
@@ -299,7 +299,7 @@ class Empdetails {
   DateTime dob;
   DateTime doj;
   String area;
-  dynamic isActive;
+  String isActive;
   dynamic modifiedBy;
   dynamic modifiedDateTime;
   DateTime createdDateTime;
@@ -310,10 +310,10 @@ class Empdetails {
         gpsTracking: json['gpsTracking'],
         name: json['name'],
         address: json['address'],
-        companyId: json['companyId'],
-        empId: json['empId'],
         gender: json['gender'],
         phone: json['phone'],
+        empId: json['empId'],
+        companyId: json['companyId'],
         createdBy: json['createdBy'],
         roleId: json['roleId'],
         shift: json['shift'],
@@ -337,10 +337,10 @@ class Empdetails {
         'gpsTracking': gpsTracking,
         'name': name,
         'address': address,
-        'companyId': companyId,
-        'empId': empId,
         'gender': gender,
         'phone': phone,
+        'empId': empId,
+        'companyId': companyId,
         'createdBy': createdBy,
         'roleId': roleId,
         'shift': shift,

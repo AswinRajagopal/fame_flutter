@@ -8,6 +8,7 @@ import 'login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:get/get.dart';
+import '../utils/utils.dart';
 
 class SignupPage extends StatefulWidget {
   @override
@@ -131,7 +132,7 @@ class _SignupPageState extends State<SignupPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Pocket FaME',
+                            AppUtils().appName,
                             style: TextStyle(
                               color: Colors.yellowAccent,
                               fontSize: 25.0,

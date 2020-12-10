@@ -48,6 +48,8 @@ class _HomeCalendarState extends State<HomeCalendar>
     CalendarFormat format,
   ) {
     print('CALLBACK: _onVisibleDaysChanged');
+    print('Month: ${first.month}');
+    print('Year: ${first.year.toString().substring(2)}');
   }
 
   void _onCalendarCreated(

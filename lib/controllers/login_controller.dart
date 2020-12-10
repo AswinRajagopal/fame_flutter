@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../views/dashboard_page.dart';
 
 import 'package:flutter/material.dart';
@@ -71,5 +73,8 @@ class LoginController extends GetxController {
     RemoteServices().box.put('role', loginResponse.loginDetails.role);
     RemoteServices().box.put('companyid', loginResponse.loginDetails.companyId);
     RemoteServices().box.put('userName', loginResponse.loginDetails.userName);
+    RemoteServices()
+        .box
+        .put('appFeature', jsonEncode(loginResponse.appFeature));
   }
 }

@@ -1,5 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+
+import 'package:intl/intl.dart';
 
 import '../connection/remote_services.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +12,21 @@ import 'package:progress_dialog/progress_dialog.dart';
 class CheckinController extends GetxController {
   ProgressDialog pr;
   var checkinResponse;
+  var todayString =
+      (DateFormat().add_jm().format(DateTime.now()).toString()).obs;
+
+  @override
+  void onInit() {
+    updateTime();
+    super.onInit();
+  }
+
+  void updateTime() {
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      todayString.value =
+          DateFormat().add_jm().format(DateTime.now()).toString();
+    });
+  }
 
   // ignore: missing_return
   Future<bool> uploadImage(File imageFile) async {

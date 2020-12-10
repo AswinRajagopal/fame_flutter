@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:geocoding/geocoding.dart';
 import 'dashboard_page.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -9,6 +10,7 @@ import '../controllers/checkin_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:geolocator/geolocator.dart';
 
 class CheckinPage extends StatefulWidget {
   @override
@@ -20,6 +22,8 @@ class _CheckinPageState extends State<CheckinPage> {
   CameraController controller;
   List<CameraDescription> cameras;
   var currentTime = DateFormat().add_jm().format(DateTime.now()).toString();
+  Position _currentPosition;
+  String currentAddress = 'Fetching your location...';
 
   @override
   void initState() {
@@ -58,6 +62,43 @@ class _CheckinPageState extends State<CheckinPage> {
     );
   }
 
+  @override
+  void dispose() {
+    controller?.dispose();
+    super.dispose();
+  }
+
+  void getCurrentLocation() {
+    Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+        .then((Position position) {
+      setState(() {
+        _currentPosition = position;
+      });
+      _getAddressFromLatLng();
+      // ignore: unnecessary_lambdas
+    }).catchError((e) {
+      print(e);
+    });
+  }
+
+  void _getAddressFromLatLng() async {
+    try {
+      var placemark = await placemarkFromCoordinates(
+        _currentPosition.latitude,
+        _currentPosition.longitude,
+      );
+      var first = placemark.first;
+      // print(first);
+      setState(() {
+        currentAddress =
+            '${first.subLocality}, ${first.locality}, ${first.postalCode}, ${first.country}';
+      });
+      // print(currentAddress);
+    } catch (e) {
+      print(e);
+    }
+  }
+
   void initCam() async {
     cameras = await availableCameras();
     controller = CameraController(
@@ -70,6 +111,7 @@ class _CheckinPageState extends State<CheckinPage> {
       }
       setState(() {});
     });
+    getCurrentLocation();
   }
 
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -357,22 +399,29 @@ class _CheckinPageState extends State<CheckinPage> {
                                       ),
                                     ),
                                     SizedBox(
-                                      width: 8.0,
+                                      width: 10.0,
                                     ),
                                     Text(
-                                      'Arcesium at Mindspace.',
+                                      currentAddress,
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 16.0,
                                       ),
                                     ),
-                                    Text(
-                                      'Hyderabad, Telangana, 500085, India.',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16.0,
-                                      ),
-                                    ),
+                                    // Text(
+                                    //   'Arcesium at Mindspace.',
+                                    //   style: TextStyle(
+                                    //     color: Colors.white,
+                                    //     fontSize: 16.0,
+                                    //   ),
+                                    // ),
+                                    // Text(
+                                    //   'Hyderabad, Telangana, 500085, India.',
+                                    //   style: TextStyle(
+                                    //     color: Colors.white,
+                                    //     fontSize: 16.0,
+                                    //   ),
+                                    // ),
                                   ],
                                 ),
                               ),
@@ -387,14 +436,16 @@ class _CheckinPageState extends State<CheckinPage> {
                               SizedBox(
                                 width: 20.0,
                               ),
-                              Text(
-                                currentTime,
-                                style: TextStyle(
-                                  color: Colors.blue,
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                              Obx(() {
+                                return Text(
+                                  checkinController.todayString.value,
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                );
+                              }),
                             ],
                           ),
                         ),
