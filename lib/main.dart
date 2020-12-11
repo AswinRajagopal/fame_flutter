@@ -37,6 +37,7 @@ class PocketFaME extends StatelessWidget {
     return GetMaterialApp(
       title: 'FaME',
       debugShowCheckedModeBanner: false,
+      smartManagement: SmartManagement.keepFactory,
       theme: ThemeData(
         textTheme: GoogleFonts.nunitoTextTheme(
           Theme.of(context).textTheme,
@@ -70,6 +71,10 @@ class PocketFaME extends StatelessWidget {
           name: 'forgot_password',
           page: () => ForgotPasswordPage(),
         ),
+        GetPage(
+          name: 'dashboard',
+          page: () => DashboardPage(),
+        ),
       ],
     );
   }
@@ -85,3 +90,55 @@ class MyBehavior extends ScrollBehavior {
     return child;
   }
 }
+
+// import 'package:flutter/material.dart';
+// import 'package:get/get.dart';
+
+// void main() {
+//   runApp(GetMaterialApp(home: HomePage()));
+// }
+
+// class HomePage extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: Text('HOME')),
+//       body: Center(
+//         child: RaisedButton(
+//           child: Text('Go Dashboard'),
+//           onPressed: () => Get.to(DashboardPage()),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+// class DashboardPage extends StatefulWidget {
+//   @override
+//   _DashboardPageState createState() => _DashboardPageState();
+// }
+
+// class _DashboardPageState extends State<DashboardPage> {
+//   final DashboardController dbC = Get.put(DashboardController());
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: Text('HOME')),
+//       body: Center(
+//         child: RaisedButton(
+//           child: Text('Return'),
+//           onPressed: () => Get.offAll(HomePage()),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+// class DashboardController extends GetxController {
+//   @override
+//   void onInit() {
+//     print('dbc onInit');
+//     super.onInit();
+//   }
+// }

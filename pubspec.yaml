@@ -48,7 +48,8 @@ dependencies:
   geolocator: ^6.1.13
   dio: ^3.0.10
   geocoding: ^1.0.5
-  dots_indicator: ^1.2.0
+  # dots_indicator: ^1.2.0
+  date_format: ^1.0.9
 
 flutter_icons:
   image_path: "assets/images/icon.png"

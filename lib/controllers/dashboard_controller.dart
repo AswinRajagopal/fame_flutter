@@ -8,10 +8,6 @@ import 'package:get/get.dart';
 
 class DashboardController extends GetxController {
   var isDashboardLoading = true.obs;
-  var isStatusLoading = true.obs;
-  var isAttendanceLoading = true.obs;
-  var isLeaveStatusLoading = true.obs;
-  var isCalendarLoading = true.obs;
   var response;
   var todayString = (DateFormat.E().format(DateTime.now()).toString() +
           ' ' +
@@ -19,15 +15,24 @@ class DashboardController extends GetxController {
           ' ' +
           DateFormat.MMM().format(DateTime.now()).toString() +
           ', ' +
-          DateFormat().add_jm().format(DateTime.now()).toString())
+          DateFormat('h:mm').format(DateTime.now()).toString() +
+          '' +
+          DateFormat('a').format(DateTime.now()).toString().toLowerCase())
       .obs;
   var greetings = '...'.obs;
 
   @override
   void onInit() {
+    print('dbc onInit');
+    // getDashboardDetails();
+    // updateTime();
+    super.onInit();
+  }
+
+  void init() {
+    print('init custom');
     getDashboardDetails();
     updateTime();
-    super.onInit();
   }
 
   void updateTime() {
@@ -38,7 +43,9 @@ class DashboardController extends GetxController {
           ' ' +
           DateFormat.MMM().format(DateTime.now()).toString() +
           ', ' +
-          DateFormat().add_jm().format(DateTime.now()).toString();
+          DateFormat('h:mm').format(DateTime.now()).toString() +
+          '' +
+          DateFormat('a').format(DateTime.now()).toString().toLowerCase();
 
       var hour = DateTime.now().hour;
       if (hour < 12) {
@@ -58,6 +65,10 @@ class DashboardController extends GetxController {
       response = await RemoteServices().getDashboardDetails();
       if (response != null) {
         isDashboardLoading(false);
+        await RemoteServices().box.put('shift', response.dailyAttendance.shift);
+        await RemoteServices()
+            .box
+            .put('clientId', response.dailyAttendance.clientId);
         if (response.success) {
         } else {
           Get.snackbar(

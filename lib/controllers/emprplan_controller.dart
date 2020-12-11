@@ -8,8 +8,13 @@ class EmprplanController extends GetxController {
 
   @override
   void onInit() {
-    getEmprPlan();
+    // getEmprPlan();
     super.onInit();
+  }
+
+  void init() {
+    print('init custom');
+    getEmprPlan();
   }
 
   void getEmprPlan() async {

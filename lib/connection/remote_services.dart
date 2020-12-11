@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
-// import 'dart:developer' as developer;
+import 'dart:developer' as developer;
 
 import 'package:dio/dio.dart' as mydio;
+import '../models/db_calendar.dart';
 import '../models/emp_r_plan.dart';
 import '../models/dashboard.dart';
 
@@ -32,8 +33,22 @@ class RemoteServices {
   var box = Hive.box('fame_pocket');
   static var accessKey = 'diyos2020';
 
-  void logout() {
-    box.clear();
+  void logout() async {
+    developer.log('logout');
+    await box.clear();
+    await box.deleteAll([
+      'id',
+      'empid',
+      'email',
+      'role',
+      'companyid',
+      'companyname',
+      'userName',
+      'appFeature',
+      'shift',
+      'clientId',
+    ]);
+    // ignore: unawaited_futures
     Get.offAll(WelcomePage());
   }
 
@@ -176,7 +191,8 @@ class RemoteServices {
       data: formData,
     );
 
-    print(response.data);
+    // print(response.data);
+    // developer.log('jsonString: ${response.data.toString()}');
     if (response.statusCode == 200) {
       var jsonString = response.data;
       return checkinFromJson(jsonEncode(jsonString));
@@ -186,6 +202,7 @@ class RemoteServices {
   }
 
   Future<Dashboard> getDashboardDetails() async {
+    // print('getDashboardDetails');
     // print(box.get('empid'));
     // print(box.get('companyid'));
     var response = await client.post(
@@ -212,6 +229,7 @@ class RemoteServices {
   }
 
   Future<EmpRPlan> getEmprPlan() async {
+    // print('getEmprPlan');
     // print(box.get('empid'));
     // print(box.get('companyid'));
     // print(box.get('role'));
@@ -231,6 +249,85 @@ class RemoteServices {
     if (response.statusCode == 200) {
       var jsonString = response.body;
       return empRPlanFromJson(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future<DbCalendar> getEmpCalendar(month) async {
+    // print('getEmpCalendar');
+    // print(box.get('empid'));
+    // print(box.get('companyid'));
+    var response = await client.post(
+      '$baseURL/attendance/emp_calendar',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'month': month,
+        },
+      ),
+    );
+    // print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      // print(response.body.runtimeType);
+      // developer.log('jsonString: ${jsonString.toString()}');
+      return dbCalendarFromJson(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future checkin(lat, lng, address) async {
+    var response = await client.post(
+      '$baseURL/attendance/checkin',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'shift': box.get('shift').toString(),
+          'clientId': box.get('clientId').toString(),
+          'lat': lat.toString(),
+          'lng': lng.toString(),
+          'address': address.toString(),
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future checkout(lat, lng, address) async {
+    var response = await client.post(
+      '$baseURL/attendance/checkout',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'shift': box.get('shift').toString(),
+          'clientId': box.get('clientId').toString(),
+          'lat': lat.toString(),
+          'lng': lng.toString(),
+          'address': address.toString(),
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
     } else {
       //show error message
       return null;

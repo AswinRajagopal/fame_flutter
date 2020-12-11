@@ -2,32 +2,32 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
-import 'dashboard_page.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import '../controllers/checkin_controller.dart';
+
+import '../controllers/checkout_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
-class CheckinPage extends StatefulWidget {
+import 'dashboard_page.dart';
+
+class CheckoutPage extends StatefulWidget {
   @override
-  _CheckinPageState createState() => _CheckinPageState();
+  _CheckoutPageState createState() => _CheckoutPageState();
 }
 
-class _CheckinPageState extends State<CheckinPage> {
-  final CheckinController checkinController = Get.put(CheckinController());
+class _CheckoutPageState extends State<CheckoutPage> {
+  final CheckoutController checkoutController = Get.put(CheckoutController());
   CameraController controller;
   List<CameraDescription> cameras;
   var currentTime = DateFormat().add_jm().format(DateTime.now()).toString();
-  // Position _currentPosition;
-  // String currentAddress = 'Fetching your location...';
 
   @override
   void initState() {
     super.initState();
     initCam();
-    checkinController.pr = ProgressDialog(
+    checkoutController.pr = ProgressDialog(
       context,
       type: ProgressDialogType.Normal,
       isDismissible: false,
@@ -55,7 +55,7 @@ class _CheckinPageState extends State<CheckinPage> {
         ),
       ),
     );
-    checkinController.pr.style(
+    checkoutController.pr.style(
       backgroundColor: Colors.black,
     );
   }
@@ -65,24 +65,6 @@ class _CheckinPageState extends State<CheckinPage> {
     controller?.dispose();
     super.dispose();
   }
-
-  // void _getAddressFromLatLng() async {
-  //   try {
-  //     var placemark = await placemarkFromCoordinates(
-  //       _currentPosition.latitude,
-  //       _currentPosition.longitude,
-  //     );
-  //     var first = placemark.first;
-  //     // print(first);
-  //     setState(() {
-  //       currentAddress =
-  //           '${first.subLocality}, ${first.locality}, ${first.postalCode}, ${first.country}';
-  //     });
-  //     // print(currentAddress);
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
 
   void initCam() async {
     cameras = await availableCameras();
@@ -96,7 +78,7 @@ class _CheckinPageState extends State<CheckinPage> {
       }
       setState(() {});
     });
-    checkinController.getCurrentLocation();
+    checkoutController.getCurrentLocation();
   }
 
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -151,7 +133,7 @@ class _CheckinPageState extends State<CheckinPage> {
     }
     var file = File(filePath);
     // networkcall(file);
-    var res = await checkinController.uploadImage(file);
+    var res = await checkoutController.uploadImage(file);
     print(res);
     if (res) {
       // ignore: unawaited_futures
@@ -178,7 +160,7 @@ class _CheckinPageState extends State<CheckinPage> {
                 height: 15.0,
               ),
               Text(
-                'Thank you for Login at',
+                'Checked out at',
                 style: TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
@@ -402,7 +384,7 @@ class _CheckinPageState extends State<CheckinPage> {
                                     ),
                                     Obx(() {
                                       return Text(
-                                        checkinController.currentAddress.value,
+                                        checkoutController.currentAddress.value,
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 16.0,
@@ -439,7 +421,7 @@ class _CheckinPageState extends State<CheckinPage> {
                               ),
                               Obx(() {
                                 return Text(
-                                  checkinController.todayString.value,
+                                  checkoutController.todayString.value,
                                   style: TextStyle(
                                     color: Colors.blue,
                                     fontSize: 20.0,
@@ -457,7 +439,7 @@ class _CheckinPageState extends State<CheckinPage> {
                     ),
                     Obx(() {
                       return RaisedButton(
-                        onPressed: checkinController.currentAddress.value ==
+                        onPressed: checkoutController.currentAddress.value ==
                                 'Fetching your location...'
                             ? null
                             : takePicture,

@@ -1,3 +1,7 @@
+import 'checkout_page.dart';
+
+import '../connection/remote_services.dart';
+
 import '../controllers/dbcal_controller.dart';
 
 import '../widgets/db_empr_tile.dart';
@@ -25,6 +29,9 @@ import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:intl/intl.dart';
 
 class DashboardPage extends StatefulWidget {
+  final String callController;
+  DashboardPage({this.callController});
+
   @override
   _DashboardPageState createState() => _DashboardPageState();
 }
@@ -37,7 +44,41 @@ class _DashboardPageState extends State<DashboardPage> {
   var calendarType = 'myCal'; // myCal & myRos
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  String convertTimeWithParse(time) {
+    return DateFormat('h:mm')
+            .format(DateFormat('HH:mm:ss').parse(time))
+            .toString() +
+        DateFormat('a')
+            .format(DateFormat('HH:mm:ss').parse(time))
+            .toString()
+            .toLowerCase();
+  }
+
+  String convertTimeWithoutParse(time) {
+    return DateFormat('h:mm').format(time).toString() +
+        DateFormat('a').format(time).toString().toLowerCase();
+  }
+
+  String convertTimeForCheckedIn(time) {
+    return DateFormat('d').format(time).toString() +
+        '/' +
+        DateFormat('M').format(time).toString() +
+        '/' +
+        DateFormat('yyyy').format(time).toString() +
+        ' @ ' +
+        DateFormat().add_jm().format(time).toString();
+    // DateFormat('a').format(time).toString().toLowerCase();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    Future.delayed(Duration(milliseconds: 300), dbC.init);
+    Future.delayed(Duration(milliseconds: 300), erpC.init);
+    Future.delayed(Duration(milliseconds: 300), calC.init);
     return Scaffold(
       backgroundColor: AppUtils().sccaffoldBg,
       floatingActionButton: CustomFab('dashboard'),
@@ -77,7 +118,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                 width: 15.0,
                               ),
                               Text(
-                                AppUtils().appName,
+                                RemoteServices().box.get('companyname'),
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 25.0,
@@ -143,12 +184,16 @@ class _DashboardPageState extends State<DashboardPage> {
                                     ),
                                   );
                                 } else {
-                                  return Text(
-                                    dbC.response.clientData.name ?? 'N/A',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.bold,
+                                  return Flexible(
+                                    child: Text(
+                                      dbC.response.clientData.name ?? 'N/A',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   );
                                 }
@@ -200,98 +245,148 @@ class _DashboardPageState extends State<DashboardPage> {
                               dbC.response.dailyAttendance.checkInDateTime;
                           var chkoutDt =
                               dbC.response.dailyAttendance.checkOutDateTime;
-                          return chkinDt != null && chkinDt != ''
+                          return (chkinDt != null && chkinDt != '') &&
+                                  (chkoutDt == null || chkoutDt == '')
                               ? Padding(
                                   padding: const EdgeInsets.fromLTRB(
                                     10.0,
-                                    33.0,
                                     10.0,
-                                    33.0,
+                                    10.0,
+                                    10.0,
                                   ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                  child: Column(
                                     children: [
-                                      Column(
+                                      Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                            MainAxisAlignment.end,
                                         children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                'Checked in at ',
-                                                style: TextStyle(
-                                                  fontSize: 16.0,
-                                                ),
-                                              ),
-                                              Text(
-                                                DateFormat()
-                                                    .add_jm()
-                                                    .format(dbC
-                                                        .response
-                                                        .dailyAttendance
-                                                        .checkInDateTime)
-                                                    .toString(),
-                                                style: TextStyle(
-                                                  fontSize: 16.0,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ],
+                                          Text(
+                                            'Current Status: ',
+                                            style: TextStyle(
+                                              fontSize: 16.0,
+                                              color: Colors.grey,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                          SizedBox(
-                                            height: 5.0,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                'Shift ends at ',
-                                                style: TextStyle(
-                                                  fontSize: 16.0,
-                                                ),
-                                              ),
-                                              Text(
-                                                DateFormat()
-                                                    .add_jm()
-                                                    .format(
-                                                        DateFormat('HH:mm:ss')
-                                                            .parse(dbC
-                                                                .response
-                                                                .empdetails
-                                                                .shiftEndTime))
-                                                    .toString(),
-                                                style: TextStyle(
-                                                  fontSize: 16.0,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ],
+                                          Text(
+                                            'On Duty',
+                                            style: TextStyle(
+                                              fontSize: 16.0,
+                                              color: Colors.orange,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ],
                                       ),
-                                      RaisedButton(
-                                        onPressed: () {
-                                          Get.to(CheckinPage());
-                                        },
-                                        child: Text(
-                                          'Check Out',
-                                          style: TextStyle(
-                                            fontSize: 18.0,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                            'Checked in on ',
+                                            style: TextStyle(
+                                              fontSize: 16.0,
+                                              color: Colors.grey,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                        color: Colors.orange[800],
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            25.0,
+                                          Text(
+                                            convertTimeForCheckedIn(
+                                              chkinDt,
+                                            ),
+                                            style: TextStyle(
+                                              fontSize: 16.0,
+                                              color: Colors.grey,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            // maxLines: 2,
                                           ),
-                                          side: BorderSide(
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 5.0,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    'Checked in at ',
+                                                    style: TextStyle(
+                                                      fontSize: 16.0,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    convertTimeWithoutParse(dbC
+                                                        .response
+                                                        .dailyAttendance
+                                                        .checkInDateTime),
+                                                    style: TextStyle(
+                                                      fontSize: 16.0,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: 5.0,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    'Shift ends at ',
+                                                    style: TextStyle(
+                                                      fontSize: 16.0,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    convertTimeWithParse(dbC
+                                                        .response
+                                                        .empdetails
+                                                        .shiftEndTime),
+                                                    style: TextStyle(
+                                                      fontSize: 16.0,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          RaisedButton(
+                                            onPressed: () {
+                                              Get.to(CheckoutPage());
+                                            },
+                                            child: Text(
+                                              'Check Out',
+                                              style: TextStyle(
+                                                fontSize: 18.0,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
                                             color: Colors.orange[800],
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                25.0,
+                                              ),
+                                              side: BorderSide(
+                                                color: Colors.orange[800],
+                                              ),
+                                            ),
                                           ),
-                                        ),
+                                        ],
                                       ),
                                     ],
                                   ),
@@ -322,30 +417,49 @@ class _DashboardPageState extends State<DashboardPage> {
                                           SizedBox(
                                             height: 5.0,
                                           ),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                'ABC Client ',
+                                          Obx(() {
+                                            if (dbC.isDashboardLoading.value) {
+                                              return Text(
+                                                '...',
                                                 style: TextStyle(
-                                                  fontSize: 15.0,
+                                                  color: Colors.white,
+                                                  fontSize: 20.0,
                                                   fontWeight: FontWeight.bold,
                                                 ),
-                                              ),
-                                              Text(
-                                                'in ',
-                                                style: TextStyle(
-                                                  fontSize: 15.0,
-                                                ),
-                                              ),
-                                              Text(
-                                                'Hitech City.',
-                                                style: TextStyle(
-                                                  fontSize: 15.0,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                                              );
+                                            } else {
+                                              return Row(
+                                                children: [
+                                                  Text(
+                                                    dbC.response.clientData
+                                                            .name ??
+                                                        'N/A',
+                                                    style: TextStyle(
+                                                      fontSize: 15.0,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    ' in ',
+                                                    style: TextStyle(
+                                                      fontSize: 15.0,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    dbC.response.empdetails
+                                                            .area ??
+                                                        'N/A',
+                                                    style: TextStyle(
+                                                      fontSize: 15.0,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            }
+                                          }),
                                           SizedBox(
                                             height: 5.0,
                                           ),
@@ -358,15 +472,10 @@ class _DashboardPageState extends State<DashboardPage> {
                                                 ),
                                               ),
                                               Text(
-                                                DateFormat()
-                                                    .add_jm()
-                                                    .format(DateFormat(
-                                                            'HH:mm:ss')
-                                                        .parse(dbC
-                                                            .response
-                                                            .empdetails
-                                                            .shiftStartTime))
-                                                    .toString(),
+                                                convertTimeWithParse(dbC
+                                                    .response
+                                                    .empdetails
+                                                    .shiftStartTime),
                                                 style: TextStyle(
                                                   fontSize: 15.0,
                                                   fontWeight: FontWeight.bold,
@@ -379,15 +488,10 @@ class _DashboardPageState extends State<DashboardPage> {
                                                 ),
                                               ),
                                               Text(
-                                                DateFormat()
-                                                    .add_jm()
-                                                    .format(
-                                                        DateFormat('HH:mm:ss')
-                                                            .parse(dbC
-                                                                .response
-                                                                .empdetails
-                                                                .shiftEndTime))
-                                                    .toString(),
+                                                convertTimeWithParse(dbC
+                                                    .response
+                                                    .empdetails
+                                                    .shiftEndTime),
                                                 style: TextStyle(
                                                   fontSize: 15.0,
                                                   fontWeight: FontWeight.bold,
@@ -621,9 +725,9 @@ class _DashboardPageState extends State<DashboardPage> {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                setState(() {
-                                  calendarType = 'myCal';
-                                });
+                                // setState(() {
+                                //   calendarType = 'myCal';
+                                // });
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -656,9 +760,9 @@ class _DashboardPageState extends State<DashboardPage> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                setState(() {
-                                  calendarType = 'myRos';
-                                });
+                                // setState(() {
+                                //   calendarType = 'myRos';
+                                // });
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -697,9 +801,9 @@ class _DashboardPageState extends State<DashboardPage> {
                       height: 20.0,
                     ),
                     Obx(() {
-                      if (dbC.isDashboardLoading.value) {
+                      if (calC.isEventLoading.value) {
                         return LoadingWidget(
-                          containerHeight: 330.0,
+                          containerHeight: 420.0,
                           loaderSize: 30.0,
                           loaderColor: Colors.black87,
                         );
