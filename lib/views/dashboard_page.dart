@@ -76,9 +76,9 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration(milliseconds: 300), dbC.init);
-    Future.delayed(Duration(milliseconds: 300), erpC.init);
-    Future.delayed(Duration(milliseconds: 300), calC.init);
+    Future.delayed(Duration(milliseconds: 100), dbC.init);
+    Future.delayed(Duration(milliseconds: 100), erpC.init);
+    Future.delayed(Duration(milliseconds: 100), calC.init);
     return Scaffold(
       backgroundColor: AppUtils().sccaffoldBg,
       floatingActionButton: CustomFab('dashboard'),
@@ -186,7 +186,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                 } else {
                                   return Flexible(
                                     child: Text(
-                                      dbC.response.clientData.name ?? 'N/A',
+                                      dbC.response.empdetails.name ?? 'N/A',
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 20.0,

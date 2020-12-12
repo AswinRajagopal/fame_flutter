@@ -24,6 +24,11 @@ class CheckoutController extends GetxController {
     super.onInit();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   void updateTime() {
     Timer.periodic(Duration(seconds: 1), (timer) {
       todayString.value =

@@ -10,6 +10,11 @@ import 'package:progress_dialog/progress_dialog.dart';
 class ForgotPasswordController extends GetxController {
   ProgressDialog pr;
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   void forgotPassword(email) async {
     try {
       await pr.show();

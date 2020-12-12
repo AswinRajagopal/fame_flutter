@@ -8,25 +8,40 @@ import 'package:get/get.dart';
 class ProfileController extends GetxController {
   var isLoading = true.obs;
   // var userDetail = <Profile>.obs;
-  Profile profileResponse;
+  Profile profileRes;
   ProgressDialog pr;
+  var endPoint = 'register';
 
   @override
   void onInit() {
-    getEmpDeails();
     super.onInit();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  void init() {
+    print('init custom');
+    getEmpDeails();
   }
 
   void getEmpDeails() async {
     try {
       isLoading(true);
       // await pr.show();
-      profileResponse = await RemoteServices().getEmpDetails();
-      if (profileResponse != null) {
+      profileRes = await RemoteServices().getEmpDetails();
+      if (profileRes != null) {
         isLoading(false);
         // await pr.hide();
-        print('profileResponse valid: ${profileResponse.success}');
-        if (profileResponse.success) {
+        print('profileRes valid: ${profileRes.success}');
+        if (profileRes.success) {
+          if (profileRes.profileImage == null) {
+            endPoint = 'register';
+          } else {
+            endPoint = 'update_image';
+          }
         } else {
           Get.snackbar(
             'Error',

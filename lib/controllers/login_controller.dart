@@ -99,6 +99,7 @@ class LoginController extends GetxController {
       'appFeature',
       'shift',
       'clientId',
+      'empName',
     ]);
   }
 }

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:developer' as developer;
 
 import 'package:dio/dio.dart' as mydio;
+import '../models/face_register.dart';
 import '../models/db_calendar.dart';
 import '../models/emp_r_plan.dart';
 import '../models/dashboard.dart';
@@ -110,7 +111,7 @@ class RemoteServices {
 
   Future<Profile> getEmpDetails() async {
     var response = await client.post(
-      '$baseURL/user/emp_details',
+      '$baseURL/user/profile',
       headers: header,
       body: jsonEncode(
         <String, String>{
@@ -321,6 +322,60 @@ class RemoteServices {
           'lat': lat.toString(),
           'lng': lng.toString(),
           'address': address.toString(),
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future<FaceReg> registerFace(File imageFile, endPoint) async {
+    // print('companyid: ${box.get('companyid')}');
+    // print('empid: ${box.get('empid')}');
+    var dio = mydio.Dio();
+
+    var formData = mydio.FormData.fromMap({
+      'companyID': box.get('companyid'),
+      'client_ID': box.get('empid'),
+      'name': box.get('empName'),
+      'access_key': accessKey,
+      'source': 'app',
+      'endPoint': endPoint,
+      'image1': await mydio.MultipartFile.fromFile(
+        imageFile.path,
+        filename: 'image.jpg',
+      ),
+    });
+    var response = await dio.post(
+      '$baseURL/face_rec/register',
+      data: formData,
+    );
+
+    // print(response.data);
+    // developer.log('jsonString: ${response.data.toString()}');
+    if (response.statusCode == 200) {
+      var jsonString = response.data;
+      return faceRegFromJson(jsonEncode(jsonString));
+    } else {
+      return null;
+    }
+  }
+
+  Future registerImage(empId, companyId, image) async {
+    var response = await client.post(
+      '$baseURL/user/register_image',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'image': 'data:image/jpeg;base64,$image',
         },
       ),
     );

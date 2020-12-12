@@ -35,6 +35,11 @@ class DashboardController extends GetxController {
     updateTime();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   void updateTime() {
     Timer.periodic(Duration(seconds: 1), (timer) {
       todayString.value = DateFormat.E().format(DateTime.now()).toString() +
@@ -69,6 +74,7 @@ class DashboardController extends GetxController {
         await RemoteServices()
             .box
             .put('clientId', response.dailyAttendance.clientId);
+        await RemoteServices().box.put('empName', response.empdetails.name);
         if (response.success) {
         } else {
           Get.snackbar(

@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'face_register.dart';
+
 import '../connection/remote_services.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
@@ -7,11 +11,12 @@ import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:get/get.dart';
 
 class ProfilePage extends StatelessWidget {
-  final ProfileController profileController = Get.put(ProfileController());
+  final ProfileController pC = Get.put(ProfileController());
 
   @override
   Widget build(BuildContext context) {
-    profileController.pr = ProgressDialog(
+    Future.delayed(Duration(milliseconds: 100), pC.init);
+    pC.pr = ProgressDialog(
       context,
       type: ProgressDialogType.Normal,
       isDismissible: false,
@@ -39,7 +44,7 @@ class ProfilePage extends StatelessWidget {
         ),
       ),
     );
-    profileController.pr.style(
+    pC.pr.style(
       backgroundColor: Colors.black,
     );
 
@@ -103,7 +108,7 @@ class ProfilePage extends StatelessWidget {
                       ),
                     ),
                     child: Obx(() {
-                      if (profileController.isLoading.value) {
+                      if (pC.isLoading.value) {
                         return Container(
                           height: 460.0,
                           width: MediaQuery.of(context).size.width,
@@ -126,19 +131,33 @@ class ProfilePage extends StatelessWidget {
                               SizedBox(
                                 height: 30.0,
                               ),
-                              Image.network(
-                                'https://cdn.pixabay.com/photo/2018/08/28/12/41/avatar-3637425_960_720.png',
-                                // fit: BoxFit.cover,
-                                height: 100.0,
-                                width: 100.0,
+                              GestureDetector(
+                                onTap: () {
+                                  print('take picture');
+                                  Get.to(FaceRegister(pC.endPoint));
+                                },
+                                child: pC.profileRes.profileImage == null
+                                    ? Image.network(
+                                        'https://cdn.pixabay.com/photo/2018/08/28/12/41/avatar-3637425_960_720.png',
+                                        // fit: BoxFit.cover,
+                                        height: 100.0,
+                                        width: 100.0,
+                                      )
+                                    : Image.memory(
+                                        base64.decode(pC
+                                            .profileRes.profileImage.image
+                                            .split(',')
+                                            .last),
+                                        height: 100.0,
+                                        width: 100.0,
+                                      ),
                               ),
                               SizedBox(
                                 height: 10.0,
                               ),
                               Center(
                                 child: Text(
-                                  profileController
-                                      .profileResponse.empdetails.name,
+                                  pC.profileRes.empDetails.name,
                                   style: TextStyle(
                                     fontSize: 20.0,
                                     fontWeight: FontWeight.bold,
@@ -147,8 +166,7 @@ class ProfilePage extends StatelessWidget {
                               ),
                               Center(
                                 child: Text(
-                                  profileController
-                                      .profileResponse.empdetails.empId,
+                                  pC.profileRes.empDetails.empId,
                                   style: TextStyle(
                                     fontSize: 16.0,
                                     color: Colors.grey,
@@ -160,24 +178,21 @@ class ProfilePage extends StatelessWidget {
                               ),
                               ProfileDetailRow(
                                 'assets/images/icon_profile_address.png',
-                                profileController
-                                    .profileResponse.empdetails.address,
+                                pC.profileRes.empDetails.address,
                               ),
                               SizedBox(
                                 height: 10.0,
                               ),
                               ProfileDetailRow(
                                 'assets/images/icon_profile_call.png',
-                                profileController
-                                    .profileResponse.empdetails.phone,
+                                pC.profileRes.empDetails.phone,
                               ),
                               SizedBox(
                                 height: 10.0,
                               ),
                               ProfileDetailRow(
                                 'assets/images/icon_profile_mail.png',
-                                profileController
-                                    .profileResponse.empdetails.emailId,
+                                pC.profileRes.empDetails.emailId,
                               ),
                               SizedBox(
                                 height: 15.0,
