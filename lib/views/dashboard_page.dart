@@ -74,6 +74,96 @@ class _DashboardPageState extends State<DashboardPage> {
     // DateFormat('a').format(time).toString().toLowerCase();
   }
 
+  // ignore: missing_return
+  bool checkCondition(dbRes, type) {
+    if (dbRes.dailyAttendance != null) {
+      if (dbRes.dailyAttendance.checkInDateTime != null &&
+          dbRes.dailyAttendance.checkOutDateTime == null) {
+        //allow checkout
+        //on duty
+        if (type == 'chkout') {
+          return true;
+        }
+        return false;
+      } else if (dbRes.dailyAttendance.checkInDateTime != null &&
+          dbRes.dailyAttendance.checkOutDateTime != null) {
+        if (dbRes.empdetails.shift == dbRes.dailyAttendance.shift &&
+            dbRes.empdetails.sitePostedTo.toString().toLowerCase() ==
+                dbRes.dailyAttendance.clientId.toString().toLowerCase()) {
+          if (dbRes.dailyAttendance.attendanceAlias == 'L') {
+            // On Leave
+            // dont allow checkin
+            Get.snackbar(
+              'Error',
+              'You cannot checkin when leave is approved',
+              colorText: Colors.white,
+              backgroundColor: Colors.red,
+              snackPosition: SnackPosition.BOTTOM,
+              margin: EdgeInsets.symmetric(
+                horizontal: 8.0,
+                vertical: 10.0,
+              ),
+            );
+            return false;
+          } else if (dbRes.dailyAttendance.attendanceAlias == 'WO') {
+            // On Week Off
+            // dont allow checkin
+            Get.snackbar(
+              'Error',
+              'You cannot checkin on week off days',
+              colorText: Colors.white,
+              backgroundColor: Colors.red,
+              snackPosition: SnackPosition.BOTTOM,
+              margin: EdgeInsets.symmetric(
+                horizontal: 8.0,
+                vertical: 10.0,
+              ),
+            );
+            return false;
+          } else {
+            // attendance given
+            // dont allow checkin
+            Get.snackbar(
+              'Error',
+              'Attendance already given by unit Incharge',
+              colorText: Colors.white,
+              backgroundColor: Colors.red,
+              snackPosition: SnackPosition.BOTTOM,
+              margin: EdgeInsets.symmetric(
+                horizontal: 8.0,
+                vertical: 10.0,
+              ),
+            );
+            return false;
+          }
+        } else {
+          var curDate =
+              DateFormat('yyyy-M-d').format(DateTime.now()).toString();
+          var chkDate = DateFormat('yyyy-M-d')
+              .format(dbRes.dailyAttendance.checkInDateTime)
+              .toString();
+          if (curDate == chkDate) {
+            Get.snackbar(
+              'Error',
+              'You already checked in for today',
+              colorText: Colors.white,
+              backgroundColor: Colors.red,
+              snackPosition: SnackPosition.BOTTOM,
+              margin: EdgeInsets.symmetric(
+                horizontal: 8.0,
+                vertical: 10.0,
+              ),
+            );
+            return false;
+          }
+          return true;
+        }
+      }
+    } else {
+      return true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Future.delayed(Duration(milliseconds: 100), dbC.init);
@@ -108,11 +198,14 @@ class _DashboardPageState extends State<DashboardPage> {
                           Row(
                             children: [
                               CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                  'https://cdn.pixabay.com/photo/2018/08/28/12/41/avatar-3637425_960_720.png',
-                                ),
+                                // backgroundImage: NetworkImage(
+                                //   'https://cdn.pixabay.com/photo/2018/08/28/12/41/avatar-3637425_960_720.png',
+                                // ),
                                 radius: 20.0,
-                                backgroundColor: Colors.transparent,
+                                backgroundImage: AssetImage(
+                                  'assets/images/tm_logo.png',
+                                ),
+                                backgroundColor: Colors.white,
                               ),
                               SizedBox(
                                 width: 15.0,
@@ -365,7 +458,14 @@ class _DashboardPageState extends State<DashboardPage> {
                                           ),
                                           RaisedButton(
                                             onPressed: () {
-                                              Get.to(CheckoutPage());
+                                              //Check Condition
+                                              var chk = checkCondition(
+                                                dbC.response,
+                                                'chkout',
+                                              );
+                                              if (chk) {
+                                                Get.to(CheckoutPage());
+                                              }
                                             },
                                             child: Text(
                                               'Check Out',
@@ -503,7 +603,14 @@ class _DashboardPageState extends State<DashboardPage> {
                                       ),
                                       RaisedButton(
                                         onPressed: () {
-                                          Get.to(CheckinPage());
+                                          //Check Condition
+                                          var chk = checkCondition(
+                                            dbC.response,
+                                            'chkin',
+                                          );
+                                          if (chk) {
+                                            Get.to(CheckinPage());
+                                          }
                                         },
                                         child: Text(
                                           'Check In',

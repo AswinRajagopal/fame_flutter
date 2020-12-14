@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:developer' as developer;
 
 import 'package:dio/dio.dart' as mydio;
+import '../models/apply_leave.dart';
 import '../models/face_register.dart';
 import '../models/db_calendar.dart';
 import '../models/emp_r_plan.dart';
@@ -385,6 +386,60 @@ class RemoteServices {
       return json.decode(jsonString);
     } else {
       //show error message
+      return null;
+    }
+  }
+
+  Future leaveType() async {
+    var response = await client.post(
+      '$baseURL/leave/leave_bal_type',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future<ApplyLeave> applyLeave(
+    frmDt,
+    toDt,
+    reason,
+    dayType,
+    leaveTypeId,
+  ) async {
+    var response = await client.post(
+      '$baseURL/leave/apply_leave',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'fromDate': frmDt.toString(),
+          'toDate': toDt.toString(),
+          'reason': reason.toString(),
+          'dayType': dayType.toString(),
+          'leaveTypeId': leaveTypeId.toString(),
+        },
+      ),
+    );
+
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      print(jsonString);
+      return applyLeaveFromJson(jsonString);
+    } else {
       return null;
     }
   }

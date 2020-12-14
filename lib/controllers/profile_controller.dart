@@ -39,8 +39,12 @@ class ProfileController extends GetxController {
         if (profileRes.success) {
           if (profileRes.profileImage == null) {
             endPoint = 'register';
+            await RemoteServices().box.put('pImg', '');
           } else {
             endPoint = 'update_image';
+            await RemoteServices()
+                .box
+                .put('pImg', profileRes.profileImage.image.split(',').last);
           }
         } else {
           Get.snackbar(

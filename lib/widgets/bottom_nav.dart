@@ -1,4 +1,4 @@
-import '../views/calendar_demo.dart';
+import '../views/leave_page.dart';
 
 import '../views/profile_page.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +15,8 @@ class BottomNav extends StatelessWidget {
     return BottomNavigationBar(
       onTap: (index) {
         if (index == 0) {
-          Get.to(CalendarDemo());
+          // Get.to(CalendarDemo());
+          Get.offAll(LeavePage());
         } else if (index == 1) {
           Get.to(ProfilePage());
         } else if (index == 2) {
