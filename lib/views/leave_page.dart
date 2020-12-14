@@ -20,6 +20,9 @@ class _LeavePageState extends State<LeavePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppUtils().sccaffoldBg,
+      appBar: AppBar(
+        title: Text('Leave'),
+      ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.end,

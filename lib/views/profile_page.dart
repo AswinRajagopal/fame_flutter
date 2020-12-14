@@ -112,14 +112,6 @@ class ProfilePage extends StatelessWidget {
                         return Container(
                           height: 460.0,
                           width: MediaQuery.of(context).size.width,
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                CircularProgressIndicator(),
-                              ],
-                            ),
-                          ),
                         );
                       } else {
                         return Container(

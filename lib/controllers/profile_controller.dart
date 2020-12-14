@@ -30,11 +30,11 @@ class ProfileController extends GetxController {
   void getEmpDeails() async {
     try {
       isLoading(true);
-      // await pr.show();
+      await pr.show();
       profileRes = await RemoteServices().getEmpDetails();
       if (profileRes != null) {
         isLoading(false);
-        // await pr.hide();
+        await pr.hide();
         print('profileRes valid: ${profileRes.success}');
         if (profileRes.success) {
           if (profileRes.profileImage == null) {
@@ -63,7 +63,7 @@ class ProfileController extends GetxController {
     } catch (e) {
       print(e);
       isLoading(false);
-      // await pr.hide();
+      await pr.hide();
       Get.snackbar(
         'Error',
         'Something went wrong! Please try again later',
@@ -75,9 +75,6 @@ class ProfileController extends GetxController {
           vertical: 10.0,
         ),
       );
-    } finally {
-      isLoading(false);
-      // await pr.hide();
     }
   }
 }
