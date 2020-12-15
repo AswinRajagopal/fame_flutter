@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:developer' as developer;
 
 import 'package:dio/dio.dart' as mydio;
+import '../models/save_route_plan.dart';
 import '../models/apply_leave.dart';
 import '../models/face_register.dart';
 import '../models/db_calendar.dart';
@@ -111,6 +112,9 @@ class RemoteServices {
   }
 
   Future<Profile> getEmpDetails() async {
+    print('getEmpDetails');
+    print(box.get('empid'));
+    print(box.get('companyid'));
     var response = await client.post(
       '$baseURL/user/profile',
       headers: header,
@@ -121,7 +125,7 @@ class RemoteServices {
         },
       ),
     );
-    print(response.statusCode);
+    print(response.body);
     if (response.statusCode == 200) {
       var jsonString = response.body;
       return profileFromJson(jsonString);
@@ -204,9 +208,9 @@ class RemoteServices {
   }
 
   Future<Dashboard> getDashboardDetails() async {
-    // print('getDashboardDetails');
-    // print(box.get('empid'));
-    // print(box.get('companyid'));
+    print('getDashboardDetails');
+    print(box.get('empid'));
+    print(box.get('companyid'));
     var response = await client.post(
       '$baseURL/attendance/dashboard_flut',
       headers: header,
@@ -439,6 +443,56 @@ class RemoteServices {
       var jsonString = response.body;
       print(jsonString);
       return applyLeaveFromJson(jsonString);
+    } else {
+      return null;
+    }
+  }
+
+  Future getClients() async {
+    var response = await client.post(
+      '$baseURL/attendance/all_clients',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future<SaveRPlan> saveRoutePlan(
+    planName,
+    date,
+    pitstops,
+  ) async {
+    var response = await client.post(
+      '$baseURL/location/save_rplan',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'empId': box.get('empid').toString(),
+          'assignedTo': box.get('empid').toString(),
+          'planName': planName,
+          'date': date,
+          'companyId': box.get('companyid').toString(),
+          'pitstops': pitstops,
+        },
+      ),
+    );
+
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      print(jsonString);
+      return saveRPlanFromJson(jsonString);
     } else {
       return null;
     }

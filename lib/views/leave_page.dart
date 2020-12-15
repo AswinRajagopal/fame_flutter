@@ -12,6 +12,11 @@ class LeavePage extends StatefulWidget {
 }
 
 class _LeavePageState extends State<LeavePage> {
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   Future<bool> backButtonPressed() {
     return Get.offAll(DashboardPage());
   }

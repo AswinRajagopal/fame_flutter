@@ -29,7 +29,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
   google_fonts: ^1.1.1
-  get: ^3.17.1
+  get: ^3.22.2
   http: ^0.12.2
   hive: ^1.4.4+1
   hive_flutter: ^0.3.1

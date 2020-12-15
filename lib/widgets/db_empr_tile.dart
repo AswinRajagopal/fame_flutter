@@ -21,7 +21,14 @@ class DBEmprTile extends StatelessWidget {
         '-' +
         DateFormat.y().format(empRoute.createdOn).toString() +
         ' at ' +
-        DateFormat().add_jm().format(empRoute.createdOn).toString();
+        // DateFormat().add_jm().format(empRoute.createdOn).toString();
+        DateFormat('h:mm')
+            .format(empRoute.createdOn)
+            .toString() +
+        DateFormat('a')
+            .format(empRoute.createdOn)
+            .toString()
+            .toLowerCase();
 
     return Padding(
       padding: EdgeInsets.fromLTRB(
@@ -42,7 +49,7 @@ class DBEmprTile extends StatelessWidget {
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(
-            vertical: 15.0,
+            vertical: 25.0,
             horizontal: 15.0,
           ),
           child: Column(
@@ -57,6 +64,7 @@ class DBEmprTile extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       fontSize: titleSize,
                     ),
+                    maxLines: 1,
                   ),
                   SizedBox(
                     width: 50.0,
@@ -78,6 +86,7 @@ class DBEmprTile extends StatelessWidget {
                       fontSize: textSize,
                       color: Colors.grey,
                     ),
+                    maxLines: 1,
                   ),
                 ],
               ),
@@ -112,6 +121,7 @@ class DBEmprTile extends StatelessWidget {
                       fontSize: textSize,
                       color: Colors.grey,
                     ),
+                    maxLines: 1,
                   ),
                 ],
               ),

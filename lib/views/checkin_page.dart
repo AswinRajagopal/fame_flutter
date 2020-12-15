@@ -470,7 +470,7 @@ class _CheckinPageState extends State<CheckinPage> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                'Capture',
+                                'Check In',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w900,

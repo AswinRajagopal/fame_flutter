@@ -20,6 +20,7 @@ class DashboardController extends GetxController {
           DateFormat('a').format(DateTime.now()).toString().toLowerCase())
       .obs;
   var greetings = '...'.obs;
+  bool isDisposed = false;
 
   @override
   void onInit() {
@@ -30,6 +31,7 @@ class DashboardController extends GetxController {
   }
 
   void init() {
+    // if (isDisposed) return;
     print('init custom');
     getDashboardDetails();
     updateTime();
@@ -38,6 +40,7 @@ class DashboardController extends GetxController {
   @override
   void dispose() {
     super.dispose();
+    isDisposed = true;
   }
 
   void updateTime() {

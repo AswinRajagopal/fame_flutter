@@ -68,6 +68,7 @@ class FaceRegisterController extends GetxController {
                 vertical: 10.0,
               ),
             );
+            return false;
           }
         } else {
           Get.snackbar(
@@ -99,9 +100,6 @@ class FaceRegisterController extends GetxController {
         ),
       );
       return false;
-    } finally {
-      await pr.hide();
-      // return faceRes.success;
     }
   }
 }

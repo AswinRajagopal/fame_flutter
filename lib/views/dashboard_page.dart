@@ -1,3 +1,5 @@
+import 'route_planning.dart';
+
 import 'checkout_page.dart';
 
 import '../connection/remote_services.dart';
@@ -726,26 +728,33 @@ class _DashboardPageState extends State<DashboardPage> {
                           loaderColor: Colors.black87,
                         );
                       } else {
-                        return Container(
-                          height: 180.0,
-                          width: MediaQuery.of(context).size.width,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                              top: 15.0,
-                              bottom: 15.0,
-                              // left: 20.0,
-                            ),
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: dbC.response.empActivities.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                var empAct = dbC.response.empActivities[index];
-                                return DBActivityTile(
-                                  empAct,
-                                  index,
-                                  dbC.response.empActivities.length,
-                                );
-                              },
+                        return Visibility(
+                          visible: dbC.response.empActivities == null ||
+                                  dbC.response.empActivities.length == 0
+                              ? false
+                              : true,
+                          child: Container(
+                            height: 180.0,
+                            width: MediaQuery.of(context).size.width,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                top: 15.0,
+                                bottom: 15.0,
+                                // left: 20.0,
+                              ),
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: dbC.response.empActivities.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  var empAct =
+                                      dbC.response.empActivities[index];
+                                  return DBActivityTile(
+                                    empAct,
+                                    index,
+                                    dbC.response.empActivities.length,
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         );
@@ -754,20 +763,81 @@ class _DashboardPageState extends State<DashboardPage> {
                     SizedBox(
                       width: 20.0,
                     ),
+                    // Container(
+                    //   width: MediaQuery.of(context).size.width,
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.symmetric(
+                    //       horizontal: 20.0,
+                    //     ),
+                    //     child: Text(
+                    //       'My Route Plan',
+                    //       style: TextStyle(
+                    //         fontSize: 20.0,
+                    //         fontWeight: FontWeight.bold,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                     Container(
                       width: MediaQuery.of(context).size.width,
+                      color: Colors.white,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0,
+                          horizontal: 8.0,
+                          vertical: 18.0,
                         ),
-                        child: Text(
-                          'My Route Plan',
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Image.asset(
+                                  'assets/images/dummy_location.png',
+                                  height: 40.0,
+                                  width: 40.0,
+                                ),
+                                SizedBox(
+                                  width: 6.0,
+                                ),
+                                Text(
+                                  'My Route Plan',
+                                  style: TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Spacer(),
+                                GestureDetector(
+                                  onTap: () {
+                                    // Get.offAll(RoutePlanning());
+                                    Get.to(RoutePlanning());
+                                  },
+                                  child: Text(
+                                    'Create new route plan',
+                                    style: TextStyle(
+                                      fontSize: 16.0,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    // Get.offAll(RoutePlanning());
+                                    Get.to(RoutePlanning());
+                                  },
+                                  child: Icon(
+                                    Icons.chevron_right,
+                                    size: 35.0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
+                    ),
+                    SizedBox(
+                      height: 20.0,
                     ),
                     Obx(() {
                       if (erpC.isEmpLoading.value) {
@@ -779,24 +849,44 @@ class _DashboardPageState extends State<DashboardPage> {
                         );
                       } else {
                         return Container(
-                          height: 210.0,
+                          height: erpC.empRes.routePlanList == null ||
+                                  erpC.empRes.routePlanList.length == 0
+                              ? 50.0
+                              : 210.0,
                           width: MediaQuery.of(context).size.width,
                           child: Padding(
                             padding: const EdgeInsets.only(
                               bottom: 15.0,
                             ),
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: erpC.empRes.routePlanList.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                var empRoute = erpC.empRes.routePlanList[index];
-                                return DBEmprTile(
-                                  empRoute,
-                                  index,
-                                  erpC.empRes.routePlanList.length,
-                                );
-                              },
-                            ),
+                            child: erpC.empRes.routePlanList == null ||
+                                    erpC.empRes.routePlanList.length == 0
+                                ? Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: 10.0,
+                                      left: 20.0,
+                                    ),
+                                    child: Text(
+                                      'No routplan found',
+                                      style: TextStyle(
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  )
+                                : ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: erpC.empRes.routePlanList.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      var empRoute =
+                                          erpC.empRes.routePlanList[index];
+                                      return DBEmprTile(
+                                        empRoute,
+                                        index,
+                                        erpC.empRes.routePlanList.length,
+                                      );
+                                    },
+                                  ),
                           ),
                         );
                       }

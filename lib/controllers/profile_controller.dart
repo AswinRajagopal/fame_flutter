@@ -11,6 +11,7 @@ class ProfileController extends GetxController {
   Profile profileRes;
   ProgressDialog pr;
   var endPoint = 'register';
+  bool isDisposed = false;
 
   @override
   void onInit() {
@@ -20,6 +21,7 @@ class ProfileController extends GetxController {
   @override
   void dispose() {
     super.dispose();
+    isDisposed = true;
   }
 
   void init() {
@@ -27,7 +29,16 @@ class ProfileController extends GetxController {
     getEmpDeails();
   }
 
+  @override
+  void onReady() {
+    // TODO: implement onReady
+    super.onReady();
+  }
+
   void getEmpDeails() async {
+    if (isDisposed) {
+      return;
+    }
     try {
       isLoading(true);
       await pr.show();

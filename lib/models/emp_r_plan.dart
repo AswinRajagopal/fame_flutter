@@ -22,8 +22,10 @@ class EmpRPlan {
   factory EmpRPlan.fromJson(Map<String, dynamic> json) => EmpRPlan(
         success: json['success'],
         msg: json['msg'],
-        routePlanList: List<RoutePlanList>.from(
-            json['routePlanList'].map((x) => RoutePlanList.fromJson(x))),
+        routePlanList: json['routePlanList'] == null
+            ? null
+            : List<RoutePlanList>.from(
+                json['routePlanList'].map((x) => RoutePlanList.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {

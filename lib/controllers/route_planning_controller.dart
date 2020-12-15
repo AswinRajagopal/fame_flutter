@@ -1,30 +1,24 @@
 import 'dart:async';
 
-import '../views/leave_page.dart';
+import '../views/dashboard_page.dart';
+import 'package:flutter/material.dart';
 
 import '../connection/remote_services.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
-class ApplyLeaveController extends GetxController {
+class RoutePlanningController extends GetxController {
   var isLoading = true.obs;
   ProgressDialog pr;
-  var leaveRes;
-  var appLeaveRes;
-  var ltVal = '';
-  final List leaveTypeList = [];
+  var allClientRes;
   bool isDisposed = false;
+  final List clientList = [];
+  List sC = [].obs;
 
   @override
   void onInit() {
     super.onInit();
-    Future.delayed(Duration(milliseconds: 100), getLeaveType);
-    // getLeaveType();
-  }
-
-  void init() {
-    print('init custom');
+    Future.delayed(Duration(milliseconds: 100), getClient);
   }
 
   @override
@@ -33,27 +27,27 @@ class ApplyLeaveController extends GetxController {
     isDisposed = true;
   }
 
-  void getLeaveType() async {
+  void getClient() async {
     if (isDisposed) {
       return;
     }
     try {
       isLoading(true);
       await pr.show();
-      var leaveTypeRes = await RemoteServices().leaveType();
-      if (leaveTypeRes != null) {
+      var clientRes = await RemoteServices().getClients();
+      if (clientRes != null) {
         await pr.hide();
         isLoading(false);
-        print('leaveTypeRes valid: $leaveTypeRes');
-        if (leaveTypeRes['success']) {
-          for (var i = 0; i < leaveTypeRes['leaveTypeList'].length; i++) {
-            leaveTypeList.add(leaveTypeRes['leaveTypeList'][i]);
+        print('clientRes valid: $clientRes');
+        if (clientRes['success']) {
+          for (var i = 0; i < clientRes['clientsList'].length; i++) {
+            clientList.add(clientRes['clientsList'][i]);
           }
-          print('leaveTypeList: $leaveTypeList');
+          print('clientsList: $clientList');
         } else {
           Get.snackbar(
             'Error',
-            'Leave type not found',
+            'Client not found',
             colorText: Colors.white,
             backgroundColor: Colors.red,
             snackPosition: SnackPosition.BOTTOM,
@@ -82,23 +76,21 @@ class ApplyLeaveController extends GetxController {
     }
   }
 
-  void applyLeave(frmDt, toDt, reason, dayType, leaveTypeId) async {
+  void saveRPlan(planName, date, pitstops) async {
     try {
       await pr.show();
-      var appLeaveRes = await RemoteServices().applyLeave(
-        frmDt,
-        toDt,
-        reason,
-        dayType,
-        leaveTypeId,
+      var saveRplanRes = await RemoteServices().saveRoutePlan(
+        planName,
+        date,
+        pitstops,
       );
-      if (appLeaveRes != null) {
+      if (saveRplanRes != null) {
         await pr.hide();
-        print('appLeaveRes valid: ${appLeaveRes.success}');
-        if (appLeaveRes.success) {
+        print('saveRplanRes valid: ${saveRplanRes.success}');
+        if (saveRplanRes.success) {
           Get.snackbar(
             'Success',
-            'Leave applied',
+            'Route plan created',
             colorText: Colors.white,
             backgroundColor: Colors.green,
             snackPosition: SnackPosition.BOTTOM,
@@ -108,12 +100,12 @@ class ApplyLeaveController extends GetxController {
             ),
           );
           Timer(Duration(seconds: 2), () {
-            Get.offAll(LeavePage());
+            Get.offAll(DashboardPage());
           });
         } else {
           Get.snackbar(
             'Error',
-            'Leave does not applied',
+            'Route plan not created',
             colorText: Colors.white,
             backgroundColor: Colors.red,
             snackPosition: SnackPosition.BOTTOM,

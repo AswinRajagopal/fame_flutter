@@ -452,7 +452,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                'Capture',
+                                'Check Out',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w900,

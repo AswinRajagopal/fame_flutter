@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 class EmprplanController extends GetxController {
   var isEmpLoading = true.obs;
   var empRes;
+  bool isDisposed = false;
 
   @override
   void onInit() {
@@ -13,8 +14,15 @@ class EmprplanController extends GetxController {
   }
 
   void init() {
+    // if (isDisposed) return;
     print('init custom');
     getEmprPlan();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    isDisposed = true;
   }
 
   void getEmprPlan() async {

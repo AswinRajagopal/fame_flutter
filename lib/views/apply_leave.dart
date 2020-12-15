@@ -1,5 +1,7 @@
 import 'package:intl/intl.dart';
 
+import '../widgets/custom_app_bar.dart';
+
 import '../utils/utils.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
@@ -20,6 +22,11 @@ class _ApplyLeaveState extends State<ApplyLeave> {
   TextEditingController fromDt = TextEditingController();
   TextEditingController toDt = TextEditingController();
   TextEditingController reason = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -112,29 +119,10 @@ class _ApplyLeaveState extends State<ApplyLeave> {
   Widget build(BuildContext context) {
     // Future.delayed(Duration(milliseconds: 100), alC.init);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Apply Leave',
-        ),
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: CircleAvatar(
-            backgroundImage: AssetImage(
-              'assets/images/tm_logo.png',
-            ),
-            backgroundColor: Colors.white,
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.notifications_none_outlined,
-              color: Colors.white,
-              size: 30.0,
-            ),
-            onPressed: () {},
-          ),
-        ],
+      backgroundColor: AppUtils().sccaffoldBg,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(56.0),
+        child: CustomAppBar('Apply Leave'),
       ),
       body: SafeArea(
         child: Obx(() {
@@ -410,7 +398,8 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                                   toDt.text == null ||
                                   toDt.text == '' ||
                                   reason.text == null ||
-                                  reason.text == '') {
+                                  reason.text == '' ||
+                                  leaveType == '') {
                                 Get.snackbar(
                                   'Error',
                                   'Please fill all data',

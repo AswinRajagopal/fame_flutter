@@ -114,6 +114,15 @@ class ProfilePage extends StatelessWidget {
                           width: MediaQuery.of(context).size.width,
                         );
                       } else {
+                        var img;
+                        if (pC.profileRes.profileImage != null) {
+                          img = pC.profileRes.profileImage.image;
+                          img = img.contains('data:image')
+                              ? img.split(',').last
+                              : img;
+
+                          print('img.length: ${img.length}');
+                        }
                         return Container(
                           // height: 220.0,
                           width: MediaQuery.of(context).size.width,
@@ -128,7 +137,7 @@ class ProfilePage extends StatelessWidget {
                                   print('take picture');
                                   Get.to(FaceRegister(pC.endPoint));
                                 },
-                                child: pC.profileRes.profileImage == null
+                                child: img == null
                                     ? Image.network(
                                         'https://cdn.pixabay.com/photo/2018/08/28/12/41/avatar-3637425_960_720.png',
                                         // fit: BoxFit.cover,
@@ -136,10 +145,9 @@ class ProfilePage extends StatelessWidget {
                                         width: 100.0,
                                       )
                                     : Image.memory(
-                                        base64.decode(pC
-                                            .profileRes.profileImage.image
-                                            .split(',')
-                                            .last),
+                                        base64.decode(
+                                          img.replaceAll('\n', ''),
+                                        ),
                                         height: 100.0,
                                         width: 100.0,
                                       ),
