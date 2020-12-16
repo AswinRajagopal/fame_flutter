@@ -36,6 +36,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.5.0-nullsafety.1"
+  badges:
+    dependency: "direct main"
+    description:
+      name: badges
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.6"
   boolean_selector:
     dependency: transitive
     description:
@@ -211,6 +218,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.10"
+  dotted_line:
+    dependency: "direct main"
+    description:
+      name: dotted_line
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2"
   fake_async:
     dependency: transitive
     description:
@@ -251,6 +265,34 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.2"
+  flutter_google_places:
+    dependency: "direct main"
+    description:
+      name: flutter_google_places
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.6"
+  flutter_keyboard_visibility:
+    dependency: transitive
+    description:
+      name: flutter_keyboard_visibility
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.2"
+  flutter_keyboard_visibility_platform_interface:
+    dependency: transitive
+    description:
+      name: flutter_keyboard_visibility_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
+  flutter_keyboard_visibility_web:
+    dependency: transitive
+    description:
+      name: flutter_keyboard_visibility_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   flutter_launcher_icons:
     dependency: "direct main"
     description:
@@ -277,11 +319,25 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_typeahead:
+    dependency: "direct main"
+    description:
+      name: flutter_typeahead
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.9.1"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
     source: sdk
     version: "0.0.0"
+  geocoder:
+    dependency: "direct main"
+    description:
+      name: geocoder
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.1"
   geocoding:
     dependency: "direct main"
     description:
@@ -331,6 +387,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.1"
+  google_maps_webservice:
+    dependency: "direct main"
+    description:
+      name: google_maps_webservice
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.18"
   graphs:
     dependency: transitive
     description:
@@ -590,6 +653,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.5"
+  rxdart:
+    dependency: transitive
+    description:
+      name: rxdart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.24.1"
   shelf:
     dependency: transitive
     description:

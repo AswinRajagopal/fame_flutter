@@ -50,6 +50,12 @@ dependencies:
   geocoding: ^1.0.5
   # dots_indicator: ^1.2.0
   date_format: ^1.0.9
+  flutter_google_places: ^0.2.6
+  geocoder: ^0.2.1
+  flutter_typeahead: ^1.9.1
+  google_maps_webservice: ^0.0.18
+  badges: ^1.1.6
+  dotted_line: ^2.0.2
 
 flutter_icons:
   image_path: "assets/images/icon.png"

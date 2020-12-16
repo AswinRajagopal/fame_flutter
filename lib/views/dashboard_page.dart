@@ -172,7 +172,7 @@ class _DashboardPageState extends State<DashboardPage> {
     Future.delayed(Duration(milliseconds: 100), erpC.init);
     Future.delayed(Duration(milliseconds: 100), calC.init);
     return Scaffold(
-      backgroundColor: AppUtils().sccaffoldBg,
+      backgroundColor: AppUtils().greyScaffoldBg,
       floatingActionButton: CustomFab('dashboard'),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNav('dashboard'),
@@ -658,65 +658,71 @@ class _DashboardPageState extends State<DashboardPage> {
                           loaderColor: Colors.black87,
                         );
                       } else {
-                        return Container(
-                          // height: 150.0,
-                          width: MediaQuery.of(context).size.width,
-                          color: Colors.white,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 20.0,
-                                  left: 20.0,
+                        return dbC.response.psCount == null
+                            ? Container()
+                            : Container(
+                                // height: 150.0,
+                                width: MediaQuery.of(context).size.width,
+                                color: Colors.white,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        top: 20.0,
+                                        left: 20.0,
+                                      ),
+                                      child: Text(
+                                        DateFormat.MMMM()
+                                            .format(DateTime.now())
+                                            .toString(),
+                                        style: TextStyle(
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 10.0,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        CustomProgressIndicator(
+                                          // '23',
+                                          dbC.response.psCount.shifts
+                                              .toString(),
+                                          'Total Days',
+                                          80.0,
+                                          1,
+                                        ),
+                                        CustomProgressIndicator(
+                                          dbC.response.psCount.present
+                                              .toString(),
+                                          'Present',
+                                          80.0,
+                                          dbC.response.psCount.present /
+                                              dbC.response.psCount.shifts,
+                                        ),
+                                        CustomProgressIndicator(
+                                          dbC.response.psCount.absent
+                                              .toString(),
+                                          'Absent',
+                                          80.0,
+                                          dbC.response.psCount.absent /
+                                              dbC.response.psCount.shifts,
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 20.0,
+                                    ),
+                                  ],
                                 ),
-                                child: Text(
-                                  DateFormat.MMMM()
-                                      .format(DateTime.now())
-                                      .toString(),
-                                  style: TextStyle(
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  CustomProgressIndicator(
-                                    // '23',
-                                    dbC.response.psCount.shifts.toString(),
-                                    'Total Days',
-                                    80.0,
-                                    1,
-                                  ),
-                                  CustomProgressIndicator(
-                                    dbC.response.psCount.present.toString(),
-                                    'Present',
-                                    80.0,
-                                    dbC.response.psCount.present /
-                                        dbC.response.psCount.shifts,
-                                  ),
-                                  CustomProgressIndicator(
-                                    dbC.response.psCount.absent.toString(),
-                                    'Absent',
-                                    80.0,
-                                    dbC.response.psCount.absent /
-                                        dbC.response.psCount.shifts,
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 20.0,
-                              ),
-                            ],
-                          ),
-                        );
+                              );
                       }
                     }),
                     Obx(() {
@@ -851,7 +857,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         return Container(
                           height: erpC.empRes.routePlanList == null ||
                                   erpC.empRes.routePlanList.length == 0
-                              ? 50.0
+                              ? 0.0
                               : 210.0,
                           width: MediaQuery.of(context).size.width,
                           child: Padding(
@@ -860,30 +866,21 @@ class _DashboardPageState extends State<DashboardPage> {
                             ),
                             child: erpC.empRes.routePlanList == null ||
                                     erpC.empRes.routePlanList.length == 0
-                                ? Padding(
-                                    padding: const EdgeInsets.only(
-                                      top: 10.0,
-                                      left: 20.0,
-                                    ),
-                                    child: Text(
-                                      'No routplan found',
-                                      style: TextStyle(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  )
+                                ? Container()
                                 : ListView.builder(
                                     scrollDirection: Axis.horizontal,
-                                    itemCount: erpC.empRes.routePlanList.length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
+                                    // itemCount: erpC.empRes.routePlanList.length,
+                                    itemCount: 4,
+                                    itemBuilder: (context, index) {
+                                      // var length = erpC.empRes.routePlanList.length;
                                       var empRoute =
                                           erpC.empRes.routePlanList[index];
+                                      print('index: $index');
                                       return DBEmprTile(
                                         empRoute,
                                         index,
-                                        erpC.empRes.routePlanList.length,
+                                        // erpC.empRes.routePlanList.length,
+                                        4,
                                       );
                                     },
                                   ),

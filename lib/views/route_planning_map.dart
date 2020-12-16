@@ -1,27 +1,26 @@
-import 'package:badges/badges.dart';
-
-import 'route_planning_map.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:flutter_google_places/flutter_google_places.dart';
+import 'package:google_maps_webservice/places.dart';
 
 import '../connection/remote_services.dart';
+import '../utils/utils.dart';
+import 'route_planning.dart';
+import '../widgets/custom_app_bar.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
 import '../controllers/route_planning_controller.dart';
-import 'package:intl/intl.dart';
-
-import '../utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'dashboard_page.dart';
 
-import '../widgets/custom_app_bar.dart';
-
-class RoutePlanning extends StatefulWidget {
+class RoutePlanningMap extends StatefulWidget {
   @override
-  _RoutePlanningState createState() => _RoutePlanningState();
+  _RoutePlanningMapState createState() => _RoutePlanningMapState();
 }
 
-class _RoutePlanningState extends State<RoutePlanning> {
+class _RoutePlanningMapState extends State<RoutePlanningMap> {
   final RoutePlanningController rpC = Get.put(RoutePlanningController());
   TextEditingController planName = TextEditingController();
   TextEditingController empName = TextEditingController();
@@ -135,35 +134,8 @@ class _RoutePlanningState extends State<RoutePlanning> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 GestureDetector(
-                                  onTap: () {},
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(
-                                          50.0,
-                                        ),
-                                      ),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 7.0,
-                                        horizontal: 25.0,
-                                      ),
-                                      child: Text(
-                                        'From Clients',
-                                        style: TextStyle(
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.blue,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                GestureDetector(
                                   onTap: () {
-                                    Get.offAll(RoutePlanningMap());
+                                    Get.offAll(RoutePlanning());
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(
@@ -180,11 +152,38 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                         horizontal: 25.0,
                                       ),
                                       child: Text(
-                                        'From Map',
+                                        'From Clients',
                                         style: TextStyle(
                                           fontSize: 18.0,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {},
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                          50.0,
+                                        ),
+                                      ),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 7.0,
+                                        horizontal: 25.0,
+                                      ),
+                                      child: Text(
+                                        'From Map',
+                                        style: TextStyle(
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.blue,
                                         ),
                                       ),
                                     ),
@@ -301,55 +300,142 @@ class _RoutePlanningState extends State<RoutePlanning> {
                           10.0,
                           0.0,
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        child: Column(
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10.0,
-                              ),
-                              child: Text(
-                                'Select client',
-                                style: TextStyle(
-                                  color: Colors.grey[600],
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            Obx(() {
-                              return Badge(
-                                badgeContent: Text(
-                                  rpC.sC.length.toString(),
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12.0,
+                            Row(
+                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10.0,
+                                  ),
+                                  child: Text(
+                                    'Enter address',
+                                    style: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
-                                shape: BadgeShape.circle,
-                                badgeColor: Colors.orange,
-                                toAnimate: true,
-                                animationType: BadgeAnimationType.scale,
-                                padding: EdgeInsets.all(
-                                  rpC.sC.length < 10 ? 7.0 : 5.0,
+                                Spacer(),
+                                GestureDetector(
+                                  onTap: () async {
+                                    var p = await PlacesAutocomplete.show(
+                                      context: context,
+                                      apiKey: AppUtils.GKEY,
+                                      mode: Mode.overlay,
+                                      language: 'en',
+                                      components: [
+                                        Component(
+                                          Component.country,
+                                          'in',
+                                        ),
+                                      ],
+                                    );
+                                    // print('P: $p');
+                                    if (p != null) {
+                                      var places = GoogleMapsPlaces(
+                                        apiKey: AppUtils.GKEY,
+                                      );
+                                      var detail =
+                                          await places.getDetailsByPlaceId(
+                                        p.placeId,
+                                      );
+                                      print(p.placeId);
+                                      print(p.description);
+                                      // print(detail.result.geometry.location.lat
+                                      //     .toString());
+                                      // print(detail.result.geometry.location.lng
+                                      //     .toString());
+                                      var map = {
+                                        'address': p.description.toString(),
+                                        'clientId': '',
+                                        'lat': detail
+                                            .result.geometry.location.lat
+                                            .toString(),
+                                        'lng': detail
+                                            .result.geometry.location.lng
+                                            .toString(),
+                                        'mapId': p.placeId.toString(),
+                                      };
+                                      print(rpC.mapID);
+                                      if (!rpC.mapID.contains(p.placeId)) {
+                                        rpC.mapCL.add(map);
+                                        rpC.mapID.add(p.placeId);
+                                      } else {
+                                        Get.snackbar(
+                                          'Error',
+                                          'Already added',
+                                          colorText: Colors.white,
+                                          backgroundColor: Colors.red,
+                                          snackPosition: SnackPosition.BOTTOM,
+                                          margin: EdgeInsets.symmetric(
+                                            horizontal: 8.0,
+                                            vertical: 10.0,
+                                          ),
+                                        );
+                                      }
+                                    }
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                      right: 8.0,
+                                    ),
+                                    child: Image.asset(
+                                      'assets/images/add_icon.png',
+                                      scale: 30.0,
+                                      color: Colors.green,
+                                    ),
+                                  ),
                                 ),
-                                position: BadgePosition.topEnd(
-                                  top: -5,
-                                  end: 0,
-                                ),
-                                child: Image.asset(
-                                  'assets/images/routenoti.png',
-                                  scale: 1.5,
-                                ),
-                              );
-                            }),
+                              ],
+                            ),
+                            Divider(
+                              color: Colors.grey[900],
+                            ),
                           ],
                         ),
                       ),
                       Obx(() {
-                        if (rpC.isLoading.value) {
-                          return Container();
+                        if (rpC.mapCL.isNull || rpC.mapCL.isEmpty) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20.0,
+                            ),
+                            child: Container(
+                              height: 230.0,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(
+                                    10.0,
+                                  ),
+                                ),
+                                border: Border.all(
+                                  color: Colors.grey[400],
+                                ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20.0,
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Please add address from map,\n click on + icon to add',
+                                      style: TextStyle(
+                                        fontSize: 16.0,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
                         } else {
                           return Padding(
                             padding: const EdgeInsets.symmetric(
@@ -376,9 +462,9 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                 child: ListView.builder(
                                   shrinkWrap: true,
                                   physics: ScrollPhysics(),
-                                  itemCount: rpC.clientList.length,
+                                  itemCount: rpC.mapCL.length,
                                   itemBuilder: (context, index) {
-                                    var client = rpC.clientList[index];
+                                    var address = rpC.mapCL[index];
                                     return Column(
                                       children: [
                                         Row(
@@ -396,10 +482,11 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                                   // print(client);
                                                   // print(rpC.sC.contains(client));
                                                   // print(rpC.sC);
-                                                  if (rpC.sC.contains(client)) {
-                                                    rpC.sC.remove(client);
+                                                  if (rpC.sC
+                                                      .contains(address)) {
+                                                    rpC.sC.remove(address);
                                                   } else {
-                                                    rpC.sC.add(client);
+                                                    rpC.sC.add(address);
                                                   }
                                                 },
                                                 child: Obx(() {
@@ -408,7 +495,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                                     width: 25.0,
                                                     decoration: BoxDecoration(
                                                       color: rpC.sC
-                                                              .contains(client)
+                                                              .contains(address)
                                                           ? Colors.blue
                                                           : Colors.white,
                                                       borderRadius:
@@ -428,19 +515,10 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                             SizedBox(
                                               width: 10.0,
                                             ),
-                                            Text(
-                                              client['id'].toString(),
-                                              style: TextStyle(
-                                                fontSize: 16.0,
-                                              ),
-                                            ),
                                             SizedBox(
-                                              width: 15.0,
-                                            ),
-                                            SizedBox(
-                                              width: 150.0,
+                                              width: 220.0,
                                               child: Text(
-                                                client['name'].toString(),
+                                                address['address'].toString(),
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
                                                   color: Colors.grey,
@@ -453,8 +531,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                               onTap: () {
                                                 print('remarks');
                                                 Get.defaultDialog(
-                                                  title:
-                                                      'Remarks for ${client['id'].toString()}',
+                                                  title: 'Remarks',
                                                   content: TextField(
                                                     controller: cRemark,
                                                     decoration: InputDecoration(
@@ -473,7 +550,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                                   barrierDismissible: false,
                                                   onConfirm: () {
                                                     if (cRemark.text != '') {
-                                                      client['remarks'] =
+                                                      address['remarks'] =
                                                           cRemark.text;
                                                       cRemark.text = '';
                                                       Get.back();
@@ -577,7 +654,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                               } else if (rpC.sC.isEmpty) {
                                 Get.snackbar(
                                   'Error',
-                                  'Please select atleast one client',
+                                  'Please select atleast one address',
                                   colorText: Colors.white,
                                   backgroundColor: Colors.red,
                                   snackPosition: SnackPosition.BOTTOM,
@@ -586,11 +663,6 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                     vertical: 10.0,
                                   ),
                                 );
-                                // print('fromDate: ${fromDt.text}');
-                                // print('toDate: ${toDt.text}');
-                                // print('reason: ${reason.text}');
-                                // print('dayType: $stVal');
-                                // print('leaveTypeId: $leaveType');
                               } else {
                                 // print(rpC.sC.length);
                                 print(rpC.sC);
@@ -599,16 +671,16 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                   var addData;
                                   if (rpC.sC[i]['remarks'] == null) {
                                     addData = {
-                                      'lat': rpC.sC[i]['latitude'].toString(),
-                                      'lng': rpC.sC[i]['longitude'].toString(),
-                                      'clientId': rpC.sC[i]['id'].toString(),
+                                      'lat': rpC.sC[i]['lat'].toString(),
+                                      'lng': rpC.sC[i]['lng'].toString(),
+                                      'clientId': '',
                                       'date': date.text,
                                     };
                                   } else {
                                     addData = {
-                                      'lat': rpC.sC[i]['latitude'].toString(),
-                                      'lng': rpC.sC[i]['longitude'].toString(),
-                                      'clientId': rpC.sC[i]['id'].toString(),
+                                      'lat': rpC.sC[i]['lat'].toString(),
+                                      'lng': rpC.sC[i]['lng'].toString(),
+                                      'clientId': '',
                                       'date': date.text,
                                       'adminRemarks':
                                           rpC.sC[i]['remarks'].toString(),

@@ -13,6 +13,8 @@ class RoutePlanningController extends GetxController {
   var allClientRes;
   bool isDisposed = false;
   final List clientList = [];
+  final List mapCL = [].obs;
+  final List mapID = [].obs;
   List sC = [].obs;
 
   @override
@@ -76,10 +78,11 @@ class RoutePlanningController extends GetxController {
     }
   }
 
-  void saveRPlan(planName, date, pitstops) async {
+  void saveRPlan(assignedTo, planName, date, pitstops) async {
     try {
       await pr.show();
       var saveRplanRes = await RemoteServices().saveRoutePlan(
+        assignedTo,
         planName,
         date,
         pitstops,

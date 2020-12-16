@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:developer' as developer;
 
 import 'package:dio/dio.dart' as mydio;
+import '../models/leave_list.dart';
 import '../models/save_route_plan.dart';
 import '../models/apply_leave.dart';
 import '../models/face_register.dart';
@@ -469,6 +470,7 @@ class RemoteServices {
   }
 
   Future<SaveRPlan> saveRoutePlan(
+    assignedTo,
     planName,
     date,
     pitstops,
@@ -479,7 +481,7 @@ class RemoteServices {
       body: jsonEncode(
         <String, dynamic>{
           'empId': box.get('empid').toString(),
-          'assignedTo': box.get('empid').toString(),
+          'assignedTo': assignedTo,
           'planName': planName,
           'date': date,
           'companyId': box.get('companyid').toString(),
@@ -493,6 +495,52 @@ class RemoteServices {
       var jsonString = response.body;
       print(jsonString);
       return saveRPlanFromJson(jsonString);
+    } else {
+      return null;
+    }
+  }
+
+  Future getEmployees(empName) async {
+    // print('empName: $empName');
+    var response = await client.post(
+      '$baseURL/transfer/get_suggest',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'empId': box.get('empid').toString(),
+          'empName': empName,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString)['empSuggest'];
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future<LeaveList> getLeaveList() async {
+    var response = await client.post(
+      '$baseURL/leave/leave_list',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'roleId': box.get('role').toString(),
+        },
+      ),
+    );
+
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      print(jsonString);
+      return leaveListFromJson(jsonString);
     } else {
       return null;
     }

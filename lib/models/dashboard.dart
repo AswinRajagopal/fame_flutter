@@ -32,7 +32,7 @@ class Dashboard {
         clientData: ClientData.fromJson(json['clientData']),
         msg: json['msg'],
         empdetails: Empdetails.fromJson(json['empdetails']),
-        psCount: PsCount.fromJson(json['psCount']),
+        psCount: json['psCount'] == null ? null : PsCount.fromJson(json['psCount']),
         empActivities: List<EmpActivity>.from(
             json['empActivities'].map((x) => EmpActivity.fromJson(x))),
         dailyAttendance: DailyAttendance.fromJson(json['dailyAttendance']),

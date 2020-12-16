@@ -119,7 +119,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
   Widget build(BuildContext context) {
     // Future.delayed(Duration(milliseconds: 100), alC.init);
     return Scaffold(
-      backgroundColor: AppUtils().sccaffoldBg,
+      backgroundColor: AppUtils().innerScaffoldBg,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(56.0),
         child: CustomAppBar('Apply Leave'),
