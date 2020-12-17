@@ -1,3 +1,5 @@
+import 'attendance_page.dart';
+
 import 'route_planning.dart';
 
 import 'checkout_page.dart';
@@ -78,6 +80,10 @@ class _DashboardPageState extends State<DashboardPage> {
 
   // ignore: missing_return
   bool checkCondition(dbRes, type) {
+    var curDate = DateFormat('yyyy-M-d').format(DateTime.now()).toString();
+    var chkDate = DateFormat('yyyy-M-d')
+        .format(dbRes.dailyAttendance.checkInDateTime)
+        .toString();
     if (dbRes.dailyAttendance != null) {
       if (dbRes.dailyAttendance.checkInDateTime != null &&
           dbRes.dailyAttendance.checkOutDateTime == null) {
@@ -91,7 +97,8 @@ class _DashboardPageState extends State<DashboardPage> {
           dbRes.dailyAttendance.checkOutDateTime != null) {
         if (dbRes.empdetails.shift == dbRes.dailyAttendance.shift &&
             dbRes.empdetails.sitePostedTo.toString().toLowerCase() ==
-                dbRes.dailyAttendance.clientId.toString().toLowerCase()) {
+                dbRes.dailyAttendance.clientId.toString().toLowerCase() &&
+            curDate == chkDate) {
           if (dbRes.dailyAttendance.attendanceAlias == 'L') {
             // On Leave
             // dont allow checkin
@@ -139,11 +146,6 @@ class _DashboardPageState extends State<DashboardPage> {
             return false;
           }
         } else {
-          var curDate =
-              DateFormat('yyyy-M-d').format(DateTime.now()).toString();
-          var chkDate = DateFormat('yyyy-M-d')
-              .format(dbRes.dailyAttendance.checkInDateTime)
-              .toString();
           if (curDate == chkDate) {
             Get.snackbar(
               'Error',
@@ -658,6 +660,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           loaderColor: Colors.black87,
                         );
                       } else {
+                        var role = RemoteServices().box.get('role');
                         return dbC.response.psCount == null
                             ? Container()
                             : Container(
@@ -672,14 +675,45 @@ class _DashboardPageState extends State<DashboardPage> {
                                         top: 20.0,
                                         left: 20.0,
                                       ),
-                                      child: Text(
-                                        DateFormat.MMMM()
-                                            .format(DateTime.now())
-                                            .toString(),
-                                        style: TextStyle(
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            DateFormat.MMMM()
+                                                .format(DateTime.now())
+                                                .toString(),
+                                            style: TextStyle(
+                                              fontSize: 20.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          role == '2' || role == '3'
+                                              ? FlatButton(
+                                                  onPressed: () {
+                                                    Get.offAll(
+                                                      AttendancePage(),
+                                                    );
+                                                  },
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                        'Enter Attendance',
+                                                        style: TextStyle(
+                                                          fontSize: 16.0,
+                                                          color: Colors.grey,
+                                                        ),
+                                                      ),
+                                                      Icon(
+                                                        Icons.chevron_right,
+                                                        size: 25.0,
+                                                        color: Colors.grey,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              : Container(),
+                                        ],
                                       ),
                                     ),
                                     SizedBox(
@@ -819,7 +853,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                     Get.to(RoutePlanning());
                                   },
                                   child: Text(
-                                    'Create new route plan',
+                                    'Create New Route Plan',
                                     style: TextStyle(
                                       fontSize: 16.0,
                                       color: Colors.grey,
@@ -870,17 +904,21 @@ class _DashboardPageState extends State<DashboardPage> {
                                 : ListView.builder(
                                     scrollDirection: Axis.horizontal,
                                     // itemCount: erpC.empRes.routePlanList.length,
-                                    itemCount: 4,
+                                    itemCount:
+                                        erpC.empRes.routePlanList.length > 4
+                                            ? 5
+                                            : erpC.empRes.routePlanList.length,
                                     itemBuilder: (context, index) {
-                                      // var length = erpC.empRes.routePlanList.length;
+                                      var length =
+                                          erpC.empRes.routePlanList.length;
                                       var empRoute =
                                           erpC.empRes.routePlanList[index];
-                                      print('index: $index');
+                                      // print('index: $index');
                                       return DBEmprTile(
                                         empRoute,
                                         index,
                                         // erpC.empRes.routePlanList.length,
-                                        4,
+                                        length > 4 ? 4 : length,
                                       );
                                     },
                                   ),

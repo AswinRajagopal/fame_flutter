@@ -1,4 +1,5 @@
 import 'package:badges/badges.dart';
+import 'routeplan_list.dart';
 
 import 'route_planning_map.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -17,6 +18,9 @@ import 'dashboard_page.dart';
 import '../widgets/custom_app_bar.dart';
 
 class RoutePlanning extends StatefulWidget {
+  final String goBackTo;
+  RoutePlanning({this.goBackTo});
+
   @override
   _RoutePlanningState createState() => _RoutePlanningState();
 }
@@ -72,6 +76,9 @@ class _RoutePlanningState extends State<RoutePlanning> {
   }
 
   Future<bool> backButtonPressed() {
+    if (widget.goBackTo != null && widget.goBackTo == 'list') {
+      return Get.offAll(RouteplanList());
+    }
     return Get.offAll(DashboardPage());
   }
 
@@ -539,7 +546,8 @@ class _RoutePlanningState extends State<RoutePlanning> {
                             onPressed: () {
                               print('Cancel');
                               // Get.back();
-                              Get.offAll(DashboardPage());
+                              // Get.offAll(DashboardPage());
+                              backButtonPressed();
                             },
                             child: Text(
                               'Cancel',

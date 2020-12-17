@@ -1,44 +1,43 @@
-import 'package:progress_dialog/progress_dialog.dart';
-
 import '../connection/remote_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
-class EmprplanController extends GetxController {
-  var isEmpLoading = true.obs;
-  var empRes;
-  bool isDisposed = false;
+class AttendanceController extends GetxController {
+  var isLoading = true.obs;
+  var res;
   ProgressDialog pr;
+  final List clientList = [].obs;
 
   @override
   void onInit() {
-    // getEmprPlan();
     super.onInit();
-  }
-
-  void init() {
-    // if (isDisposed) return;
-    print('init custom');
-    getEmprPlan();
+    Future.delayed(Duration(milliseconds: 100), getClientTimings);
   }
 
   @override
   void dispose() {
     super.dispose();
-    isDisposed = true;
   }
 
-  void getEmprPlan() async {
+  void getClientTimings() async {
     try {
-      isEmpLoading(true);
-      empRes = await RemoteServices().getEmprPlan();
-      if (empRes != null) {
-        isEmpLoading(false);
-        if (empRes.success) {
+      isLoading(true);
+      await pr.show();
+      res = await RemoteServices().getClientTimings();
+      if (res != null) {
+        isLoading(false);
+        await pr.hide();
+        // print('res valid: $res');
+        if (res.success) {
+          for (var i = 0; i < res.clientsandManpowerArrList.length; i++) {
+            clientList.add(res.clientsandManpowerArrList[i]);
+          }
+          // print('clientList: $clientList');
         } else {
           Get.snackbar(
             'Error',
-            'Something went wrong! Please try again later',
+            'Client not found',
             colorText: Colors.white,
             backgroundColor: Colors.red,
             snackPosition: SnackPosition.BOTTOM,
@@ -51,7 +50,8 @@ class EmprplanController extends GetxController {
       }
     } catch (e) {
       print(e);
-      isEmpLoading(false);
+      isLoading(false);
+      await pr.hide();
       Get.snackbar(
         'Error',
         'Something went wrong! Please try again later',
@@ -63,9 +63,6 @@ class EmprplanController extends GetxController {
           vertical: 10.0,
         ),
       );
-    } finally {
-      // isLoading(false);
-      // await pr.hide();
     }
   }
 }

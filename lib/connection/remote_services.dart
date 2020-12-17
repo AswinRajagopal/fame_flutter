@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:developer' as developer;
 
 import 'package:dio/dio.dart' as mydio;
+import '../models/attendance.dart';
 import '../models/leave_list.dart';
 import '../models/save_route_plan.dart';
 import '../models/apply_leave.dart';
@@ -493,7 +494,6 @@ class RemoteServices {
     print(response.statusCode);
     if (response.statusCode == 200) {
       var jsonString = response.body;
-      print(jsonString);
       return saveRPlanFromJson(jsonString);
     } else {
       return null;
@@ -539,8 +539,53 @@ class RemoteServices {
     print(response.statusCode);
     if (response.statusCode == 200) {
       var jsonString = response.body;
-      print(jsonString);
       return leaveListFromJson(jsonString);
+    } else {
+      return null;
+    }
+  }
+
+  Future aprRejLeave(id, status) async {
+    // print('empName: $empName');
+    var response = await client.post(
+      '$baseURL/leave/approve_leave',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'approvedBy': box.get('empid').toString(),
+          'status': status,
+          'id': id,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future<Attendance> getClientTimings() async {
+    var response = await client.post(
+      '$baseURL/attendance/clients_timing',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'roleId': box.get('role').toString(),
+        },
+      ),
+    );
+
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return attendanceFromJson(jsonString);
     } else {
       return null;
     }

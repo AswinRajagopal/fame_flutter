@@ -37,7 +37,7 @@ class PocketFaME extends StatelessWidget {
     return GetMaterialApp(
       title: 'FaME',
       debugShowCheckedModeBanner: false,
-      smartManagement: SmartManagement.keepFactory,
+      // smartManagement: SmartManagement.keepFactory,
       theme: ThemeData(
         textTheme: GoogleFonts.nunitoTextTheme(
           Theme.of(context).textTheme,

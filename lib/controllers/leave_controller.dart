@@ -5,9 +5,10 @@ import 'package:progress_dialog/progress_dialog.dart';
 
 class LeaveController extends GetxController {
   var isLoading = true.obs;
+  var isUpdating = false.obs;
   var res;
   ProgressDialog pr;
-  final List leaveList = [];
+  final List leaveList = [].obs;
 
   @override
   void onInit() {
@@ -33,7 +34,7 @@ class LeaveController extends GetxController {
           for (var i = 0; i < res.leaveList.length; i++) {
             leaveList.add(res.leaveList[i]);
           }
-          print('leaveList: $leaveList');
+          // print('leaveList: $leaveList');
         } else {
           Get.snackbar(
             'Error',
@@ -51,6 +52,51 @@ class LeaveController extends GetxController {
     } catch (e) {
       print(e);
       isLoading(false);
+      await pr.hide();
+      Get.snackbar(
+        'Error',
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+      );
+    }
+  }
+
+  void aprRejLeave(index, id, status) async {
+    try {
+      isUpdating(true);
+      await pr.show();
+      var appRejRes = await RemoteServices().aprRejLeave(id, status);
+      if (appRejRes != null) {
+        isUpdating(false);
+        await pr.hide();
+        // print('res valid: $res');
+        if (appRejRes['success']) {
+          print('here');
+          leaveList.clear();
+          getLeaveList();
+        } else {
+          Get.snackbar(
+            'Error',
+            'Leave not updated',
+            colorText: Colors.white,
+            backgroundColor: Colors.red,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      print(e);
+      isUpdating(false);
       await pr.hide();
       Get.snackbar(
         'Error',

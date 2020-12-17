@@ -1,27 +1,26 @@
-import '../widgets/leave_list_widget.dart';
+import '../widgets/routeplan_widget.dart';
+
+import '../utils/utils.dart';
+import 'route_planning.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
-import '../controllers/leave_controller.dart';
+import '../controllers/emprplan_controller.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'dashboard_page.dart';
 
-import 'apply_leave.dart';
-import 'package:get/get.dart';
-
-import '../utils/utils.dart';
-import 'package:flutter/material.dart';
-
-class LeavePage extends StatefulWidget {
+class RouteplanList extends StatefulWidget {
   @override
-  _LeavePageState createState() => _LeavePageState();
+  _RouteplanListState createState() => _RouteplanListState();
 }
 
-class _LeavePageState extends State<LeavePage> {
-  final LeaveController lC = Get.put(LeaveController());
+class _RouteplanListState extends State<RouteplanList> {
+  final EmprplanController epC = Get.put(EmprplanController());
 
   @override
   void initState() {
-    lC.pr = ProgressDialog(
+    epC.pr = ProgressDialog(
       context,
       type: ProgressDialogType.Normal,
       isDismissible: false,
@@ -49,7 +48,7 @@ class _LeavePageState extends State<LeavePage> {
         ),
       ),
     );
-    lC.pr.style(
+    epC.pr.style(
       backgroundColor: Colors.black,
     );
     super.initState();
@@ -69,7 +68,7 @@ class _LeavePageState extends State<LeavePage> {
     return Scaffold(
       backgroundColor: AppUtils().greyScaffoldBg,
       appBar: AppBar(
-        title: Text('Leave List'),
+        title: Text('Route Plan List'),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
@@ -85,7 +84,11 @@ class _LeavePageState extends State<LeavePage> {
         children: [
           FloatingActionButton(
             onPressed: () {
-              Get.offAll(ApplyLeave());
+              Get.offAll(
+                RoutePlanning(
+                  goBackTo: 'list',
+                ),
+              );
             },
             child: Icon(
               Icons.add,
@@ -103,16 +106,17 @@ class _LeavePageState extends State<LeavePage> {
               height: 10.0,
             ),
             Obx(() {
-              if (lC.isLoading.value) {
+              if (epC.isEmpLoading.value) {
                 return Column();
               } else {
-                if (lC.leaveList.isEmpty || lC.leaveList.isNull) {
+                if (epC.empRes.routePlanList.isEmpty ||
+                    epC.empRes.routePlanList == null) {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        'No leave found',
+                        'No route plan found',
                         style: TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.bold,
@@ -124,14 +128,14 @@ class _LeavePageState extends State<LeavePage> {
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: ScrollPhysics(),
-                  itemCount: lC.leaveList.length,
+                  itemCount: epC.empRes.routePlanList.length,
                   itemBuilder: (context, index) {
-                    var leave = lC.leaveList[index];
-                    return LeaveListWidget(
-                      leave,
+                    var route = epC.empRes.routePlanList[index];
+                    // print(route);
+                    return RouteplanWidget(
+                      route,
                       index,
-                      lC.leaveList.length,
-                      lC,
+                      epC.empRes.routePlanList.length,
                     );
                   },
                 );

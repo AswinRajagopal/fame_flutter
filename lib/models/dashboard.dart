@@ -29,13 +29,34 @@ class Dashboard {
 
   factory Dashboard.fromJson(Map<String, dynamic> json) => Dashboard(
         success: json['success'],
-        clientData: ClientData.fromJson(json['clientData']),
+        clientData: json['clientData'] == null
+            ? null
+            : ClientData.fromJson(
+                json['clientData'],
+              ),
         msg: json['msg'],
-        empdetails: Empdetails.fromJson(json['empdetails']),
-        psCount: json['psCount'] == null ? null : PsCount.fromJson(json['psCount']),
-        empActivities: List<EmpActivity>.from(
-            json['empActivities'].map((x) => EmpActivity.fromJson(x))),
-        dailyAttendance: DailyAttendance.fromJson(json['dailyAttendance']),
+        empdetails: json['empdetails'] == null
+            ? null
+            : Empdetails.fromJson(
+                json['empdetails'],
+              ),
+        psCount: json['psCount'] == null
+            ? null
+            : PsCount.fromJson(
+                json['psCount'],
+              ),
+        empActivities: json['empActivities'] == null
+            ? null
+            : List<EmpActivity>.from(
+                json['empActivities'].map(
+                  (x) => EmpActivity.fromJson(x),
+                ),
+              ),
+        dailyAttendance: json['dailyAttendance'] == null
+            ? null
+            : DailyAttendance.fromJson(
+                json['dailyAttendance'],
+              ),
       );
 
   Map<String, dynamic> toJson() => {
@@ -44,8 +65,11 @@ class Dashboard {
         'msg': msg,
         'empdetails': empdetails.toJson(),
         'psCount': psCount.toJson(),
-        'empActivities':
-            List<dynamic>.from(empActivities.map((x) => x.toJson())),
+        'empActivities': List<dynamic>.from(
+          empActivities.map(
+            (x) => x.toJson(),
+          ),
+        ),
         'dailyAttendance': dailyAttendance.toJson(),
       };
 }
@@ -148,19 +172,19 @@ class DailyAttendance {
   String createdBy;
   String checkInLongitude;
   dynamic modifiedBy;
-  String checkinAddress;
+  dynamic checkinAddress;
   dynamic checkoutAddress;
   String remarks;
   String empId;
   DateTime checkInDateTime;
   dynamic checkOutLongitude;
   String clientId;
-  dynamic checkOutDateTime;
+  DateTime checkOutDateTime;
   String checkInLatitude;
   String shift;
-  dynamic attendanceAlias;
+  String attendanceAlias;
   dynamic checkOutLatitude;
-  DateTime updatedDateTime;
+  dynamic updatedDateTime;
   String id;
   DateTime createdDateTime;
   int status;
@@ -180,12 +204,12 @@ class DailyAttendance {
         checkInDateTime: DateTime.parse(json['checkInDateTime']),
         checkOutLongitude: json['checkOutLongitude'],
         clientId: json['clientId'],
-        checkOutDateTime: json['checkOutDateTime'],
+        checkOutDateTime: DateTime.parse(json['checkOutDateTime']),
         checkInLatitude: json['checkInLatitude'],
         shift: json['shift'],
         attendanceAlias: json['attendanceAlias'],
         checkOutLatitude: json['checkOutLatitude'],
-        updatedDateTime: DateTime.parse(json['updatedDateTime']),
+        updatedDateTime: json['updatedDateTime'],
         id: json['id'],
         createdDateTime: DateTime.parse(json['createdDateTime']),
         status: json['status'],
@@ -205,12 +229,12 @@ class DailyAttendance {
         'checkInDateTime': checkInDateTime.toIso8601String(),
         'checkOutLongitude': checkOutLongitude,
         'clientId': clientId,
-        'checkOutDateTime': checkOutDateTime,
+        'checkOutDateTime': checkOutDateTime.toIso8601String(),
         'checkInLatitude': checkInLatitude,
         'shift': shift,
         'attendanceAlias': attendanceAlias,
         'checkOutLatitude': checkOutLatitude,
-        'updatedDateTime': updatedDateTime.toIso8601String(),
+        'updatedDateTime': updatedDateTime,
         'id': id,
         'createdDateTime': createdDateTime.toIso8601String(),
         'status': status,
@@ -258,25 +282,25 @@ class Empdetails {
     this.gpsTracking,
     this.name,
     this.address,
-    this.gender,
     this.phone,
+    this.createdBy,
     this.empId,
     this.companyId,
-    this.createdBy,
+    this.emailId,
     this.roleId,
     this.shift,
     this.designation,
     this.shiftStartTime,
     this.shiftEndTime,
     this.sitePostedTo,
-    this.emailId,
+    this.modifiedDateTime,
     this.dob,
     this.doj,
     this.area,
     this.isActive,
     this.modifiedBy,
-    this.modifiedDateTime,
     this.createdDateTime,
+    this.gender,
   });
 
   String sosNumber;
@@ -284,25 +308,25 @@ class Empdetails {
   bool gpsTracking;
   String name;
   String address;
-  String gender;
   String phone;
+  String createdBy;
   String empId;
   String companyId;
-  String createdBy;
+  String emailId;
   String roleId;
   String shift;
   int designation;
   String shiftStartTime;
   String shiftEndTime;
   String sitePostedTo;
-  String emailId;
+  dynamic modifiedDateTime;
   DateTime dob;
   DateTime doj;
   String area;
   String isActive;
   dynamic modifiedBy;
-  dynamic modifiedDateTime;
   DateTime createdDateTime;
+  String gender;
 
   factory Empdetails.fromJson(Map<String, dynamic> json) => Empdetails(
         sosNumber: json['sosNumber'],
@@ -310,25 +334,25 @@ class Empdetails {
         gpsTracking: json['gpsTracking'],
         name: json['name'],
         address: json['address'],
-        gender: json['gender'],
         phone: json['phone'],
+        createdBy: json['createdBy'],
         empId: json['empId'],
         companyId: json['companyId'],
-        createdBy: json['createdBy'],
+        emailId: json['emailId'],
         roleId: json['roleId'],
         shift: json['shift'],
         designation: json['designation'],
         shiftStartTime: json['shiftStartTime'],
         shiftEndTime: json['shiftEndTime'],
         sitePostedTo: json['sitePostedTo'],
-        emailId: json['emailId'],
+        modifiedDateTime: json['modifiedDateTime'],
         dob: DateTime.parse(json['dob']),
         doj: DateTime.parse(json['doj']),
         area: json['area'],
         isActive: json['isActive'],
         modifiedBy: json['modifiedBy'],
-        modifiedDateTime: json['modifiedDateTime'],
         createdDateTime: DateTime.parse(json['createdDateTime']),
+        gender: json['gender'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -337,25 +361,25 @@ class Empdetails {
         'gpsTracking': gpsTracking,
         'name': name,
         'address': address,
-        'gender': gender,
         'phone': phone,
+        'createdBy': createdBy,
         'empId': empId,
         'companyId': companyId,
-        'createdBy': createdBy,
+        'emailId': emailId,
         'roleId': roleId,
         'shift': shift,
         'designation': designation,
         'shiftStartTime': shiftStartTime,
         'shiftEndTime': shiftEndTime,
         'sitePostedTo': sitePostedTo,
-        'emailId': emailId,
+        'modifiedDateTime': modifiedDateTime,
         'dob': dob.toIso8601String(),
         'doj': doj.toIso8601String(),
         'area': area,
         'isActive': isActive,
         'modifiedBy': modifiedBy,
-        'modifiedDateTime': modifiedDateTime,
         'createdDateTime': createdDateTime.toIso8601String(),
+        'gender': gender,
       };
 }
 

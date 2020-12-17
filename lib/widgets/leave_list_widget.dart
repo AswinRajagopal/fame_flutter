@@ -1,4 +1,6 @@
 import 'package:dotted_line/dotted_line.dart';
+import '../controllers/leave_controller.dart';
+import '../connection/remote_services.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -6,7 +8,8 @@ class LeaveListWidget extends StatelessWidget {
   final leave;
   final int index;
   final int length;
-  LeaveListWidget(this.leave, this.index, this.length);
+  final LeaveController lC;
+  LeaveListWidget(this.leave, this.index, this.length, this.lC);
 
   final double firstWidth = 48.0;
   final double secondWidth = 7.0;
@@ -20,6 +23,16 @@ class LeaveListWidget extends StatelessWidget {
         DateFormat.M().format(DateTime.parse(date)).toString() +
         '-' +
         DateFormat.y().format(DateTime.parse(date)).toString();
+  }
+
+  String getStatus(status) {
+    if (status == 0) {
+      return 'Pending';
+    } else if (status == 1) {
+      return 'Approved';
+    } else {
+      return 'Rejected';
+    }
   }
 
   @override
@@ -304,7 +317,9 @@ class LeaveListWidget extends StatelessWidget {
                   width: secondWidth,
                 ),
                 Text(
-                  leave['status'] == '0' ? 'Pending' : 'Approved',
+                  getStatus(
+                    int.parse(leave['status']),
+                  ),
                   style: TextStyle(
                     fontSize: textSize,
                     color: Colors.grey,
@@ -312,73 +327,81 @@ class LeaveListWidget extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(
-              height: leave['status'] == '0' ? 15.0 : 5.0,
-            ),
-            leave['status'] == '0'
-                ? DottedLine(
-                    direction: Axis.horizontal,
-                    lineLength: double.infinity,
-                    lineThickness: 1.0,
-                    dashLength: 4.0,
-                    dashColor: Colors.grey,
-                    dashRadius: 0.0,
-                    dashGapLength: 4.0,
-                    dashGapColor: Colors.transparent,
-                    dashGapRadius: 0.0,
-                  )
-                : Container(),
-            leave['status'] == '0'
-                ? Padding(
-                    padding: const EdgeInsets.only(
-                      top: 20.0,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        RaisedButton(
-                          onPressed: () {},
-                          child: Text(
-                            'Reject',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16.0,
-                            ),
-                          ),
-                          color: Colors.grey[300],
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            side: BorderSide(
+            leave['status'] == '0' && RemoteServices().box.get('role') == '2'
+                ? Column(
+                    children: [
+                      SizedBox(
+                        height: 15.0,
+                      ),
+                      DottedLine(
+                        direction: Axis.horizontal,
+                        lineLength: double.infinity,
+                        lineThickness: 1.0,
+                        dashLength: 4.0,
+                        dashColor: Colors.grey,
+                        dashRadius: 0.0,
+                        dashGapLength: 4.0,
+                        dashGapColor: Colors.transparent,
+                        dashGapRadius: 0.0,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 20.0,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            RaisedButton(
+                              onPressed: () {
+                                lC.aprRejLeave(index, leave['id'], '2');
+                              },
+                              child: Text(
+                                'Reject',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16.0,
+                                ),
+                              ),
                               color: Colors.grey[300],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                side: BorderSide(
+                                  color: Colors.grey[300],
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 25.0,
-                        ),
-                        RaisedButton(
-                          onPressed: () {},
-                          child: Text(
-                            'Accept',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16.0,
+                            SizedBox(
+                              width: 25.0,
                             ),
-                          ),
-                          color: Colors.blue,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            side: BorderSide(
+                            RaisedButton(
+                              onPressed: () {
+                                lC.aprRejLeave(index, leave['id'], '1');
+                              },
+                              child: Text(
+                                'Accept',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16.0,
+                                ),
+                              ),
                               color: Colors.blue,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                side: BorderSide(
+                                  color: Colors.blue,
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   )
-                : Container(),
+                : SizedBox(
+                    height: 5.0,
+                  ),
           ],
         ),
       ),
