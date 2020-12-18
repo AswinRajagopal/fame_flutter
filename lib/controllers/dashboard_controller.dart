@@ -57,11 +57,11 @@ class DashboardController extends GetxController {
 
       var hour = DateTime.now().hour;
       if (hour < 12) {
-        greetings.value = 'morning';
+        greetings.value = 'Morning';
       } else if (hour < 17) {
-        greetings.value = 'afternoon';
+        greetings.value = 'Afternoon';
       } else {
-        greetings.value = 'evening';
+        greetings.value = 'Evening';
       }
     });
   }

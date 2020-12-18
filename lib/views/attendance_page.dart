@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'employee_notation.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
@@ -22,6 +23,7 @@ class _AttendancePageState extends State<AttendancePage> {
   final AttendanceController aC = Get.put(AttendanceController());
   TextEditingController date = TextEditingController();
   var stVal = 'all';
+  var clientId;
 
   @override
   void initState() {
@@ -71,7 +73,7 @@ class _AttendancePageState extends State<AttendancePage> {
       initialDate: DateTime.parse(
         date.text.toString(),
       ),
-      firstDate: DateTime.now(),
+      firstDate: DateTime.now().add(Duration(days: -365)),
       lastDate: DateTime.now().add(Duration(days: 365)),
     );
 
@@ -174,83 +176,56 @@ class _AttendancePageState extends State<AttendancePage> {
                       }).toList(),
                       onChanged: (value) {
                         var manpower = json.decode(value);
-                        print('value: $manpower');
-                        // setState(() {
-                        //   leaveType = value.toString();
-                        // });
-                        // Get.bottomSheet(
-                        //   Container(
-                        //     height: MediaQuery.of(context).size.height / 2.3,
-                        //     decoration: BoxDecoration(
-                        //       color: Colors.white,
-                        //       borderRadius: BorderRadius.only(
-                        //         topLeft: const Radius.circular(25.0),
-                        //         topRight: const Radius.circular(25.0),
-                        //       ),
-                        //     ),
-                        //     child: Column(
-                        //       mainAxisAlignment: MainAxisAlignment.center,
-                        //       crossAxisAlignment: CrossAxisAlignment.center,
-                        //       children: [
-                        //         Image.asset(
-                        //           'assets/images/success.png',
-                        //           scale: 2.0,
-                        //           color: Colors.green,
-                        //         ),
-                        //         SizedBox(
-                        //           height: 15.0,
-                        //         ),
-                        //         Text(
-                        //           'Thank you for Login at',
-                        //           style: TextStyle(
-                        //             fontSize: 18.0,
-                        //             fontWeight: FontWeight.bold,
-                        //           ),
-                        //         ),
-                        //         SizedBox(
-                        //           height: 10.0,
-                        //         ),
-                        //         Text(
-                        //           DateFormat()
-                        //               .add_jm()
-                        //               .format(DateTime.now())
-                        //               .toString(),
-                        //           style: TextStyle(
-                        //             fontSize: 20.0,
-                        //             color: Colors.blue,
-                        //             fontWeight: FontWeight.bold,
-                        //           ),
-                        //         ),
-                        //         SizedBox(
-                        //           height: 40.0,
-                        //         ),
-                        //         Container(
-                        //           padding: const EdgeInsets.symmetric(
-                        //             horizontal: 22.0,
-                        //             vertical: 12.0,
-                        //           ),
-                        //           decoration: BoxDecoration(
-                        //             color: Colors.green,
-                        //             borderRadius: BorderRadius.all(
-                        //               Radius.circular(
-                        //                 30.0,
-                        //               ),
-                        //             ),
-                        //           ),
-                        //           child: Text(
-                        //             'Thank You !',
-                        //             style: TextStyle(
-                        //               fontSize: 20.0,
-                        //               color: Colors.white,
-                        //               fontWeight: FontWeight.bold,
-                        //             ),
-                        //           ),
-                        //         ),
-                        //       ],
-                        //     ),
-                        //   ),
-                        //   isDismissible: false,
-                        // );
+                        // print('value: $manpower');
+                        clientId = manpower.first['clientId'];
+                        aC.timings.clear();
+                        aC.shiftTime = '';
+                        for (var j = 0; j < manpower.length; j++) {
+                          // print('manpower: ${manpower[j]}');
+                          var sSTime = DateFormat('hh:mm')
+                                  .format(
+                                    DateTime.parse(
+                                      '2020-12-20 ' +
+                                          manpower[j]['shiftStartTime'],
+                                    ),
+                                  )
+                                  .toString() +
+                              DateFormat('a')
+                                  .format(
+                                    DateTime.parse(
+                                      '2020-12-20 ' +
+                                          manpower[j]['shiftStartTime'],
+                                    ),
+                                  )
+                                  .toString()
+                                  .toLowerCase();
+                          var sETime = DateFormat('hh:mm')
+                                  .format(
+                                    DateTime.parse(
+                                      '2020-12-20 ' +
+                                          manpower[j]['shiftEndTime'],
+                                    ),
+                                  )
+                                  .toString() +
+                              DateFormat('a')
+                                  .format(
+                                    DateTime.parse(
+                                      '2020-12-20 ' +
+                                          manpower[j]['shiftEndTime'],
+                                    ),
+                                  )
+                                  .toString()
+                                  .toLowerCase();
+                          var addTiming = {
+                            'shift': manpower[j]['shift'],
+                            'shiftStartTime': sSTime,
+                            'shiftEndTime': sETime,
+                          };
+                          print(aC.timings.contains(addTiming));
+                          if (!aC.timings.contains(addTiming)) {
+                            aC.timings.add(addTiming);
+                          }
+                        }
                       },
                     ),
                   ),
@@ -281,7 +256,7 @@ class _AttendancePageState extends State<AttendancePage> {
                       Row(
                         children: [
                           Radio(
-                            value: 'checked in',
+                            value: 'checked',
                             groupValue: stVal,
                             onChanged: (sVal) {
                               setState(() {
@@ -302,7 +277,7 @@ class _AttendancePageState extends State<AttendancePage> {
                       Row(
                         children: [
                           Radio(
-                            value: 'not checked',
+                            value: 'not_checked',
                             groupValue: stVal,
                             onChanged: (sVal) {
                               setState(() {
@@ -347,7 +322,7 @@ class _AttendancePageState extends State<AttendancePage> {
                     child: Align(
                       alignment: Alignment.bottomCenter,
                       child: Container(
-                        height: 330.0,
+                        height: 370.0,
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.only(
@@ -390,36 +365,66 @@ class _AttendancePageState extends State<AttendancePage> {
                             SizedBox(
                               height: 20.0,
                             ),
-                            StaggeredGridView.countBuilder(
-                              staggeredTileBuilder: (int index) =>
-                                  StaggeredTile.fit(1),
-                              shrinkWrap: true,
-                              crossAxisCount: 2,
-                              itemCount: 6,
-                              itemBuilder: (context, index) {
-                                return Row(
-                                  children: [
-                                    Radio(
-                                      value: 'time',
-                                      groupValue: stVal,
-                                      onChanged: (sVal) {
-                                        setState(() {
-                                          stVal = sVal;
-                                        });
-                                      },
-                                    ),
-                                    Text(
-                                      '06:00am - 02:00pm',
-                                      style: TextStyle(
-                                        color: Colors.grey[600],
-                                        fontSize: 15.0,
-                                        fontWeight: FontWeight.bold,
+                            Obx(() {
+                              if (aC.timings.isNullOrBlank) {
+                                return Container(
+                                  height: 180.0,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Please select client',
+                                        style: TextStyle(
+                                          fontSize: 17.0,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 );
-                              },
-                            ),
+                              }
+                              return Container(
+                                height: 180.0,
+                                child: Center(
+                                  child: StaggeredGridView.countBuilder(
+                                    staggeredTileBuilder: (int index) =>
+                                        StaggeredTile.fit(1),
+                                    shrinkWrap: true,
+                                    crossAxisCount: 2,
+                                    itemCount: aC.timings.length,
+                                    itemBuilder: (context, index) {
+                                      // print(aC.timings);
+                                      var timing = aC.timings[index];
+                                      var shiftTime = timing['shiftStartTime'] +
+                                          ' - ' +
+                                          timing['shiftEndTime'];
+                                      return Row(
+                                        children: [
+                                          Radio(
+                                            value: timing['shift'] +
+                                                '#' +
+                                                shiftTime,
+                                            groupValue: aC.shiftTime,
+                                            onChanged: (sVal) {
+                                              setState(() {
+                                                aC.shiftTime = sVal;
+                                              });
+                                            },
+                                          ),
+                                          Text(
+                                            shiftTime,
+                                            style: TextStyle(
+                                              color: Colors.grey[600],
+                                              fontSize: 15.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  ),
+                                ),
+                              );
+                            }),
                             SizedBox(
                               height: 40.0,
                             ),
@@ -442,7 +447,45 @@ class _AttendancePageState extends State<AttendancePage> {
                                   ),
                                 ),
                                 RaisedButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    print('proceed');
+                                    print('date: ${date.text}');
+                                    print('client: $clientId');
+                                    print('status: $stVal');
+                                    print('shift: ${aC.shiftTime}');
+                                    if (clientId == null ||
+                                        aC.shiftTime == null ||
+                                        aC.shiftTime == '') {
+                                      Get.snackbar(
+                                        'Error',
+                                        'Please select client and shift timing',
+                                        colorText: Colors.white,
+                                        backgroundColor: Colors.red,
+                                        snackPosition: SnackPosition.BOTTOM,
+                                        margin: EdgeInsets.symmetric(
+                                          horizontal: 8.0,
+                                          vertical: 10.0,
+                                        ),
+                                      );
+                                    } else {
+                                      print('date: ${date.text}');
+                                      print('client: $clientId');
+                                      print('status: $stVal');
+                                      print(
+                                          'shift: ${aC.shiftTime.split('#').first}');
+                                      print(
+                                          'time: ${aC.shiftTime.split('#').last}');
+                                      Get.offAll(
+                                        EmployeeNotation(
+                                          date.text,
+                                          clientId,
+                                          stVal,
+                                          aC.shiftTime.split('#').first,
+                                          aC.shiftTime.split('#').last,
+                                        ),
+                                      );
+                                    }
+                                  },
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                       vertical: 12.0,

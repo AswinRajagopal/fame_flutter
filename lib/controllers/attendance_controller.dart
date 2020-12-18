@@ -8,6 +8,8 @@ class AttendanceController extends GetxController {
   var res;
   ProgressDialog pr;
   final List clientList = [].obs;
+  final List timings = [].obs;
+  var shiftTime;
 
   @override
   void onInit() {

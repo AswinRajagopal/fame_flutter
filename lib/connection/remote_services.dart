@@ -590,4 +590,81 @@ class RemoteServices {
       return null;
     }
   }
+
+  // Future<EmployeeNotations> getNotations(
+  Future getNotations(
+    date,
+    shift,
+    clientId,
+    orderBy,
+    checkFilter,
+  ) async {
+    var response = await client.post(
+      '$baseURL/attendance/notations_emps',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'date': date,
+          'shift': shift,
+          'clientId': clientId,
+          'orderBy': orderBy,
+          'checkFilter': checkFilter,
+        },
+      ),
+    );
+
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      // return employeeNotationsFromJson(jsonString);
+      return json.decode(jsonString);
+    } else {
+      return null;
+    }
+  }
+
+  Future giveAttendance(
+    date,
+    shift,
+    clientId,
+    alies,
+    empId,
+    designation,
+    remarks,
+    startTime,
+    endTime,
+  ) async {
+    var response = await client.post(
+      '$baseURL/attendance/incharge_attendance',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'companyId': box.get('companyid').toString(),
+          'inchargeId': box.get('empid').toString(),
+          'date': date,
+          'shift': shift,
+          'clientId': clientId,
+          'alies': alies,
+          'empId': empId,
+          'designation': designation,
+          'remarks': remarks,
+          'startTime': startTime.toString(),
+          'endTime': endTime.toString(),
+          'extraName': '',
+          'extraParam': '',
+        },
+      ),
+    );
+
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      print(jsonString);
+      return json.decode(jsonString);
+    } else {
+      return null;
+    }
+  }
 }
