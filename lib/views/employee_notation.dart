@@ -318,6 +318,9 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                     widget.status,
                                   );
                                   enC.oB = AppUtils.NAME;
+                                  enC.l.value = 0;
+                                  enC.p.value = 0;
+                                  enC.wo.value = 0;
                                   setState(() {});
                                 },
                           child: CustomContainer(
@@ -340,6 +343,9 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                     widget.status,
                                   );
                                   enC.oB = AppUtils.EMP_ID;
+                                  enC.l.value = 0;
+                                  enC.p.value = 0;
+                                  enC.wo.value = 0;
                                   setState(() {});
                                 },
                           child: CustomContainer(
@@ -361,6 +367,9 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                     widget.status,
                                   );
                                   enC.oB = AppUtils.ATTENDANCE;
+                                  enC.l.value = 0;
+                                  enC.p.value = 0;
+                                  enC.wo.value = 0;
                                   setState(() {});
                                 },
                           child: CustomContainer(
