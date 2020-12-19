@@ -599,6 +599,11 @@ class RemoteServices {
     orderBy,
     checkFilter,
   ) async {
+    var dt = date.toString().split('-')[2] +
+        '-' +
+        date.toString().split('-')[1] +
+        '-' +
+        date.toString().split('-')[0];
     var response = await client.post(
       '$baseURL/attendance/notations_emps',
       headers: header,
@@ -606,7 +611,7 @@ class RemoteServices {
         <String, dynamic>{
           'empId': box.get('empid').toString(),
           'companyId': box.get('companyid').toString(),
-          'date': date,
+          'date': dt,
           'shift': shift,
           'clientId': clientId,
           'orderBy': orderBy,
@@ -634,8 +639,13 @@ class RemoteServices {
     designation,
     remarks,
     startTime,
-    endTime,
-  ) async {
+    endTime, {
+    extraName,
+    extraParam,
+  }) async {
+    var fullDt = date.toString().split('-');
+    var dt = fullDt[2];
+    var month = fullDt[1] + fullDt[0].substring(2);
     var response = await client.post(
       '$baseURL/attendance/incharge_attendance',
       headers: header,
@@ -643,7 +653,7 @@ class RemoteServices {
         <String, dynamic>{
           'companyId': box.get('companyid').toString(),
           'inchargeId': box.get('empid').toString(),
-          'date': date,
+          'date': dt,
           'shift': shift,
           'clientId': clientId,
           'alies': alies,
@@ -652,8 +662,9 @@ class RemoteServices {
           'remarks': remarks,
           'startTime': startTime.toString(),
           'endTime': endTime.toString(),
-          'extraName': '',
-          'extraParam': '',
+          'month': month,
+          'extraName': extraName ?? '',
+          'extraParam': extraParam ?? '',
         },
       ),
     );

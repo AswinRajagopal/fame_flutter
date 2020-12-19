@@ -1,4 +1,5 @@
 import 'package:chips_choice/chips_choice.dart';
+import 'package:intl/intl.dart';
 
 import '../controllers/employee_notations_controller.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -31,9 +32,35 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
     EmployeeNotationsController(),
   );
   TextEditingController cRemark = TextEditingController();
+  TextEditingController otT = TextEditingController();
+  TextEditingController ltT = TextEditingController();
+  TextEditingController searchQuery = TextEditingController();
+  bool isSearching = false;
+  Icon actionIcon = Icon(
+    Icons.search,
+    color: Colors.white,
+    size: 30.0,
+  );
+  String searchText = '';
+  Widget appBarTitle;
 
   @override
   void initState() {
+    appBarTitle = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '#' + widget.clientId,
+        ),
+        Text(
+          widget.time,
+          style: TextStyle(
+            fontSize: 15.0,
+            color: Colors.white70,
+          ),
+        ),
+      ],
+    );
     enC.pr = ProgressDialog(
       context,
       type: ProgressDialogType.Normal,
@@ -70,7 +97,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
         widget.date,
         widget.shift,
         widget.clientId,
-        'NAME',
+        AppUtils.NAME,
         widget.status,
       );
     });
@@ -82,6 +109,59 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
     super.dispose();
   }
 
+  void handleSearchStart() {
+    setState(() {
+      isSearching = true;
+    });
+  }
+
+  void handleSearchEnd() {
+    setState(() {
+      actionIcon = Icon(
+        Icons.search,
+        color: Colors.white,
+        size: 30.0,
+      );
+      appBarTitle = Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '#' + widget.clientId,
+          ),
+          Text(
+            widget.time,
+            style: TextStyle(
+              fontSize: 15.0,
+              color: Colors.white70,
+            ),
+          ),
+        ],
+      );
+      isSearching = false;
+      enC.searchList.clear();
+      searchQuery.clear();
+    });
+  }
+
+  void onSearchTextChanged(String text) async {
+    enC.searchList.clear();
+    if (text.isEmpty) {
+      setState(() {});
+      return;
+    }
+
+    enC.res['empDailyAttView'].forEach((emp) {
+      if (emp['name'].toString().toLowerCase().contains(text.toLowerCase()) ||
+          emp['empId'].toString().toLowerCase().contains(text.toLowerCase())) {
+        enC.searchList.add(emp);
+      }
+    });
+
+    // print(enC.searchList);
+
+    setState(() {});
+  }
+
   Future<bool> backButtonPressed() {
     return Get.offAll(AttendancePage());
   }
@@ -91,21 +171,22 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
     return Scaffold(
       backgroundColor: AppUtils().greyScaffoldBg,
       appBar: AppBar(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '#' + widget.clientId,
-            ),
-            Text(
-              widget.time,
-              style: TextStyle(
-                fontSize: 15.0,
-                color: Colors.white70,
-              ),
-            ),
-          ],
-        ),
+        title: appBarTitle,
+        // title: Column(
+        //   crossAxisAlignment: CrossAxisAlignment.start,
+        //   children: [
+        //     Text(
+        //       '#' + widget.clientId,
+        //     ),
+        //     Text(
+        //       widget.time,
+        //       style: TextStyle(
+        //         fontSize: 15.0,
+        //         color: Colors.white70,
+        //       ),
+        //     ),
+        //   ],
+        // ),
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
           child: IconButton(
@@ -117,14 +198,61 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
             onPressed: backButtonPressed,
           ),
         ),
-        actions: [
+        // actions: [
+        //   IconButton(
+        //     icon: Icon(
+        //       Icons.search,
+        //       color: Colors.white,
+        //       size: 30.0,
+        //     ),
+        //     onPressed: () {},
+        //   ),
+        // ],
+        actions: <Widget>[
           IconButton(
-            icon: Icon(
-              Icons.search,
-              color: Colors.white,
-              size: 30.0,
-            ),
-            onPressed: () {},
+            // icon: Icon(
+            //   Icons.search,
+            //   color: Colors.white,
+            //   size: 30.0,
+            // ),
+            icon: actionIcon,
+            onPressed: () {
+              setState(() {
+                if (actionIcon.icon == Icons.search) {
+                  actionIcon = Icon(
+                    Icons.close,
+                    color: Colors.white,
+                    size: 30.0,
+                  );
+                  appBarTitle = TextField(
+                    controller: searchQuery,
+                    autofocus: true,
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(
+                        Icons.search,
+                        color: Colors.white,
+                        size: 30.0,
+                      ),
+                      hintText: 'Search...',
+                      hintStyle: TextStyle(
+                        color: Colors.white,
+                      ),
+                      enabledBorder: InputBorder.none,
+                    ),
+                    cursorColor: Colors.white,
+                    onChanged: (query) {
+                      onSearchTextChanged(query);
+                    },
+                  );
+                  handleSearchStart();
+                } else {
+                  handleSearchEnd();
+                }
+              });
+            },
           ),
         ],
       ),
@@ -177,17 +305,69 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                         //   '',
                         //   Icons.sort,
                         // ),
-                        CustomContainer(
-                          'Name',
-                          Icons.arrow_downward,
+                        GestureDetector(
+                          onTap: enC.oB == AppUtils.NAME
+                              ? null
+                              : () {
+                                  enC.searchList.clear();
+                                  enC.getNotations(
+                                    widget.date,
+                                    widget.shift,
+                                    widget.clientId,
+                                    AppUtils.NAME,
+                                    widget.status,
+                                  );
+                                  enC.oB = AppUtils.NAME;
+                                  setState(() {});
+                                },
+                          child: CustomContainer(
+                            'Name',
+                            Icons.arrow_downward,
+                            enC.oB == AppUtils.NAME ? 'yes' : '',
+                          ),
                         ),
-                        CustomContainer(
-                          'Emp ID',
-                          Icons.arrow_downward,
+                        GestureDetector(
+                          onTap: enC.oB == AppUtils.EMP_ID
+                              ? null
+                              : () {
+                                  enC.oB = AppUtils.EMP_ID;
+                                  enC.searchList.clear();
+                                  enC.getNotations(
+                                    widget.date,
+                                    widget.shift,
+                                    widget.clientId,
+                                    AppUtils.EMP_ID,
+                                    widget.status,
+                                  );
+                                  enC.oB = AppUtils.EMP_ID;
+                                  setState(() {});
+                                },
+                          child: CustomContainer(
+                            'Emp ID',
+                            Icons.arrow_downward,
+                            enC.oB == AppUtils.EMP_ID ? 'yes' : '',
+                          ),
                         ),
-                        CustomContainer(
-                          'Attendance',
-                          Icons.arrow_downward,
+                        GestureDetector(
+                          onTap: enC.oB == AppUtils.ATTENDANCE
+                              ? null
+                              : () {
+                                  enC.searchList.clear();
+                                  enC.getNotations(
+                                    widget.date,
+                                    widget.shift,
+                                    widget.clientId,
+                                    AppUtils.ATTENDANCE,
+                                    widget.status,
+                                  );
+                                  enC.oB = AppUtils.ATTENDANCE;
+                                  setState(() {});
+                                },
+                          child: CustomContainer(
+                            'Attendance',
+                            Icons.arrow_downward,
+                            enC.oB == AppUtils.ATTENDANCE ? 'yes' : '',
+                          ),
                         ),
                       ],
                     ),
@@ -255,7 +435,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
               ),
               Positioned(
                 top: 140.0,
-                bottom: 0.0,
+                bottom: 10.0,
                 left: 0.0,
                 right: 0.0,
                 child: Obx(() {
@@ -275,244 +455,425 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                     );
                   }
                   return SingleChildScrollView(
-                    child: ListView.builder(
-                      physics: ScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: enC.res['empDailyAttView'].length,
-                      itemBuilder: (context, index) {
-                        var emp = enC.res['empDailyAttView'][index];
-                        // var des = enC.res.designationsList;
-                        var not = enC.res['attendance_notations'];
-                        return Container(
-                          margin: const EdgeInsets.symmetric(
-                            vertical: 10.0,
-                            horizontal: 10.0,
-                          ),
-                          // height: 100.0,
-                          color: Colors.white,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 15.0,
-                              vertical: 18.0,
+                    child: Obx(() {
+                      return ListView.builder(
+                        physics: ScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: enC.searchList.isNotEmpty
+                            ? enC.searchList.length
+                            : enC.res['empDailyAttView'].length,
+                        itemBuilder: (context, index) {
+                          var emp = enC.searchList.isNotEmpty
+                              ? enC.searchList[index]
+                              : enC.res['empDailyAttView'][index];
+                          var not = enC.res['attendance_notations'];
+                          var stDate = DateFormat.jm().parse(widget.time
+                              .toString()
+                              .split(' - ')
+                              .first
+                              .replaceAll('am', ' AM')
+                              .replaceAll('pm', ' PM'));
+                          var start = widget.date +
+                              ' ' +
+                              DateFormat('HH:mm').format(stDate);
+                          var endDate = DateFormat.jm().parse(widget.time
+                              .toString()
+                              .split(' - ')
+                              .last
+                              .replaceAll('am', ' AM')
+                              .replaceAll('pm', ' PM'));
+                          var end = widget.date +
+                              ' ' +
+                              DateFormat('HH:mm').format(endDate);
+                          var stDt = DateTime.parse(start);
+                          var endDt = DateTime.parse(end);
+                          return Container(
+                            margin: const EdgeInsets.symmetric(
+                              vertical: 10.0,
+                              horizontal: 10.0,
                             ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          emp['name'].toString().trimRight() +
-                                              ' ' +
-                                              emp['empId'],
-                                          style: TextStyle(
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.bold,
+                            // height: 100.0,
+                            color: Colors.white,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 15.0,
+                                vertical: 18.0,
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            emp['name'].toString().trimRight() +
+                                                ' ' +
+                                                emp['empId'],
+                                            style: TextStyle(
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                        Text(
-                                          enC.designation[emp['designation']],
-                                          style: TextStyle(
-                                            fontSize: 16.0,
+                                          Text(
+                                            enC.designation[emp['designation']],
+                                            style: TextStyle(
+                                              fontSize: 16.0,
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    emp['attendanceAlias'] != null &&
-                                            emp['attendanceAlias'] != ''
-                                        ? RaisedButton(
-                                            onPressed: () {},
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                horizontal: 5.0,
-                                                vertical: 10.0,
-                                              ),
-                                              child: Text(
-                                                'Clear',
-                                                style: TextStyle(
-                                                  color: Colors.grey,
+                                        ],
+                                      ),
+                                      emp['attendanceAlias'] != null &&
+                                              emp['attendanceAlias'] != ''
+                                          ? RaisedButton(
+                                              onPressed: () async {
+                                                await Get.defaultDialog(
+                                                  title: 'Are you sure?',
+                                                  content: Text(
+                                                    'You want to clear the attendance?',
+                                                  ),
+                                                  barrierDismissible: false,
+                                                  onConfirm: () async {
+                                                    Get.back();
+                                                    var attRes = await enC
+                                                        .giveAttendance(
+                                                      widget.date,
+                                                      widget.shift,
+                                                      widget.clientId,
+                                                      '',
+                                                      emp['empId'],
+                                                      emp['designation'],
+                                                      '',
+                                                      stDt,
+                                                      endDt,
+                                                      extraName: 'Clear',
+                                                      extraParam: '',
+                                                    );
+                                                    if (attRes) {
+                                                      if (emp['attendanceAlias'] ==
+                                                          'P') {
+                                                        enC.p.value--;
+                                                      } else if (emp[
+                                                              'attendanceAlias'] ==
+                                                          'WO') {
+                                                        enC.wo.value--;
+                                                      } else if (emp[
+                                                              'attendanceAlias'] ==
+                                                          'L') {
+                                                        enC.l.value--;
+                                                      }
+                                                      emp['attendanceAlias'] =
+                                                          '';
+                                                      setState(() {});
+                                                    }
+                                                  },
+                                                  onCancel: () {},
+                                                  confirmTextColor:
+                                                      Colors.white,
+                                                  textConfirm: 'Yes',
+                                                  textCancel: 'No',
+                                                );
+                                              },
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  horizontal: 5.0,
+                                                  vertical: 10.0,
                                                 ),
-                                              ),
-                                            ),
-                                            color: Colors.white,
-                                            elevation: 0,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                5.0,
-                                              ),
-                                              side: BorderSide(
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                          )
-                                        : RaisedButton(
-                                            onPressed: () {
-                                              Get.defaultDialog(
-                                                title:
-                                                    'Remarks for ${emp['name']}',
-                                                content: TextField(
-                                                  controller: cRemark,
-                                                  decoration: InputDecoration(
-                                                    isDense: true,
-                                                    contentPadding:
-                                                        EdgeInsets.all(
-                                                      10.0,
-                                                    ),
-                                                    hintStyle: TextStyle(
-                                                      color: Colors.grey[600],
-                                                      fontSize: 18.0,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                    hintText: 'Enter remarks',
+                                                child: Text(
+                                                  'Clear',
+                                                  style: TextStyle(
+                                                    color: Colors.grey,
                                                   ),
                                                 ),
-                                                barrierDismissible: false,
-                                                onConfirm: () {
-                                                  if (cRemark.text != '') {
-                                                    // client['remarks'] =
-                                                    //     cRemark.text;
-                                                    emp['remarks'] =
-                                                        cRemark.text;
-                                                    cRemark.text = '';
-                                                    Get.back();
-                                                  }
-                                                },
-                                                onCancel: () {
-                                                  cRemark.text = '';
-                                                },
-                                                confirmTextColor: Colors.white,
-                                                textConfirm: 'Add',
-                                              );
-                                            },
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                horizontal: 5.0,
-                                                vertical: 10.0,
                                               ),
-                                              child: Text(
-                                                'Remarks',
-                                                style: TextStyle(
+                                              color: Colors.white,
+                                              elevation: 0,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                  5.0,
+                                                ),
+                                                side: BorderSide(
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                            )
+                                          : RaisedButton(
+                                              onPressed: () {
+                                                Get.defaultDialog(
+                                                  title:
+                                                      'Remarks for ${emp['name']}',
+                                                  content: TextField(
+                                                    controller: cRemark,
+                                                    decoration: InputDecoration(
+                                                      isDense: true,
+                                                      contentPadding:
+                                                          EdgeInsets.all(
+                                                        10.0,
+                                                      ),
+                                                      hintStyle: TextStyle(
+                                                        color: Colors.grey[600],
+                                                        fontSize: 18.0,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                      hintText: 'Enter remarks',
+                                                    ),
+                                                  ),
+                                                  barrierDismissible: false,
+                                                  onConfirm: () {
+                                                    if (cRemark.text != '') {
+                                                      // client['remarks'] =
+                                                      //     cRemark.text;
+                                                      emp['remarks'] =
+                                                          cRemark.text;
+                                                      cRemark.text = '';
+                                                      Get.back();
+                                                    }
+                                                  },
+                                                  onCancel: () {
+                                                    cRemark.text = '';
+                                                  },
+                                                  confirmTextColor:
+                                                      Colors.white,
+                                                  textConfirm: 'Add',
+                                                );
+                                              },
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  horizontal: 5.0,
+                                                  vertical: 10.0,
+                                                ),
+                                                child: Text(
+                                                  'Remarks',
+                                                  style: TextStyle(
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                              ),
+                                              color: Colors.white,
+                                              elevation: 0,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                  5.0,
+                                                ),
+                                                side: BorderSide(
                                                   color: Colors.grey,
                                                 ),
                                               ),
                                             ),
-                                            color: Colors.white,
-                                            elevation: 0,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                5.0,
-                                              ),
-                                              side: BorderSide(
-                                                color: Colors.grey,
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 10.0,
+                                  ),
+                                  ChipsChoice<String>.single(
+                                    value: emp['attendanceAlias'],
+                                    onChanged: (val) async {
+                                      // print(val);
+                                      // print(emp['attendanceAlias']);
+                                      // var ot = '';
+                                      // var lt = '';
+                                      var attendanceRes;
+                                      if (emp['attendanceAlias'] == null ||
+                                          emp['attendanceAlias'] == '') {
+                                        var empRemarks = '';
+                                        if (emp['remarks'] != null) {
+                                          empRemarks = emp['remarks'];
+                                        }
+                                        if (val == 'OT') {
+                                          await Get.defaultDialog(
+                                            title: 'Over Time',
+                                            content: TextField(
+                                              controller: otT,
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              decoration: InputDecoration(
+                                                isDense: true,
+                                                contentPadding: EdgeInsets.all(
+                                                  10.0,
+                                                ),
+                                                hintStyle: TextStyle(
+                                                  color: Colors.grey[600],
+                                                  fontSize: 18.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                                hintText: 'hours',
                                               ),
                                             ),
-                                          ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 10.0,
-                                ),
-                                ChipsChoice<String>.single(
-                                  value: emp['attendanceAlias'],
-                                  onChanged: (val) async {
-                                    // print(val);
-                                    // print(emp['attendanceAlias']);
-                                    var empRemarks = '';
-                                    if (emp['remarks'] != null) {
-                                      empRemarks = emp['remarks'];
-                                    }
-                                    var start = widget.date +
-                                        ' ' +
-                                        widget.time
-                                            .toString()
-                                            .split(' - ')
-                                            .first
-                                            .replaceAll('am', ':00')
-                                            .replaceAll('pm', ':00');
-                                    var end = widget.date +
-                                        ' ' +
-                                        widget.time
-                                            .toString()
-                                            .split(' - ')
-                                            .last
-                                            .replaceAll('am', ':00')
-                                            .replaceAll('pm', ':00');
-                                    var stDt = DateTime.parse(start);
-                                    var endDt = DateTime.parse(end);
-                                    var attendanceRes =
-                                        await enC.giveAttendance(
-                                      widget.date,
-                                      widget.shift,
-                                      widget.clientId,
-                                      val,
-                                      emp['empId'],
-                                      enC.designation[emp['designation']],
-                                      empRemarks,
-                                      stDt,
-                                      endDt,
-                                    );
-                                    if (attendanceRes) {
-                                      emp['attendanceAlias'] = val;
-                                      if (val == 'P') {
-                                        enC.p.value++;
-                                      } else if (val == 'WO') {
-                                        enC.wo.value++;
-                                      } else if (val == 'L') {
-                                        enC.l.value++;
+                                            barrierDismissible: false,
+                                            onConfirm: () async {
+                                              if (otT.text != '') {
+                                                emp['ot'] = otT.text;
+                                                otT.text = '';
+                                                Get.back();
+                                                attendanceRes =
+                                                    await enC.giveAttendance(
+                                                  widget.date,
+                                                  widget.shift,
+                                                  widget.clientId,
+                                                  val,
+                                                  emp['empId'],
+                                                  emp['designation'],
+                                                  empRemarks,
+                                                  stDt,
+                                                  endDt,
+                                                  extraName: 'OverTime',
+                                                  extraParam: emp['ot'],
+                                                );
+                                                if (attendanceRes) {
+                                                  emp['attendanceAlias'] = val;
+                                                  if (val == 'P') {
+                                                    enC.p.value++;
+                                                  } else if (val == 'WO') {
+                                                    enC.wo.value++;
+                                                  } else if (val == 'L') {
+                                                    enC.l.value++;
+                                                  }
+                                                  setState(() {});
+                                                }
+                                              }
+                                            },
+                                            onCancel: () {
+                                              otT.text = '';
+                                            },
+                                            confirmTextColor: Colors.white,
+                                            textConfirm: 'Submit',
+                                          );
+                                        } else if (val == 'LT') {
+                                          await Get.defaultDialog(
+                                            title: 'Late',
+                                            content: TextField(
+                                              controller: ltT,
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              decoration: InputDecoration(
+                                                isDense: true,
+                                                contentPadding: EdgeInsets.all(
+                                                  10.0,
+                                                ),
+                                                hintStyle: TextStyle(
+                                                  color: Colors.grey[600],
+                                                  fontSize: 18.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                                hintText: 'minutes',
+                                              ),
+                                            ),
+                                            barrierDismissible: false,
+                                            onConfirm: () async {
+                                              if (ltT.text != '') {
+                                                emp['lt'] = ltT.text;
+                                                ltT.text = '';
+                                                Get.back();
+                                                attendanceRes =
+                                                    await enC.giveAttendance(
+                                                  widget.date,
+                                                  widget.shift,
+                                                  widget.clientId,
+                                                  val,
+                                                  emp['empId'],
+                                                  emp['designation'],
+                                                  empRemarks,
+                                                  stDt,
+                                                  endDt,
+                                                  extraName: 'Late',
+                                                  extraParam: emp['lt'],
+                                                );
+                                                if (attendanceRes) {
+                                                  emp['attendanceAlias'] = val;
+                                                  if (val == 'P') {
+                                                    enC.p.value++;
+                                                  } else if (val == 'WO') {
+                                                    enC.wo.value++;
+                                                  } else if (val == 'L') {
+                                                    enC.l.value++;
+                                                  }
+                                                  setState(() {});
+                                                }
+                                              }
+                                            },
+                                            onCancel: () {
+                                              ltT.text = '';
+                                            },
+                                            confirmTextColor: Colors.white,
+                                            textConfirm: 'Submit',
+                                          );
+                                        } else {
+                                          attendanceRes =
+                                              await enC.giveAttendance(
+                                            widget.date,
+                                            widget.shift,
+                                            widget.clientId,
+                                            val,
+                                            emp['empId'],
+                                            emp['designation'],
+                                            empRemarks,
+                                            stDt,
+                                            endDt,
+                                          );
+                                          if (attendanceRes) {
+                                            emp['attendanceAlias'] = val;
+                                            if (val == 'P') {
+                                              enC.p.value++;
+                                            } else if (val == 'WO') {
+                                              enC.wo.value++;
+                                            } else if (val == 'L') {
+                                              enC.l.value++;
+                                            }
+                                            setState(() {});
+                                          }
+                                        }
                                       }
-                                      setState(() {});
-                                    }
-                                  },
-                                  choiceItems:
-                                      C2Choice.listFrom<String, dynamic>(
-                                    source: not,
-                                    value: (i, v) => not[i]['alias'],
-                                    label: (i, v) => not[i]['notation'],
-                                  ),
-                                  wrapped: true,
-                                  padding: EdgeInsets.all(0),
-                                  choiceActiveStyle: C2ChoiceStyle(
-                                    showCheckmark: false,
-                                    brightness: Brightness.dark,
-                                    labelStyle: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
+                                    },
+                                    choiceItems:
+                                        C2Choice.listFrom<String, dynamic>(
+                                      source: not,
+                                      value: (i, v) => not[i]['alias'],
+                                      label: (i, v) => not[i]['notation'],
                                     ),
-                                    color: Colors.grey,
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(
-                                        5.0,
+                                    wrapped: true,
+                                    padding: EdgeInsets.all(0),
+                                    choiceActiveStyle: C2ChoiceStyle(
+                                      showCheckmark: false,
+                                      brightness: Brightness.dark,
+                                      labelStyle: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                          5.0,
+                                        ),
+                                      ),
+                                    ),
+                                    choiceStyle: C2ChoiceStyle(
+                                      labelStyle: TextStyle(
+                                        color: Colors.grey[700],
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                          5.0,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                  choiceStyle: C2ChoiceStyle(
-                                    labelStyle: TextStyle(
-                                      color: Colors.grey[700],
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(
-                                        5.0,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
+                          );
+                        },
+                      );
+                    }),
                   );
                 }),
               ),
@@ -527,9 +888,11 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
 class CustomContainer extends StatelessWidget {
   final String title;
   final IconData icon;
+  final String selected;
   CustomContainer(
     this.title,
     this.icon,
+    this.selected,
   );
 
   @override
@@ -539,9 +902,8 @@ class CustomContainer extends StatelessWidget {
         horizontal: 6.0,
       ),
       height: 50.0,
-      // width: title == '' ? 50.0 : auto,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: selected == 'yes' ? Colors.grey : Colors.white,
         borderRadius: BorderRadius.all(
           Radius.circular(
             8.0,
@@ -553,21 +915,16 @@ class CustomContainer extends StatelessWidget {
         children: [
           Icon(
             icon,
-            color: Colors.black,
+            color: selected == 'yes' ? Colors.white : Colors.black,
           ),
-          Visibility(
-            visible: title == '' ? false : true,
-            child: SizedBox(
-              width: 5.0,
-            ),
+          SizedBox(
+            width: 5.0,
           ),
-          Visibility(
-            visible: title == '' ? false : true,
-            child: Text(
-              title,
-              style: TextStyle(
-                fontSize: 16.0,
-              ),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 16.0,
+              color: selected == 'yes' ? Colors.white : Colors.black,
             ),
           ),
         ],

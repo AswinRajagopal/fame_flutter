@@ -1,3 +1,5 @@
+import '../utils/utils.dart';
+
 import '../connection/remote_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,6 +16,8 @@ class EmployeeNotationsController extends GetxController {
   var p = 0.obs;
   var wo = 0.obs;
   var l = 0.obs;
+  final List searchList = [].obs;
+  var oB = AppUtils.NAME;
 
   @override
   void onInit() {
@@ -106,8 +110,10 @@ class EmployeeNotationsController extends GetxController {
     designation,
     remarks,
     startTime,
-    endTime,
-  ) async {
+    endTime, {
+    extraName,
+    extraParam,
+  }) async {
     try {
       await pr.show();
       var attRes = await RemoteServices().giveAttendance(
@@ -119,7 +125,9 @@ class EmployeeNotationsController extends GetxController {
         designation,
         remarks,
         startTime,
-        startTime,
+        endTime,
+        extraName: extraName,
+        extraParam: extraParam,
       );
       if (attRes != null) {
         await pr.hide();
@@ -128,7 +136,9 @@ class EmployeeNotationsController extends GetxController {
         } else {
           Get.snackbar(
             'Error',
-            'Attendance not given',
+            extraName != null && extraName == 'Clear'
+                ? 'Attendance not cleared'
+                : 'Attendance not given',
             colorText: Colors.white,
             backgroundColor: Colors.red,
             snackPosition: SnackPosition.BOTTOM,
