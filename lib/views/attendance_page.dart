@@ -27,7 +27,7 @@ class _AttendancePageState extends State<AttendancePage> {
 
   @override
   void initState() {
-    date.text = DateFormat('yyyy-M-d').format(DateTime.now()).toString();
+    date.text = DateFormat('yyyy-M-dd').format(DateTime.now()).toString();
     aC.pr = ProgressDialog(
       context,
       type: ProgressDialogType.Normal,
@@ -80,7 +80,7 @@ class _AttendancePageState extends State<AttendancePage> {
     if (picked != null) {
       print('Date selected ${date.text.toString()}');
       setState(() {
-        date.text = DateFormat('yyyy-M-d').format(picked).toString();
+        date.text = DateFormat('yyyy-M-dd').format(picked).toString();
       });
     }
   }

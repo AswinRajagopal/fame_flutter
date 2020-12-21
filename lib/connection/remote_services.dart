@@ -227,9 +227,12 @@ class RemoteServices {
     // print(response.statusCode);
     if (response.statusCode == 200) {
       var jsonString = response.body;
-      // print(response.body.runtimeType);
+      print(response.body.runtimeType);
+      // print(response.body);
+      print(jsonDecode(response.body)['empdetails']);
       // developer.log('jsonString: ${jsonString.toString()}');
       return dashboardFromJson(jsonString);
+      // return jsonDecode(response.body);
     } else {
       //show error message
       return null;
@@ -646,6 +649,24 @@ class RemoteServices {
     var fullDt = date.toString().split('-');
     var dt = fullDt[2];
     var month = fullDt[1] + fullDt[0].substring(2);
+    print(jsonEncode(
+        <String, dynamic>{
+          'companyId': box.get('companyid').toString(),
+          'inchargeId': box.get('empid').toString(),
+          'date': dt,
+          'shift': shift,
+          'clientId': clientId,
+          'alies': alies,
+          'empId': empId,
+          'designation': designation,
+          'remarks': remarks,
+          'startTime': startTime.toString(),
+          'endTime': endTime.toString(),
+          'month': month,
+          'extraName': extraName ?? '',
+          'extraParam': extraParam ?? '',
+        },
+      ),);
     var response = await client.post(
       '$baseURL/attendance/incharge_attendance',
       headers: header,

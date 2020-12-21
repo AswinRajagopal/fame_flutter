@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 import '../utils/utils.dart';
 
 import '../connection/remote_services.dart';
@@ -10,6 +12,20 @@ class EmployeeNotationsController extends GetxController {
   var res;
   ProgressDialog pr;
   final List designation = [].obs;
+  final List aprrej = [
+    {
+      'value': 'Approve',
+      'label': 'Approve',
+    },
+    {
+      'value': 'Reject',
+      'label': 'Reject',
+    },
+    {
+      'value': 'Modify',
+      'label': 'Modify',
+    },
+  ];
   final List notations = [].obs;
   // final List timings = [].obs;
   // var shiftTime;
@@ -18,6 +34,7 @@ class EmployeeNotationsController extends GetxController {
   var l = 0.obs;
   final List searchList = [].obs;
   var oB = AppUtils.NAME;
+  var showType = 'att'; //apprej
 
   @override
   void onInit() {
@@ -27,6 +44,11 @@ class EmployeeNotationsController extends GetxController {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  String timeConvert(time) {
+    print(DateFormat.jm().format(DateTime.parse(time)).toString());
+    return DateFormat.jm().format(DateTime.parse(time)).toString();
   }
 
   void getNotations(
@@ -55,11 +77,32 @@ class EmployeeNotationsController extends GetxController {
           // print(res.empDailyAttView);
           // print('here: ${res.attendanceNotations}');
           for (var j = 0; j < res['empDailyAttView'].length; j++) {
-            if (res['empDailyAttView'][j]['attendanceAlias'] == 'P') {
+            var emp = res['empDailyAttView'][j];
+            emp['showTime'] = '';
+            emp['showType'] = 'att';
+            if (emp['checkInLatitude'] != null &&
+                emp['checkInLatitude'] != '0E-8') {
+              var strToTime = emp['checkInDateTime'];
+              if (emp['checkOutDateTime'] != null) {
+                strToTime = timeConvert(strToTime.toString()) +
+                    ' to ' +
+                    timeConvert(emp['checkOutDateTime'].toString());
+
+                emp['showTime'] = strToTime;
+                // showType = 'apprej';
+                emp['showType'] = 'apprej';
+              } else {
+                strToTime = timeConvert(strToTime.toString());
+                emp['showTime'] = strToTime;
+                // showType = 'remark';
+                emp['showType'] = 'remark';
+              }
+            }
+            if (emp['attendanceAlias'] == 'P') {
               p.value++;
-            } else if (res['empDailyAttView'][j]['attendanceAlias'] == 'WO') {
+            } else if (emp['attendanceAlias'] == 'WO') {
               wo.value++;
-            } else if (res['empDailyAttView'][j]['attendanceAlias'] == 'L') {
+            } else if (emp['attendanceAlias'] == 'L') {
               l.value++;
             }
           }

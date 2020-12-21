@@ -1,5 +1,6 @@
 import 'package:chips_choice/chips_choice.dart';
 import 'package:intl/intl.dart';
+import 'package:time_range_picker/time_range_picker.dart';
 
 import '../controllers/employee_notations_controller.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -476,6 +477,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                               ? enC.searchList[index]
                               : enC.res['empDailyAttView'][index];
                           var not = enC.res['attendance_notations'];
+                          var appRej = enC.aprrej;
                           var stDate = DateFormat.jm().parse(widget.time
                               .toString()
                               .split(' - ')
@@ -534,6 +536,17 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                               fontSize: 16.0,
                                             ),
                                           ),
+                                          Visibility(
+                                            visible: emp['showTime'] == ''
+                                                ? false
+                                                : true,
+                                            child: Text(
+                                              emp['showTime'],
+                                              style: TextStyle(
+                                                fontSize: 16.0,
+                                              ),
+                                            ),
+                                          ),
                                         ],
                                       ),
                                       emp['attendanceAlias'] != null &&
@@ -556,7 +569,11 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                       '',
                                                       emp['empId'],
                                                       emp['designation'],
-                                                      '',
+                                                      emp['showType'] ==
+                                                              'apprej'
+                                                          ? emp[
+                                                              'attendanceAlias']
+                                                          : '',
                                                       stDt,
                                                       endDt,
                                                       extraName: 'Clear',
@@ -577,6 +594,12 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                       }
                                                       emp['attendanceAlias'] =
                                                           '';
+                                                      emp['overTime'] = null;
+                                                      emp['lt'] = null;
+                                                      if (emp['showType'] ==
+                                                          'apprej') {
+                                                        emp['status'] = '0';
+                                                      }
                                                       setState(() {});
                                                     }
                                                   },
@@ -683,199 +706,516 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                   SizedBox(
                                     height: 10.0,
                                   ),
-                                  ChipsChoice<String>.single(
-                                    value: emp['attendanceAlias'],
-                                    onChanged: (val) async {
-                                      // print(val);
-                                      // print(emp['attendanceAlias']);
-                                      // var ot = '';
-                                      // var lt = '';
-                                      var attendanceRes;
-                                      if (emp['attendanceAlias'] == null ||
-                                          emp['attendanceAlias'] == '') {
-                                        var empRemarks = '';
-                                        if (emp['remarks'] != null) {
-                                          empRemarks = emp['remarks'];
-                                        }
-                                        if (val == 'OT') {
-                                          await Get.defaultDialog(
-                                            title: 'Over Time',
-                                            content: TextField(
-                                              controller: otT,
-                                              keyboardType:
-                                                  TextInputType.number,
-                                              decoration: InputDecoration(
-                                                isDense: true,
-                                                contentPadding: EdgeInsets.all(
-                                                  10.0,
+                                  emp['showType'] == 'remark'
+                                      ? Container()
+                                      : emp['showType'] == 'apprej'
+                                          ? Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: ChipsChoice<String>.single(
+                                                value: emp['status'] == '1'
+                                                    ? 'Approve'
+                                                    : emp['status'] == '2'
+                                                        ? 'Reject'
+                                                        : '',
+                                                onChanged: emp['status'] != '0'
+                                                    ? (val) {}
+                                                    : (val) async {
+                                                        var atRes;
+                                                        print(val);
+                                                        if (val == 'Modify') {
+                                                          TimeRange result =
+                                                              await showTimeRangePicker(
+                                                            context: context,
+                                                            paintingStyle:
+                                                                PaintingStyle
+                                                                    .fill,
+                                                            labels: [
+                                                              '12 PM',
+                                                              '3 AM',
+                                                              '6 AM',
+                                                              '9 AM',
+                                                              '12 AM',
+                                                              '3 PM',
+                                                              '6 PM',
+                                                              '9 PM',
+                                                            ]
+                                                                .asMap()
+                                                                .entries
+                                                                .map((e) {
+                                                              return ClockLabel
+                                                                  .fromIndex(
+                                                                idx: e.key,
+                                                                length: 8,
+                                                                text: e.value,
+                                                              );
+                                                            }).toList(),
+                                                            labelOffset: 35,
+                                                            rotateLabels: false,
+                                                            padding: 60,
+                                                          );
+                                                          if (result != null) {
+                                                            // print(result
+                                                            //     .startTime
+                                                            //     .hour);
+                                                            // print(result
+                                                            //     .startTime
+                                                            //     .minute);
+                                                            // print(result
+                                                            //     .endTime.hour);
+                                                            // print(result.endTime
+                                                            //     .minute);
+                                                            var sth = result
+                                                                .startTime.hour;
+                                                            var stm = result
+                                                                .startTime
+                                                                .minute;
+                                                            var enh = result
+                                                                .endTime.hour;
+                                                            var enm = result
+                                                                .endTime.minute;
+                                                            var stH = sth < 9
+                                                                ? '0' + sth.toString()
+                                                                : sth;
+                                                            var stM = stm < 9
+                                                                ? '0' + stm.toString()
+                                                                : stm;
+                                                            var enH = enh < 9
+                                                                ? '0' + enh.toString()
+                                                                : enh;
+                                                            var enM = enm < 9
+                                                                ? '0' + enm.toString()
+                                                                : enm;
+                                                            var dt =
+                                                                widget.date;
+                                                            var start = dt +
+                                                                ' $stH:$stM:00.000';
+                                                            var end = dt +
+                                                                ' $enH:$enM:00.000';
+                                                            var stDt =
+                                                                DateTime.parse(
+                                                                    start);
+                                                            var endDt =
+                                                                DateTime.parse(
+                                                                    end);
+                                                            atRes = await enC
+                                                                .giveAttendance(
+                                                              widget.date,
+                                                              widget.shift,
+                                                              widget.clientId,
+                                                              val,
+                                                              emp['empId'],
+                                                              emp['designation'],
+                                                              '',
+                                                              stDt,
+                                                              endDt,
+                                                              // extraName: 'OverTime',
+                                                              // extraParam: emp['overTime'],
+                                                            );
+                                                            if (atRes) {
+                                                              emp['attendanceAlias'] =
+                                                                  val;
+                                                              emp['status'] =
+                                                                  '1';
+                                                            }
+                                                            setState(() {});
+                                                          }
+                                                        } else {
+                                                          atRes = await enC
+                                                              .giveAttendance(
+                                                            widget.date,
+                                                            widget.shift,
+                                                            widget.clientId,
+                                                            val,
+                                                            emp['empId'],
+                                                            emp['designation'],
+                                                            '',
+                                                            stDt,
+                                                            endDt,
+                                                            // extraName: 'OverTime',
+                                                            // extraParam: emp['overTime'],
+                                                          );
+                                                          if (atRes) {
+                                                            emp['attendanceAlias'] =
+                                                                val;
+                                                            if (val ==
+                                                                'Reject') {
+                                                              emp['status'] =
+                                                                  '2';
+                                                            } else {
+                                                              emp['status'] =
+                                                                  '1';
+                                                            }
+                                                          }
+                                                          setState(() {});
+                                                        }
+                                                      },
+                                                choiceItems: C2Choice.listFrom<
+                                                    String, dynamic>(
+                                                  source: appRej,
+                                                  value: (i, v) =>
+                                                      appRej[i]['value'],
+                                                  label: (i, v) =>
+                                                      appRej[i]['label'],
                                                 ),
-                                                hintStyle: TextStyle(
-                                                  color: Colors.grey[600],
-                                                  fontSize: 18.0,
+                                                wrapped: true,
+                                                padding: EdgeInsets.all(0),
+                                                choiceActiveStyle:
+                                                    C2ChoiceStyle(
+                                                  showCheckmark: false,
+                                                  brightness: Brightness.dark,
+                                                  labelStyle: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                  color: Colors.grey,
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                    Radius.circular(
+                                                      5.0,
+                                                    ),
+                                                  ),
+                                                ),
+                                                choiceStyle: C2ChoiceStyle(
+                                                  labelStyle: TextStyle(
+                                                    color: Colors.grey[700],
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                    Radius.circular(
+                                                      5.0,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                          : ChipsChoice<String>.single(
+                                              value: emp['attendanceAlias'],
+                                              onChanged: (val) async {
+                                                // print(val);
+                                                // print(emp['attendanceAlias']);
+                                                // var ot = '';
+                                                // var lt = '';
+                                                var attendanceRes;
+                                                if (val == 'OT' &&
+                                                    emp['attendanceAlias'] ==
+                                                        'OT') {
+                                                  otT.text = emp['overTime'];
+                                                  await Get.defaultDialog(
+                                                    title: 'Over Time',
+                                                    content: TextField(
+                                                      controller: otT,
+                                                      readOnly: true,
+                                                      keyboardType:
+                                                          TextInputType.number,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        isDense: true,
+                                                        contentPadding:
+                                                            EdgeInsets.all(
+                                                          10.0,
+                                                        ),
+                                                        hintStyle: TextStyle(
+                                                          color:
+                                                              Colors.grey[600],
+                                                          fontSize: 18.0,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                        hintText: 'hours',
+                                                      ),
+                                                    ),
+                                                    barrierDismissible: false,
+                                                    onCancel: () {
+                                                      otT.text = '';
+                                                    },
+                                                  );
+                                                }
+                                                if (val == 'LT' &&
+                                                    emp['attendanceAlias'] ==
+                                                        'LT') {
+                                                  ltT.text = emp['lt'];
+                                                  await Get.defaultDialog(
+                                                    title: 'Late',
+                                                    content: TextField(
+                                                      controller: ltT,
+                                                      readOnly: true,
+                                                      keyboardType:
+                                                          TextInputType.number,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        isDense: true,
+                                                        contentPadding:
+                                                            EdgeInsets.all(
+                                                          10.0,
+                                                        ),
+                                                        hintStyle: TextStyle(
+                                                          color:
+                                                              Colors.grey[600],
+                                                          fontSize: 18.0,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                        hintText: 'minutes',
+                                                      ),
+                                                    ),
+                                                    barrierDismissible: false,
+                                                    onCancel: () {
+                                                      ltT.text = '';
+                                                    },
+                                                  );
+                                                }
+                                                if (emp['attendanceAlias'] ==
+                                                        null ||
+                                                    emp['attendanceAlias'] ==
+                                                        '') {
+                                                  var empRemarks = '';
+                                                  if (emp['remarks'] != null) {
+                                                    empRemarks = emp['remarks'];
+                                                  }
+                                                  if (val == 'OT') {
+                                                    otT.text = '';
+                                                    await Get.defaultDialog(
+                                                      title: 'Over Time',
+                                                      content: TextField(
+                                                        controller: otT,
+                                                        keyboardType:
+                                                            TextInputType
+                                                                .number,
+                                                        autofocus: true,
+                                                        decoration:
+                                                            InputDecoration(
+                                                          isDense: true,
+                                                          contentPadding:
+                                                              EdgeInsets.all(
+                                                            10.0,
+                                                          ),
+                                                          hintStyle: TextStyle(
+                                                            color: Colors
+                                                                .grey[600],
+                                                            fontSize: 18.0,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                          hintText: 'hours',
+                                                        ),
+                                                      ),
+                                                      barrierDismissible: false,
+                                                      onConfirm: () async {
+                                                        if (otT.text != '') {
+                                                          emp['overTime'] =
+                                                              otT.text;
+                                                          otT.text = '';
+                                                          Get.back();
+                                                          attendanceRes =
+                                                              await enC
+                                                                  .giveAttendance(
+                                                            widget.date,
+                                                            widget.shift,
+                                                            widget.clientId,
+                                                            val,
+                                                            emp['empId'],
+                                                            emp['designation'],
+                                                            empRemarks,
+                                                            stDt,
+                                                            endDt,
+                                                            extraName:
+                                                                'OverTime',
+                                                            extraParam:
+                                                                emp['overTime'],
+                                                          );
+                                                          if (attendanceRes) {
+                                                            if (emp['attendanceAlias'] !=
+                                                                null) {
+                                                              if (emp['attendanceAlias'] ==
+                                                                  'P') {
+                                                                enC.p.value--;
+                                                              } else if (emp[
+                                                                      'attendanceAlias'] ==
+                                                                  'WO') {
+                                                                enC.wo.value--;
+                                                              } else if (emp[
+                                                                      'attendanceAlias'] ==
+                                                                  'L') {
+                                                                enC.l.value--;
+                                                              }
+                                                            }
+                                                            emp['lt'] = null;
+                                                            emp['attendanceAlias'] =
+                                                                val;
+                                                            if (val == 'P') {
+                                                              enC.p.value++;
+                                                            } else if (val ==
+                                                                'WO') {
+                                                              enC.wo.value++;
+                                                            } else if (val ==
+                                                                'L') {
+                                                              enC.l.value++;
+                                                            }
+                                                            setState(() {});
+                                                          }
+                                                        }
+                                                      },
+                                                      onCancel: () {
+                                                        otT.text = '';
+                                                      },
+                                                      confirmTextColor:
+                                                          Colors.white,
+                                                      textConfirm: 'Submit',
+                                                    );
+                                                  } else if (val == 'LT') {
+                                                    ltT.text = '';
+                                                    await Get.defaultDialog(
+                                                      title: 'Late',
+                                                      content: TextField(
+                                                        controller: ltT,
+                                                        autofocus: true,
+                                                        keyboardType:
+                                                            TextInputType
+                                                                .number,
+                                                        decoration:
+                                                            InputDecoration(
+                                                          isDense: true,
+                                                          contentPadding:
+                                                              EdgeInsets.all(
+                                                            10.0,
+                                                          ),
+                                                          hintStyle: TextStyle(
+                                                            color: Colors
+                                                                .grey[600],
+                                                            fontSize: 18.0,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                          hintText: 'minutes',
+                                                        ),
+                                                      ),
+                                                      barrierDismissible: false,
+                                                      onConfirm: () async {
+                                                        if (ltT.text != '') {
+                                                          emp['lt'] = ltT.text;
+                                                          ltT.text = '';
+                                                          Get.back();
+                                                          attendanceRes =
+                                                              await enC
+                                                                  .giveAttendance(
+                                                            widget.date,
+                                                            widget.shift,
+                                                            widget.clientId,
+                                                            val,
+                                                            emp['empId'],
+                                                            emp['designation'],
+                                                            empRemarks,
+                                                            stDt,
+                                                            endDt,
+                                                            extraName: 'Late',
+                                                            extraParam:
+                                                                emp['lt'],
+                                                          );
+                                                          if (attendanceRes) {
+                                                            if (emp['attendanceAlias'] !=
+                                                                null) {
+                                                              if (emp['attendanceAlias'] ==
+                                                                  'P') {
+                                                                enC.p.value--;
+                                                              } else if (emp[
+                                                                      'attendanceAlias'] ==
+                                                                  'WO') {
+                                                                enC.wo.value--;
+                                                              } else if (emp[
+                                                                      'attendanceAlias'] ==
+                                                                  'L') {
+                                                                enC.l.value--;
+                                                              }
+                                                            }
+                                                            emp['attendanceAlias'] =
+                                                                val;
+                                                            emp['overTime'] =
+                                                                null;
+                                                            if (val == 'P') {
+                                                              enC.p.value++;
+                                                            } else if (val ==
+                                                                'WO') {
+                                                              enC.wo.value++;
+                                                            } else if (val ==
+                                                                'L') {
+                                                              enC.l.value++;
+                                                            }
+                                                            setState(() {});
+                                                          }
+                                                        }
+                                                      },
+                                                      onCancel: () {
+                                                        ltT.text = '';
+                                                      },
+                                                      confirmTextColor:
+                                                          Colors.white,
+                                                      textConfirm: 'Submit',
+                                                    );
+                                                  } else {
+                                                    attendanceRes = await enC
+                                                        .giveAttendance(
+                                                      widget.date,
+                                                      widget.shift,
+                                                      widget.clientId,
+                                                      val,
+                                                      emp['empId'],
+                                                      emp['designation'],
+                                                      empRemarks,
+                                                      stDt,
+                                                      endDt,
+                                                    );
+                                                    if (attendanceRes) {
+                                                      emp['attendanceAlias'] =
+                                                          val;
+                                                      if (val == 'P') {
+                                                        enC.p.value++;
+                                                      } else if (val == 'WO') {
+                                                        enC.wo.value++;
+                                                      } else if (val == 'L') {
+                                                        enC.l.value++;
+                                                      }
+                                                      setState(() {});
+                                                    }
+                                                  }
+                                                }
+                                              },
+                                              choiceItems: C2Choice.listFrom<
+                                                  String, dynamic>(
+                                                source: not,
+                                                value: (i, v) =>
+                                                    not[i]['alias'],
+                                                label: (i, v) =>
+                                                    not[i]['notation'],
+                                              ),
+                                              wrapped: true,
+                                              padding: EdgeInsets.all(0),
+                                              choiceActiveStyle: C2ChoiceStyle(
+                                                showCheckmark: false,
+                                                brightness: Brightness.dark,
+                                                labelStyle: TextStyle(
+                                                  color: Colors.white,
                                                   fontWeight: FontWeight.bold,
                                                 ),
-                                                hintText: 'hours',
-                                              ),
-                                            ),
-                                            barrierDismissible: false,
-                                            onConfirm: () async {
-                                              if (otT.text != '') {
-                                                emp['ot'] = otT.text;
-                                                otT.text = '';
-                                                Get.back();
-                                                attendanceRes =
-                                                    await enC.giveAttendance(
-                                                  widget.date,
-                                                  widget.shift,
-                                                  widget.clientId,
-                                                  val,
-                                                  emp['empId'],
-                                                  emp['designation'],
-                                                  empRemarks,
-                                                  stDt,
-                                                  endDt,
-                                                  extraName: 'OverTime',
-                                                  extraParam: emp['ot'],
-                                                );
-                                                if (attendanceRes) {
-                                                  emp['attendanceAlias'] = val;
-                                                  if (val == 'P') {
-                                                    enC.p.value++;
-                                                  } else if (val == 'WO') {
-                                                    enC.wo.value++;
-                                                  } else if (val == 'L') {
-                                                    enC.l.value++;
-                                                  }
-                                                  setState(() {});
-                                                }
-                                              }
-                                            },
-                                            onCancel: () {
-                                              otT.text = '';
-                                            },
-                                            confirmTextColor: Colors.white,
-                                            textConfirm: 'Submit',
-                                          );
-                                        } else if (val == 'LT') {
-                                          await Get.defaultDialog(
-                                            title: 'Late',
-                                            content: TextField(
-                                              controller: ltT,
-                                              keyboardType:
-                                                  TextInputType.number,
-                                              decoration: InputDecoration(
-                                                isDense: true,
-                                                contentPadding: EdgeInsets.all(
-                                                  10.0,
+                                                color: Colors.grey,
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(
+                                                    5.0,
+                                                  ),
                                                 ),
-                                                hintStyle: TextStyle(
-                                                  color: Colors.grey[600],
-                                                  fontSize: 18.0,
+                                              ),
+                                              choiceStyle: C2ChoiceStyle(
+                                                labelStyle: TextStyle(
+                                                  color: Colors.grey[700],
                                                   fontWeight: FontWeight.bold,
                                                 ),
-                                                hintText: 'minutes',
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(
+                                                    5.0,
+                                                  ),
+                                                ),
                                               ),
                                             ),
-                                            barrierDismissible: false,
-                                            onConfirm: () async {
-                                              if (ltT.text != '') {
-                                                emp['lt'] = ltT.text;
-                                                ltT.text = '';
-                                                Get.back();
-                                                attendanceRes =
-                                                    await enC.giveAttendance(
-                                                  widget.date,
-                                                  widget.shift,
-                                                  widget.clientId,
-                                                  val,
-                                                  emp['empId'],
-                                                  emp['designation'],
-                                                  empRemarks,
-                                                  stDt,
-                                                  endDt,
-                                                  extraName: 'Late',
-                                                  extraParam: emp['lt'],
-                                                );
-                                                if (attendanceRes) {
-                                                  emp['attendanceAlias'] = val;
-                                                  if (val == 'P') {
-                                                    enC.p.value++;
-                                                  } else if (val == 'WO') {
-                                                    enC.wo.value++;
-                                                  } else if (val == 'L') {
-                                                    enC.l.value++;
-                                                  }
-                                                  setState(() {});
-                                                }
-                                              }
-                                            },
-                                            onCancel: () {
-                                              ltT.text = '';
-                                            },
-                                            confirmTextColor: Colors.white,
-                                            textConfirm: 'Submit',
-                                          );
-                                        } else {
-                                          attendanceRes =
-                                              await enC.giveAttendance(
-                                            widget.date,
-                                            widget.shift,
-                                            widget.clientId,
-                                            val,
-                                            emp['empId'],
-                                            emp['designation'],
-                                            empRemarks,
-                                            stDt,
-                                            endDt,
-                                          );
-                                          if (attendanceRes) {
-                                            emp['attendanceAlias'] = val;
-                                            if (val == 'P') {
-                                              enC.p.value++;
-                                            } else if (val == 'WO') {
-                                              enC.wo.value++;
-                                            } else if (val == 'L') {
-                                              enC.l.value++;
-                                            }
-                                            setState(() {});
-                                          }
-                                        }
-                                      }
-                                    },
-                                    choiceItems:
-                                        C2Choice.listFrom<String, dynamic>(
-                                      source: not,
-                                      value: (i, v) => not[i]['alias'],
-                                      label: (i, v) => not[i]['notation'],
-                                    ),
-                                    wrapped: true,
-                                    padding: EdgeInsets.all(0),
-                                    choiceActiveStyle: C2ChoiceStyle(
-                                      showCheckmark: false,
-                                      brightness: Brightness.dark,
-                                      labelStyle: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      color: Colors.grey,
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(
-                                          5.0,
-                                        ),
-                                      ),
-                                    ),
-                                    choiceStyle: C2ChoiceStyle(
-                                      labelStyle: TextStyle(
-                                        color: Colors.grey[700],
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(
-                                          5.0,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
                                 ],
                               ),
                             ),

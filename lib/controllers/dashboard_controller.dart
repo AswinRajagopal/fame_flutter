@@ -69,8 +69,8 @@ class DashboardController extends GetxController {
   void getDashboardDetails() async {
     try {
       isDashboardLoading(true);
-      print('response:');
       response = await RemoteServices().getDashboardDetails();
+      print('response: $response');
       if (response != null) {
         isDashboardLoading(false);
         await RemoteServices().box.put('shift', response.dailyAttendance.shift);
