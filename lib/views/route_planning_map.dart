@@ -195,9 +195,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                         ),
                       ),
                 Container(
-                  height: RemoteServices().box.get('role') != '3'
-                      ? MediaQuery.of(context).size.height / 1.24
-                      : MediaQuery.of(context).size.height / 1.44,
+                  height: RemoteServices().box.get('role') != '3' ? MediaQuery.of(context).size.height / 1.24 : MediaQuery.of(context).size.height / 1.44,
                   child: ListView(
                     shrinkWrap: true,
                     primary: true,
@@ -233,8 +231,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                           suggestionsCallback: (pattern) async {
                             // print(pattern);
                             if (pattern.isNotEmpty) {
-                              return await RemoteServices()
-                                  .getEmployees(pattern);
+                              return await RemoteServices().getEmployees(pattern);
                             }
                             return null;
                           },
@@ -338,8 +335,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                                       var places = GoogleMapsPlaces(
                                         apiKey: AppUtils.GKEY,
                                       );
-                                      var detail =
-                                          await places.getDetailsByPlaceId(
+                                      var detail = await places.getDetailsByPlaceId(
                                         p.placeId,
                                       );
                                       print(p.placeId);
@@ -351,12 +347,8 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                                       var map = {
                                         'address': p.description.toString(),
                                         'clientId': '',
-                                        'lat': detail
-                                            .result.geometry.location.lat
-                                            .toString(),
-                                        'lng': detail
-                                            .result.geometry.location.lng
-                                            .toString(),
+                                        'lat': detail.result.geometry.location.lat.toString(),
+                                        'lng': detail.result.geometry.location.lng.toString(),
                                         'mapId': p.placeId.toString(),
                                       };
                                       print(rpC.mapID);
@@ -468,12 +460,10 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                                     return Column(
                                       children: [
                                         Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
+                                              padding: const EdgeInsets.symmetric(
                                                 horizontal: 10.0,
                                                 vertical: 12.0,
                                               ),
@@ -482,8 +472,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                                                   // print(client);
                                                   // print(rpC.sC.contains(client));
                                                   // print(rpC.sC);
-                                                  if (rpC.sC
-                                                      .contains(address)) {
+                                                  if (rpC.sC.contains(address)) {
                                                     rpC.sC.remove(address);
                                                   } else {
                                                     rpC.sC.add(address);
@@ -494,12 +483,8 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                                                     height: 25.0,
                                                     width: 25.0,
                                                     decoration: BoxDecoration(
-                                                      color: rpC.sC
-                                                              .contains(address)
-                                                          ? Colors.blue
-                                                          : Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.all(
+                                                      color: rpC.sC.contains(address) ? Colors.blue : Colors.white,
+                                                      borderRadius: BorderRadius.all(
                                                         Radius.circular(
                                                           5.0,
                                                         ),
@@ -536,13 +521,11 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                                                     controller: cRemark,
                                                     decoration: InputDecoration(
                                                       isDense: true,
-                                                      contentPadding:
-                                                          EdgeInsets.all(10),
+                                                      contentPadding: EdgeInsets.all(10),
                                                       hintStyle: TextStyle(
                                                         color: Colors.grey[600],
                                                         fontSize: 18.0,
-                                                        fontWeight:
-                                                            FontWeight.bold,
+                                                        fontWeight: FontWeight.bold,
                                                       ),
                                                       hintText: 'Enter remarks',
                                                     ),
@@ -550,8 +533,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                                                   barrierDismissible: false,
                                                   onConfirm: () {
                                                     if (cRemark.text != '') {
-                                                      address['remarks'] =
-                                                          cRemark.text;
+                                                      address['remarks'] = cRemark.text;
                                                       cRemark.text = '';
                                                       Get.back();
                                                     }
@@ -559,8 +541,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                                                   onCancel: () {
                                                     cRemark.text = '';
                                                   },
-                                                  confirmTextColor:
-                                                      Colors.white,
+                                                  confirmTextColor: Colors.white,
                                                   textConfirm: 'Add',
                                                 );
                                               },
@@ -631,15 +612,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                             onPressed: () {
                               print('Submit');
                               FocusScope.of(context).requestFocus(FocusNode());
-                              if (planName.text == null ||
-                                  planName.text == '' ||
-                                  empName.text == null ||
-                                  empName.text == '' ||
-                                  remarks.text == null ||
-                                  remarks.text == '' ||
-                                  date.text == null ||
-                                  date.text == '' ||
-                                  assignedTo == null) {
+                              if (planName.text == null || planName.text == '' || empName.text == null || empName.text == '' || remarks.text == null || remarks.text == '' || date.text == null || date.text == '' || assignedTo == null) {
                                 Get.snackbar(
                                   'Error',
                                   'Please fill all data',
@@ -682,8 +655,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                                       'lng': rpC.sC[i]['lng'].toString(),
                                       'clientId': '',
                                       'date': date.text,
-                                      'adminRemarks':
-                                          rpC.sC[i]['remarks'].toString(),
+                                      'adminRemarks': rpC.sC[i]['remarks'].toString(),
                                     };
                                   }
                                   pitstops.add(addData);

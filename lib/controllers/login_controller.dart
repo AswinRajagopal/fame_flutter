@@ -78,13 +78,9 @@ class LoginController extends GetxController {
     RemoteServices().box.put('email', loginResponse.loginDetails.emailId);
     RemoteServices().box.put('role', loginResponse.loginDetails.role);
     RemoteServices().box.put('companyid', loginResponse.loginDetails.companyId);
-    RemoteServices()
-        .box
-        .put('companyname', loginResponse.companyDetails.companyName);
+    RemoteServices().box.put('companyname', loginResponse.companyDetails.companyName);
     RemoteServices().box.put('userName', loginResponse.loginDetails.userName);
-    RemoteServices()
-        .box
-        .put('appFeature', jsonEncode(loginResponse.appFeature));
+    RemoteServices().box.put('appFeature', jsonEncode(loginResponse.appFeature));
   }
 
   void clearBox() {

@@ -117,9 +117,7 @@ class ProfilePage extends StatelessWidget {
                         var img;
                         if (pC.profileRes.profileImage != null) {
                           img = pC.profileRes.profileImage.image;
-                          img = img.contains('data:image')
-                              ? img.split(',').last
-                              : img;
+                          img = img.contains('data:image') ? img.split(',').last : img;
 
                           print('img.length: ${img.length}');
                         }

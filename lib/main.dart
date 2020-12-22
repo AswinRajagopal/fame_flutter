@@ -50,10 +50,7 @@ class PocketFaME extends StatelessWidget {
           child: child,
         );
       },
-      home: RemoteServices().box.get('empid') != null &&
-              RemoteServices().box.get('empid') != ''
-          ? DashboardPage()
-          : WelcomePage(),
+      home: RemoteServices().box.get('empid') != null && RemoteServices().box.get('empid') != '' ? DashboardPage() : WelcomePage(),
       getPages: [
         GetPage(
           name: 'welcome',

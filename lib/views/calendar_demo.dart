@@ -6,8 +6,7 @@ class CalendarDemo extends StatefulWidget {
   _CalendarDemoState createState() => _CalendarDemoState();
 }
 
-class _CalendarDemoState extends State<CalendarDemo>
-    with TickerProviderStateMixin {
+class _CalendarDemoState extends State<CalendarDemo> with TickerProviderStateMixin {
   Map<DateTime, List> _events;
   // List _selectedEvents;
   AnimationController _animationController;
@@ -71,13 +70,11 @@ class _CalendarDemoState extends State<CalendarDemo>
     // });
   }
 
-  void _onVisibleDaysChanged(
-      DateTime first, DateTime last, CalendarFormat format) {
+  void _onVisibleDaysChanged(DateTime first, DateTime last, CalendarFormat format) {
     print('CALLBACK: _onVisibleDaysChanged');
   }
 
-  void _onCalendarCreated(
-      DateTime first, DateTime last, CalendarFormat format) {
+  void _onCalendarCreated(DateTime first, DateTime last, CalendarFormat format) {
     print('CALLBACK: _onCalendarCreated');
   }
 

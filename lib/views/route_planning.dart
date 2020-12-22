@@ -203,9 +203,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                         ),
                       ),
                 Container(
-                  height: RemoteServices().box.get('role') != '3'
-                      ? MediaQuery.of(context).size.height / 1.24
-                      : MediaQuery.of(context).size.height / 1.44,
+                  height: RemoteServices().box.get('role') != '3' ? MediaQuery.of(context).size.height / 1.24 : MediaQuery.of(context).size.height / 1.44,
                   child: ListView(
                     shrinkWrap: true,
                     primary: true,
@@ -241,8 +239,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                           suggestionsCallback: (pattern) async {
                             // print(pattern);
                             if (pattern.isNotEmpty) {
-                              return await RemoteServices()
-                                  .getEmployees(pattern);
+                              return await RemoteServices().getEmployees(pattern);
                             }
                             return null;
                           },
@@ -389,12 +386,10 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                     return Column(
                                       children: [
                                         Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
+                                              padding: const EdgeInsets.symmetric(
                                                 horizontal: 10.0,
                                                 vertical: 12.0,
                                               ),
@@ -414,12 +409,8 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                                     height: 25.0,
                                                     width: 25.0,
                                                     decoration: BoxDecoration(
-                                                      color: rpC.sC
-                                                              .contains(client)
-                                                          ? Colors.blue
-                                                          : Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.all(
+                                                      color: rpC.sC.contains(client) ? Colors.blue : Colors.white,
+                                                      borderRadius: BorderRadius.all(
                                                         Radius.circular(
                                                           5.0,
                                                         ),
@@ -460,19 +451,16 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                               onTap: () {
                                                 print('remarks');
                                                 Get.defaultDialog(
-                                                  title:
-                                                      'Remarks for ${client['id'].toString()}',
+                                                  title: 'Remarks for ${client['id'].toString()}',
                                                   content: TextField(
                                                     controller: cRemark,
                                                     decoration: InputDecoration(
                                                       isDense: true,
-                                                      contentPadding:
-                                                          EdgeInsets.all(10),
+                                                      contentPadding: EdgeInsets.all(10),
                                                       hintStyle: TextStyle(
                                                         color: Colors.grey[600],
                                                         fontSize: 18.0,
-                                                        fontWeight:
-                                                            FontWeight.bold,
+                                                        fontWeight: FontWeight.bold,
                                                       ),
                                                       hintText: 'Enter remarks',
                                                     ),
@@ -480,8 +468,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                                   barrierDismissible: false,
                                                   onConfirm: () {
                                                     if (cRemark.text != '') {
-                                                      client['remarks'] =
-                                                          cRemark.text;
+                                                      client['remarks'] = cRemark.text;
                                                       cRemark.text = '';
                                                       Get.back();
                                                     }
@@ -489,8 +476,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                                   onCancel: () {
                                                     cRemark.text = '';
                                                   },
-                                                  confirmTextColor:
-                                                      Colors.white,
+                                                  confirmTextColor: Colors.white,
                                                   textConfirm: 'Add',
                                                 );
                                               },
@@ -562,15 +548,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                             onPressed: () {
                               print('Submit');
                               FocusScope.of(context).requestFocus(FocusNode());
-                              if (planName.text == null ||
-                                  planName.text == '' ||
-                                  empName.text == null ||
-                                  empName.text == '' ||
-                                  remarks.text == null ||
-                                  remarks.text == '' ||
-                                  date.text == null ||
-                                  date.text == '' ||
-                                  assignedTo == null) {
+                              if (planName.text == null || planName.text == '' || empName.text == null || empName.text == '' || remarks.text == null || remarks.text == '' || date.text == null || date.text == '' || assignedTo == null) {
                                 Get.snackbar(
                                   'Error',
                                   'Please fill all data',
@@ -618,8 +596,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                       'lng': rpC.sC[i]['longitude'].toString(),
                                       'clientId': rpC.sC[i]['id'].toString(),
                                       'date': date.text,
-                                      'adminRemarks':
-                                          rpC.sC[i]['remarks'].toString(),
+                                      'adminRemarks': rpC.sC[i]['remarks'].toString(),
                                     };
                                   }
                                   pitstops.add(addData);

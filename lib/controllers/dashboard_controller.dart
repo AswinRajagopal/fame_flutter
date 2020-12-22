@@ -9,16 +9,7 @@ import 'package:get/get.dart';
 class DashboardController extends GetxController {
   var isDashboardLoading = true.obs;
   var response;
-  var todayString = (DateFormat.E().format(DateTime.now()).toString() +
-          ' ' +
-          DateFormat.d().format(DateTime.now()).toString() +
-          ' ' +
-          DateFormat.MMM().format(DateTime.now()).toString() +
-          ', ' +
-          DateFormat('h:mm').format(DateTime.now()).toString() +
-          '' +
-          DateFormat('a').format(DateTime.now()).toString().toLowerCase())
-      .obs;
+  var todayString = (DateFormat.E().format(DateTime.now()).toString() + ' ' + DateFormat.d().format(DateTime.now()).toString() + ' ' + DateFormat.MMM().format(DateTime.now()).toString() + ', ' + DateFormat('h:mm').format(DateTime.now()).toString() + '' + DateFormat('a').format(DateTime.now()).toString().toLowerCase()).obs;
   var greetings = '...'.obs;
   bool isDisposed = false;
 
@@ -45,15 +36,7 @@ class DashboardController extends GetxController {
 
   void updateTime() {
     Timer.periodic(Duration(seconds: 1), (timer) {
-      todayString.value = DateFormat.E().format(DateTime.now()).toString() +
-          ' ' +
-          DateFormat.d().format(DateTime.now()).toString() +
-          ' ' +
-          DateFormat.MMM().format(DateTime.now()).toString() +
-          ', ' +
-          DateFormat('h:mm').format(DateTime.now()).toString() +
-          '' +
-          DateFormat('a').format(DateTime.now()).toString().toLowerCase();
+      todayString.value = DateFormat.E().format(DateTime.now()).toString() + ' ' + DateFormat.d().format(DateTime.now()).toString() + ' ' + DateFormat.MMM().format(DateTime.now()).toString() + ', ' + DateFormat('h:mm').format(DateTime.now()).toString() + '' + DateFormat('a').format(DateTime.now()).toString().toLowerCase();
 
       var hour = DateTime.now().hour;
       if (hour < 12) {
@@ -69,16 +52,14 @@ class DashboardController extends GetxController {
   void getDashboardDetails() async {
     try {
       isDashboardLoading(true);
-      response = await RemoteServices().getDashboardDetails();
-      print('response: $response');
+      response = await RemoteServices().getDbDetails();
+      // print('response: $response');
       if (response != null) {
         isDashboardLoading(false);
-        await RemoteServices().box.put('shift', response.dailyAttendance.shift);
-        await RemoteServices()
-            .box
-            .put('clientId', response.dailyAttendance.clientId);
-        await RemoteServices().box.put('empName', response.empdetails.name);
-        if (response.success) {
+        await RemoteServices().box.put('shift', response['dailyAttendance']['shift']);
+        await RemoteServices().box.put('clientId', response['dailyAttendance']['clientId']);
+        await RemoteServices().box.put('empName', response['empdetails']['name']);
+        if (response['success']) {
         } else {
           Get.snackbar(
             'Error',

@@ -13,8 +13,7 @@ class HomeCalendar extends StatefulWidget {
   _HomeCalendarState createState() => _HomeCalendarState();
 }
 
-class _HomeCalendarState extends State<HomeCalendar>
-    with TickerProviderStateMixin {
+class _HomeCalendarState extends State<HomeCalendar> with TickerProviderStateMixin {
   final DBCalController calC = Get.put(DBCalController());
   // Map<DateTime, List> _events;
   AnimationController _animationController;
@@ -50,8 +49,7 @@ class _HomeCalendarState extends State<HomeCalendar>
     // print('Month: ${first.month}');
     // print('Year: ${first.year.toString().substring(2)}');
     var month = '${first.month}${first.year.toString().substring(2)}';
-    var chDtString =
-        '${first.year}-${first.month < 10 ? '0' + first.month.toString() : first.month}-${first.day < 10 ? '0' + first.day.toString() : first.day}';
+    var chDtString = '${first.year}-${first.month < 10 ? '0' + first.month.toString() : first.month}-${first.day < 10 ? '0' + first.day.toString() : first.day}';
     calC.getCalendar(month: month, chDt: chDtString);
   }
 
@@ -96,9 +94,7 @@ class _HomeCalendarState extends State<HomeCalendar>
         ),
         titleTextBuilder: (date, locale) {
           // print(date);
-          return DateFormat.MMMM(locale).format(date).toString() +
-              ', ' +
-              DateFormat.y(locale).format(date).toString();
+          return DateFormat.MMMM(locale).format(date).toString() + ', ' + DateFormat.y(locale).format(date).toString();
         },
       ),
       daysOfWeekStyle: DaysOfWeekStyle(

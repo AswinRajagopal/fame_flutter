@@ -191,8 +191,7 @@ class DailyAttendance {
   int month;
   dynamic lt;
 
-  factory DailyAttendance.fromJson(Map<String, dynamic> json) =>
-      DailyAttendance(
+  factory DailyAttendance.fromJson(Map<String, dynamic> json) => DailyAttendance(
         overTime: json['overTime'],
         createdBy: json['createdBy'],
         checkInLongitude: json['checkInLongitude'],

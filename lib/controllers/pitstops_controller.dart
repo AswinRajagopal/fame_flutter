@@ -11,22 +11,25 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
-class CheckinController extends GetxController {
+class PitstopsController extends GetxController {
+  var isLoading = true.obs;
+  var res;
   ProgressDialog pr;
-  var checkinResponse;
+  final List pitsStops = [].obs;
   var todayString = (DateFormat().add_jm().format(DateTime.now()).toString()).obs;
   Position currentPosition;
   var currentAddress = 'Fetching your location...'.obs;
+  var updateRes;
 
   @override
   void onInit() {
+    // getEmprPlan();
     updateTime();
     super.onInit();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
+  void init() {
+    print('init custom');
   }
 
   void updateTime() {
@@ -69,12 +72,12 @@ class CheckinController extends GetxController {
   Future<bool> uploadImage(File imageFile) async {
     try {
       await pr.show();
-      checkinResponse = await RemoteServices().checkinProcess(imageFile);
-      if (checkinResponse != null) {
+      updateRes = await RemoteServices().checkinProcess(imageFile);
+      if (updateRes != null) {
         await pr.hide();
-        print('checkinResponse valid: ${checkinResponse.success}');
-        if (checkinResponse.success) {
-          var resDecode = jsonDecode(checkinResponse.response);
+        print('updateRes valid: ${updateRes.success}');
+        if (updateRes.success) {
+          var resDecode = jsonDecode(updateRes.response);
           if (!resDecode['face_found']) {
             Get.snackbar(
               'Error',
@@ -175,6 +178,67 @@ class CheckinController extends GetxController {
     } finally {
       await pr.hide();
       // return checkinResponse.success;
+    }
+  }
+
+  void getPitstops(planId, companyId) async {
+    try {
+      isLoading(true);
+      await pr.show();
+      res = await RemoteServices().getPitstops(planId, companyId);
+      if (res != null) {
+        if (res['success']) {
+          pitsStops.clear();
+          for (var i = 0; i < res['pitstopList'].length; i++) {
+            var pitstop = res['pitstopList'][i];
+            pitstop['clientId'] = pitstop['clientId'] == null || pitstop['clientId'] == '' ? '' : pitstop['clientId'].toString();
+            pitstop['clientName'] = pitstop['clientName'] == null || pitstop['clientName'] == '' ? 'N/A' : pitstop['clientName'].toString();
+            if (pitstop['lat'] == null || pitstop['lat'] == '' || pitstop['lng'] == null || pitstop['lng'] == '') {
+              pitstop['address'] = 'N/A';
+            } else {
+              var placemark = await placemarkFromCoordinates(
+                double.parse(pitstop['lat']),
+                double.parse(pitstop['lng']),
+              );
+              var first = placemark.first;
+              // print(first);
+              var address = '${first.street}, ${first.thoroughfare}, ${first.subLocality}, ${first.locality}, ${first.administrativeArea}, ${first.postalCode}, ${first.country}';
+              pitstop['address'] = address;
+            }
+            pitsStops.add(pitstop);
+          }
+          // print(pitsStops);
+          isLoading(false);
+          await pr.hide();
+        } else {
+          Get.snackbar(
+            'Error',
+            'Something went wrong! Please try again later',
+            colorText: Colors.white,
+            backgroundColor: Colors.red,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      print(e);
+      isLoading(false);
+      await pr.hide();
+      Get.snackbar(
+        'Error',
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+      );
     }
   }
 }

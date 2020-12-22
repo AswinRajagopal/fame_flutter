@@ -271,12 +271,7 @@ class _LoginPageState extends State<LoginPage> {
                     shape: CircleBorder(),
                     onPressed: () {
                       FocusScope.of(context).requestFocus(FocusNode());
-                      if (username.text == null ||
-                          username.text == '' ||
-                          empid.text == null ||
-                          empid.text == '' ||
-                          password.text == null ||
-                          password.text == '') {
+                      if (username.text == null || username.text == '' || empid.text == null || empid.text == '' || password.text == null || password.text == '') {
                         Get.snackbar(
                           'Error',
                           'Please provide all detail',

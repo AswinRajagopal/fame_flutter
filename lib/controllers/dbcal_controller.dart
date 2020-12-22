@@ -36,8 +36,7 @@ class DBCalController extends GetxController {
     if (month == null || month == '') {
       var dateParse = DateTime.parse(date);
       changedDate = '${dateParse.year}-${dateParse.month}-${dateParse.day}';
-      var formattedDate =
-          '${dateParse.month}${dateParse.year.toString().substring(2)}';
+      var formattedDate = '${dateParse.month}${dateParse.year.toString().substring(2)}';
       month = formattedDate;
     }
     if (chDt != null) {

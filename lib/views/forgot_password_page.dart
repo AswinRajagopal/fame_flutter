@@ -10,8 +10,7 @@ class ForgotPasswordPage extends StatefulWidget {
 }
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
-  final ForgotPasswordController fpController =
-      Get.put(ForgotPasswordController());
+  final ForgotPasswordController fpController = Get.put(ForgotPasswordController());
   bool rememberMe = true;
   TextEditingController email = TextEditingController();
 
@@ -197,8 +196,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                             vertical: 10.0,
                           ),
                         );
-                      } else if (email.text != '' &&
-                          !GetUtils.isEmail(email.text)) {
+                      } else if (email.text != '' && !GetUtils.isEmail(email.text)) {
                         Get.snackbar(
                           'Error',
                           'Please provide valid email',

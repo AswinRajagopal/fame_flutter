@@ -28,9 +28,7 @@ class Profile {
         msg: json['msg'],
         empDetails: EmpDetails.fromJson(json['empDetails']),
         loginDetails: LoginDetails.fromJson(json['loginDetails']),
-        profileImage: json['profileImage'] == null
-            ? null
-            : ProfileImage.fromJson(json['profileImage']),
+        profileImage: json['profileImage'] == null ? null : ProfileImage.fromJson(json['profileImage']),
       );
 
   Map<String, dynamic> toJson() => {

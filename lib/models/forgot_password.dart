@@ -4,8 +4,7 @@
 
 import 'dart:convert';
 
-ForgotPassword forgotPasswordFromJson(String str) =>
-    ForgotPassword.fromJson(json.decode(str));
+ForgotPassword forgotPasswordFromJson(String str) => ForgotPassword.fromJson(json.decode(str));
 
 String forgotPasswordToJson(ForgotPassword data) => json.encode(data.toJson());
 

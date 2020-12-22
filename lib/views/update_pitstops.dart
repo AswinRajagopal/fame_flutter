@@ -1,24 +1,25 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
-import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-
-import '../controllers/checkout_controller.dart';
+import '../controllers/pitstops_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
-import 'dashboard_page.dart';
+// ignore: must_be_immutable
+class UpdatePitstops extends StatefulWidget {
+  var pitstopId;
+  var empId;
+  UpdatePitstops(this.pitstopId, this.empId);
 
-class CheckoutPage extends StatefulWidget {
   @override
-  _CheckoutPageState createState() => _CheckoutPageState();
+  _UpdatePitstopsState createState() => _UpdatePitstopsState();
 }
 
-class _CheckoutPageState extends State<CheckoutPage> {
-  final CheckoutController checkoutController = Get.put(CheckoutController());
+class _UpdatePitstopsState extends State<UpdatePitstops> {
+  final PitstopsController psC = Get.put(PitstopsController());
   CameraController controller;
   List<CameraDescription> cameras;
   var currentTime = DateFormat().add_jm().format(DateTime.now()).toString();
@@ -27,7 +28,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   void initState() {
     super.initState();
     initCam();
-    checkoutController.pr = ProgressDialog(
+    psC.pr = ProgressDialog(
       context,
       type: ProgressDialogType.Normal,
       isDismissible: false,
@@ -55,7 +56,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
         ),
       ),
     );
-    checkoutController.pr.style(
+    psC.pr.style(
       backgroundColor: Colors.black,
     );
   }
@@ -78,7 +79,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
       }
       setState(() {});
     });
-    checkoutController.getCurrentLocation();
+    psC.getCurrentLocation();
   }
 
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -92,124 +93,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
       if (controller != null) {
         onNewCameraSelected(controller.description);
       }
-    }
-  }
-
-  void takePicture() async {
-    if (!controller.value.isInitialized) {
-      Get.snackbar(
-        'Error',
-        'select a camera first.',
-        colorText: Colors.white,
-        backgroundColor: Colors.red,
-        snackPosition: SnackPosition.BOTTOM,
-        margin: EdgeInsets.symmetric(
-          horizontal: 8.0,
-          vertical: 10.0,
-        ),
-      );
-      return null;
-    }
-    final extDir = await getApplicationDocumentsDirectory();
-    final dirPath = '${extDir.path}/Pictures/flutter_test';
-    await Directory(dirPath).create(recursive: true);
-    final filePath = '$dirPath/image.jpg';
-    var dir = Directory(filePath);
-    try {
-      dir.deleteSync(recursive: true);
-    } catch (e) {
-      print(e.toString());
-    }
-    if (controller.value.isTakingPicture) {
-      // A capture is already pending, do nothing.
-      return null;
-    }
-
-    try {
-      await controller.takePicture(filePath);
-    } on CameraException catch (e) {
-      _showCameraException(e);
-      return null;
-    }
-    var file = File(filePath);
-    // networkcall(file);
-    var res = await checkoutController.uploadImage(file);
-    print(res);
-    if (res) {
-      // ignore: unawaited_futures
-      Get.bottomSheet(
-        Container(
-          height: MediaQuery.of(context).size.height / 2.3,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: const Radius.circular(10.0),
-              topRight: const Radius.circular(10.0),
-            ),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Image.asset(
-                'assets/images/success.png',
-                scale: 2.0,
-                color: Colors.green,
-              ),
-              SizedBox(
-                height: 15.0,
-              ),
-              Text(
-                'Checked out at',
-                style: TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              Text(
-                DateFormat().add_jm().format(DateTime.now()).toString(),
-                style: TextStyle(
-                  fontSize: 20.0,
-                  color: Colors.blue,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(
-                height: 40.0,
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 22.0,
-                  vertical: 12.0,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(
-                      30.0,
-                    ),
-                  ),
-                ),
-                child: Text(
-                  'Thank You !',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        // isDismissible: false,
-      );
-      Timer(Duration(seconds: 2), () {
-        Get.offAll(DashboardPage());
-      });
     }
   }
 
@@ -263,6 +146,53 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
     if (mounted) {
       setState(() {});
+    }
+  }
+
+  void takePicture() async {
+    if (!controller.value.isInitialized) {
+      Get.snackbar(
+        'Error',
+        'select a camera first.',
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+      );
+      return null;
+    }
+    final extDir = await getApplicationDocumentsDirectory();
+    final dirPath = '${extDir.path}/Pictures/flutter_test';
+    await Directory(dirPath).create(recursive: true);
+    final filePath = '$dirPath/image.jpg';
+    var dir = Directory(filePath);
+    try {
+      dir.deleteSync(recursive: true);
+    } catch (e) {
+      print(e.toString());
+    }
+    if (controller.value.isTakingPicture) {
+      // A capture is already pending, do nothing.
+      return null;
+    }
+
+    try {
+      await controller.takePicture(filePath);
+    } on CameraException catch (e) {
+      _showCameraException(e);
+      return null;
+    }
+    var file = File(filePath);
+    // networkcall(file);
+    var res = await psC.uploadImage(file);
+    print(res);
+    if (res) {
+      // Timer(Duration(seconds: 2), () {
+      //   Get.offAll(DashboardPage());
+      // });
     }
   }
 
@@ -364,7 +294,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             horizontal: 15.0,
                           ),
                           child: Row(
-                            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Container(
@@ -384,27 +313,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                     ),
                                     Obx(() {
                                       return Text(
-                                        checkoutController.currentAddress.value,
+                                        psC.currentAddress.value,
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 16.0,
                                         ),
                                       );
                                     }),
-                                    // Text(
-                                    //   'Arcesium at Mindspace.',
-                                    //   style: TextStyle(
-                                    //     color: Colors.white,
-                                    //     fontSize: 16.0,
-                                    //   ),
-                                    // ),
-                                    // Text(
-                                    //   'Hyderabad, Telangana, 500085, India.',
-                                    //   style: TextStyle(
-                                    //     color: Colors.white,
-                                    //     fontSize: 16.0,
-                                    //   ),
-                                    // ),
                                   ],
                                 ),
                               ),
@@ -421,7 +336,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                               ),
                               Obx(() {
                                 return Text(
-                                  checkoutController.todayString.value,
+                                  psC.todayString.value,
                                   style: TextStyle(
                                     color: Colors.blue,
                                     fontSize: 20.0,
@@ -439,7 +354,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     ),
                     Obx(() {
                       return RaisedButton(
-                        onPressed: checkoutController.currentAddress.value == 'Fetching your location...' ? null : takePicture,
+                        onPressed: psC.currentAddress.value == 'Fetching your location...' ? null : takePicture,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 30.0,
@@ -449,7 +364,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                'Check Out',
+                                'Check In',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w900,

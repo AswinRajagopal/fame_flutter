@@ -31,9 +31,7 @@ class FaceRegisterController extends GetxController {
         if (faceRes.success) {
           var resDecode = jsonDecode(faceRes.response);
           print('resDecode: $resDecode');
-          if (!resDecode['msg'].toString().contains('already seen') &&
-              !resDecode['msg'].toString().contains('no face') &&
-              !resDecode['msg'].toString().contains('failed')) {
+          if (!resDecode['msg'].toString().contains('already seen') && !resDecode['msg'].toString().contains('no face') && !resDecode['msg'].toString().contains('failed')) {
             var regImg = await RemoteServices().registerImage(
               resDecode['clientID'],
               resDecode['companyID'],

@@ -50,56 +50,39 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   void initState() {
     super.initState();
+    Future.delayed(Duration(milliseconds: 100), dbC.init);
+    Future.delayed(Duration(milliseconds: 100), erpC.init);
+    Future.delayed(Duration(milliseconds: 100), calC.init);
   }
 
   String convertTimeWithParse(time) {
-    return DateFormat('h:mm')
-            .format(DateFormat('HH:mm:ss').parse(time))
-            .toString() +
-        DateFormat('a')
-            .format(DateFormat('HH:mm:ss').parse(time))
-            .toString()
-            .toLowerCase();
+    return DateFormat('h:mm').format(DateFormat('HH:mm:ss').parse(time)).toString() + DateFormat('a').format(DateFormat('HH:mm:ss').parse(time)).toString().toLowerCase();
   }
 
   String convertTimeWithoutParse(time) {
-    return DateFormat('h:mm').format(time).toString() +
-        DateFormat('a').format(time).toString().toLowerCase();
+    return DateFormat('h:mm').format(DateTime.parse(time)).toString() + DateFormat('a').format(DateTime.parse(time)).toString().toLowerCase();
   }
 
   String convertTimeForCheckedIn(time) {
-    return DateFormat('d').format(time).toString() +
-        '/' +
-        DateFormat('M').format(time).toString() +
-        '/' +
-        DateFormat('yyyy').format(time).toString() +
-        ' @ ' +
-        DateFormat().add_jm().format(time).toString();
+    return DateFormat('d').format(DateTime.parse(time)).toString() + '/' + DateFormat('M').format(DateTime.parse(time)).toString() + '/' + DateFormat('yyyy').format(DateTime.parse(time)).toString() + ' @ ' + DateFormat().add_jm().format(DateTime.parse(time)).toString();
     // DateFormat('a').format(time).toString().toLowerCase();
   }
 
   // ignore: missing_return
   bool checkCondition(dbRes, type) {
     var curDate = DateFormat('yyyy-M-d').format(DateTime.now()).toString();
-    var chkDate = DateFormat('yyyy-M-d')
-        .format(dbRes.dailyAttendance.checkInDateTime)
-        .toString();
+    var chkDate = DateFormat('yyyy-M-d').format(dbRes['dailyAttendance']['checkInDateTime']).toString();
     if (dbRes.dailyAttendance != null) {
-      if (dbRes.dailyAttendance.checkInDateTime != null &&
-          dbRes.dailyAttendance.checkOutDateTime == null) {
+      if (dbRes['dailyAttendance']['checkInDateTime'] != null && dbRes['dailyAttendance']['checkOutDateTime'] == null) {
         //allow checkout
         //on duty
         if (type == 'chkout') {
           return true;
         }
         return false;
-      } else if (dbRes.dailyAttendance.checkInDateTime != null &&
-          dbRes.dailyAttendance.checkOutDateTime != null) {
-        if (dbRes.empdetails.shift == dbRes.dailyAttendance.shift &&
-            dbRes.empdetails.sitePostedTo.toString().toLowerCase() ==
-                dbRes.dailyAttendance.clientId.toString().toLowerCase() &&
-            curDate == chkDate) {
-          if (dbRes.dailyAttendance.attendanceAlias == 'L') {
+      } else if (dbRes['dailyAttendance']['checkInDateTime'] != null && dbRes['dailyAttendance']['checkOutDateTime'] != null) {
+        if (dbRes['empdetails']['shift'] == dbRes['dailyAttendance']['shift'] && dbRes['empdetails']['sitePostedTo'].toString().toLowerCase() == dbRes['dailyAttendance']['clientId'].toString().toLowerCase() && curDate == chkDate) {
+          if (dbRes['dailyAttendance']['attendanceAlias'] == 'L') {
             // On Leave
             // dont allow checkin
             Get.snackbar(
@@ -114,7 +97,7 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
             );
             return false;
-          } else if (dbRes.dailyAttendance.attendanceAlias == 'WO') {
+          } else if (dbRes['dailyAttendance']['attendanceAlias'] == 'WO') {
             // On Week Off
             // dont allow checkin
             Get.snackbar(
@@ -170,9 +153,6 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration(milliseconds: 100), dbC.init);
-    Future.delayed(Duration(milliseconds: 100), erpC.init);
-    Future.delayed(Duration(milliseconds: 100), calC.init);
     return Scaffold(
       backgroundColor: AppUtils().greyScaffoldBg,
       floatingActionButton: CustomFab('dashboard'),
@@ -283,7 +263,8 @@ class _DashboardPageState extends State<DashboardPage> {
                                 } else {
                                   return Flexible(
                                     child: Text(
-                                      dbC.response.empdetails.name ?? 'N/A',
+                                      // dbC.response.empdetails.name ?? 'N/A',
+                                      dbC.response['empdetails']['name'] ?? 'N/A',
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 20.0,
@@ -338,12 +319,9 @@ class _DashboardPageState extends State<DashboardPage> {
                             ),
                           );
                         } else {
-                          var chkinDt =
-                              dbC.response.dailyAttendance.checkInDateTime;
-                          var chkoutDt =
-                              dbC.response.dailyAttendance.checkOutDateTime;
-                          return (chkinDt != null && chkinDt != '') &&
-                                  (chkoutDt == null || chkoutDt == '')
+                          var chkinDt = dbC.response['dailyAttendance']['checkInDateTime'];
+                          var chkoutDt = dbC.response['dailyAttendance']['checkOutDateTime'];
+                          return (chkinDt != null && chkinDt != '') && (chkoutDt == null || chkoutDt == '')
                               ? Padding(
                                   padding: const EdgeInsets.fromLTRB(
                                     10.0,
@@ -354,8 +332,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                   child: Column(
                                     children: [
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
+                                        mainAxisAlignment: MainAxisAlignment.end,
                                         children: [
                                           Text(
                                             'Current Status: ',
@@ -376,8 +353,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                         ],
                                       ),
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
+                                        mainAxisAlignment: MainAxisAlignment.end,
                                         children: [
                                           Text(
                                             'Checked in on ',
@@ -404,14 +380,11 @@ class _DashboardPageState extends State<DashboardPage> {
                                         height: 5.0,
                                       ),
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Row(
                                                 children: [
@@ -422,14 +395,10 @@ class _DashboardPageState extends State<DashboardPage> {
                                                     ),
                                                   ),
                                                   Text(
-                                                    convertTimeWithoutParse(dbC
-                                                        .response
-                                                        .dailyAttendance
-                                                        .checkInDateTime),
+                                                    convertTimeWithoutParse(dbC.response['dailyAttendance']['checkInDateTime']),
                                                     style: TextStyle(
                                                       fontSize: 16.0,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                      fontWeight: FontWeight.bold,
                                                     ),
                                                   ),
                                                 ],
@@ -446,14 +415,10 @@ class _DashboardPageState extends State<DashboardPage> {
                                                     ),
                                                   ),
                                                   Text(
-                                                    convertTimeWithParse(dbC
-                                                        .response
-                                                        .empdetails
-                                                        .shiftEndTime),
+                                                    convertTimeWithParse(dbC.response['empdetails']['shiftEndTime']),
                                                     style: TextStyle(
                                                       fontSize: 16.0,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                      fontWeight: FontWeight.bold,
                                                     ),
                                                   ),
                                                 ],
@@ -481,8 +446,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                             ),
                                             color: Colors.orange[800],
                                             shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(
+                                              borderRadius: BorderRadius.circular(
                                                 25.0,
                                               ),
                                               side: BorderSide(
@@ -503,14 +467,11 @@ class _DashboardPageState extends State<DashboardPage> {
                                     25.0,
                                   ),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'You are posted in',
@@ -535,13 +496,11 @@ class _DashboardPageState extends State<DashboardPage> {
                                               return Row(
                                                 children: [
                                                   Text(
-                                                    dbC.response.clientData
-                                                            .name ??
-                                                        'N/A',
+                                                    // dbC.response.clientData.name ?? 'N/A',
+                                                    dbC.response['clientData']['name'] ?? 'N/A',
                                                     style: TextStyle(
                                                       fontSize: 15.0,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                      fontWeight: FontWeight.bold,
                                                     ),
                                                   ),
                                                   Text(
@@ -551,13 +510,11 @@ class _DashboardPageState extends State<DashboardPage> {
                                                     ),
                                                   ),
                                                   Text(
-                                                    dbC.response.empdetails
-                                                            .area ??
-                                                        'N/A',
+                                                    // dbC.response.empdetails.area ?? 'N/A',
+                                                    dbC.response['empdetails']['area'] ?? 'N/A',
                                                     style: TextStyle(
                                                       fontSize: 15.0,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                      fontWeight: FontWeight.bold,
                                                     ),
                                                   ),
                                                 ],
@@ -576,10 +533,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                 ),
                                               ),
                                               Text(
-                                                convertTimeWithParse(dbC
-                                                    .response
-                                                    .empdetails
-                                                    .shiftStartTime),
+                                                convertTimeWithParse(dbC.response['empdetails']['shiftStartTime']),
                                                 style: TextStyle(
                                                   fontSize: 15.0,
                                                   fontWeight: FontWeight.bold,
@@ -592,10 +546,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                 ),
                                               ),
                                               Text(
-                                                convertTimeWithParse(dbC
-                                                    .response
-                                                    .empdetails
-                                                    .shiftEndTime),
+                                                convertTimeWithParse(dbC.response['empdetails']['shiftEndTime']),
                                                 style: TextStyle(
                                                   fontSize: 15.0,
                                                   fontWeight: FontWeight.bold,
@@ -661,7 +612,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         );
                       } else {
                         var role = RemoteServices().box.get('role');
-                        return dbC.response.psCount == null
+                        return dbC.response['psCount'] == null
                             ? Container()
                             : Container(
                                 // height: 150.0,
@@ -676,13 +627,10 @@ class _DashboardPageState extends State<DashboardPage> {
                                         left: 20.0,
                                       ),
                                       child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            DateFormat.MMMM()
-                                                .format(DateTime.now())
-                                                .toString(),
+                                            DateFormat.MMMM().format(DateTime.now()).toString(),
                                             style: TextStyle(
                                               fontSize: 20.0,
                                               fontWeight: FontWeight.bold,
@@ -720,34 +668,27 @@ class _DashboardPageState extends State<DashboardPage> {
                                       height: 10.0,
                                     ),
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         CustomProgressIndicator(
                                           // '23',
-                                          dbC.response.psCount.shifts
-                                              .toString(),
+                                          dbC.response['psCount']['shifts'].toString(),
                                           'Total Days',
                                           80.0,
                                           1,
                                         ),
                                         CustomProgressIndicator(
-                                          dbC.response.psCount.present
-                                              .toString(),
+                                          dbC.response['psCount']['present'].toString(),
                                           'Present',
                                           80.0,
-                                          dbC.response.psCount.present /
-                                              dbC.response.psCount.shifts,
+                                          dbC.response['psCount']['present'] / dbC.response['psCount']['shifts'],
                                         ),
                                         CustomProgressIndicator(
-                                          dbC.response.psCount.absent
-                                              .toString(),
+                                          dbC.response['psCount']['absent'].toString(),
                                           'Absent',
                                           80.0,
-                                          dbC.response.psCount.absent /
-                                              dbC.response.psCount.shifts,
+                                          dbC.response['psCount']['absent'] / dbC.response['psCount']['shifts'],
                                         ),
                                       ],
                                     ),
@@ -769,10 +710,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         );
                       } else {
                         return Visibility(
-                          visible: dbC.response.empActivities == null ||
-                                  dbC.response.empActivities.length == 0
-                              ? false
-                              : true,
+                          visible: dbC.response['empActivities'] == null || dbC.response['empActivities'].length == 0 ? false : true,
                           child: Container(
                             height: 180.0,
                             width: MediaQuery.of(context).size.width,
@@ -784,14 +722,13 @@ class _DashboardPageState extends State<DashboardPage> {
                               ),
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
-                                itemCount: dbC.response.empActivities.length,
+                                itemCount: dbC.response['empActivities'].length,
                                 itemBuilder: (BuildContext context, int index) {
-                                  var empAct =
-                                      dbC.response.empActivities[index];
+                                  var empAct = dbC.response['empActivities'][index];
                                   return DBActivityTile(
                                     empAct,
                                     index,
-                                    dbC.response.empActivities.length,
+                                    dbC.response['empActivities'].length,
                                   );
                                 },
                               ),
@@ -889,30 +826,21 @@ class _DashboardPageState extends State<DashboardPage> {
                         );
                       } else {
                         return Container(
-                          height: erpC.empRes.routePlanList == null ||
-                                  erpC.empRes.routePlanList.length == 0
-                              ? 0.0
-                              : 210.0,
+                          height: erpC.empRes.routePlanList == null || erpC.empRes.routePlanList.length == 0 ? 0.0 : 210.0,
                           width: MediaQuery.of(context).size.width,
                           child: Padding(
                             padding: const EdgeInsets.only(
                               bottom: 15.0,
                             ),
-                            child: erpC.empRes.routePlanList == null ||
-                                    erpC.empRes.routePlanList.length == 0
+                            child: erpC.empRes.routePlanList == null || erpC.empRes.routePlanList.length == 0
                                 ? Container()
                                 : ListView.builder(
                                     scrollDirection: Axis.horizontal,
                                     // itemCount: erpC.empRes.routePlanList.length,
-                                    itemCount:
-                                        erpC.empRes.routePlanList.length > 4
-                                            ? 5
-                                            : erpC.empRes.routePlanList.length,
+                                    itemCount: erpC.empRes.routePlanList.length > 4 ? 5 : erpC.empRes.routePlanList.length,
                                     itemBuilder: (context, index) {
-                                      var length =
-                                          erpC.empRes.routePlanList.length;
-                                      var empRoute =
-                                          erpC.empRes.routePlanList[index];
+                                      var length = erpC.empRes.routePlanList.length;
+                                      var empRoute = erpC.empRes.routePlanList[index];
                                       // print('index: $index');
                                       return DBEmprTile(
                                         empRoute,
@@ -963,9 +891,7 @@ class _DashboardPageState extends State<DashboardPage> {
                               },
                               child: Container(
                                 decoration: BoxDecoration(
-                                  color: calendarType == 'myCal'
-                                      ? Colors.white
-                                      : Colors.blue,
+                                  color: calendarType == 'myCal' ? Colors.white : Colors.blue,
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(
                                       50.0,
@@ -982,9 +908,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                     style: TextStyle(
                                       fontSize: 18.0,
                                       fontWeight: FontWeight.bold,
-                                      color: calendarType == 'myCal'
-                                          ? Colors.blue
-                                          : Colors.white,
+                                      color: calendarType == 'myCal' ? Colors.blue : Colors.white,
                                     ),
                                   ),
                                 ),
@@ -998,9 +922,7 @@ class _DashboardPageState extends State<DashboardPage> {
                               },
                               child: Container(
                                 decoration: BoxDecoration(
-                                  color: calendarType == 'myRos'
-                                      ? Colors.white
-                                      : Colors.blue,
+                                  color: calendarType == 'myRos' ? Colors.white : Colors.blue,
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(
                                       50.0,
@@ -1017,9 +939,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                     style: TextStyle(
                                       fontSize: 18.0,
                                       fontWeight: FontWeight.bold,
-                                      color: calendarType == 'myRos'
-                                          ? Colors.blue
-                                          : Colors.white,
+                                      color: calendarType == 'myRos' ? Colors.blue : Colors.white,
                                     ),
                                   ),
                                 ),

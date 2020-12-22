@@ -18,11 +18,7 @@ class LeaveListWidget extends StatelessWidget {
   final double textSize = 16.0;
 
   String convertDate(date) {
-    return DateFormat.d().format(DateTime.parse(date)).toString() +
-        '-' +
-        DateFormat.M().format(DateTime.parse(date)).toString() +
-        '-' +
-        DateFormat.y().format(DateTime.parse(date)).toString();
+    return DateFormat.d().format(DateTime.parse(date)).toString() + '-' + DateFormat.M().format(DateTime.parse(date)).toString() + '-' + DateFormat.y().format(DateTime.parse(date)).toString();
   }
 
   String getStatus(status) {

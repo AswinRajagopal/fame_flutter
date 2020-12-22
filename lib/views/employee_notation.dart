@@ -152,8 +152,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
     }
 
     enC.res['empDailyAttView'].forEach((emp) {
-      if (emp['name'].toString().toLowerCase().contains(text.toLowerCase()) ||
-          emp['empId'].toString().toLowerCase().contains(text.toLowerCase())) {
+      if (emp['name'].toString().toLowerCase().contains(text.toLowerCase()) || emp['empId'].toString().toLowerCase().contains(text.toLowerCase())) {
         enC.searchList.add(emp);
       }
     });
@@ -469,33 +468,15 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                       return ListView.builder(
                         physics: ScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: enC.searchList.isNotEmpty
-                            ? enC.searchList.length
-                            : enC.res['empDailyAttView'].length,
+                        itemCount: enC.searchList.isNotEmpty ? enC.searchList.length : enC.res['empDailyAttView'].length,
                         itemBuilder: (context, index) {
-                          var emp = enC.searchList.isNotEmpty
-                              ? enC.searchList[index]
-                              : enC.res['empDailyAttView'][index];
+                          var emp = enC.searchList.isNotEmpty ? enC.searchList[index] : enC.res['empDailyAttView'][index];
                           var not = enC.res['attendance_notations'];
                           var appRej = enC.aprrej;
-                          var stDate = DateFormat.jm().parse(widget.time
-                              .toString()
-                              .split(' - ')
-                              .first
-                              .replaceAll('am', ' AM')
-                              .replaceAll('pm', ' PM'));
-                          var start = widget.date +
-                              ' ' +
-                              DateFormat('HH:mm').format(stDate);
-                          var endDate = DateFormat.jm().parse(widget.time
-                              .toString()
-                              .split(' - ')
-                              .last
-                              .replaceAll('am', ' AM')
-                              .replaceAll('pm', ' PM'));
-                          var end = widget.date +
-                              ' ' +
-                              DateFormat('HH:mm').format(endDate);
+                          var stDate = DateFormat.jm().parse(widget.time.toString().split(' - ').first.replaceAll('am', ' AM').replaceAll('pm', ' PM'));
+                          var start = widget.date + ' ' + DateFormat('HH:mm').format(stDate);
+                          var endDate = DateFormat.jm().parse(widget.time.toString().split(' - ').last.replaceAll('am', ' AM').replaceAll('pm', ' PM'));
+                          var end = widget.date + ' ' + DateFormat('HH:mm').format(endDate);
                           var stDt = DateTime.parse(start);
                           var endDt = DateTime.parse(end);
                           return Container(
@@ -514,17 +495,13 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            emp['name'].toString().trimRight() +
-                                                ' ' +
-                                                emp['empId'],
+                                            emp['name'].toString().trimRight() + ' ' + emp['empId'],
                                             style: TextStyle(
                                               fontSize: 16.0,
                                               fontWeight: FontWeight.bold,
@@ -537,9 +514,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                             ),
                                           ),
                                           Visibility(
-                                            visible: emp['showTime'] == ''
-                                                ? false
-                                                : true,
+                                            visible: emp['showTime'] == '' ? false : true,
                                             child: Text(
                                               emp['showTime'],
                                               style: TextStyle(
@@ -549,8 +524,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                           ),
                                         ],
                                       ),
-                                      emp['attendanceAlias'] != null &&
-                                              emp['attendanceAlias'] != ''
+                                      emp['attendanceAlias'] != null && emp['attendanceAlias'] != ''
                                           ? RaisedButton(
                                               onPressed: () async {
                                                 await Get.defaultDialog(
@@ -561,58 +535,44 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                   barrierDismissible: false,
                                                   onConfirm: () async {
                                                     Get.back();
-                                                    var attRes = await enC
-                                                        .giveAttendance(
+                                                    var attRes = await enC.giveAttendance(
                                                       widget.date,
                                                       widget.shift,
                                                       widget.clientId,
                                                       '',
                                                       emp['empId'],
                                                       emp['designation'],
-                                                      emp['showType'] ==
-                                                              'apprej'
-                                                          ? emp[
-                                                              'attendanceAlias']
-                                                          : '',
+                                                      emp['showType'] == 'apprej' ? emp['attendanceAlias'] : '',
                                                       stDt,
                                                       endDt,
                                                       extraName: 'Clear',
                                                       extraParam: '',
                                                     );
                                                     if (attRes) {
-                                                      if (emp['attendanceAlias'] ==
-                                                          'P') {
+                                                      if (emp['attendanceAlias'] == 'P') {
                                                         enC.p.value--;
-                                                      } else if (emp[
-                                                              'attendanceAlias'] ==
-                                                          'WO') {
+                                                      } else if (emp['attendanceAlias'] == 'WO') {
                                                         enC.wo.value--;
-                                                      } else if (emp[
-                                                              'attendanceAlias'] ==
-                                                          'L') {
+                                                      } else if (emp['attendanceAlias'] == 'L') {
                                                         enC.l.value--;
                                                       }
-                                                      emp['attendanceAlias'] =
-                                                          '';
+                                                      emp['attendanceAlias'] = '';
                                                       emp['overTime'] = null;
                                                       emp['lt'] = null;
-                                                      if (emp['showType'] ==
-                                                          'apprej') {
+                                                      if (emp['showType'] == 'apprej') {
                                                         emp['status'] = '0';
                                                       }
                                                       setState(() {});
                                                     }
                                                   },
                                                   onCancel: () {},
-                                                  confirmTextColor:
-                                                      Colors.white,
+                                                  confirmTextColor: Colors.white,
                                                   textConfirm: 'Yes',
                                                   textCancel: 'No',
                                                 );
                                               },
                                               child: Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
+                                                padding: const EdgeInsets.symmetric(
                                                   horizontal: 5.0,
                                                   vertical: 10.0,
                                                 ),
@@ -626,8 +586,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                               color: Colors.white,
                                               elevation: 0,
                                               shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
+                                                borderRadius: BorderRadius.circular(
                                                   5.0,
                                                 ),
                                                 side: BorderSide(
@@ -638,21 +597,18 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                           : RaisedButton(
                                               onPressed: () {
                                                 Get.defaultDialog(
-                                                  title:
-                                                      'Remarks for ${emp['name']}',
+                                                  title: 'Remarks for ${emp['name']}',
                                                   content: TextField(
                                                     controller: cRemark,
                                                     decoration: InputDecoration(
                                                       isDense: true,
-                                                      contentPadding:
-                                                          EdgeInsets.all(
+                                                      contentPadding: EdgeInsets.all(
                                                         10.0,
                                                       ),
                                                       hintStyle: TextStyle(
                                                         color: Colors.grey[600],
                                                         fontSize: 18.0,
-                                                        fontWeight:
-                                                            FontWeight.bold,
+                                                        fontWeight: FontWeight.bold,
                                                       ),
                                                       hintText: 'Enter remarks',
                                                     ),
@@ -662,8 +618,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                     if (cRemark.text != '') {
                                                       // client['remarks'] =
                                                       //     cRemark.text;
-                                                      emp['remarks'] =
-                                                          cRemark.text;
+                                                      emp['remarks'] = cRemark.text;
                                                       cRemark.text = '';
                                                       Get.back();
                                                     }
@@ -671,14 +626,12 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                   onCancel: () {
                                                     cRemark.text = '';
                                                   },
-                                                  confirmTextColor:
-                                                      Colors.white,
+                                                  confirmTextColor: Colors.white,
                                                   textConfirm: 'Add',
                                                 );
                                               },
                                               child: Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
+                                                padding: const EdgeInsets.symmetric(
                                                   horizontal: 5.0,
                                                   vertical: 10.0,
                                                 ),
@@ -692,8 +645,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                               color: Colors.white,
                                               elevation: 0,
                                               shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
+                                                borderRadius: BorderRadius.circular(
                                                   5.0,
                                                 ),
                                                 side: BorderSide(
@@ -723,12 +675,9 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                         var atRes;
                                                         print(val);
                                                         if (val == 'Modify') {
-                                                          TimeRange result =
-                                                              await showTimeRangePicker(
+                                                          TimeRange result = await showTimeRangePicker(
                                                             context: context,
-                                                            paintingStyle:
-                                                                PaintingStyle
-                                                                    .fill,
+                                                            paintingStyle: PaintingStyle.fill,
                                                             labels: [
                                                               '12 PM',
                                                               '3 AM',
@@ -738,12 +687,8 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                               '3 PM',
                                                               '6 PM',
                                                               '9 PM',
-                                                            ]
-                                                                .asMap()
-                                                                .entries
-                                                                .map((e) {
-                                                              return ClockLabel
-                                                                  .fromIndex(
+                                                            ].asMap().entries.map((e) {
+                                                              return ClockLabel.fromIndex(
                                                                 idx: e.key,
                                                                 length: 8,
                                                                 text: e.value,
@@ -764,41 +709,20 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                             //     .endTime.hour);
                                                             // print(result.endTime
                                                             //     .minute);
-                                                            var sth = result
-                                                                .startTime.hour;
-                                                            var stm = result
-                                                                .startTime
-                                                                .minute;
-                                                            var enh = result
-                                                                .endTime.hour;
-                                                            var enm = result
-                                                                .endTime.minute;
-                                                            var stH = sth < 9
-                                                                ? '0' + sth.toString()
-                                                                : sth;
-                                                            var stM = stm < 9
-                                                                ? '0' + stm.toString()
-                                                                : stm;
-                                                            var enH = enh < 9
-                                                                ? '0' + enh.toString()
-                                                                : enh;
-                                                            var enM = enm < 9
-                                                                ? '0' + enm.toString()
-                                                                : enm;
-                                                            var dt =
-                                                                widget.date;
-                                                            var start = dt +
-                                                                ' $stH:$stM:00.000';
-                                                            var end = dt +
-                                                                ' $enH:$enM:00.000';
-                                                            var stDt =
-                                                                DateTime.parse(
-                                                                    start);
-                                                            var endDt =
-                                                                DateTime.parse(
-                                                                    end);
-                                                            atRes = await enC
-                                                                .giveAttendance(
+                                                            var sth = result.startTime.hour;
+                                                            var stm = result.startTime.minute;
+                                                            var enh = result.endTime.hour;
+                                                            var enm = result.endTime.minute;
+                                                            var stH = sth < 9 ? '0' + sth.toString() : sth;
+                                                            var stM = stm < 9 ? '0' + stm.toString() : stm;
+                                                            var enH = enh < 9 ? '0' + enh.toString() : enh;
+                                                            var enM = enm < 9 ? '0' + enm.toString() : enm;
+                                                            var dt = widget.date;
+                                                            var start = dt + ' $stH:$stM:00.000';
+                                                            var end = dt + ' $enH:$enM:00.000';
+                                                            var stDt = DateTime.parse(start);
+                                                            var endDt = DateTime.parse(end);
+                                                            atRes = await enC.giveAttendance(
                                                               widget.date,
                                                               widget.shift,
                                                               widget.clientId,
@@ -812,16 +736,13 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                               // extraParam: emp['overTime'],
                                                             );
                                                             if (atRes) {
-                                                              emp['attendanceAlias'] =
-                                                                  val;
-                                                              emp['status'] =
-                                                                  '1';
+                                                              emp['attendanceAlias'] = val;
+                                                              emp['status'] = '1';
                                                             }
                                                             setState(() {});
                                                           }
                                                         } else {
-                                                          atRes = await enC
-                                                              .giveAttendance(
+                                                          atRes = await enC.giveAttendance(
                                                             widget.date,
                                                             widget.shift,
                                                             widget.clientId,
@@ -835,32 +756,24 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                             // extraParam: emp['overTime'],
                                                           );
                                                           if (atRes) {
-                                                            emp['attendanceAlias'] =
-                                                                val;
-                                                            if (val ==
-                                                                'Reject') {
-                                                              emp['status'] =
-                                                                  '2';
+                                                            emp['attendanceAlias'] = val;
+                                                            if (val == 'Reject') {
+                                                              emp['status'] = '2';
                                                             } else {
-                                                              emp['status'] =
-                                                                  '1';
+                                                              emp['status'] = '1';
                                                             }
                                                           }
                                                           setState(() {});
                                                         }
                                                       },
-                                                choiceItems: C2Choice.listFrom<
-                                                    String, dynamic>(
+                                                choiceItems: C2Choice.listFrom<String, dynamic>(
                                                   source: appRej,
-                                                  value: (i, v) =>
-                                                      appRej[i]['value'],
-                                                  label: (i, v) =>
-                                                      appRej[i]['label'],
+                                                  value: (i, v) => appRej[i]['value'],
+                                                  label: (i, v) => appRej[i]['label'],
                                                 ),
                                                 wrapped: true,
                                                 padding: EdgeInsets.all(0),
-                                                choiceActiveStyle:
-                                                    C2ChoiceStyle(
+                                                choiceActiveStyle: C2ChoiceStyle(
                                                   showCheckmark: false,
                                                   brightness: Brightness.dark,
                                                   labelStyle: TextStyle(
@@ -868,8 +781,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                   color: Colors.grey,
-                                                  borderRadius:
-                                                      BorderRadius.all(
+                                                  borderRadius: BorderRadius.all(
                                                     Radius.circular(
                                                       5.0,
                                                     ),
@@ -880,8 +792,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                     color: Colors.grey[700],
                                                     fontWeight: FontWeight.bold,
                                                   ),
-                                                  borderRadius:
-                                                      BorderRadius.all(
+                                                  borderRadius: BorderRadius.all(
                                                     Radius.circular(
                                                       5.0,
                                                     ),
@@ -897,30 +808,23 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                 // var ot = '';
                                                 // var lt = '';
                                                 var attendanceRes;
-                                                if (val == 'OT' &&
-                                                    emp['attendanceAlias'] ==
-                                                        'OT') {
+                                                if (val == 'OT' && emp['attendanceAlias'] == 'OT') {
                                                   otT.text = emp['overTime'];
                                                   await Get.defaultDialog(
                                                     title: 'Over Time',
                                                     content: TextField(
                                                       controller: otT,
                                                       readOnly: true,
-                                                      keyboardType:
-                                                          TextInputType.number,
-                                                      decoration:
-                                                          InputDecoration(
+                                                      keyboardType: TextInputType.number,
+                                                      decoration: InputDecoration(
                                                         isDense: true,
-                                                        contentPadding:
-                                                            EdgeInsets.all(
+                                                        contentPadding: EdgeInsets.all(
                                                           10.0,
                                                         ),
                                                         hintStyle: TextStyle(
-                                                          color:
-                                                              Colors.grey[600],
+                                                          color: Colors.grey[600],
                                                           fontSize: 18.0,
-                                                          fontWeight:
-                                                              FontWeight.bold,
+                                                          fontWeight: FontWeight.bold,
                                                         ),
                                                         hintText: 'hours',
                                                       ),
@@ -931,30 +835,23 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                     },
                                                   );
                                                 }
-                                                if (val == 'LT' &&
-                                                    emp['attendanceAlias'] ==
-                                                        'LT') {
+                                                if (val == 'LT' && emp['attendanceAlias'] == 'LT') {
                                                   ltT.text = emp['lt'];
                                                   await Get.defaultDialog(
                                                     title: 'Late',
                                                     content: TextField(
                                                       controller: ltT,
                                                       readOnly: true,
-                                                      keyboardType:
-                                                          TextInputType.number,
-                                                      decoration:
-                                                          InputDecoration(
+                                                      keyboardType: TextInputType.number,
+                                                      decoration: InputDecoration(
                                                         isDense: true,
-                                                        contentPadding:
-                                                            EdgeInsets.all(
+                                                        contentPadding: EdgeInsets.all(
                                                           10.0,
                                                         ),
                                                         hintStyle: TextStyle(
-                                                          color:
-                                                              Colors.grey[600],
+                                                          color: Colors.grey[600],
                                                           fontSize: 18.0,
-                                                          fontWeight:
-                                                              FontWeight.bold,
+                                                          fontWeight: FontWeight.bold,
                                                         ),
                                                         hintText: 'minutes',
                                                       ),
@@ -965,10 +862,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                     },
                                                   );
                                                 }
-                                                if (emp['attendanceAlias'] ==
-                                                        null ||
-                                                    emp['attendanceAlias'] ==
-                                                        '') {
+                                                if (emp['attendanceAlias'] == null || emp['attendanceAlias'] == '') {
                                                   var empRemarks = '';
                                                   if (emp['remarks'] != null) {
                                                     empRemarks = emp['remarks'];
@@ -979,23 +873,17 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                       title: 'Over Time',
                                                       content: TextField(
                                                         controller: otT,
-                                                        keyboardType:
-                                                            TextInputType
-                                                                .number,
+                                                        keyboardType: TextInputType.number,
                                                         autofocus: true,
-                                                        decoration:
-                                                            InputDecoration(
+                                                        decoration: InputDecoration(
                                                           isDense: true,
-                                                          contentPadding:
-                                                              EdgeInsets.all(
+                                                          contentPadding: EdgeInsets.all(
                                                             10.0,
                                                           ),
                                                           hintStyle: TextStyle(
-                                                            color: Colors
-                                                                .grey[600],
+                                                            color: Colors.grey[600],
                                                             fontSize: 18.0,
-                                                            fontWeight:
-                                                                FontWeight.bold,
+                                                            fontWeight: FontWeight.bold,
                                                           ),
                                                           hintText: 'hours',
                                                         ),
@@ -1003,13 +891,10 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                       barrierDismissible: false,
                                                       onConfirm: () async {
                                                         if (otT.text != '') {
-                                                          emp['overTime'] =
-                                                              otT.text;
+                                                          emp['overTime'] = otT.text;
                                                           otT.text = '';
                                                           Get.back();
-                                                          attendanceRes =
-                                                              await enC
-                                                                  .giveAttendance(
+                                                          attendanceRes = await enC.giveAttendance(
                                                             widget.date,
                                                             widget.shift,
                                                             widget.clientId,
@@ -1019,37 +904,26 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                             empRemarks,
                                                             stDt,
                                                             endDt,
-                                                            extraName:
-                                                                'OverTime',
-                                                            extraParam:
-                                                                emp['overTime'],
+                                                            extraName: 'OverTime',
+                                                            extraParam: emp['overTime'],
                                                           );
                                                           if (attendanceRes) {
-                                                            if (emp['attendanceAlias'] !=
-                                                                null) {
-                                                              if (emp['attendanceAlias'] ==
-                                                                  'P') {
+                                                            if (emp['attendanceAlias'] != null) {
+                                                              if (emp['attendanceAlias'] == 'P') {
                                                                 enC.p.value--;
-                                                              } else if (emp[
-                                                                      'attendanceAlias'] ==
-                                                                  'WO') {
+                                                              } else if (emp['attendanceAlias'] == 'WO') {
                                                                 enC.wo.value--;
-                                                              } else if (emp[
-                                                                      'attendanceAlias'] ==
-                                                                  'L') {
+                                                              } else if (emp['attendanceAlias'] == 'L') {
                                                                 enC.l.value--;
                                                               }
                                                             }
                                                             emp['lt'] = null;
-                                                            emp['attendanceAlias'] =
-                                                                val;
+                                                            emp['attendanceAlias'] = val;
                                                             if (val == 'P') {
                                                               enC.p.value++;
-                                                            } else if (val ==
-                                                                'WO') {
+                                                            } else if (val == 'WO') {
                                                               enC.wo.value++;
-                                                            } else if (val ==
-                                                                'L') {
+                                                            } else if (val == 'L') {
                                                               enC.l.value++;
                                                             }
                                                             setState(() {});
@@ -1059,8 +933,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                       onCancel: () {
                                                         otT.text = '';
                                                       },
-                                                      confirmTextColor:
-                                                          Colors.white,
+                                                      confirmTextColor: Colors.white,
                                                       textConfirm: 'Submit',
                                                     );
                                                   } else if (val == 'LT') {
@@ -1070,22 +943,16 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                       content: TextField(
                                                         controller: ltT,
                                                         autofocus: true,
-                                                        keyboardType:
-                                                            TextInputType
-                                                                .number,
-                                                        decoration:
-                                                            InputDecoration(
+                                                        keyboardType: TextInputType.number,
+                                                        decoration: InputDecoration(
                                                           isDense: true,
-                                                          contentPadding:
-                                                              EdgeInsets.all(
+                                                          contentPadding: EdgeInsets.all(
                                                             10.0,
                                                           ),
                                                           hintStyle: TextStyle(
-                                                            color: Colors
-                                                                .grey[600],
+                                                            color: Colors.grey[600],
                                                             fontSize: 18.0,
-                                                            fontWeight:
-                                                                FontWeight.bold,
+                                                            fontWeight: FontWeight.bold,
                                                           ),
                                                           hintText: 'minutes',
                                                         ),
@@ -1096,9 +963,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                           emp['lt'] = ltT.text;
                                                           ltT.text = '';
                                                           Get.back();
-                                                          attendanceRes =
-                                                              await enC
-                                                                  .giveAttendance(
+                                                          attendanceRes = await enC.giveAttendance(
                                                             widget.date,
                                                             widget.shift,
                                                             widget.clientId,
@@ -1109,36 +974,25 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                             stDt,
                                                             endDt,
                                                             extraName: 'Late',
-                                                            extraParam:
-                                                                emp['lt'],
+                                                            extraParam: emp['lt'],
                                                           );
                                                           if (attendanceRes) {
-                                                            if (emp['attendanceAlias'] !=
-                                                                null) {
-                                                              if (emp['attendanceAlias'] ==
-                                                                  'P') {
+                                                            if (emp['attendanceAlias'] != null) {
+                                                              if (emp['attendanceAlias'] == 'P') {
                                                                 enC.p.value--;
-                                                              } else if (emp[
-                                                                      'attendanceAlias'] ==
-                                                                  'WO') {
+                                                              } else if (emp['attendanceAlias'] == 'WO') {
                                                                 enC.wo.value--;
-                                                              } else if (emp[
-                                                                      'attendanceAlias'] ==
-                                                                  'L') {
+                                                              } else if (emp['attendanceAlias'] == 'L') {
                                                                 enC.l.value--;
                                                               }
                                                             }
-                                                            emp['attendanceAlias'] =
-                                                                val;
-                                                            emp['overTime'] =
-                                                                null;
+                                                            emp['attendanceAlias'] = val;
+                                                            emp['overTime'] = null;
                                                             if (val == 'P') {
                                                               enC.p.value++;
-                                                            } else if (val ==
-                                                                'WO') {
+                                                            } else if (val == 'WO') {
                                                               enC.wo.value++;
-                                                            } else if (val ==
-                                                                'L') {
+                                                            } else if (val == 'L') {
                                                               enC.l.value++;
                                                             }
                                                             setState(() {});
@@ -1148,13 +1002,11 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                       onCancel: () {
                                                         ltT.text = '';
                                                       },
-                                                      confirmTextColor:
-                                                          Colors.white,
+                                                      confirmTextColor: Colors.white,
                                                       textConfirm: 'Submit',
                                                     );
                                                   } else {
-                                                    attendanceRes = await enC
-                                                        .giveAttendance(
+                                                    attendanceRes = await enC.giveAttendance(
                                                       widget.date,
                                                       widget.shift,
                                                       widget.clientId,
@@ -1166,8 +1018,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                       endDt,
                                                     );
                                                     if (attendanceRes) {
-                                                      emp['attendanceAlias'] =
-                                                          val;
+                                                      emp['attendanceAlias'] = val;
                                                       if (val == 'P') {
                                                         enC.p.value++;
                                                       } else if (val == 'WO') {
@@ -1180,13 +1031,10 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                   }
                                                 }
                                               },
-                                              choiceItems: C2Choice.listFrom<
-                                                  String, dynamic>(
+                                              choiceItems: C2Choice.listFrom<String, dynamic>(
                                                 source: not,
-                                                value: (i, v) =>
-                                                    not[i]['alias'],
-                                                label: (i, v) =>
-                                                    not[i]['notation'],
+                                                value: (i, v) => not[i]['alias'],
+                                                label: (i, v) => not[i]['notation'],
                                               ),
                                               wrapped: true,
                                               padding: EdgeInsets.all(0),

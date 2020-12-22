@@ -4,8 +4,7 @@
 
 import 'dart:convert';
 
-DbCalendar dbCalendarFromJson(String str) =>
-    DbCalendar.fromJson(json.decode(str));
+DbCalendar dbCalendarFromJson(String str) => DbCalendar.fromJson(json.decode(str));
 
 String dbCalendarToJson(DbCalendar data) => json.encode(data.toJson());
 
@@ -28,8 +27,7 @@ class DbCalendar {
         success: json['success'],
         msg: json['msg'],
         calendarView: CalendarView.fromJson(json['calendarView']),
-        attendanceList: List<AttendanceList>.from(
-            json['attendanceList'].map((x) => AttendanceList.fromJson(x))),
+        attendanceList: List<AttendanceList>.from(json['attendanceList'].map((x) => AttendanceList.fromJson(x))),
         empRosterList: List<dynamic>.from(json['empRosterList'].map((x) => x)),
       );
 
@@ -37,8 +35,7 @@ class DbCalendar {
         'success': success,
         'msg': msg,
         'calendarView': calendarView.toJson(),
-        'attendanceList':
-            List<dynamic>.from(attendanceList.map((x) => x.toJson())),
+        'attendanceList': List<dynamic>.from(attendanceList.map((x) => x.toJson())),
         'empRosterList': List<dynamic>.from(empRosterList.map((x) => x)),
       };
 }
@@ -104,16 +101,12 @@ class AttendanceList {
         checkInDateTime: DateTime.parse(json['checkInDateTime']),
         checkOutLongitude: json['checkOutLongitude'],
         clientId: json['clientId'],
-        checkOutDateTime: json['checkOutDateTime'] == null
-            ? null
-            : DateTime.parse(json['checkOutDateTime']),
+        checkOutDateTime: json['checkOutDateTime'] == null ? null : DateTime.parse(json['checkOutDateTime']),
         checkInLatitude: json['checkInLatitude'],
         shift: json['shift'],
         attendanceAlias: json['attendanceAlias'],
         checkOutLatitude: json['checkOutLatitude'],
-        updatedDateTime: json['updatedDateTime'] == null
-            ? null
-            : DateTime.parse(json['updatedDateTime']),
+        updatedDateTime: json['updatedDateTime'] == null ? null : DateTime.parse(json['updatedDateTime']),
         id: json['id'],
         createdDateTime: DateTime.parse(json['createdDateTime']),
         status: json['status'],
@@ -133,15 +126,12 @@ class AttendanceList {
         'checkInDateTime': checkInDateTime.toIso8601String(),
         'checkOutLongitude': checkOutLongitude,
         'clientId': clientId,
-        'checkOutDateTime': checkOutDateTime == null
-            ? null
-            : checkOutDateTime.toIso8601String(),
+        'checkOutDateTime': checkOutDateTime == null ? null : checkOutDateTime.toIso8601String(),
         'checkInLatitude': checkInLatitude,
         'shift': shift,
         'attendanceAlias': attendanceAlias,
         'checkOutLatitude': checkOutLatitude,
-        'updatedDateTime':
-            updatedDateTime == null ? null : updatedDateTime.toIso8601String(),
+        'updatedDateTime': updatedDateTime == null ? null : updatedDateTime.toIso8601String(),
         'id': id,
         'createdDateTime': createdDateTime.toIso8601String(),
         'status': status,

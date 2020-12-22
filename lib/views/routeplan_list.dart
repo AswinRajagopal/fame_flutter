@@ -51,6 +51,10 @@ class _RouteplanListState extends State<RouteplanList> {
     epC.pr.style(
       backgroundColor: Colors.black,
     );
+    Future.delayed(
+      Duration(milliseconds: 100),
+      epC.getEmprPlan,
+    );
     super.initState();
   }
 
@@ -109,8 +113,7 @@ class _RouteplanListState extends State<RouteplanList> {
               if (epC.isEmpLoading.value) {
                 return Column();
               } else {
-                if (epC.empRes.routePlanList.isEmpty ||
-                    epC.empRes.routePlanList == null) {
+                if (epC.empRes.routePlanList.isEmpty || epC.empRes.routePlanList == null) {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,

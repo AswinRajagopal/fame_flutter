@@ -6,11 +6,7 @@ class LoadingWidget extends StatelessWidget {
   final double loaderSize;
   final Color loaderColor;
   final Color containerColor;
-  LoadingWidget(
-      {this.containerColor,
-      this.containerHeight,
-      this.loaderSize,
-      this.loaderColor});
+  LoadingWidget({this.containerColor, this.containerHeight, this.loaderSize, this.loaderColor});
 
   @override
   Widget build(BuildContext context) {

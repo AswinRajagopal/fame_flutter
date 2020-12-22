@@ -66,24 +66,6 @@ class _CheckinPageState extends State<CheckinPage> {
     super.dispose();
   }
 
-  // void _getAddressFromLatLng() async {
-  //   try {
-  //     var placemark = await placemarkFromCoordinates(
-  //       _currentPosition.latitude,
-  //       _currentPosition.longitude,
-  //     );
-  //     var first = placemark.first;
-  //     // print(first);
-  //     setState(() {
-  //       currentAddress =
-  //           '${first.subLocality}, ${first.locality}, ${first.postalCode}, ${first.country}';
-  //     });
-  //     // print(currentAddress);
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
-
   void initCam() async {
     cameras = await availableCameras();
     controller = CameraController(
@@ -457,10 +439,7 @@ class _CheckinPageState extends State<CheckinPage> {
                     ),
                     Obx(() {
                       return RaisedButton(
-                        onPressed: checkinController.currentAddress.value ==
-                                'Fetching your location...'
-                            ? null
-                            : takePicture,
+                        onPressed: checkinController.currentAddress.value == 'Fetching your location...' ? null : takePicture,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 30.0,

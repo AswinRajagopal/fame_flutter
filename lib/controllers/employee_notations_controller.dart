@@ -80,13 +80,10 @@ class EmployeeNotationsController extends GetxController {
             var emp = res['empDailyAttView'][j];
             emp['showTime'] = '';
             emp['showType'] = 'att';
-            if (emp['checkInLatitude'] != null &&
-                emp['checkInLatitude'] != '0E-8') {
+            if (emp['checkInLatitude'] != null && emp['checkInLatitude'] != '0E-8') {
               var strToTime = emp['checkInDateTime'];
               if (emp['checkOutDateTime'] != null) {
-                strToTime = timeConvert(strToTime.toString()) +
-                    ' to ' +
-                    timeConvert(emp['checkOutDateTime'].toString());
+                strToTime = timeConvert(strToTime.toString()) + ' to ' + timeConvert(emp['checkOutDateTime'].toString());
 
                 emp['showTime'] = strToTime;
                 // showType = 'apprej';
@@ -179,9 +176,7 @@ class EmployeeNotationsController extends GetxController {
         } else {
           Get.snackbar(
             'Error',
-            extraName != null && extraName == 'Clear'
-                ? 'Attendance not cleared'
-                : 'Attendance not given',
+            extraName != null && extraName == 'Clear' ? 'Attendance not cleared' : 'Attendance not given',
             colorText: Colors.white,
             backgroundColor: Colors.red,
             snackPosition: SnackPosition.BOTTOM,

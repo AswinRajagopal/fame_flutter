@@ -4,8 +4,7 @@
 
 import 'dart:convert';
 
-Attendance attendanceFromJson(String str) =>
-    Attendance.fromJson(json.decode(str));
+Attendance attendanceFromJson(String str) => Attendance.fromJson(json.decode(str));
 
 String attendanceToJson(Attendance data) => json.encode(data.toJson());
 
@@ -56,8 +55,7 @@ class ClientsandManpowerArrList {
   Client client;
   List<ClientManpowerList> clientManpowerList;
 
-  factory ClientsandManpowerArrList.fromJson(Map<String, dynamic> json) =>
-      ClientsandManpowerArrList(
+  factory ClientsandManpowerArrList.fromJson(Map<String, dynamic> json) => ClientsandManpowerArrList(
         client: Client.fromJson(json['client']),
         clientManpowerList: List<ClientManpowerList>.from(
           json['clientManpowerList'].map(
@@ -171,8 +169,7 @@ class ClientManpowerList {
   dynamic contractId;
   dynamic modifiedOn;
 
-  factory ClientManpowerList.fromJson(Map<String, dynamic> json) =>
-      ClientManpowerList(
+  factory ClientManpowerList.fromJson(Map<String, dynamic> json) => ClientManpowerList(
         createdOn: json['createdOn'],
         createdBy: json['createdBy'],
         design: json['design'],
@@ -218,8 +215,7 @@ class CompanyDetailsCentralDb {
   bool active;
   String dbname;
 
-  factory CompanyDetailsCentralDb.fromJson(Map<String, dynamic> json) =>
-      CompanyDetailsCentralDb(
+  factory CompanyDetailsCentralDb.fromJson(Map<String, dynamic> json) => CompanyDetailsCentralDb(
         companyId: json['companyId'],
         companyName: json['companyName'],
         createdDateTime: json['createdDateTime'],

@@ -239,6 +239,35 @@ class RemoteServices {
     }
   }
 
+  Future getDbDetails() async {
+    print('getDashboardDetails');
+    print(box.get('empid'));
+    print(box.get('companyid'));
+    var response = await client.post(
+      '$baseURL/attendance/dashboard_flut',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'pushCode': '',
+        },
+      ),
+    );
+    // print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      // print(response.body.runtimeType);
+      // print(response.body);
+      // print(jsonDecode(response.body)['empdetails']);
+      // developer.log('jsonString: ${jsonString.toString()}');
+      return jsonDecode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
   Future<EmpRPlan> getEmprPlan() async {
     // print('getEmprPlan');
     // print(box.get('empid'));
@@ -602,11 +631,7 @@ class RemoteServices {
     orderBy,
     checkFilter,
   ) async {
-    var dt = date.toString().split('-')[2] +
-        '-' +
-        date.toString().split('-')[1] +
-        '-' +
-        date.toString().split('-')[0];
+    var dt = date.toString().split('-')[2] + '-' + date.toString().split('-')[1] + '-' + date.toString().split('-')[0];
     var response = await client.post(
       '$baseURL/attendance/notations_emps',
       headers: header,
@@ -649,7 +674,8 @@ class RemoteServices {
     var fullDt = date.toString().split('-');
     var dt = fullDt[2];
     var month = fullDt[1] + fullDt[0].substring(2);
-    print(jsonEncode(
+    print(
+      jsonEncode(
         <String, dynamic>{
           'companyId': box.get('companyid').toString(),
           'inchargeId': box.get('empid').toString(),
@@ -666,7 +692,8 @@ class RemoteServices {
           'extraName': extraName ?? '',
           'extraParam': extraParam ?? '',
         },
-      ),);
+      ),
+    );
     var response = await client.post(
       '$baseURL/attendance/incharge_attendance',
       headers: header,
@@ -696,6 +723,28 @@ class RemoteServices {
       print(jsonString);
       return json.decode(jsonString);
     } else {
+      return null;
+    }
+  }
+
+  Future getPitstops(rplanId, companyId) async {
+    var response = await client.post(
+      '$baseURL/location/get_rplan_details',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'rplanId': rplanId,
+          'companyId': companyId,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      // return pitstopsFromJson(jsonString);
+      return json.decode(jsonString);
+    } else {
+      //show error message
       return null;
     }
   }

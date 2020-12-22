@@ -29,11 +29,18 @@ class EmprplanController extends GetxController {
   }
 
   void getEmprPlan() async {
+    print('getEmprPlan');
     try {
       isEmpLoading(true);
+      if (pr != null) {
+        await pr.show();
+      }
       empRes = await RemoteServices().getEmprPlan();
       if (empRes != null) {
         isEmpLoading(false);
+        if (pr != null) {
+          await pr.hide();
+        }
         if (empRes.success) {
         } else {
           Get.snackbar(
@@ -52,6 +59,9 @@ class EmprplanController extends GetxController {
     } catch (e) {
       print(e);
       isEmpLoading(false);
+      if (pr != null) {
+        await pr.hide();
+      }
       Get.snackbar(
         'Error',
         'Something went wrong! Please try again later',

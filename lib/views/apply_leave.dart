@@ -401,15 +401,8 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                             RaisedButton(
                               onPressed: () {
                                 print('Apply Leave');
-                                FocusScope.of(context)
-                                    .requestFocus(FocusNode());
-                                if (fromDt.text == null ||
-                                    fromDt.text == '' ||
-                                    toDt.text == null ||
-                                    toDt.text == '' ||
-                                    reason.text == null ||
-                                    reason.text == '' ||
-                                    leaveType == '') {
+                                FocusScope.of(context).requestFocus(FocusNode());
+                                if (fromDt.text == null || fromDt.text == '' || toDt.text == null || toDt.text == '' || reason.text == null || reason.text == '' || leaveType == '') {
                                   Get.snackbar(
                                     'Error',
                                     'Please fill all data',

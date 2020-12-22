@@ -4,8 +4,7 @@
 
 import 'dart:convert';
 
-ApplyLeave applyLeaveFromJson(String str) =>
-    ApplyLeave.fromJson(json.decode(str));
+ApplyLeave applyLeaveFromJson(String str) => ApplyLeave.fromJson(json.decode(str));
 
 String applyLeaveToJson(ApplyLeave data) => json.encode(data.toJson());
 

@@ -53,9 +53,7 @@ class ProfileController extends GetxController {
             await RemoteServices().box.put('pImg', '');
           } else {
             endPoint = 'update_image';
-            await RemoteServices()
-                .box
-                .put('pImg', profileRes.profileImage.image.split(',').last);
+            await RemoteServices().box.put('pImg', profileRes.profileImage.image.split(',').last);
           }
         } else {
           Get.snackbar(

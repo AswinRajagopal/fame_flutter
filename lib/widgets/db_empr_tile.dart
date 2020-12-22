@@ -1,3 +1,5 @@
+import '../views/pitstops.dart';
+
 import '../views/routeplan_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -85,213 +87,216 @@ class DBEmprTile extends StatelessWidget {
               ),
             ),
           )
-        : Padding(
-            padding: EdgeInsets.fromLTRB(
-              index == 0 ? 20.0 : 5.0,
-              10.0,
-              index == length - 1 ? 20.0 : 5.0,
-              10.0,
-            ),
-            child: Container(
-              width: 350.0,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(
-                    15.0,
+        : GestureDetector(
+            onTap: () {
+              print(empRoute.routePlanId);
+              print(empRoute.companyId);
+              Get.offAll(Pitstops(empRoute.routePlanId, empRoute.companyId, 'db'));
+            },
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(
+                index == 0 ? 20.0 : 5.0,
+                10.0,
+                index == length - 1 ? 20.0 : 5.0,
+                10.0,
+              ),
+              child: Container(
+                width: 350.0,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(
+                      15.0,
+                    ),
                   ),
                 ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 25.0,
-                  horizontal: 15.0,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Plan name',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: titleSize,
-                          ),
-                          maxLines: 1,
-                        ),
-                        SizedBox(
-                          width: 50.0,
-                        ),
-                        Text(
-                          ':',
-                          style: TextStyle(
-                            fontSize: textSize,
-                          ),
-                        ),
-                        SizedBox(
-                          width: secondWidth,
-                        ),
-                        Text(
-                          empRoute.planName != null && empRoute.planName != ''
-                              ? empRoute.planName.toString()
-                              : 'N/A',
-                          style: TextStyle(
-                            fontSize: textSize,
-                            color: Colors.grey,
-                          ),
-                          maxLines: 1,
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: rowAfterSize,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Created by',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: titleSize,
-                          ),
-                        ),
-                        SizedBox(
-                          width: firstWidth,
-                        ),
-                        Text(
-                          ':',
-                          style: TextStyle(
-                            fontSize: textSize,
-                          ),
-                        ),
-                        SizedBox(
-                          width: secondWidth,
-                        ),
-                        Text(
-                          empRoute.createdBy.toString(),
-                          style: TextStyle(
-                            fontSize: textSize,
-                            color: Colors.grey,
-                          ),
-                          maxLines: 1,
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: rowAfterSize,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Admin Remarks',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: titleSize,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10.0,
-                        ),
-                        Text(
-                          ':',
-                          style: TextStyle(
-                            fontSize: textSize,
-                          ),
-                        ),
-                        SizedBox(
-                          width: secondWidth,
-                        ),
-                        Flexible(
-                          child: Text(
-                            empRoute.adminRemarks == null
-                                ? 'N/A'
-                                : empRoute.adminRemarks.toString(),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 25.0,
+                    horizontal: 15.0,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Plan name',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: titleSize,
+                            ),
                             maxLines: 1,
+                          ),
+                          SizedBox(
+                            width: 50.0,
+                          ),
+                          Text(
+                            ':',
+                            style: TextStyle(
+                              fontSize: textSize,
+                            ),
+                          ),
+                          SizedBox(
+                            width: secondWidth,
+                          ),
+                          Text(
+                            empRoute.planName != null && empRoute.planName != '' ? empRoute.planName.toString() : 'N/A',
+                            style: TextStyle(
+                              fontSize: textSize,
+                              color: Colors.grey,
+                            ),
+                            maxLines: 1,
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: rowAfterSize,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Created by',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: titleSize,
+                            ),
+                          ),
+                          SizedBox(
+                            width: firstWidth,
+                          ),
+                          Text(
+                            ':',
+                            style: TextStyle(
+                              fontSize: textSize,
+                            ),
+                          ),
+                          SizedBox(
+                            width: secondWidth,
+                          ),
+                          Text(
+                            empRoute.createdBy.toString(),
+                            style: TextStyle(
+                              fontSize: textSize,
+                              color: Colors.grey,
+                            ),
+                            maxLines: 1,
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: rowAfterSize,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Admin Remarks',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: titleSize,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10.0,
+                          ),
+                          Text(
+                            ':',
+                            style: TextStyle(
+                              fontSize: textSize,
+                            ),
+                          ),
+                          SizedBox(
+                            width: secondWidth,
+                          ),
+                          Flexible(
+                            child: Text(
+                              empRoute.adminRemarks == null ? 'N/A' : empRoute.adminRemarks.toString(),
+                              maxLines: 1,
+                              style: TextStyle(
+                                fontSize: textSize,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: rowAfterSize,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Status',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: titleSize,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 80.0,
+                          ),
+                          Text(
+                            ':',
+                            style: TextStyle(
+                              fontSize: textSize,
+                            ),
+                          ),
+                          SizedBox(
+                            width: secondWidth,
+                          ),
+                          Text(
+                            // empRoute.status == 1 ? 'Approved' : 'Pending',
+                            getStatus(empRoute.status),
                             style: TextStyle(
                               fontSize: textSize,
                               color: Colors.grey,
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: rowAfterSize,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Status',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: titleSize,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 80.0,
-                        ),
-                        Text(
-                          ':',
-                          style: TextStyle(
-                            fontSize: textSize,
-                          ),
-                        ),
-                        SizedBox(
-                          width: secondWidth,
-                        ),
-                        Text(
-                          // empRoute.status == 1 ? 'Approved' : 'Pending',
-                          getStatus(empRoute.status),
-                          style: TextStyle(
-                            fontSize: textSize,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: rowAfterSize,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Created on',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: titleSize,
-                          ),
-                        ),
-                        SizedBox(
-                          width: firstWidth,
-                        ),
-                        Text(
-                          ':',
-                          style: TextStyle(
-                            fontSize: textSize,
-                          ),
-                        ),
-                        SizedBox(
-                          width: secondWidth,
-                        ),
-                        Flexible(
-                          child: Text(
-                            created,
-                            maxLines: 2,
+                        ],
+                      ),
+                      SizedBox(
+                        height: rowAfterSize,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Created on',
                             style: TextStyle(
-                              fontSize: textSize,
-                              color: Colors.grey,
+                              fontWeight: FontWeight.bold,
+                              fontSize: titleSize,
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                          SizedBox(
+                            width: firstWidth,
+                          ),
+                          Text(
+                            ':',
+                            style: TextStyle(
+                              fontSize: textSize,
+                            ),
+                          ),
+                          SizedBox(
+                            width: secondWidth,
+                          ),
+                          Flexible(
+                            child: Text(
+                              created,
+                              maxLines: 2,
+                              style: TextStyle(
+                                fontSize: textSize,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

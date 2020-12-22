@@ -13,8 +13,7 @@ import 'package:progress_dialog/progress_dialog.dart';
 class CheckoutController extends GetxController {
   ProgressDialog pr;
   var checkoutResponse;
-  var todayString =
-      (DateFormat().add_jm().format(DateTime.now()).toString()).obs;
+  var todayString = (DateFormat().add_jm().format(DateTime.now()).toString()).obs;
   Position currentPosition;
   var currentAddress = 'Fetching your location...'.obs;
 
@@ -31,14 +30,12 @@ class CheckoutController extends GetxController {
 
   void updateTime() {
     Timer.periodic(Duration(seconds: 1), (timer) {
-      todayString.value =
-          DateFormat().add_jm().format(DateTime.now()).toString();
+      todayString.value = DateFormat().add_jm().format(DateTime.now()).toString();
     });
   }
 
   void getCurrentLocation() {
-    Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-        .then((Position position) {
+    Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best).then((Position position) {
       currentPosition = position;
       getAddressFromLatLng();
       // ignore: unnecessary_lambdas
@@ -54,8 +51,7 @@ class CheckoutController extends GetxController {
         currentPosition.longitude,
       );
       var first = placemark.first;
-      currentAddress.value =
-          '${first.subLocality}, ${first.locality}, ${first.postalCode}, ${first.country}';
+      currentAddress.value = '${first.subLocality}, ${first.locality}, ${first.postalCode}, ${first.country}';
       // print(currentAddress);
     } catch (e) {
       print(e);
@@ -98,8 +94,7 @@ class CheckoutController extends GetxController {
               ),
             );
             return false;
-          } else if (resDecode['0']['clientID'].toString().toLowerCase() !=
-              RemoteServices().box.get('empid').toString().toLowerCase()) {
+          } else if (resDecode['0']['clientID'].toString().toLowerCase() != RemoteServices().box.get('empid').toString().toLowerCase()) {
             Get.snackbar(
               'Error',
               "Face doesn't match.",

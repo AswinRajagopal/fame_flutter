@@ -161,9 +161,7 @@ class _AttendancePageState extends State<AttendancePage> {
                       // value: aC.clientList.first.client.id.toString(),
                       items: aC.clientList.map((item) {
                         // print('item: ${item.client.id}');
-                        var sC = item.client.name +
-                            ' - ' +
-                            item.client.id.toString();
+                        var sC = item.client.name + ' - ' + item.client.id.toString();
                         return DropdownMenuItem(
                           child: Padding(
                             padding: const EdgeInsets.only(left: 10.0),
@@ -185,16 +183,14 @@ class _AttendancePageState extends State<AttendancePage> {
                           var sSTime = DateFormat('hh:mm')
                                   .format(
                                     DateTime.parse(
-                                      '2020-12-20 ' +
-                                          manpower[j]['shiftStartTime'],
+                                      '2020-12-20 ' + manpower[j]['shiftStartTime'],
                                     ),
                                   )
                                   .toString() +
                               DateFormat('a')
                                   .format(
                                     DateTime.parse(
-                                      '2020-12-20 ' +
-                                          manpower[j]['shiftStartTime'],
+                                      '2020-12-20 ' + manpower[j]['shiftStartTime'],
                                     ),
                                   )
                                   .toString()
@@ -202,16 +198,14 @@ class _AttendancePageState extends State<AttendancePage> {
                           var sETime = DateFormat('hh:mm')
                                   .format(
                                     DateTime.parse(
-                                      '2020-12-20 ' +
-                                          manpower[j]['shiftEndTime'],
+                                      '2020-12-20 ' + manpower[j]['shiftEndTime'],
                                     ),
                                   )
                                   .toString() +
                               DateFormat('a')
                                   .format(
                                     DateTime.parse(
-                                      '2020-12-20 ' +
-                                          manpower[j]['shiftEndTime'],
+                                      '2020-12-20 ' + manpower[j]['shiftEndTime'],
                                     ),
                                   )
                                   .toString()
@@ -386,23 +380,18 @@ class _AttendancePageState extends State<AttendancePage> {
                                 height: 180.0,
                                 child: Center(
                                   child: StaggeredGridView.countBuilder(
-                                    staggeredTileBuilder: (int index) =>
-                                        StaggeredTile.fit(1),
+                                    staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
                                     shrinkWrap: true,
                                     crossAxisCount: 2,
                                     itemCount: aC.timings.length,
                                     itemBuilder: (context, index) {
                                       // print(aC.timings);
                                       var timing = aC.timings[index];
-                                      var shiftTime = timing['shiftStartTime'] +
-                                          ' - ' +
-                                          timing['shiftEndTime'];
+                                      var shiftTime = timing['shiftStartTime'] + ' - ' + timing['shiftEndTime'];
                                       return Row(
                                         children: [
                                           Radio(
-                                            value: timing['shift'] +
-                                                '#' +
-                                                shiftTime,
+                                            value: timing['shift'] + '#' + shiftTime,
                                             groupValue: aC.shiftTime,
                                             onChanged: (sVal) {
                                               setState(() {
@@ -453,9 +442,7 @@ class _AttendancePageState extends State<AttendancePage> {
                                     print('client: $clientId');
                                     print('status: $stVal');
                                     print('shift: ${aC.shiftTime}');
-                                    if (clientId == null ||
-                                        aC.shiftTime == null ||
-                                        aC.shiftTime == '') {
+                                    if (clientId == null || aC.shiftTime == null || aC.shiftTime == '') {
                                       Get.snackbar(
                                         'Error',
                                         'Please select client and shift timing',
@@ -471,10 +458,8 @@ class _AttendancePageState extends State<AttendancePage> {
                                       print('date: ${date.text}');
                                       print('client: $clientId');
                                       print('status: $stVal');
-                                      print(
-                                          'shift: ${aC.shiftTime.split('#').first}');
-                                      print(
-                                          'time: ${aC.shiftTime.split('#').last}');
+                                      print('shift: ${aC.shiftTime.split('#').first}');
+                                      print('time: ${aC.shiftTime.split('#').last}');
                                       Get.offAll(
                                         EmployeeNotation(
                                           date.text,

@@ -325,20 +325,7 @@ class _SignupPageState extends State<SignupPage> {
                     shape: CircleBorder(),
                     onPressed: () async {
                       FocusScope.of(context).requestFocus(FocusNode());
-                      if (username.text == null ||
-                          username.text == '' ||
-                          empid.text == null ||
-                          empid.text == '' ||
-                          password.text == null ||
-                          password.text == '' ||
-                          fullname.text == null ||
-                          fullname.text == '' ||
-                          email.text == null ||
-                          email.text == '' ||
-                          mobile.text == null ||
-                          mobile.text == '' ||
-                          company.text == null ||
-                          company.text == '') {
+                      if (username.text == null || username.text == '' || empid.text == null || empid.text == '' || password.text == null || password.text == '' || fullname.text == null || fullname.text == '' || email.text == null || email.text == '' || mobile.text == null || mobile.text == '' || company.text == null || company.text == '') {
                         Get.snackbar(
                           'Error',
                           'Please provide all detail',
@@ -350,8 +337,7 @@ class _SignupPageState extends State<SignupPage> {
                             vertical: 10.0,
                           ),
                         );
-                      } else if (email.text != '' &&
-                          !GetUtils.isEmail(email.text)) {
+                      } else if (email.text != '' && !GetUtils.isEmail(email.text)) {
                         Get.snackbar(
                           'Error',
                           'Please provide valid email',
@@ -363,8 +349,7 @@ class _SignupPageState extends State<SignupPage> {
                             vertical: 10.0,
                           ),
                         );
-                      } else if (mobile.text != '' &&
-                          mobile.text.length != 10) {
+                      } else if (mobile.text != '' && mobile.text.length != 10) {
                         Get.snackbar(
                           'Error',
                           'Please provide valid 10 digit mobile',
@@ -475,8 +460,7 @@ class _SignupPageState extends State<SignupPage> {
                                       height: 20.0,
                                     ),
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           "If you didn't receive the code!",
@@ -519,8 +503,7 @@ class _SignupPageState extends State<SignupPage> {
                                     ),
                                     RaisedButton(
                                       onPressed: () async {
-                                        if (otp.text == null ||
-                                            otp.text == '') {
+                                        if (otp.text == null || otp.text == '') {
                                           Get.snackbar(
                                             'Error',
                                             'Please enter otp',

@@ -56,7 +56,7 @@ class DBActivityTile extends StatelessWidget {
                 height: 5.0,
               ),
               Text(
-                empAct.activity.toString(),
+                empAct['activity'].toString(),
                 style: TextStyle(
                   fontSize: 16.0,
                   color: Colors.white,

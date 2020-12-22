@@ -4,8 +4,7 @@
 
 import 'dart:convert';
 
-EmployeeNotations employeeNotationsFromJson(String str) =>
-    EmployeeNotations.fromJson(
+EmployeeNotations employeeNotationsFromJson(String str) => EmployeeNotations.fromJson(
       json.decode(str),
     );
 
@@ -32,8 +31,7 @@ class EmployeeNotations {
   List<DesignationsList> designationsList;
   List<AttendanceNotation> attendanceNotations;
 
-  factory EmployeeNotations.fromJson(Map<String, dynamic> json) =>
-      EmployeeNotations(
+  factory EmployeeNotations.fromJson(Map<String, dynamic> json) => EmployeeNotations(
         success: json['success'],
         msg: json['msg'],
         empdetailsList: json['empdetailsList'],
@@ -97,8 +95,7 @@ class AttendanceNotation {
   String alias;
   bool status;
 
-  factory AttendanceNotation.fromJson(Map<String, dynamic> json) =>
-      AttendanceNotation(
+  factory AttendanceNotation.fromJson(Map<String, dynamic> json) => AttendanceNotation(
         id: json['id'],
         notation: json['notation'],
         alias: json['alias'],
@@ -122,8 +119,7 @@ class DesignationsList {
   String designId;
   String design;
 
-  factory DesignationsList.fromJson(Map<String, dynamic> json) =>
-      DesignationsList(
+  factory DesignationsList.fromJson(Map<String, dynamic> json) => DesignationsList(
         designId: json['designId'],
         design: json['design'],
       );
@@ -197,8 +193,7 @@ class EmpDailyAttView {
   dynamic modifiedDateTime;
   dynamic lt;
 
-  factory EmpDailyAttView.fromJson(Map<String, dynamic> json) =>
-      EmpDailyAttView(
+  factory EmpDailyAttView.fromJson(Map<String, dynamic> json) => EmpDailyAttView(
         empId: json['empId'],
         checkInDateTime: json['checkInDateTime'],
         checkOutDateTime: json['checkOutDateTime'],
