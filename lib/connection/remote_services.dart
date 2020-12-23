@@ -322,6 +322,31 @@ class RemoteServices {
     }
   }
 
+  Future getEmpCalendarNew(month) async {
+    // print('getEmpCalendar');
+    // print(box.get('empid'));
+    // print(box.get('companyid'));
+    var response = await client.post(
+      '$baseURL/attendance/emp_calendar',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'month': month,
+        },
+      ),
+    );
+    // print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
   Future checkin(lat, lng, address) async {
     var response = await client.post(
       '$baseURL/attendance/checkin',
@@ -742,6 +767,59 @@ class RemoteServices {
     if (response.statusCode == 200) {
       var jsonString = response.body;
       // return pitstopsFromJson(jsonString);
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future updatePitstops({pitstopId, checkinLat, checkinLng, empRemarks, empId, attachment}) async {
+    // print('companyid: ${box.get('companyid')}');
+    // print('empid: ${box.get('empid')}');
+    var response = await client.post(
+      '$baseURL/location/update_pitstops',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'pitstopId': pitstopId,
+          'checkinLat': checkinLat,
+          'checkinLng': checkinLng,
+          'empRemarks': empRemarks,
+          'empId': empId,
+          'image': attachment == '' ? '' : 'data:image/jpeg;base64,$attachment',
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future pinMyVisit({checkinLat, checkinLng, empRemarks, empId, attachment}) async {
+    // print('companyid: ${box.get('companyid')}');
+    // print('empid: ${box.get('empid')}');
+    var response = await client.post(
+      '$baseURL/location/update_pitstops',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'checkinLat': checkinLat,
+          'checkinLng': checkinLng,
+          'empRemarks': empRemarks,
+          'empId': empId,
+          'image': attachment == '' ? '' : 'data:image/jpeg;base64,$attachment',
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
       return json.decode(jsonString);
     } else {
       //show error message

@@ -2,29 +2,24 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
-import 'pitstops.dart';
+import 'routeplan_list.dart';
 import '../connection/remote_services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import '../controllers/pitstops_controller.dart';
+
+import '../controllers/my_pin_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
-// ignore: must_be_immutable
-class UpdatePitstops extends StatefulWidget {
-  var pit;
-  final String company;
-  final String goBackTo;
-  UpdatePitstops(this.pit, this.company, this.goBackTo);
-
+class PinMyVisit extends StatefulWidget {
   @override
-  _UpdatePitstopsState createState() => _UpdatePitstopsState();
+  _PinMyVisitState createState() => _PinMyVisitState();
 }
 
-class _UpdatePitstopsState extends State<UpdatePitstops> {
-  final PitstopsController psC = Get.put(PitstopsController());
+class _PinMyVisitState extends State<PinMyVisit> {
+  final MyPinController mpC = Get.put(MyPinController());
   CameraController controller;
   List<CameraDescription> cameras;
   var currentTime = DateFormat().add_jm().format(DateTime.now()).toString();
@@ -35,7 +30,7 @@ class _UpdatePitstopsState extends State<UpdatePitstops> {
   void initState() {
     super.initState();
     initCam();
-    psC.pr = ProgressDialog(
+    mpC.pr = ProgressDialog(
       context,
       type: ProgressDialogType.Normal,
       isDismissible: false,
@@ -63,7 +58,7 @@ class _UpdatePitstopsState extends State<UpdatePitstops> {
         ),
       ),
     );
-    psC.pr.style(
+    mpC.pr.style(
       backgroundColor: Colors.black,
     );
   }
@@ -86,7 +81,7 @@ class _UpdatePitstopsState extends State<UpdatePitstops> {
       }
       setState(() {});
     });
-    psC.getCurrentLocation(jsonDecode(widget.pit));
+    mpC.getCurrentLocation();
   }
 
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -194,7 +189,7 @@ class _UpdatePitstopsState extends State<UpdatePitstops> {
     }
     var file = File(filePath);
     // networkcall(file);
-    var res = await psC.uploadImage(file);
+    var res = await mpC.uploadImage(file);
     print(res);
     if (res) {
       await Get.defaultDialog(
@@ -252,12 +247,11 @@ class _UpdatePitstopsState extends State<UpdatePitstops> {
         ),
         barrierDismissible: false,
         onConfirm: () async {
-          await psC.pr.show();
-          var pit = jsonDecode(widget.pit);
+          await mpC.pr.show();
           // print('pitstopId: ${pit['pitstopId']}');
           // print('empId: ${pit['clientId']}');
-          // print('checkinLat: ${psC.currentPosition.latitude}');
-          // print('checkinLng: ${psC.currentPosition.longitude}');
+          // print('checkinLat: ${mpC.currentPosition.latitude}');
+          // print('checkinLng: ${mpC.currentPosition.longitude}');
           // print('empRemarks: ${remarks.text}');
           // print('attachment: $attachment');
           var base64String = '';
@@ -266,20 +260,20 @@ class _UpdatePitstopsState extends State<UpdatePitstops> {
             // print(base64.encode(bytes));
             base64String = base64.encode(bytes);
           }
-          var updatePit = await RemoteServices().updatePitstops(
-            pitstopId: pit['pitstopId'],
-            empId: pit['clientId'],
-            checkinLat: psC.currentPosition.latitude,
-            checkinLng: psC.currentPosition.longitude,
+          var pinVisit = await RemoteServices().pinMyVisit(
+            empId: RemoteServices().box.get('empid'),
+            checkinLat: mpC.currentPosition.latitude,
+            checkinLng: mpC.currentPosition.longitude,
             empRemarks: remarks.text,
             attachment: base64String,
           );
-          print(updatePit);
-          if (updatePit != null && updatePit['success'] == true) {
-            await psC.pr.hide();
-            await Get.offAll(Pitstops(pit['routePlanId'], widget.company, widget.goBackTo));
+          print(pinVisit);
+          if (pinVisit != null && pinVisit['success'] == true) {
+            await mpC.pr.hide();
+            // await Get.offAll(Pitstops(pit['routePlanId'], widget.company, widget.goBackTo));
+            await Get.offAll(RouteplanList());
           } else {
-            await psC.pr.hide();
+            await mpC.pr.hide();
             Get.snackbar(
               'Error',
               'Something went wrong! Please try again later',
@@ -385,7 +379,8 @@ class _UpdatePitstopsState extends State<UpdatePitstops> {
                         horizontal: 20.0,
                       ),
                       child: Container(
-                        height: 170.0,
+                        // height: 170.0,
+                        height: 150.0,
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
                           color: Colors.black87,
@@ -419,34 +414,34 @@ class _UpdatePitstopsState extends State<UpdatePitstops> {
                                     ),
                                     Obx(() {
                                       return Text(
-                                        psC.currentAddress.value,
+                                        mpC.currentAddress.value,
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 16.0,
                                         ),
                                       );
                                     }),
-                                    SizedBox(
-                                      height: 10.0,
-                                    ),
-                                    Text(
-                                      'Distance from site:',
-                                      style: TextStyle(
-                                        color: Colors.white54,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 10.0,
-                                    ),
-                                    Obx(() {
-                                      return Text(
-                                        psC.dis.value,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16.0,
-                                        ),
-                                      );
-                                    }),
+                                    // SizedBox(
+                                    //   height: 10.0,
+                                    // ),
+                                    // Text(
+                                    //   'Distance from site:',
+                                    //   style: TextStyle(
+                                    //     color: Colors.white54,
+                                    //   ),
+                                    // ),
+                                    // SizedBox(
+                                    //   width: 10.0,
+                                    // ),
+                                    // Obx(() {
+                                    //   return Text(
+                                    //     mpC.dis.value,
+                                    //     style: TextStyle(
+                                    //       color: Colors.white,
+                                    //       fontSize: 16.0,
+                                    //     ),
+                                    //   );
+                                    // }),
                                   ],
                                 ),
                               ),
@@ -463,7 +458,7 @@ class _UpdatePitstopsState extends State<UpdatePitstops> {
                               ),
                               Obx(() {
                                 return Text(
-                                  psC.todayString.value,
+                                  mpC.todayString.value,
                                   style: TextStyle(
                                     color: Colors.blue,
                                     fontSize: 20.0,
@@ -481,7 +476,8 @@ class _UpdatePitstopsState extends State<UpdatePitstops> {
                     ),
                     Obx(() {
                       return RaisedButton(
-                        onPressed: psC.currentAddress.value == 'Fetching your location...' || psC.dis.value == 'Finding distance from site...' ? null : takePicture,
+                        // onPressed: mpC.currentAddress.value == 'Fetching your location...' || mpC.dis.value == 'Finding distance from site...' ? null : takePicture,
+                        onPressed: mpC.currentAddress.value == 'Fetching your location...' ? null : takePicture,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 30.0,
@@ -491,7 +487,7 @@ class _UpdatePitstopsState extends State<UpdatePitstops> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                'Complete',
+                                'Pin My Visit',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w900,

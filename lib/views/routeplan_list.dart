@@ -1,3 +1,6 @@
+import 'pin_my_visit.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+
 import '../widgets/routeplan_widget.dart';
 
 import '../utils/utils.dart';
@@ -82,22 +85,50 @@ class _RouteplanListState extends State<RouteplanList> {
           },
         ),
       ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.end,
+      floatingActionButton: SpeedDial(
+        animatedIcon: AnimatedIcons.menu_close,
+        animatedIconTheme: IconThemeData(
+          size: 22,
+        ),
+        backgroundColor: Colors.blue,
+        visible: true,
+        curve: Curves.easeInOut,
         children: [
-          FloatingActionButton(
-            onPressed: () {
+          SpeedDialChild(
+            child: Icon(
+              Icons.add,
+            ),
+            backgroundColor: Colors.blue,
+            onTap: () {
               Get.offAll(
                 RoutePlanning(
                   goBackTo: 'list',
                 ),
               );
             },
-            child: Icon(
-              Icons.add,
-              size: 32.0,
+            label: 'New Route Plan',
+            labelStyle: TextStyle(
+              fontWeight: FontWeight.w500,
+              color: Colors.white,
+              fontSize: 16.0,
             ),
+            labelBackgroundColor: Colors.blue,
+          ),
+          SpeedDialChild(
+            child: Icon(
+              Icons.pin_drop,
+            ),
+            backgroundColor: Colors.blue,
+            onTap: () {
+              Get.to(PinMyVisit());
+            },
+            label: 'Pin My Visit',
+            labelStyle: TextStyle(
+              fontWeight: FontWeight.w500,
+              color: Colors.white,
+              fontSize: 16.0,
+            ),
+            labelBackgroundColor: Colors.blue,
           ),
         ],
       ),

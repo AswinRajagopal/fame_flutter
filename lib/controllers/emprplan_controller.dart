@@ -16,10 +16,10 @@ class EmprplanController extends GetxController {
     super.onInit();
   }
 
-  void init() {
+  void init({fromWhere}) {
     // if (isDisposed) return;
     print('init custom');
-    getEmprPlan();
+    getEmprPlan(fromWhere: fromWhere);
   }
 
   @override
@@ -28,17 +28,19 @@ class EmprplanController extends GetxController {
     isDisposed = true;
   }
 
-  void getEmprPlan() async {
+  void getEmprPlan({fromWhere}) async {
     print('getEmprPlan');
+    // print('pr: $pr');
+    // print('fromWhere: $fromWhere');
     try {
       isEmpLoading(true);
-      if (pr != null) {
+      if (pr != null && fromWhere == null) {
         await pr.show();
       }
       empRes = await RemoteServices().getEmprPlan();
       if (empRes != null) {
         isEmpLoading(false);
-        if (pr != null) {
+        if (pr != null && fromWhere == null) {
           await pr.hide();
         }
         if (empRes.success) {
@@ -59,7 +61,7 @@ class EmprplanController extends GetxController {
     } catch (e) {
       print(e);
       isEmpLoading(false);
-      if (pr != null) {
+      if (pr != null && fromWhere == null) {
         await pr.hide();
       }
       Get.snackbar(

@@ -60,9 +60,10 @@ dependencies:
   flinq: ^1.1.1
   chips_choice: ^2.0.1
   time_range_picker: ^1.1.1
-  # timeline_tile: ^1.0.0
   timelines: ^0.0.2+1
   maps_launcher: ^1.2.2+2
+  image_picker: ^0.6.7+17
+  flutter_speed_dial: ^1.2.5
 
 flutter_icons:
   image_path: "assets/images/icon.png"

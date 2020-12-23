@@ -51,7 +51,9 @@ class _DashboardPageState extends State<DashboardPage> {
   void initState() {
     super.initState();
     Future.delayed(Duration(milliseconds: 100), dbC.init);
-    Future.delayed(Duration(milliseconds: 100), erpC.init);
+    Future.delayed(Duration(milliseconds: 100), () {
+      erpC.init(fromWhere: 'db');
+    });
     Future.delayed(Duration(milliseconds: 100), calC.init);
   }
 
@@ -71,8 +73,8 @@ class _DashboardPageState extends State<DashboardPage> {
   // ignore: missing_return
   bool checkCondition(dbRes, type) {
     var curDate = DateFormat('yyyy-M-d').format(DateTime.now()).toString();
-    var chkDate = DateFormat('yyyy-M-d').format(dbRes['dailyAttendance']['checkInDateTime']).toString();
-    if (dbRes.dailyAttendance != null) {
+    var chkDate = DateFormat('yyyy-M-d').format(DateTime.parse(dbRes['dailyAttendance']['checkInDateTime'])).toString();
+    if (dbRes['dailyAttendance'] != null) {
       if (dbRes['dailyAttendance']['checkInDateTime'] != null && dbRes['dailyAttendance']['checkOutDateTime'] == null) {
         //allow checkout
         //on duty
@@ -700,6 +702,9 @@ class _DashboardPageState extends State<DashboardPage> {
                               );
                       }
                     }),
+                    SizedBox(
+                      height: dbC.response['empActivities'] == null || dbC.response['empActivities'].length == 0 ? 30.0 : 0.0,
+                    ),
                     Obx(() {
                       if (dbC.isDashboardLoading.value) {
                         return LoadingWidget(
@@ -740,21 +745,6 @@ class _DashboardPageState extends State<DashboardPage> {
                     SizedBox(
                       width: 20.0,
                     ),
-                    // Container(
-                    //   width: MediaQuery.of(context).size.width,
-                    //   child: Padding(
-                    //     padding: const EdgeInsets.symmetric(
-                    //       horizontal: 20.0,
-                    //     ),
-                    //     child: Text(
-                    //       'My Route Plan',
-                    //       style: TextStyle(
-                    //         fontSize: 20.0,
-                    //         fontWeight: FontWeight.bold,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                     Container(
                       width: MediaQuery.of(context).size.width,
                       color: Colors.white,

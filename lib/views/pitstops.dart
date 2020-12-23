@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:maps_launcher/maps_launcher.dart';
 
 import 'update_pitstops.dart';
@@ -157,6 +159,7 @@ class _PitstopsState extends State<Pitstops> {
                                         children: [
                                           RaisedButton(
                                             onPressed: () {
+                                              Get.back();
                                               MapsLauncher.launchCoordinates(double.parse(pitstop['lat']), double.parse(pitstop['lng']));
                                             },
                                             child: Padding(
@@ -181,7 +184,8 @@ class _PitstopsState extends State<Pitstops> {
                                             onPressed: () {
                                               print(pitstop['pitstopId']);
                                               print(pitstop['clientId']);
-                                              Get.to(UpdatePitstops(pitstop['pitstopId'], pitstop['clientId']));
+                                              Get.back();
+                                              Get.to(UpdatePitstops(jsonEncode(pitstop), widget.company, widget.goBackTo));
                                             },
                                             child: Padding(
                                               padding: const EdgeInsets.all(8.0),

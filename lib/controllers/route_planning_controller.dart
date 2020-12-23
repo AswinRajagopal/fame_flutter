@@ -40,12 +40,12 @@ class RoutePlanningController extends GetxController {
       if (clientRes != null) {
         await pr.hide();
         isLoading(false);
-        print('clientRes valid: $clientRes');
+        // print('clientRes valid: $clientRes');
         if (clientRes['success']) {
           for (var i = 0; i < clientRes['clientsList'].length; i++) {
             clientList.add(clientRes['clientsList'][i]);
           }
-          print('clientsList: $clientList');
+          // print('clientsList: $clientList');
         } else {
           Get.snackbar(
             'Error',

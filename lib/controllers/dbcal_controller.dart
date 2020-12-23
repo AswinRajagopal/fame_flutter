@@ -46,31 +46,20 @@ class DBCalController extends GetxController {
     try {
       isEventLoading(true);
       // print('calRes:');
-      calRes = await RemoteServices().getEmpCalendar(month);
+      calRes = await RemoteServices().getEmpCalendarNew(month);
       if (calRes != null) {
         isEventLoading(false);
         // isCalLoading(false);
-        if (calRes.success) {
+        if (calRes['success']) {
           // print(calRes.attendanceList);
-          for (var i = 0; i < calRes.attendanceList.length; i++) {
-            // print(calRes.attendanceList[i].attendanceAlias);
-            // print(calRes.attendanceList[i].checkInDateTime);
-            // var chDt = DateTime.parse(
-            //   calRes.attendanceList[i].checkInDateTime,
-            // );
-            // var eventDate = DateTime.parse(
-            //   formatDate(executeon, [yyyy, mm, dd]),
-            // );
-            // var eventDt = DateFormat('yyyy, mm, dd').format(
-            //   calRes.attendanceList[i].checkInDateTime,
-            // );
+          for (var i = 0; i < calRes['attendanceList'].length; i++) {
             var eventDt = DateTime.parse(
               formatDate(
-                calRes.attendanceList[i].checkInDateTime,
+                DateTime.parse(calRes['attendanceList'][i]['checkInDateTime']),
                 [yyyy, mm, dd],
               ),
             );
-            var event = calRes.attendanceList[i].attendanceAlias;
+            var event = calRes['attendanceList'][i]['attendanceAlias'];
 
             if (event != null && event != '') {
               // print('Key');

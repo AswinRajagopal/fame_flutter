@@ -2,16 +2,15 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:intl/intl.dart';
-
 import '../connection/remote_services.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
-class PitstopsController extends GetxController {
+class MyPinController extends GetxController {
   var isLoading = true.obs;
   var res;
   ProgressDialog pr;
@@ -19,7 +18,7 @@ class PitstopsController extends GetxController {
   var todayString = (DateFormat().add_jm().format(DateTime.now()).toString()).obs;
   Position currentPosition;
   var currentAddress = 'Fetching your location...'.obs;
-  var updateRes;
+  var pinRes;
   var dis = 'Finding distance from site...'.obs;
 
   @override
@@ -39,12 +38,12 @@ class PitstopsController extends GetxController {
     });
   }
 
-  void getCurrentLocation(pits) {
+  void getCurrentLocation() {
     currentAddress.value = 'Fetching your location...';
     dis.value = 'Finding distance from site...';
     Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best).then((Position position) {
       currentPosition = position;
-      dis.value = Geolocator.distanceBetween(double.parse(pits['lat']), double.parse(pits['lng']), position.latitude, position.longitude).toStringAsFixed(2) + ' meter';
+      // dis.value = Geolocator.distanceBetween(double.parse(pits['lat']), double.parse(pits['lng']), position.latitude, position.longitude).toStringAsFixed(2) + ' meter';
       // print('dis: ${dis.value}');
       getAddressFromLatLng();
       // ignore: unnecessary_lambdas
@@ -72,12 +71,12 @@ class PitstopsController extends GetxController {
   Future<bool> uploadImage(File imageFile) async {
     try {
       await pr.show();
-      updateRes = await RemoteServices().checkinProcess(imageFile);
-      if (updateRes != null) {
+      pinRes = await RemoteServices().checkinProcess(imageFile);
+      if (pinRes != null) {
         await pr.hide();
-        print('updateRes valid: ${updateRes.success}');
-        if (updateRes.success) {
-          var resDecode = jsonDecode(updateRes.response);
+        print('pinRes valid: ${pinRes.success}');
+        if (pinRes.success) {
+          var resDecode = jsonDecode(pinRes.response);
           if (!resDecode['face_found']) {
             Get.snackbar(
               'Error',
@@ -150,70 +149,6 @@ class PitstopsController extends GetxController {
         ),
       );
       return false;
-    } finally {
-      await pr.hide();
-      // return checkinResponse.success;
-    }
-  }
-
-  void getPitstops(planId, companyId) async {
-    try {
-      isLoading(true);
-      await pr.show();
-      res = await RemoteServices().getPitstops(planId, companyId);
-      if (res != null) {
-        if (res['success']) {
-          pitsStops.clear();
-          for (var i = 0; i < res['pitstopList'].length; i++) {
-            var pitstop = res['pitstopList'][i];
-            pitstop['clientId'] = pitstop['clientId'] == null || pitstop['clientId'] == '' ? '' : pitstop['clientId'].toString();
-            pitstop['clientName'] = pitstop['clientName'] == null || pitstop['clientName'] == '' ? 'N/A' : pitstop['clientName'].toString();
-            if (pitstop['lat'] == null || pitstop['lat'] == '' || pitstop['lng'] == null || pitstop['lng'] == '') {
-              pitstop['address'] = 'N/A';
-            } else {
-              var placemark = await placemarkFromCoordinates(
-                double.parse(pitstop['lat']),
-                double.parse(pitstop['lng']),
-              );
-              var first = placemark.first;
-              // print(first);
-              var address = '${first.street}, ${first.thoroughfare}, ${first.subLocality}, ${first.locality}, ${first.administrativeArea}, ${first.postalCode}, ${first.country}';
-              pitstop['address'] = address;
-            }
-            pitsStops.add(pitstop);
-          }
-          // print(pitsStops);
-          isLoading(false);
-          await pr.hide();
-        } else {
-          Get.snackbar(
-            'Error',
-            'Something went wrong! Please try again later',
-            colorText: Colors.white,
-            backgroundColor: Colors.red,
-            snackPosition: SnackPosition.BOTTOM,
-            margin: EdgeInsets.symmetric(
-              horizontal: 8.0,
-              vertical: 10.0,
-            ),
-          );
-        }
-      }
-    } catch (e) {
-      print(e);
-      isLoading(false);
-      await pr.hide();
-      Get.snackbar(
-        'Error',
-        'Something went wrong! Please try again later',
-        colorText: Colors.white,
-        backgroundColor: Colors.red,
-        snackPosition: SnackPosition.BOTTOM,
-        margin: EdgeInsets.symmetric(
-          horizontal: 8.0,
-          vertical: 10.0,
-        ),
-      );
     }
   }
 }
