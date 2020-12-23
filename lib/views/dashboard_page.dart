@@ -702,9 +702,14 @@ class _DashboardPageState extends State<DashboardPage> {
                               );
                       }
                     }),
-                    SizedBox(
-                      height: dbC.response['empActivities'] == null || dbC.response['empActivities'].length == 0 ? 30.0 : 0.0,
-                    ),
+                    Obx(() {
+                      if (!dbC.isDashboardLoading.value) {
+                        return SizedBox(
+                          height: dbC.response['empActivities'] == null || dbC.response['empActivities'].length == 0 ? 30.0 : 0.0,
+                        );
+                      }
+                      return Container();
+                    }),
                     Obx(() {
                       if (dbC.isDashboardLoading.value) {
                         return LoadingWidget(
