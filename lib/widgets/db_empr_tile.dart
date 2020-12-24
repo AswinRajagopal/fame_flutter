@@ -29,6 +29,8 @@ class DBEmprTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // print('index: $index');
+    // print('length: $length');
     var created = DateFormat('dd').format(empRoute.createdOn).toString() +
         '-' +
         DateFormat('MM').format(empRoute.createdOn).toString() +
@@ -39,12 +41,12 @@ class DBEmprTile extends StatelessWidget {
         DateFormat('h:mm').format(empRoute.createdOn).toString() +
         DateFormat('a').format(empRoute.createdOn).toString().toLowerCase();
 
-    return index == 4
+    return index == 0 && length >= 4
         ? Padding(
             padding: EdgeInsets.fromLTRB(
-              5.0,
+              10.0,
               70.0,
-              20.0,
+              5.0,
               70.0,
             ),
             child: RaisedButton(
@@ -95,9 +97,9 @@ class DBEmprTile extends StatelessWidget {
             },
             child: Padding(
               padding: EdgeInsets.fromLTRB(
-                index == 0 ? 20.0 : 5.0,
-                10.0,
                 index == length - 1 ? 20.0 : 5.0,
+                10.0,
+                index == length ? 20.0 : 5.0,
                 10.0,
               ),
               child: Container(

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:developer' as developer;
 
 import 'package:dio/dio.dart' as mydio;
+import '../models/transfer_list.dart';
 import '../models/attendance.dart';
 import '../models/leave_list.dart';
 import '../models/save_route_plan.dart';
@@ -474,6 +475,27 @@ class RemoteServices {
     }
   }
 
+  Future getShift(clientId) async {
+    var response = await client.post(
+      '$baseURL/transfer/client_shifts',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'clientId': clientId,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
   Future<ApplyLeave> applyLeave(
     frmDt,
     toDt,
@@ -574,6 +596,28 @@ class RemoteServices {
     if (response.statusCode == 200) {
       var jsonString = response.body;
       return json.decode(jsonString)['empSuggest'];
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future getUnits(unitName) async {
+    // print('empName: $empName');
+    var response = await client.post(
+      '$baseURL/transfer/get_unit_suggest',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'unitName': unitName,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString)['clientsSuggest'];
     } else {
       //show error message
       return null;
@@ -823,6 +867,54 @@ class RemoteServices {
       return json.decode(jsonString);
     } else {
       //show error message
+      return null;
+    }
+  }
+
+  Future newTransfer(empId, fromPeriod, toPeriod, fromUnit, shift, toUnit) async {
+    var response = await client.post(
+      '$baseURL/transfer/transfer_entry',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'createdBy': box.get('empid').toString(),
+          'empId': empId,
+          'fromPeriod': fromPeriod,
+          'fromUnit': fromUnit,
+          'shift': shift,
+          'toPeriod': toPeriod,
+          'toUnit': toUnit,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future<TransferList> getTransferList() async {
+    var response = await client.post(
+      '$baseURL/transfer/get_transfer_list',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+        },
+      ),
+    );
+
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return transferListFromJson(jsonString);
+    } else {
       return null;
     }
   }

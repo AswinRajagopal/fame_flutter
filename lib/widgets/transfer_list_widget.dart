@@ -1,15 +1,15 @@
 import 'package:dotted_line/dotted_line.dart';
-import '../controllers/leave_controller.dart';
-import '../connection/remote_services.dart';
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class LeaveListWidget extends StatelessWidget {
-  final leave;
+import '../controllers/transfer_controller.dart';
+import 'package:flutter/material.dart';
+
+class TransferListWidget extends StatelessWidget {
+  final transfer;
   final int index;
   final int length;
-  final LeaveController lC;
-  LeaveListWidget(this.leave, this.index, this.length, this.lC);
+  final TransferController tC;
+  TransferListWidget(this.transfer, this.index, this.length, this.tC);
 
   final double firstWidth = 48.0;
   final double secondWidth = 7.0;
@@ -18,7 +18,7 @@ class LeaveListWidget extends StatelessWidget {
   final double textSize = 16.0;
 
   String convertDate(date) {
-    return DateFormat('dd').format(DateTime.parse(date)).toString() + '-' + DateFormat('MM').format(DateTime.parse(date)).toString() + '-' + DateFormat.y().format(DateTime.parse(date)).toString();
+    return DateFormat('dd').format(date).toString() + '-' + DateFormat('MM').format(date).toString() + '-' + DateFormat.y().format(date).toString();
   }
 
   String getStatus(status) {
@@ -68,7 +68,7 @@ class LeaveListWidget extends StatelessWidget {
                   width: secondWidth,
                 ),
                 Text(
-                  leave['empId'].toString(),
+                  transfer.empId,
                   style: TextStyle(
                     fontSize: textSize,
                     color: Colors.grey,
@@ -103,7 +103,7 @@ class LeaveListWidget extends StatelessWidget {
                   width: secondWidth,
                 ),
                 Text(
-                  leave['empName'].toString(),
+                  transfer.empName,
                   style: TextStyle(
                     fontSize: textSize,
                     color: Colors.grey,
@@ -119,14 +119,14 @@ class LeaveListWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  'From Date',
+                  'Current Unit',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: titleSize,
                   ),
                 ),
                 SizedBox(
-                  width: 45.0,
+                  width: 33.0,
                 ),
                 Text(
                   ':',
@@ -139,7 +139,7 @@ class LeaveListWidget extends StatelessWidget {
                 ),
                 Flexible(
                   child: Text(
-                    convertDate(leave['fromDateTime']),
+                    transfer.fromUnitName,
                     style: TextStyle(
                       fontSize: textSize,
                       color: Colors.grey,
@@ -155,14 +155,14 @@ class LeaveListWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  'To Date',
+                  'Required Unit',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: titleSize,
                   ),
                 ),
                 SizedBox(
-                  width: 65.0,
+                  width: 23.0,
                 ),
                 Text(
                   ':',
@@ -174,7 +174,7 @@ class LeaveListWidget extends StatelessWidget {
                   width: secondWidth,
                 ),
                 Text(
-                  convertDate(leave['toDateTime']),
+                  transfer.toUnitName,
                   style: TextStyle(
                     fontSize: textSize,
                     color: Colors.grey,
@@ -189,14 +189,14 @@ class LeaveListWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  'Requested on',
+                  'Required on',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: titleSize,
                   ),
                 ),
                 SizedBox(
-                  width: 20.0,
+                  width: 35.0,
                 ),
                 Text(
                   ':',
@@ -208,7 +208,7 @@ class LeaveListWidget extends StatelessWidget {
                   width: secondWidth,
                 ),
                 Text(
-                  convertDate(leave['createdDateTime']),
+                  convertDate(transfer.fromPeriod),
                   style: TextStyle(
                     fontSize: textSize,
                     color: Colors.grey,
@@ -223,14 +223,14 @@ class LeaveListWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  'Reason',
+                  'Requested By',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: titleSize,
                   ),
                 ),
                 SizedBox(
-                  width: 66.0,
+                  width: 22.0,
                 ),
                 Text(
                   ':',
@@ -243,7 +243,7 @@ class LeaveListWidget extends StatelessWidget {
                 ),
                 Flexible(
                   child: Text(
-                    leave['reason'].toString(),
+                    transfer.createdByName,
                     maxLines: 2,
                     style: TextStyle(
                       fontSize: textSize,
@@ -260,14 +260,14 @@ class LeaveListWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  'Leave Type',
+                  'Date',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: titleSize,
                   ),
                 ),
                 SizedBox(
-                  width: 40.0,
+                  width: 88.0,
                 ),
                 Text(
                   ':',
@@ -279,7 +279,7 @@ class LeaveListWidget extends StatelessWidget {
                   width: secondWidth,
                 ),
                 Text(
-                  leave['leaveTypeName'].toString(),
+                  convertDate(transfer.createdOn),
                   style: TextStyle(
                     fontSize: textSize,
                     color: Colors.grey,
@@ -290,114 +290,77 @@ class LeaveListWidget extends StatelessWidget {
             SizedBox(
               height: rowAfterSize,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+            Column(
               children: [
-                Text(
-                  'Status',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: titleSize,
-                  ),
-                ),
                 SizedBox(
-                  width: 75.0,
+                  height: 15.0,
                 ),
-                Text(
-                  ':',
-                  style: TextStyle(
-                    fontSize: textSize,
+                DottedLine(
+                  direction: Axis.horizontal,
+                  lineLength: double.infinity,
+                  lineThickness: 1.0,
+                  dashLength: 4.0,
+                  dashColor: Colors.grey,
+                  dashRadius: 0.0,
+                  dashGapLength: 4.0,
+                  dashGapColor: Colors.transparent,
+                  dashGapRadius: 0.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 20.0,
                   ),
-                ),
-                SizedBox(
-                  width: secondWidth,
-                ),
-                Text(
-                  getStatus(
-                    int.parse(leave['status']),
-                  ),
-                  style: TextStyle(
-                    fontSize: textSize,
-                    color: Colors.grey,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      RaisedButton(
+                        onPressed: () {
+                          // lC.aprRejLeave(index, leave['id'], '2');
+                        },
+                        child: Text(
+                          'Reject',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                        color: Colors.grey[300],
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          side: BorderSide(
+                            color: Colors.grey[300],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 25.0,
+                      ),
+                      RaisedButton(
+                        onPressed: () {
+                          // lC.aprRejLeave(index, leave['id'], '1');
+                        },
+                        child: Text(
+                          'Accept',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                        color: Colors.blue,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          side: BorderSide(
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
-            leave['status'] == '0' && RemoteServices().box.get('role') == '2'
-                ? Column(
-                    children: [
-                      SizedBox(
-                        height: 15.0,
-                      ),
-                      DottedLine(
-                        direction: Axis.horizontal,
-                        lineLength: double.infinity,
-                        lineThickness: 1.0,
-                        dashLength: 4.0,
-                        dashColor: Colors.grey,
-                        dashRadius: 0.0,
-                        dashGapLength: 4.0,
-                        dashGapColor: Colors.transparent,
-                        dashGapRadius: 0.0,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          top: 20.0,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            RaisedButton(
-                              onPressed: () {
-                                lC.aprRejLeave(index, leave['id'], '2');
-                              },
-                              child: Text(
-                                'Reject',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16.0,
-                                ),
-                              ),
-                              color: Colors.grey[300],
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                side: BorderSide(
-                                  color: Colors.grey[300],
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 25.0,
-                            ),
-                            RaisedButton(
-                              onPressed: () {
-                                lC.aprRejLeave(index, leave['id'], '1');
-                              },
-                              child: Text(
-                                'Accept',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16.0,
-                                ),
-                              ),
-                              color: Colors.blue,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                side: BorderSide(
-                                  color: Colors.blue,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  )
-                : SizedBox(
-                    height: 5.0,
-                  ),
           ],
         ),
       ),

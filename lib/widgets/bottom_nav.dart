@@ -1,3 +1,5 @@
+import '../views/more_page.dart';
+
 import '../views/leave_page.dart';
 
 import '../views/profile_page.dart';
@@ -21,7 +23,9 @@ class BottomNav extends StatelessWidget {
           Get.to(ProfilePage());
         } else if (index == 2) {
         } else if (index == 3) {
-        } else if (index == 4) {}
+        } else if (index == 4) {
+          Get.to(MorePage());
+        }
       },
       type: BottomNavigationBarType.fixed,
       currentIndex: 2,
