@@ -26,7 +26,7 @@ class ProfileController extends GetxController {
 
   void init() {
     print('init custom');
-    getEmpDeails();
+    getEmpDetails();
   }
 
   @override
@@ -35,7 +35,7 @@ class ProfileController extends GetxController {
     super.onReady();
   }
 
-  void getEmpDeails() async {
+  void getEmpDetails() async {
     if (isDisposed) {
       return;
     }

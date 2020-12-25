@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:developer' as developer;
 
 import 'package:dio/dio.dart' as mydio;
+import '../models/support.dart';
 import '../models/transfer_list.dart';
 import '../models/attendance.dart';
 import '../models/leave_list.dart';
@@ -128,7 +129,7 @@ class RemoteServices {
         },
       ),
     );
-    print(response.body);
+    // print(response.body);
     if (response.statusCode == 200) {
       var jsonString = response.body;
       return profileFromJson(jsonString);
@@ -915,6 +916,118 @@ class RemoteServices {
       var jsonString = response.body;
       return transferListFromJson(jsonString);
     } else {
+      return null;
+    }
+  }
+
+  Future aprRejTransfer(empId, clientId, orderId, status) async {
+    var response = await client.post(
+      '$baseURL/transfer/approve_transfer',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'companyId': box.get('companyid').toString(),
+          'rejected': status == '0' ? false : true,
+          'orderId': orderId,
+          'empId': empId,
+          'clientId': clientId,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future<Support> getSupport() async {
+    var response = await client.post(
+      '$baseURL/user/get_support',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return supportFromJson(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future getBroadcast() async {
+    var response = await client.post(
+      '$baseURL/broadcast/get_broadcast',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future newBroadcast(empId, broadcast) async {
+    var response = await client.post(
+      '$baseURL/broadcast/new_broadcast',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'empId': empId,
+          'companyId': box.get('companyid').toString(),
+          'clientId': 'all',
+          'roleId': 'all',
+          'broadcast': broadcast,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future updateSOS(sosNumber) async {
+    var response = await client.post(
+      '$baseURL/user/update_sos',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'sosNumber': sosNumber,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
       return null;
     }
   }

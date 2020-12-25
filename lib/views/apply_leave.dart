@@ -24,6 +24,9 @@ class _ApplyLeaveState extends State<ApplyLeave> {
   TextEditingController fromDt = TextEditingController();
   TextEditingController toDt = TextEditingController();
   TextEditingController reason = TextEditingController();
+  var daysDiff;
+  var from;
+  var to;
 
   @override
   void dispose() {
@@ -79,13 +82,35 @@ class _ApplyLeaveState extends State<ApplyLeave> {
       firstDate: DateTime.now().add(Duration(days: 1)),
       lastDate: toDt.text != ''
           ? DateTime.parse(toDt.text.toString()).add(
-              Duration(days: -1),
+              Duration(days: 0),
             )
-          : DateTime.now().add(Duration(days: 365)),
+          : DateTime.now().add(Duration(days: stVal == 'F' || stVal == 'S' ? 1 : 5)),
     );
 
     if (picked != null) {
       print('Date selected ${_frmDate.toString()}');
+      from = picked;
+      if (from != null && to != null) {
+        if (from.difference(to).inDays > 1 && (stVal == 'F' || stVal == 'S')) {
+          Get.snackbar(
+            'Error',
+            'You can not apply for more then 1 day for Half Day leave',
+            colorText: Colors.white,
+            backgroundColor: Colors.red,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+          );
+        } else {
+          if (stVal == 'F' || stVal == 'S') {
+            setState(() {
+              toDt.text = DateFormat('yyyy-M-d').format(picked).toString();
+            });
+          }
+        }
+      }
       setState(() {
         fromDt.text = DateFormat('yyyy-M-d').format(picked).toString();
       });
@@ -94,7 +119,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
 
   Future<Null> toDate(BuildContext context) async {
     final _toDate = DateTime.parse(fromDt.text.toString()).add(
-      Duration(days: 1),
+      Duration(days: 0),
     );
     final picked = await showDatePicker(
       context: context,
@@ -104,21 +129,95 @@ class _ApplyLeaveState extends State<ApplyLeave> {
               toDt.text.toString(),
             ),
       firstDate: DateTime.parse(fromDt.text.toString()).add(
-        Duration(days: 1),
+        Duration(days: 0),
       ),
-      lastDate: DateTime.now().add(Duration(days: 365)),
+      lastDate: DateTime.now().add(Duration(days: 5)),
     );
 
     if (picked != null) {
       print('Date selected ${_toDate.toString()}');
-      setState(() {
-        toDt.text = DateFormat('yyyy-M-d').format(picked).toString();
-      });
+      to = picked;
+      if (from != null && to != null) {
+        if (to.difference(from).inDays > 1 && (stVal == 'F' || stVal == 'S')) {
+          Get.snackbar(
+            'Error',
+            'You can not apply for more then 1 day for Half Day leave',
+            colorText: Colors.white,
+            backgroundColor: Colors.red,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+          );
+        } else {
+          setState(() {
+            toDt.text = DateFormat('yyyy-M-d').format(picked).toString();
+          });
+        }
+      } else {
+        Get.snackbar(
+          'Error',
+          'Please select from date first',
+          colorText: Colors.white,
+          backgroundColor: Colors.red,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: EdgeInsets.symmetric(
+            horizontal: 8.0,
+            vertical: 10.0,
+          ),
+        );
+      }
     }
   }
 
   Future<bool> backButtonPressed() {
     return Get.offAll(LeavePage());
+  }
+
+  void chkDate(sVal) {
+    // if () {}
+    print('from: $from');
+    print('to: $to');
+    print('sVal: $sVal');
+    if (from != null && to != null) {
+      print('Diff: ${to.difference(from).inDays}');
+      if (sVal == 'F' || sVal == 'S') {
+        if (to.difference(from).inDays > 1) {
+          Get.snackbar(
+            'Error',
+            'You can not apply for more then 1 day for Half Day leave',
+            colorText: Colors.white,
+            backgroundColor: Colors.red,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+          );
+        } else {
+          setState(() {
+            stVal = sVal;
+          });
+        }
+      } else {
+        setState(() {
+          stVal = sVal;
+        });
+      }
+    } else {
+      Get.snackbar(
+        'Error',
+        'Please select both dates first',
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+      );
+    }
   }
 
   @override
@@ -285,9 +384,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                             value: AppUtils.WHOLEDAY,
                             groupValue: stVal,
                             onChanged: (sVal) {
-                              setState(() {
-                                stVal = sVal;
-                              });
+                              chkDate(sVal);
                             },
                           ),
                           Text(
@@ -306,9 +403,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                             value: AppUtils.FIRSTHALF,
                             groupValue: stVal,
                             onChanged: (sVal) {
-                              setState(() {
-                                stVal = sVal;
-                              });
+                              chkDate(sVal);
                             },
                           ),
                           Text(
@@ -327,9 +422,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                             value: AppUtils.SECONDHALF,
                             groupValue: stVal,
                             onChanged: (sVal) {
-                              setState(() {
-                                stVal = sVal;
-                              });
+                              chkDate(sVal);
                             },
                           ),
                           Text(

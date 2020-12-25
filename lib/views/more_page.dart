@@ -1,3 +1,7 @@
+import 'timeline_report.dart';
+
+import 'daily_employee_report.dart';
+
 import 'transfer_list.dart';
 
 import '../connection/remote_services.dart';
@@ -62,7 +66,9 @@ class MorePage extends StatelessWidget {
               ),
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Get.to(DailyEmployeeReport());
+              },
               child: ListContainer(
                 'assets/images/day_wise_attendance.png',
                 'Day Wise Employee Attendance',
@@ -76,7 +82,9 @@ class MorePage extends StatelessWidget {
               ),
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Get.to(TimelineReport());
+              },
               child: ListContainer(
                 'assets/images/timeline_report.png',
                 'Timeline Report',

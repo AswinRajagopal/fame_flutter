@@ -315,7 +315,7 @@ class TransferListWidget extends StatelessWidget {
                     children: [
                       RaisedButton(
                         onPressed: () {
-                          // lC.aprRejLeave(index, leave['id'], '2');
+                          tC.aprRejTransfer(transfer.empId, transfer.toUnit, transfer.orderId, '0');
                         },
                         child: Text(
                           'Reject',
@@ -338,7 +338,7 @@ class TransferListWidget extends StatelessWidget {
                       ),
                       RaisedButton(
                         onPressed: () {
-                          // lC.aprRejLeave(index, leave['id'], '1');
+                          tC.aprRejTransfer(transfer.empId, transfer.toUnit, transfer.orderId, '1');
                         },
                         child: Text(
                           'Accept',

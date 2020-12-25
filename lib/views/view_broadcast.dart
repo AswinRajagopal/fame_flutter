@@ -1,27 +1,23 @@
-import '../widgets/leave_list_widget.dart';
-import 'package:progress_dialog/progress_dialog.dart';
-
-import '../controllers/leave_controller.dart';
-
-import 'dashboard_page.dart';
-
-import 'apply_leave.dart';
-import 'package:get/get.dart';
+import '../widgets/broadcast_list_widget.dart';
 
 import '../utils/utils.dart';
-import 'package:flutter/material.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
-class LeavePage extends StatefulWidget {
+import '../controllers/broadcast_controller.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+class ViewBroadcast extends StatefulWidget {
   @override
-  _LeavePageState createState() => _LeavePageState();
+  _ViewBroadcastState createState() => _ViewBroadcastState();
 }
 
-class _LeavePageState extends State<LeavePage> {
-  final LeaveController lC = Get.put(LeaveController());
+class _ViewBroadcastState extends State<ViewBroadcast> {
+  final BroadcastController bC = Get.put(BroadcastController());
 
   @override
   void initState() {
-    lC.pr = ProgressDialog(
+    bC.pr = ProgressDialog(
       context,
       type: ProgressDialogType.Normal,
       isDismissible: false,
@@ -49,8 +45,12 @@ class _LeavePageState extends State<LeavePage> {
         ),
       ),
     );
-    lC.pr.style(
+    bC.pr.style(
       backgroundColor: Colors.black,
+    );
+    Future.delayed(
+      Duration(milliseconds: 100),
+      bC.getBroadcast,
     );
     super.initState();
   }
@@ -60,42 +60,16 @@ class _LeavePageState extends State<LeavePage> {
     super.dispose();
   }
 
-  Future<bool> backButtonPressed() {
-    return Get.offAll(DashboardPage());
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppUtils().greyScaffoldBg,
       appBar: AppBar(
-        title: Text('Leave List'),
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-          ),
-          onPressed: () {
-            Get.offAll(DashboardPage());
-          },
+        title: Text(
+          'Broadcast Messages',
         ),
       ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            onPressed: () {
-              Get.offAll(ApplyLeave());
-            },
-            child: Icon(
-              Icons.add,
-              size: 32.0,
-            ),
-          ),
-        ],
-      ),
-      body: WillPopScope(
-        onWillPop: backButtonPressed,
+      body: SafeArea(
         child: ListView(
           shrinkWrap: true,
           children: [
@@ -103,10 +77,10 @@ class _LeavePageState extends State<LeavePage> {
               height: 10.0,
             ),
             Obx(() {
-              if (lC.isLoading.value) {
+              if (bC.isLoading.value) {
                 return Column();
               } else {
-                if (lC.leaveList.isEmpty || lC.leaveList.isNull) {
+                if (bC.broadcastList.isEmpty || bC.broadcastList.isNull) {
                   return Container(
                     height: MediaQuery.of(context).size.height / 1.2,
                     child: Column(
@@ -114,7 +88,7 @@ class _LeavePageState extends State<LeavePage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          'No leave found',
+                          'No message found',
                           style: TextStyle(
                             fontSize: 18.0,
                             fontWeight: FontWeight.bold,
@@ -127,22 +101,14 @@ class _LeavePageState extends State<LeavePage> {
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: ScrollPhysics(),
-                  itemCount: lC.leaveList.length,
+                  itemCount: bC.broadcastList.length,
                   itemBuilder: (context, index) {
-                    var leave = lC.leaveList[index];
-                    return LeaveListWidget(
-                      leave,
-                      index,
-                      lC.leaveList.length,
-                      lC,
-                    );
+                    var broadcast = bC.broadcastList[index];
+                    return BroadcastListWidget(broadcast);
                   },
                 );
               }
             }),
-            SizedBox(
-              height: 10.0,
-            ),
           ],
         ),
       ),

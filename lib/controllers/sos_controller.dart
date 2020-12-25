@@ -1,46 +1,34 @@
+import 'dart:async';
+
 import '../connection/remote_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
-class LeaveController extends GetxController {
+class SOSController extends GetxController {
   var isLoading = true.obs;
-  var isUpdating = false.obs;
   var res;
   ProgressDialog pr;
-  final List leaveList = [].obs;
+  TextEditingController sosNumber = TextEditingController();
 
-  @override
-  void onInit() {
-    super.onInit();
-    Future.delayed(Duration(milliseconds: 100), getLeaveList);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  void getLeaveList() async {
+  void getEmpDetails() async {
     try {
       isLoading(true);
       await pr.show();
-      res = await RemoteServices().getLeaveList();
+      res = await RemoteServices().getEmpDetails();
       if (res != null) {
         isLoading(false);
         await pr.hide();
-        // print('res valid: $res');
+        // print('profileRes valid: ${res.success}');
+        if (res.empDetails == null || res.empDetails.sosNumber == null) {
+        } else {
+          update([sosNumber.text = res.empDetails.sosNumber]);
+        }
         if (res.success) {
-          if (res.leaveList != null) {
-            for (var i = 0; i < res.leaveList.length; i++) {
-              leaveList.add(res.leaveList[i]);
-            }
-          }
-          // print('leaveList: $leaveList');
         } else {
           Get.snackbar(
             'Error',
-            'Leave not found',
+            'Something went wrong! Please try again later',
             colorText: Colors.white,
             backgroundColor: Colors.red,
             snackPosition: SnackPosition.BOTTOM,
@@ -69,23 +57,33 @@ class LeaveController extends GetxController {
     }
   }
 
-  void aprRejLeave(index, id, status) async {
+  void updateSOS(sosNumber) async {
     try {
-      isUpdating(true);
       await pr.show();
-      var appRejRes = await RemoteServices().aprRejLeave(id, status);
-      if (appRejRes != null) {
-        isUpdating(false);
+      var sosRes = await RemoteServices().updateSOS(sosNumber);
+      if (sosRes != null) {
         await pr.hide();
-        // print('res valid: $res');
-        if (appRejRes['success']) {
-          print('here');
-          leaveList.clear();
-          getLeaveList();
+        print('sosRes valid: ${sosRes['success']}');
+        if (sosRes['success']) {
+          Get.snackbar(
+            'Success',
+            'SOS number updated successfully',
+            colorText: Colors.white,
+            backgroundColor: Colors.green,
+            snackPosition: SnackPosition.BOTTOM,
+            duration: Duration(
+              seconds: 2,
+            ),
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+          );
+          Timer(Duration(seconds: 2), Get.back);
         } else {
           Get.snackbar(
             'Error',
-            'Leave not updated',
+            'SOS number not updated',
             colorText: Colors.white,
             backgroundColor: Colors.red,
             snackPosition: SnackPosition.BOTTOM,
@@ -98,7 +96,6 @@ class LeaveController extends GetxController {
       }
     } catch (e) {
       print(e);
-      isUpdating(false);
       await pr.hide();
       Get.snackbar(
         'Error',

@@ -12,4 +12,5 @@ class AppUtils {
   static String EMP_ID = 'EMP_ID';
   static String ATTENDANCE = 'ATTENDANCE ';
   static String NAME = 'NAME';
+  static String PLAYSTORE = 'https://play.google.com/store/apps/details?id=in.androidfame.attendance';
 }

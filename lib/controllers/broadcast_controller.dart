@@ -1,41 +1,35 @@
 import 'dart:async';
 
 import '../connection/remote_services.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
-class TransferController extends GetxController {
+class BroadcastController extends GetxController {
   var isLoading = true.obs;
-  ProgressDialog pr;
-  var shiftRes;
   var res;
-  final List shiftList = [];
-  bool isDisposed = false;
-  final List transferList = [].obs;
+  ProgressDialog pr;
+  final List broadcastList = [].obs;
+  final List clientList = [].obs;
 
-  void getShift(clientId) async {
-    shiftList.clear();
+  void getBroadcast() async {
     try {
       isLoading(true);
       await pr.show();
-      var res = await RemoteServices().getShift(clientId);
+      res = await RemoteServices().getBroadcast();
       if (res != null) {
-        await pr.hide();
         isLoading(false);
-        print('shiftRes valid: $res');
+        await pr.hide();
         if (res['success']) {
-          if (res['manpowerReqList'] != null) {
-            for (var i = 0; i < res['manpowerReqList'].length; i++) {
-              shiftList.add(res['manpowerReqList'][i]);
+          if (res['broadcastLust'] != null) {
+            for (var i = 0; i < res['broadcastLust'].length; i++) {
+              broadcastList.add(res['broadcastLust'][i]);
             }
           }
-          print('shiftRes: $shiftList');
         } else {
           Get.snackbar(
             'Error',
-            'Shift not found',
+            'Something went wrong! Please try again later',
             colorText: Colors.white,
             backgroundColor: Colors.red,
             snackPosition: SnackPosition.BOTTOM,
@@ -64,17 +58,64 @@ class TransferController extends GetxController {
     }
   }
 
-  void newTransfer(employeeId, fromPeriod, toPeriod, currentUnit, shift, toUnit) async {
+  void getClient() async {
+    clientList.clear();
+    try {
+      isLoading(true);
+      await pr.show();
+      var clientRes = await RemoteServices().getClients();
+      if (clientRes != null) {
+        await pr.hide();
+        isLoading(false);
+        // print('clientRes valid: $clientRes');
+        if (clientRes['success']) {
+          for (var i = 0; i < clientRes['clientsList'].length; i++) {
+            clientList.add(clientRes['clientsList'][i]);
+          }
+          // print('clientsList: $clientList');
+        } else {
+          Get.snackbar(
+            'Error',
+            'Client not found',
+            colorText: Colors.white,
+            backgroundColor: Colors.red,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      print(e);
+      isLoading(false);
+      await pr.hide();
+      Get.snackbar(
+        'Error',
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+      );
+    }
+  }
+
+  void newBroadcast(empId, broadcast) async {
     try {
       await pr.show();
-      var transferRes = await RemoteServices().newTransfer(employeeId, fromPeriod, toPeriod, currentUnit, shift, toUnit);
-      if (transferRes != null) {
+      var broadcastRes = await RemoteServices().newBroadcast(empId, broadcast);
+      if (broadcastRes != null) {
         await pr.hide();
-        print('transferRes valid: ${transferRes['success']}');
-        if (transferRes['success']) {
+        print('broadcastRes valid: ${broadcastRes['success']}');
+        if (broadcastRes['success']) {
           Get.snackbar(
             'Success',
-            'Transfer addedd successfully',
+            'Broadcast sent successfully',
             colorText: Colors.white,
             backgroundColor: Colors.green,
             snackPosition: SnackPosition.BOTTOM,
@@ -86,102 +127,11 @@ class TransferController extends GetxController {
               vertical: 10.0,
             ),
           );
-          Timer(Duration(seconds: 2), () {
-            Get.back();
-            getTransferList();
-          });
+          Timer(Duration(seconds: 2), Get.back);
         } else {
           Get.snackbar(
             'Error',
-            'Transfer add failed',
-            colorText: Colors.white,
-            backgroundColor: Colors.red,
-            snackPosition: SnackPosition.BOTTOM,
-            margin: EdgeInsets.symmetric(
-              horizontal: 8.0,
-              vertical: 10.0,
-            ),
-          );
-        }
-      }
-    } catch (e) {
-      print(e);
-      await pr.hide();
-      Get.snackbar(
-        'Error',
-        'Something went wrong! Please try again later',
-        colorText: Colors.white,
-        backgroundColor: Colors.red,
-        snackPosition: SnackPosition.BOTTOM,
-        margin: EdgeInsets.symmetric(
-          horizontal: 8.0,
-          vertical: 10.0,
-        ),
-      );
-    }
-  }
-
-  void getTransferList() async {
-    transferList.clear();
-    try {
-      isLoading(true);
-      await pr.show();
-      res = await RemoteServices().getTransferList();
-      if (res != null) {
-        isLoading(false);
-        await pr.hide();
-        if (res.success) {
-          if (res.transferList != null) {
-            for (var i = 0; i < res.transferList.length; i++) {
-              transferList.add(res.transferList[i]);
-            }
-          }
-          // print('leaveList: $leaveList');
-        } else {
-          Get.snackbar(
-            'Error',
-            'Transfer not found',
-            colorText: Colors.white,
-            backgroundColor: Colors.red,
-            snackPosition: SnackPosition.BOTTOM,
-            margin: EdgeInsets.symmetric(
-              horizontal: 8.0,
-              vertical: 10.0,
-            ),
-          );
-        }
-      }
-    } catch (e) {
-      print(e);
-      isLoading(false);
-      await pr.hide();
-      Get.snackbar(
-        'Error',
-        'Something went wrong! Please try again later',
-        colorText: Colors.white,
-        backgroundColor: Colors.red,
-        snackPosition: SnackPosition.BOTTOM,
-        margin: EdgeInsets.symmetric(
-          horizontal: 8.0,
-          vertical: 10.0,
-        ),
-      );
-    }
-  }
-
-  void aprRejTransfer(empId, clientId, orderId, status) async {
-    try {
-      await pr.show();
-      var appRejRes = await RemoteServices().aprRejTransfer(empId, clientId, orderId, status);
-      if (appRejRes != null) {
-        await pr.hide();
-        print('appRejRes: $appRejRes');
-        if (appRejRes['success']) {
-          getTransferList();
-        } else {
-          Get.snackbar(
-            'Error',
-            'Transfer request not updated',
+            'Broadcast send failed',
             colorText: Colors.white,
             backgroundColor: Colors.red,
             snackPosition: SnackPosition.BOTTOM,
