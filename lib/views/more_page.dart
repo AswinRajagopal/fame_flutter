@@ -1,3 +1,7 @@
+import 'shortage_report.dart';
+
+import 'employee_report.dart';
+
 import 'timeline_report.dart';
 
 import 'daily_employee_report.dart';
@@ -28,31 +32,36 @@ class MorePage extends StatelessWidget {
             SizedBox(
               height: 20.0,
             ),
-            GestureDetector(
-              onTap: () {
-                if (roleId != '2') {
-                  Get.snackbar(
-                    'Error',
-                    'Only FO can access this',
-                    colorText: Colors.white,
-                    backgroundColor: Colors.red,
-                    snackPosition: SnackPosition.BOTTOM,
-                    margin: EdgeInsets.symmetric(
-                      horizontal: 8.0,
-                      vertical: 10.0,
-                    ),
-                  );
-                } else {
-                  Get.to(TransferList());
-                }
-              },
-              child: ListContainer(
-                'assets/images/icon_transfer.png',
-                'Transfer',
+            Visibility(
+              visible: roleId != '2' ? false : true,
+              child: GestureDetector(
+                onTap: () {
+                  if (roleId != '2') {
+                    Get.snackbar(
+                      'Error',
+                      'Only FO can access this',
+                      colorText: Colors.white,
+                      backgroundColor: Colors.red,
+                      snackPosition: SnackPosition.BOTTOM,
+                      margin: EdgeInsets.symmetric(
+                        horizontal: 8.0,
+                        vertical: 10.0,
+                      ),
+                    );
+                  } else {
+                    Get.to(TransferList());
+                  }
+                },
+                child: ListContainer(
+                  'assets/images/icon_transfer.png',
+                  'Transfer',
+                ),
               ),
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Get.to(ShortageReport());
+              },
               child: ListContainer(
                 'assets/images/shortage_report.png',
                 'Shortage Report',
@@ -75,7 +84,9 @@ class MorePage extends StatelessWidget {
               ),
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Get.to(EmployeeReport());
+              },
               child: ListContainer(
                 'assets/images/employee_report.png',
                 'Employee Report',

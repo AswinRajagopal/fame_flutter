@@ -1031,4 +1031,47 @@ class RemoteServices {
       return null;
     }
   }
+
+  Future getEmpReport(clientId, orderBy) async {
+    var response = await client.post(
+      '$baseURL/attendance/emp_report',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'clientId': clientId,
+          'orderBy': orderBy,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future getEmpDetailsReport(empId) async {
+    var response = await client.post(
+      '$baseURL/user/profile',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'empId': empId,
+          'companyId': box.get('companyid'),
+        },
+      ),
+    );
+    // print(response.body);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
 }
