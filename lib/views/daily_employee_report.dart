@@ -1,3 +1,5 @@
+import 'daily_emp_rep_detail.dart';
+
 import '../connection/remote_services.dart';
 import '../controllers/employee_report_controller.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -18,6 +20,7 @@ class _DailyEmployeeReportState extends State<DailyEmployeeReport> {
   TextEditingController fromDt = TextEditingController();
   TextEditingController toDt = TextEditingController();
   TextEditingController empName = TextEditingController();
+  var empId;
 
   @override
   void initState() {
@@ -225,6 +228,8 @@ class _DailyEmployeeReportState extends State<DailyEmployeeReport> {
                   // print(pattern);
                   if (pattern.isNotEmpty) {
                     return await RemoteServices().getEmployees(pattern);
+                  } else {
+                    empId = null;
                   }
                   return null;
                 },
@@ -245,7 +250,8 @@ class _DailyEmployeeReportState extends State<DailyEmployeeReport> {
                 onSuggestionSelected: (suggestion) {
                   print(suggestion);
                   print(suggestion['name']);
-                  empName.text = suggestion['name'];
+                  empName.text = suggestion['name'].toString().trimRight() + ' - ' + suggestion['empId'];
+                  empId = suggestion['empId'];
                 },
               ),
             ),
@@ -282,6 +288,24 @@ class _DailyEmployeeReportState extends State<DailyEmployeeReport> {
                       RaisedButton(
                         onPressed: () {
                           FocusScope.of(context).requestFocus(FocusNode());
+                          if (empId == null || fromDt.text == null || toDt.text == null) {
+                            Get.snackbar(
+                              'Error',
+                              'Please select employee, from date & to date',
+                              colorText: Colors.white,
+                              backgroundColor: Colors.red,
+                              snackPosition: SnackPosition.BOTTOM,
+                              margin: EdgeInsets.symmetric(
+                                horizontal: 8.0,
+                                vertical: 10.0,
+                              ),
+                            );
+                          } else {
+                            print('empId: $empId');
+                            print('fromDate: ${fromDt.text}');
+                            print('toDate: ${toDt.text}');
+                            Get.to(DailyEmpRepDetail(empId, fromDt.text, toDt.text));
+                          }
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(

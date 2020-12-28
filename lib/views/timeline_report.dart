@@ -1,3 +1,5 @@
+import 'timeline_report_detail.dart';
+
 import '../connection/remote_services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
@@ -17,6 +19,7 @@ class _TimelineReportState extends State<TimelineReport> {
   final EmployeeReportController epC = Get.put(EmployeeReportController());
   TextEditingController date = TextEditingController();
   TextEditingController empName = TextEditingController();
+  var empId;
 
   @override
   void dispose() {
@@ -80,6 +83,8 @@ class _TimelineReportState extends State<TimelineReport> {
                   // print(pattern);
                   if (pattern.isNotEmpty) {
                     return await RemoteServices().getEmployees(pattern);
+                  } else {
+                    empId = null;
                   }
                   return null;
                 },
@@ -100,7 +105,8 @@ class _TimelineReportState extends State<TimelineReport> {
                 onSuggestionSelected: (suggestion) {
                   print(suggestion);
                   print(suggestion['name']);
-                  empName.text = suggestion['name'];
+                  empName.text = suggestion['name'].toString().trimRight() + ' ' + suggestion['empId'];
+                  empId = suggestion['empId'];
                 },
               ),
             ),
@@ -165,6 +171,23 @@ class _TimelineReportState extends State<TimelineReport> {
                       RaisedButton(
                         onPressed: () {
                           FocusScope.of(context).requestFocus(FocusNode());
+                          if (empId == null || date.text == null || date.text == '') {
+                            Get.snackbar(
+                              'Error',
+                              'Please select employee and date',
+                              colorText: Colors.white,
+                              backgroundColor: Colors.red,
+                              snackPosition: SnackPosition.BOTTOM,
+                              margin: EdgeInsets.symmetric(
+                                horizontal: 8.0,
+                                vertical: 10.0,
+                              ),
+                            );
+                          } else {
+                            print('empId: $empId');
+                            print('date: ${date.text}');
+                            Get.to(TimelineReportDetail(empId, date.text));
+                          }
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(

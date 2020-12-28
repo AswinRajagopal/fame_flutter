@@ -232,6 +232,8 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                             // print(pattern);
                             if (pattern.isNotEmpty) {
                               return await RemoteServices().getEmployees(pattern);
+                            } else {
+                              assignedTo = null;
                             }
                             return null;
                           },

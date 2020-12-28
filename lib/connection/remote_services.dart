@@ -32,7 +32,8 @@ import 'package:http/http.dart' as http;
 import '../models/login.dart';
 
 class RemoteServices {
-  static var baseURL = 'http://13.232.255.84:8090/v1/api';
+  // static var baseURL = 'http://13.232.255.84:8090/v1/api';
+  static var baseURL = 'http://52.66.61.207:8090/v1/api';
   static var client = http.Client();
   static var header = <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
@@ -1066,6 +1067,73 @@ class RemoteServices {
       ),
     );
     // print(response.body);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future getTimelineReport(empId, date) async {
+    var response = await client.post(
+      '$baseURL/location/get_timeline',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'empId': empId,
+          'date': date,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future getLocationReport(empId) async {
+    var response = await client.post(
+      '$baseURL/location/get_clocation',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'empId': empId,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future getDailyEmployeeReport(empId, fdate, tdate, orderBy) async {
+    var response = await client.post(
+      '$baseURL/attendance/emp_att_report',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'empId': empId,
+          'fdate': fdate,
+          'tdate': tdate,
+          'orderBy': orderBy,
+        },
+      ),
+    );
+    print(response.statusCode);
     if (response.statusCode == 200) {
       var jsonString = response.body;
       return json.decode(jsonString);

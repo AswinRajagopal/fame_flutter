@@ -171,6 +171,8 @@ class _TransferPageState extends State<TransferPage> {
                           // print(pattern);
                           if (pattern.isNotEmpty) {
                             return await RemoteServices().getEmployees(pattern);
+                          } else {
+                            employeeId = null;
                           }
                           return null;
                         },
@@ -236,6 +238,8 @@ class _TransferPageState extends State<TransferPage> {
                           // print(pattern);
                           if (pattern.isNotEmpty) {
                             return await RemoteServices().getUnits(pattern);
+                          } else {
+                            toUnit = null;
                           }
                           return null;
                         },

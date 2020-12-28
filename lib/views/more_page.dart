@@ -1,3 +1,5 @@
+import 'location_report_detail.dart';
+
 import 'shortage_report.dart';
 
 import 'employee_report.dart';
@@ -102,7 +104,9 @@ class MorePage extends StatelessWidget {
               ),
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Get.to(LocationReportDetail());
+              },
               child: ListContainer(
                 'assets/images/current_location.png',
                 'Current Location',

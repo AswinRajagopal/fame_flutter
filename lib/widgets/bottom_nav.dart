@@ -1,3 +1,5 @@
+import '../connection/remote_services.dart';
+
 import '../views/settings_page.dart';
 
 import '../views/more_page.dart';
@@ -14,6 +16,7 @@ class BottomNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var roleId = RemoteServices().box.get('role');
     // final currentIndex = 0;
 
     return BottomNavigationBar(
@@ -27,7 +30,21 @@ class BottomNav extends StatelessWidget {
         } else if (index == 3) {
           Get.to(SettingsPage());
         } else if (index == 4) {
-          Get.to(MorePage());
+          if (roleId == '2' || roleId == '3') {
+            Get.to(MorePage());
+          } else {
+            Get.snackbar(
+              'Error',
+              'Only FO and admin can access this',
+              colorText: Colors.white,
+              backgroundColor: Colors.red,
+              snackPosition: SnackPosition.BOTTOM,
+              margin: EdgeInsets.symmetric(
+                horizontal: 8.0,
+                vertical: 10.0,
+              ),
+            );
+          }
         }
       },
       type: BottomNavigationBarType.fixed,

@@ -137,7 +137,7 @@ class _ShortageReportState extends State<ShortageReport> {
                   hint: Padding(
                     padding: const EdgeInsets.only(left: 8.0),
                     child: Text(
-                      'Select client',
+                      'Select Client',
                       style: TextStyle(
                         color: Colors.grey[600],
                         fontSize: 18.0,
