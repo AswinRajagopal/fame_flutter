@@ -169,6 +169,7 @@ class _ShortageReportState extends State<ShortageReport> {
                     epC.timings.clear();
                     epC.shiftTime = '';
                     epC.shift.clear();
+                    shift = null;
                     for (var j = 0; j < manpower.length; j++) {
                       // print('manpower: ${manpower[j]}');
                       var sSTime = DateFormat('hh:mm')
