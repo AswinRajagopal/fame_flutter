@@ -1,21 +1,19 @@
-import 'timeline_report_detail.dart';
+import 'visit_plan_detail.dart';
 
 import '../connection/remote_services.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
-
+import '../controllers/employee_report_controller.dart';
 import '../utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../controllers/employee_report_controller.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
-class TimelineReport extends StatefulWidget {
+class VisitPlan extends StatefulWidget {
   @override
-  _TimelineReportState createState() => _TimelineReportState();
+  _VisitPlanState createState() => _VisitPlanState();
 }
 
-class _TimelineReportState extends State<TimelineReport> {
+class _VisitPlanState extends State<VisitPlan> {
   final EmployeeReportController epC = Get.put(EmployeeReportController());
   TextEditingController date = TextEditingController();
   TextEditingController empName = TextEditingController();
@@ -54,7 +52,7 @@ class _TimelineReportState extends State<TimelineReport> {
       backgroundColor: AppUtils().innerScaffoldBg,
       appBar: AppBar(
         title: Text(
-          'Timeline',
+          'Visit Plan',
         ),
       ),
       body: SafeArea(
@@ -186,7 +184,7 @@ class _TimelineReportState extends State<TimelineReport> {
                           } else {
                             print('empId: $empId');
                             print('date: ${date.text}');
-                            Get.to(TimelineReportDetail(empId, date.text));
+                            Get.to(VisitPlanDetail(empId, date.text));
                           }
                         },
                         child: Padding(

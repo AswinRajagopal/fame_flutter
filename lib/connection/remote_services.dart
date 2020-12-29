@@ -1076,9 +1076,13 @@ class RemoteServices {
     }
   }
 
-  Future getTimelineReport(empId, date) async {
+  Future getTimelineReport(empId, date, {type}) async {
+    var url = '$baseURL/location/get_timeline';
+    if (type != null && type == 'visit') {
+      url = '$baseURL/location/get_emp_visits';
+    }
     var response = await client.post(
-      '$baseURL/location/get_timeline',
+      url,
       headers: header,
       body: jsonEncode(
         <String, String>{
@@ -1130,6 +1134,53 @@ class RemoteServices {
           'fdate': fdate,
           'tdate': tdate,
           'orderBy': orderBy,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future getClientReport(clientId, date, shift, orderBy) async {
+    var response = await client.post(
+      '$baseURL/attendance/daily_emp_report',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'clientId': clientId,
+          'date': date,
+          'shift': shift,
+          'orderBy': orderBy,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future getShortageReport(clientId, date, shift) async {
+    var response = await client.post(
+      '$baseURL/attendance/shortage_report',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'clientId': clientId,
+          'date': date,
+          'shift': shift,
         },
       ),
     );

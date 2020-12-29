@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="diyos.famemobile.fame_mobile_flutter">
+    package="in.androidfame.attendance">
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
@@ -11,12 +11,15 @@
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. GK - AIzaSyADoNEFbFbgHCpu7mz7yLWhbbUMZqk4yHU -->
     <application
-        android:name="io.flutter.app.FlutterApplication"
+        android:name=".Application"
         android:label="FaME"
         android:icon="@mipmap/ic_launcher">
 
         <meta-data  android:name="com.google.android.geo.API_KEY"
                     android:value="AIzaSyBFsUGJKkY5yvYAC3Tb0vHIX9ZW7s5aGog"/>
+
+        <meta-data  android:name="com.google.firebase.messaging.default_notification_icon"
+                    android:resource="@mipmap/ic_notification" />
 
         <activity
             android:name=".MainActivity"
@@ -47,6 +50,11 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
+            <intent-filter>
+              <action android:name="FLUTTER_NOTIFICATION_CLICK" />
+              <category android:name="android.intent.category.DEFAULT" />
+          </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->

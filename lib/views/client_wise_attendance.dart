@@ -1,22 +1,21 @@
 import 'dart:convert';
 
-import 'shortage_report_detail.dart';
+import 'client_att_detail.dart';
+
+import '../controllers/employee_report_controller.dart';
+import '../utils/utils.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
-import '../controllers/employee_report_controller.dart';
-import 'package:get/get.dart';
-
-import '../utils/utils.dart';
-import 'package:flutter/material.dart';
-
-class ShortageReport extends StatefulWidget {
+class ClientWiseAttendance extends StatefulWidget {
   @override
-  _ShortageReportState createState() => _ShortageReportState();
+  _ClientWiseAttendanceState createState() => _ClientWiseAttendanceState();
 }
 
-class _ShortageReportState extends State<ShortageReport> {
+class _ClientWiseAttendanceState extends State<ClientWiseAttendance> {
   final EmployeeReportController epC = Get.put(EmployeeReportController());
   TextEditingController date = TextEditingController();
   var clientId;
@@ -280,6 +279,7 @@ class _ShortageReportState extends State<ShortageReport> {
                               epC.shiftTime = shiftTime;
                               if (epC.shift.contains(shiftTime)) {
                                 epC.shift.remove(shiftTime);
+                                shift = null;
                               } else {
                                 epC.shift.add(shiftTime);
                                 shift = timing['shift'];
@@ -381,7 +381,7 @@ class _ShortageReportState extends State<ShortageReport> {
                               print('clientId: $clientId');
                               print('date: ${date.text}');
                               print('shift: $shift');
-                              Get.to(ShortageReportDetail(clientId, date.text, shift));
+                              Get.to(ClientAttDetail(clientId, date.text, shift));
                             }
                           },
                           child: Padding(

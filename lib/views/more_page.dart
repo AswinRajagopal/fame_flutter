@@ -1,3 +1,7 @@
+import 'visit_plan.dart';
+
+import 'client_wise_attendance.dart';
+
 import 'location_report_detail.dart';
 
 import 'shortage_report.dart';
@@ -10,7 +14,6 @@ import 'daily_employee_report.dart';
 
 import 'transfer_list.dart';
 
-import '../connection/remote_services.dart';
 import 'package:get/get.dart';
 
 import '../utils/utils.dart';
@@ -19,7 +22,7 @@ import 'package:flutter/material.dart';
 class MorePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var roleId = RemoteServices().box.get('role');
+    // var roleId = RemoteServices().box.get('role');
     return Scaffold(
       backgroundColor: AppUtils().greyScaffoldBg,
       appBar: AppBar(
@@ -34,30 +37,13 @@ class MorePage extends StatelessWidget {
             SizedBox(
               height: 20.0,
             ),
-            Visibility(
-              visible: roleId != '2' ? false : true,
-              child: GestureDetector(
-                onTap: () {
-                  if (roleId != '2') {
-                    Get.snackbar(
-                      'Error',
-                      'Only FO can access this',
-                      colorText: Colors.white,
-                      backgroundColor: Colors.red,
-                      snackPosition: SnackPosition.BOTTOM,
-                      margin: EdgeInsets.symmetric(
-                        horizontal: 8.0,
-                        vertical: 10.0,
-                      ),
-                    );
-                  } else {
-                    Get.to(TransferList());
-                  }
-                },
-                child: ListContainer(
-                  'assets/images/icon_transfer.png',
-                  'Transfer',
-                ),
+            GestureDetector(
+              onTap: () {
+                Get.to(TransferList());
+              },
+              child: ListContainer(
+                'assets/images/icon_transfer.png',
+                'Transfer',
               ),
             ),
             GestureDetector(
@@ -70,7 +56,9 @@ class MorePage extends StatelessWidget {
               ),
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Get.to(ClientWiseAttendance());
+              },
               child: ListContainer(
                 'assets/images/client_wise_att.png',
                 'Client Wise Attendance',
@@ -113,7 +101,9 @@ class MorePage extends StatelessWidget {
               ),
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Get.to(VisitPlan());
+              },
               child: ListContainer(
                 'assets/images/my_visit_plan.png',
                 'My Visit Plan',

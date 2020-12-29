@@ -1,4 +1,4 @@
-package diyos.famemobile.fame_mobile_flutter
+package `in`.androidfame.attendance
 
 import io.flutter.embedding.android.FlutterActivity
 

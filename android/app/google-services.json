@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1086012952027",
+    "firebase_url": "https://fame-mobile-4a37b.firebaseio.com",
+    "project_id": "fame-mobile-4a37b",
+    "storage_bucket": "fame-mobile-4a37b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1086012952027:android:b7fafcfb70451d401e2bfe",
+        "android_client_info": {
+          "package_name": "in.androidfame.attendance"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1086012952027-3ksdfbrjdiiu80cdue6kji9uveb530pa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADlOB6fX_w9G7Lc_-MMFP4VxbRjresfW0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1086012952027-3ksdfbrjdiiu80cdue6kji9uveb530pa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
