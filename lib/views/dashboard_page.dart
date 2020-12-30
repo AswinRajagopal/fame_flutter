@@ -1,5 +1,3 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
-
 import 'attendance_page.dart';
 
 import 'route_planning.dart';
@@ -46,14 +44,10 @@ class _DashboardPageState extends State<DashboardPage> {
   final DashboardController dbC = Get.put(DashboardController());
   final EmprplanController erpC = Get.put(EmprplanController());
   final DBCalController calC = Get.put(DBCalController());
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-
-  var calendarType = 'myCal'; // myCal & myRos
 
   @override
   void initState() {
     super.initState();
-    initFCM();
     Future.delayed(Duration(milliseconds: 100), dbC.init);
     Future.delayed(Duration(milliseconds: 100), () {
       erpC.init(fromWhere: 'db');
@@ -155,36 +149,6 @@ class _DashboardPageState extends State<DashboardPage> {
     } else {
       return true;
     }
-  }
-
-  void initFCM() {
-    _firebaseMessaging.getToken().then((String _deviceToken) async {
-      print('_deviceToken');
-      print(_deviceToken);
-    });
-    configureFirebase(_firebaseMessaging, context);
-  }
-
-  void configureFirebase(FirebaseMessaging _firebaseMessaging, context) {
-    _firebaseMessaging.requestNotificationPermissions(
-      const IosNotificationSettings(
-        sound: true,
-        badge: true,
-        alert: true,
-        provisional: true,
-      ),
-    );
-    _firebaseMessaging.onIosSettingsRegistered.listen(
-      (IosNotificationSettings settings) {
-        print('Settings registered: $settings');
-      },
-    );
-    // _firebaseMessaging.configure(
-    //   onMessage: notificationOnMessage,
-    //   onLaunch: notificationOnLaunch,
-    //   onResume: notificationOnResume,
-    //   onBackgroundMessage: myBackgroundMessageHandler,
-    // );
   }
 
   @override
@@ -914,13 +878,17 @@ class _DashboardPageState extends State<DashboardPage> {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                // setState(() {
-                                //   calendarType = 'myCal';
-                                // });
+                                if (calC.calendarType != 'myCal') {
+                                  calC.calendarType = 'myCal';
+                                  var dateParse = DateTime.parse(calC.changedDate);
+                                  var formattedDate = '${dateParse.month}${dateParse.year.toString().substring(2)}';
+                                  calC.getCalendar(month: formattedDate);
+                                  setState(() {});
+                                }
                               },
                               child: Container(
                                 decoration: BoxDecoration(
-                                  color: calendarType == 'myCal' ? Colors.white : Colors.blue,
+                                  color: calC.calendarType == 'myCal' ? Colors.white : Colors.blue,
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(
                                       50.0,
@@ -937,7 +905,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                     style: TextStyle(
                                       fontSize: 18.0,
                                       fontWeight: FontWeight.bold,
-                                      color: calendarType == 'myCal' ? Colors.blue : Colors.white,
+                                      color: calC.calendarType == 'myCal' ? Colors.blue : Colors.white,
                                     ),
                                   ),
                                 ),
@@ -945,13 +913,17 @@ class _DashboardPageState extends State<DashboardPage> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                // setState(() {
-                                //   calendarType = 'myRos';
-                                // });
+                                if (calC.calendarType != 'myRos') {
+                                  calC.calendarType = 'myRos';
+                                  var dateParse = DateTime.parse(calC.changedDate);
+                                  var formattedDate = '${dateParse.month}${dateParse.year.toString().substring(2)}';
+                                  calC.getCalendar(month: formattedDate);
+                                  setState(() {});
+                                }
                               },
                               child: Container(
                                 decoration: BoxDecoration(
-                                  color: calendarType == 'myRos' ? Colors.white : Colors.blue,
+                                  color: calC.calendarType == 'myRos' ? Colors.white : Colors.blue,
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(
                                       50.0,
@@ -968,7 +940,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                     style: TextStyle(
                                       fontSize: 18.0,
                                       fontWeight: FontWeight.bold,
-                                      color: calendarType == 'myRos' ? Colors.blue : Colors.white,
+                                      color: calC.calendarType == 'myRos' ? Colors.blue : Colors.white,
                                     ),
                                   ),
                                 ),
@@ -990,7 +962,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         );
                       } else {
                         return HomeCalendar(
-                          calendarType,
+                          calC.calendarType,
                         );
                       }
                     }),

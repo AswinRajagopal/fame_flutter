@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:developer' as developer;
 
 import 'package:dio/dio.dart' as mydio;
+import 'package:firebase_messaging/firebase_messaging.dart';
 import '../models/support.dart';
 import '../models/transfer_list.dart';
 import '../models/attendance.dart';
@@ -40,8 +41,39 @@ class RemoteServices {
   };
   var box = Hive.box('fame_pocket');
   static var accessKey = 'diyos2020';
+  final FirebaseMessaging _fbm = FirebaseMessaging();
+
+  Future<String> setFirebaseNotification() async {
+    var pushCode = '';
+    await _fbm.setAutoInitEnabled(false);
+    await _fbm.getToken().then((String _deviceToken) async {
+      print('_deviceToken');
+      print(_deviceToken);
+      if (_deviceToken != null) {
+        pushCode = _deviceToken;
+      }
+    });
+    _fbm.requestNotificationPermissions(
+      const IosNotificationSettings(
+        sound: true,
+        badge: true,
+        alert: true,
+        provisional: true,
+      ),
+    );
+    _fbm.onIosSettingsRegistered.listen(
+      (IosNotificationSettings settings) {
+        print('Settings registered: $settings');
+      },
+    );
+    // _firebaseMessaging.autoInitEnabled().then((value) {
+    //   print('auto Init - $value');
+    // });
+    return pushCode;
+  }
 
   void logout() async {
+    await _fbm.deleteInstanceID();
     developer.log('logout');
     await box.clear();
     await box.deleteAll([
@@ -243,9 +275,10 @@ class RemoteServices {
   }
 
   Future getDbDetails() async {
-    print('getDashboardDetails');
-    print(box.get('empid'));
-    print(box.get('companyid'));
+    var pushCode = await setFirebaseNotification();
+    // print('getDashboardDetails');
+    // print(box.get('empid'));
+    // print(box.get('companyid'));
     var response = await client.post(
       '$baseURL/attendance/dashboard_flut',
       headers: header,
@@ -253,7 +286,7 @@ class RemoteServices {
         <String, String>{
           'empId': box.get('empid').toString(),
           'companyId': box.get('companyid').toString(),
-          'pushCode': '',
+          'pushCode': pushCode,
         },
       ),
     );

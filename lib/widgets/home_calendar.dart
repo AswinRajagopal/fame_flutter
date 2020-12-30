@@ -1,3 +1,4 @@
+import '../connection/remote_services.dart';
 import 'package:get/get.dart';
 
 import '../controllers/dbcal_controller.dart';
@@ -123,15 +124,40 @@ class _HomeCalendarState extends State<HomeCalendar> with TickerProviderStateMix
           );
         },
         dayBuilder: (context, date, events) {
-          return Container(
-            // margin: const EdgeInsets.all(4.0),
-            margin: const EdgeInsets.only(top: 4.0),
-            padding: const EdgeInsets.only(top: 1.0, left: 18.0),
-            width: 100,
-            height: 300,
-            child: Text(
-              '${date.day}',
-              style: TextStyle().copyWith(fontSize: 16.0),
+          return GestureDetector(
+            onTap: () {
+              if (calC.calendarType == 'myRos') {
+                var eveSplit = events.first.split(',');
+                var eveLength = events.first.split(',').length;
+                var showDate = '${date.year}-${date.month <= 9 ? '0' + date.month.toString() : date.month}-${date.day <= 9 ? '0' + date.day.toString() : date.day}';
+                if (eveLength > 1) {
+                  Get.defaultDialog(
+                    title: 'Roster on $showDate',
+                    content: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          '${RemoteServices().box.get('empid')} : ${eveSplit[0]}',
+                        ),
+                        Text(
+                          '${RemoteServices().box.get('empid')} : ${eveSplit[1]}',
+                        ),
+                      ],
+                    ),
+                  );
+                }
+              }
+            },
+            child: Container(
+              // margin: const EdgeInsets.all(4.0),
+              margin: const EdgeInsets.only(top: 4.0),
+              padding: const EdgeInsets.only(top: 1.0, left: 18.0),
+              width: 100,
+              height: 300,
+              child: Text(
+                '${date.day}',
+                style: TextStyle().copyWith(fontSize: 16.0),
+              ),
             ),
           );
         },
@@ -156,14 +182,22 @@ class _HomeCalendarState extends State<HomeCalendar> with TickerProviderStateMix
   }
 
   Widget _buildEventsMarker(DateTime date, List events) {
-    // print(events.first);
+    var showEvent;
+    if (events.first.split(',').length > 1) {
+      var eventSplit = events.first.split(',');
+      showEvent = eventSplit[0];
+      // print(events[0]);
+      // print('length: ${events.first.split(',').length}');
+    } else {
+      showEvent = events.first;
+    }
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       width: 50.0,
       height: 30.0,
       child: Center(
         child: Text(
-          events.first,
+          showEvent,
           style: TextStyle().copyWith(
             color: Colors.indigo[900],
             fontSize: 16.0,

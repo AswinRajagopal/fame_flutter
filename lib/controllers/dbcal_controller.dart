@@ -11,6 +11,7 @@ class DBCalController extends GetxController {
   var changedDate;
   Map<DateTime, List> events = {};
   bool isDisposed = false;
+  var calendarType = 'myCal';
 
   @override
   void onInit() {
@@ -31,10 +32,12 @@ class DBCalController extends GetxController {
   }
 
   void getCalendar({month, chDt}) async {
+    print('calendarType: $calendarType');
     events = {};
+    var dateParse;
     var date = DateTime.now().toString();
     if (month == null || month == '') {
-      var dateParse = DateTime.parse(date);
+      dateParse = DateTime.parse(date);
       changedDate = '${dateParse.year}-${dateParse.month}-${dateParse.day}';
       var formattedDate = '${dateParse.month}${dateParse.year.toString().substring(2)}';
       month = formattedDate;
@@ -52,19 +55,73 @@ class DBCalController extends GetxController {
         // isCalLoading(false);
         if (calRes['success']) {
           // print(calRes.attendanceList);
-          for (var i = 0; i < calRes['attendanceList'].length; i++) {
-            var eventDt = DateTime.parse(
-              formatDate(
-                DateTime.parse(calRes['attendanceList'][i]['checkInDateTime']),
-                [yyyy, mm, dd],
-              ),
-            );
-            var event = calRes['attendanceList'][i]['attendanceAlias'];
+          if (calendarType == 'myCal') {
+            for (var i = 0; i < calRes['attendanceList'].length; i++) {
+              var eventDt = DateTime.parse(
+                formatDate(
+                  DateTime.parse(calRes['attendanceList'][i]['checkInDateTime']),
+                  [yyyy, mm, dd],
+                ),
+              );
+              var event = calRes['attendanceList'][i]['attendanceAlias'];
 
-            if (event != null && event != '') {
-              // print('Key');
-              // print(eventDt);
-              events[eventDt] = [event];
+              if (event != null && event != '') {
+                // print('Key');
+                // print(eventDt);
+                events[eventDt] = [event];
+              }
+            }
+          } else if (calendarType == 'myRos') {
+            if (calRes['empRosterList'] != null && calRes['empRosterList'].length > 0) {
+              var empRoster = calRes['empRosterList'];
+              var rosterLength = calRes['empRosterList'].length;
+              var roster = [];
+              roster.add(empRoster[0]);
+              // for (var i = 0; i < roster.first.length; i++) {
+              roster[0].remove('modified_On');
+              roster[0].remove('modified_By');
+              roster[0].remove('clientId');
+              roster[0].remove('empId');
+              roster[0].remove('created_On');
+              roster[0].remove('intId');
+              roster[0].remove('created_By');
+              roster[0].remove('month');
+              roster[0].remove('design');
+              // print(roster[0].length);
+              for (var i = 1; i <= 31; i++) {
+                // print('day$i');
+                // print(empRoster[0]['day$i']);
+                // print(empRoster[1]['day$i']);
+                // print(dateParse);
+                // print(changedDate);
+                var day = i < 10 ? '0' + i.toString() : i.toString();
+                var createDate = '${changedDate.split('-')[0]}-${changedDate.split('-')[1]}-$day 00:00:00';
+                var eventDt = DateTime.parse(
+                  formatDate(
+                    DateTime.parse(createDate),
+                    [yyyy, mm, dd],
+                  ),
+                );
+                // print('eventDt: $eventDt');
+                var event;
+                if (rosterLength > 1) {
+                  if (empRoster[0]['day$i'] == null) {
+                    event = empRoster[1]['day$i'];
+                  } else if (empRoster[1]['day$i'] == null) {
+                    event = empRoster[0]['day$i'];
+                  } else {
+                    event = empRoster[0]['day$i'] + ',' + empRoster[1]['day$i'];
+                  }
+                } else {
+                  event = empRoster[0]['day$i'];
+                }
+
+                if (event != null && event != '') {
+                  // print('Key');
+                  // print(eventDt);
+                  events[eventDt] = [event];
+                }
+              }
             }
           }
         } else {
