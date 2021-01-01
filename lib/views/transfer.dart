@@ -60,7 +60,7 @@ class _TransferPageState extends State<TransferPage> {
               'Processing please wait...',
               style: TextStyle(
                 fontSize: 18.0,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
           ],
@@ -68,7 +68,7 @@ class _TransferPageState extends State<TransferPage> {
       ),
     );
     tC.pr.style(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
     );
     super.initState();
   }

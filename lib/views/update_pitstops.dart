@@ -56,7 +56,7 @@ class _UpdatePitstopsState extends State<UpdatePitstops> {
               'Processing please wait...',
               style: TextStyle(
                 fontSize: 18.0,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
           ],
@@ -64,7 +64,7 @@ class _UpdatePitstopsState extends State<UpdatePitstops> {
       ),
     );
     psC.pr.style(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
     );
   }
 

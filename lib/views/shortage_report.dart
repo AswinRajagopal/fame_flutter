@@ -45,7 +45,7 @@ class _ShortageReportState extends State<ShortageReport> {
               'Processing please wait...',
               style: TextStyle(
                 fontSize: 18.0,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
           ],
@@ -53,7 +53,7 @@ class _ShortageReportState extends State<ShortageReport> {
       ),
     );
     epC.pr.style(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
     );
     Future.delayed(Duration(milliseconds: 100), epC.getClientTimings);
     super.initState();
@@ -172,6 +172,8 @@ class _ShortageReportState extends State<ShortageReport> {
                     shift = null;
                     for (var j = 0; j < manpower.length; j++) {
                       // print('manpower: ${manpower[j]}');
+                      manpower[j]['shiftStartTime'] = manpower[j]['shiftStartTime'].split(':').first.length == 1 ? '0' + manpower[j]['shiftStartTime'] : manpower[j]['shiftStartTime'];
+                      manpower[j]['shiftEndTime'] = manpower[j]['shiftEndTime'].split(':').first.length == 1 ? '0' + manpower[j]['shiftEndTime'] : manpower[j]['shiftEndTime'];
                       var sSTime = DateFormat('hh:mm')
                               .format(
                                 DateTime.parse(

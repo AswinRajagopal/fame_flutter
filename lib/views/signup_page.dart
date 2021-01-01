@@ -51,7 +51,7 @@ class _SignupPageState extends State<SignupPage> {
               'Processing please wait...',
               style: TextStyle(
                 fontSize: 18.0,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
           ],
@@ -59,7 +59,7 @@ class _SignupPageState extends State<SignupPage> {
       ),
     );
     signupController.pr.style(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
     );
 
     otpController.pr = ProgressDialog(
@@ -83,7 +83,7 @@ class _SignupPageState extends State<SignupPage> {
               'Processing please wait...',
               style: TextStyle(
                 fontSize: 18.0,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
           ],
@@ -91,7 +91,7 @@ class _SignupPageState extends State<SignupPage> {
       ),
     );
     otpController.pr.style(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
     );
   }
 
@@ -387,13 +387,13 @@ class _SignupPageState extends State<SignupPage> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     SizedBox(
-                                      height: 25.0,
+                                      height: 5.0,
                                     ),
-                                    Container(
-                                      height: 8.0,
-                                      width: 80.0,
-                                      color: Colors.white38,
-                                    ),
+                                    // Container(
+                                    //   height: 8.0,
+                                    //   width: 80.0,
+                                    //   color: Colors.white38,
+                                    // ),
                                     SizedBox(
                                       height: 20.0,
                                     ),
@@ -429,10 +429,11 @@ class _SignupPageState extends State<SignupPage> {
                                         shape: PinCodeFieldShape.underline,
                                         fieldHeight: 65,
                                         fieldWidth: 65,
-                                        activeColor: Colors.orange,
-                                        activeFillColor: Colors.orange,
-                                        selectedColor: Colors.orange,
-                                        selectedFillColor: Colors.orange,
+                                        activeColor: Colors.blue,
+                                        activeFillColor: Colors.blue,
+                                        selectedColor: Colors.blue,
+                                        selectedFillColor: Colors.blue,
+                                        inactiveColor: Colors.blue,
                                       ),
                                       cursorColor: Colors.transparent,
                                       cursorHeight: 40.0,
@@ -489,7 +490,7 @@ class _SignupPageState extends State<SignupPage> {
                                           child: Text(
                                             'Resend',
                                             style: TextStyle(
-                                              color: Colors.red,
+                                              color: Colors.blue,
                                               fontSize: 16.0,
                                               fontWeight: FontWeight.bold,
                                             ),
@@ -536,13 +537,13 @@ class _SignupPageState extends State<SignupPage> {
                                           ),
                                         ),
                                       ),
-                                      color: Colors.red,
+                                      color: Colors.blue,
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(
                                           30.0,
                                         ),
                                         side: BorderSide(
-                                          color: Colors.red,
+                                          color: Colors.blue,
                                         ),
                                       ),
                                     ),

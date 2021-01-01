@@ -39,7 +39,7 @@ class _TransferListState extends State<TransferList> {
               'Processing please wait...',
               style: TextStyle(
                 fontSize: 18.0,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
           ],
@@ -47,7 +47,7 @@ class _TransferListState extends State<TransferList> {
       ),
     );
     tC.pr.style(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
     );
     super.initState();
     Future.delayed(Duration(milliseconds: 100), tC.getTransferList);

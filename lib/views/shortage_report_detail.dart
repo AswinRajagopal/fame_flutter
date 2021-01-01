@@ -45,7 +45,7 @@ class _ShortageReportDetailState extends State<ShortageReportDetail> {
               'Processing please wait...',
               style: TextStyle(
                 fontSize: 18.0,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
           ],
@@ -53,7 +53,7 @@ class _ShortageReportDetailState extends State<ShortageReportDetail> {
       ),
     );
     epC.pr.style(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
     );
     Future.delayed(Duration(milliseconds: 100), () {
       epC.getShortageReport(widget.clientId, widget.date, widget.shift);

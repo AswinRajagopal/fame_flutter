@@ -52,6 +52,7 @@ class _DashboardPageState extends State<DashboardPage> {
     Future.delayed(Duration(milliseconds: 100), () {
       erpC.init(fromWhere: 'db');
     });
+    calC.calendarType = 'myCal';
     Future.delayed(Duration(milliseconds: 100), calC.init);
   }
 
@@ -64,14 +65,14 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   String convertTimeForCheckedIn(time) {
-    return DateFormat('d').format(DateTime.parse(time)).toString() + '/' + DateFormat('M').format(DateTime.parse(time)).toString() + '/' + DateFormat('yyyy').format(DateTime.parse(time)).toString() + ' @ ' + DateFormat().add_jm().format(DateTime.parse(time)).toString();
+    return DateFormat('dd').format(DateTime.parse(time)).toString() + '/' + DateFormat('MM').format(DateTime.parse(time)).toString() + '/' + DateFormat('yyyy').format(DateTime.parse(time)).toString() + ' @ ' + DateFormat().add_jm().format(DateTime.parse(time)).toString();
     // DateFormat('a').format(time).toString().toLowerCase();
   }
 
   // ignore: missing_return
   bool checkCondition(dbRes, type) {
-    var curDate = DateFormat('yyyy-M-d').format(DateTime.now()).toString();
-    var chkDate = DateFormat('yyyy-M-d').format(DateTime.parse(dbRes['dailyAttendance']['checkInDateTime'])).toString();
+    var curDate = DateFormat('yyyy-MM-dd').format(DateTime.now()).toString();
+    var chkDate = DateFormat('yyyy-MM-dd').format(DateTime.parse(dbRes['dailyAttendance']['checkInDateTime'])).toString();
     if (dbRes['dailyAttendance'] != null) {
       if (dbRes['dailyAttendance']['checkInDateTime'] != null && dbRes['dailyAttendance']['checkOutDateTime'] == null) {
         //allow checkout
@@ -182,9 +183,6 @@ class _DashboardPageState extends State<DashboardPage> {
                           Row(
                             children: [
                               CircleAvatar(
-                                // backgroundImage: NetworkImage(
-                                //   'https://cdn.pixabay.com/photo/2018/08/28/12/41/avatar-3637425_960_720.png',
-                                // ),
                                 radius: 20.0,
                                 backgroundImage: AssetImage(
                                   'assets/images/tm_logo.png',
@@ -194,12 +192,16 @@ class _DashboardPageState extends State<DashboardPage> {
                               SizedBox(
                                 width: 15.0,
                               ),
-                              Text(
-                                RemoteServices().box.get('companyname'),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 25.0,
-                                  fontWeight: FontWeight.w800,
+                              SizedBox(
+                                width: 266.0,
+                                child: Text(
+                                  RemoteServices().box.get('companyname'),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                               Spacer(),
@@ -495,12 +497,15 @@ class _DashboardPageState extends State<DashboardPage> {
                                             } else {
                                               return Row(
                                                 children: [
-                                                  Text(
-                                                    // dbC.response.clientData.name ?? 'N/A',
-                                                    dbC.response['clientData']['name'] ?? 'N/A',
-                                                    style: TextStyle(
-                                                      fontSize: 15.0,
-                                                      fontWeight: FontWeight.bold,
+                                                  SizedBox(
+                                                    width: 110.0,
+                                                    child: Text(
+                                                      dbC.response['clientData']['name'] ?? 'N/A',
+                                                      style: TextStyle(
+                                                        fontSize: 15.0,
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
+                                                      overflow: TextOverflow.ellipsis,
                                                     ),
                                                   ),
                                                   Text(
@@ -509,12 +514,15 @@ class _DashboardPageState extends State<DashboardPage> {
                                                       fontSize: 15.0,
                                                     ),
                                                   ),
-                                                  Text(
-                                                    // dbC.response.empdetails.area ?? 'N/A',
-                                                    dbC.response['empdetails']['area'] ?? 'N/A',
-                                                    style: TextStyle(
-                                                      fontSize: 15.0,
-                                                      fontWeight: FontWeight.bold,
+                                                  SizedBox(
+                                                    width: 110.0,
+                                                    child: Text(
+                                                      dbC.response['empdetails']['area'] ?? 'N/A',
+                                                      style: TextStyle(
+                                                        fontSize: 15.0,
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
+                                                      overflow: TextOverflow.ellipsis,
                                                     ),
                                                   ),
                                                 ],
@@ -570,7 +578,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                         child: Text(
                                           'Check In',
                                           style: TextStyle(
-                                            fontSize: 18.0,
+                                            fontSize: 16.0,
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -596,7 +604,7 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
             ),
             Positioned(
-              top: 300.0,
+              top: 290.0,
               bottom: 0.0,
               left: 0.0,
               right: 0.0,
@@ -613,7 +621,75 @@ class _DashboardPageState extends State<DashboardPage> {
                       } else {
                         var role = RemoteServices().box.get('role');
                         return dbC.response['psCount'] == null
-                            ? Container()
+                            ? Container(
+                                width: MediaQuery.of(context).size.width,
+                                color: Colors.white,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        top: 5.0,
+                                        left: 20.0,
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            DateFormat.MMMM().format(DateTime.now()).toString(),
+                                            style: TextStyle(
+                                              fontSize: 20.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          role == '2' || role == '3'
+                                              ? FlatButton(
+                                                  onPressed: () {
+                                                    Get.offAll(
+                                                      AttendancePage(),
+                                                    );
+                                                  },
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                        'Enter Attendance',
+                                                        style: TextStyle(
+                                                          fontSize: 16.0,
+                                                          color: Colors.grey,
+                                                        ),
+                                                      ),
+                                                      Icon(
+                                                        Icons.chevron_right,
+                                                        size: 25.0,
+                                                        color: Colors.grey,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              : Container(),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 10.0,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'No data to show',
+                                          style: TextStyle(
+                                            fontSize: 18.0,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 20.0,
+                                    ),
+                                  ],
+                                ),
+                              )
                             : Container(
                                 // height: 150.0,
                                 width: MediaQuery.of(context).size.width,
@@ -623,7 +699,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                   children: [
                                     Padding(
                                       padding: const EdgeInsets.only(
-                                        top: 20.0,
+                                        top: 10.0,
                                         left: 20.0,
                                       ),
                                       child: Row(
@@ -754,7 +830,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 8.0,
-                          vertical: 18.0,
+                          vertical: 15.0,
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -772,7 +848,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                 Text(
                                   'My Route Plan',
                                   style: TextStyle(
-                                    fontSize: 18.0,
+                                    fontSize: 17.0,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -785,7 +861,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                   child: Text(
                                     'Create New Route Plan',
                                     style: TextStyle(
-                                      fontSize: 16.0,
+                                      fontSize: 15.0,
                                       color: Colors.grey,
                                     ),
                                   ),
@@ -897,8 +973,8 @@ class _DashboardPageState extends State<DashboardPage> {
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
-                                    vertical: 7.0,
-                                    horizontal: 25.0,
+                                    vertical: 12.0,
+                                    horizontal: 23.0,
                                   ),
                                   child: Text(
                                     'My Calendar',
@@ -932,8 +1008,8 @@ class _DashboardPageState extends State<DashboardPage> {
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
-                                    vertical: 7.0,
-                                    horizontal: 25.0,
+                                    vertical: 12.0,
+                                    horizontal: 23.0,
                                   ),
                                   child: Text(
                                     'My Roster',

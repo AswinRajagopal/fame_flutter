@@ -36,7 +36,7 @@ class LeaveController extends GetxController {
               leaveList.add(res.leaveList[i]);
             }
           }
-          // print('leaveList: $leaveList');
+          print('leaveList: $leaveList');
         } else {
           Get.snackbar(
             'Error',

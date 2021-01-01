@@ -56,7 +56,7 @@ class TransferListWidget extends StatelessWidget {
                   maxLines: 1,
                 ),
                 SizedBox(
-                  width: 68.0,
+                  width: 73.0,
                 ),
                 Text(
                   ':',
@@ -91,7 +91,7 @@ class TransferListWidget extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: 78.0,
+                  width: 83.0,
                 ),
                 Text(
                   ':',
@@ -126,7 +126,7 @@ class TransferListWidget extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: 33.0,
+                  width: 35.0,
                 ),
                 Text(
                   ':',
@@ -162,7 +162,7 @@ class TransferListWidget extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: 23.0,
+                  width: 24.0,
                 ),
                 Text(
                   ':',
@@ -196,7 +196,7 @@ class TransferListWidget extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: 35.0,
+                  width: 36.0,
                 ),
                 Text(
                   ':',
@@ -267,7 +267,7 @@ class TransferListWidget extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: 88.0,
+                  width: 94.0,
                 ),
                 Text(
                   ':',

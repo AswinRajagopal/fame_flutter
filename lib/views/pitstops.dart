@@ -51,7 +51,7 @@ class _PitstopsState extends State<Pitstops> {
               'Processing please wait...',
               style: TextStyle(
                 fontSize: 18.0,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
           ],
@@ -59,7 +59,7 @@ class _PitstopsState extends State<Pitstops> {
       ),
     );
     psC.pr.style(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
     );
     super.initState();
     Future.delayed(

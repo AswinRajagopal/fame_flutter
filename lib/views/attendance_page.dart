@@ -24,10 +24,12 @@ class _AttendancePageState extends State<AttendancePage> {
   TextEditingController date = TextEditingController();
   var stVal = 'all';
   var clientId;
+  var passDate;
 
   @override
   void initState() {
-    date.text = DateFormat('yyyy-M-dd').format(DateTime.now()).toString();
+    date.text = DateFormat('dd-MM-yyyy').format(DateTime.now()).toString();
+    passDate = DateFormat('yyyy-MM-dd').format(DateTime.now()).toString();
     aC.pr = ProgressDialog(
       context,
       type: ProgressDialogType.Normal,
@@ -49,7 +51,7 @@ class _AttendancePageState extends State<AttendancePage> {
               'Processing please wait...',
               style: TextStyle(
                 fontSize: 18.0,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
           ],
@@ -57,7 +59,7 @@ class _AttendancePageState extends State<AttendancePage> {
       ),
     );
     aC.pr.style(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
     );
     super.initState();
   }
@@ -71,7 +73,7 @@ class _AttendancePageState extends State<AttendancePage> {
     final picked = await showDatePicker(
       context: context,
       initialDate: DateTime.parse(
-        date.text.toString(),
+        passDate.toString(),
       ),
       firstDate: DateTime.now().add(Duration(days: -365)),
       lastDate: DateTime.now().add(Duration(days: 365)),
@@ -80,7 +82,8 @@ class _AttendancePageState extends State<AttendancePage> {
     if (picked != null) {
       print('Date selected ${date.text.toString()}');
       setState(() {
-        date.text = DateFormat('yyyy-M-dd').format(picked).toString();
+        date.text = DateFormat('dd-MM-yyyy').format(picked).toString();
+        passDate = DateFormat('yyyy-MM-dd').format(picked).toString();
       });
     }
   }
@@ -180,17 +183,19 @@ class _AttendancePageState extends State<AttendancePage> {
                         aC.shiftTime = '';
                         for (var j = 0; j < manpower.length; j++) {
                           // print('manpower: ${manpower[j]}');
+                          manpower[j]['shiftStartTime'] = manpower[j]['shiftStartTime'].split(':').first.length == 1 ? '0' + manpower[j]['shiftStartTime'] : manpower[j]['shiftStartTime'];
+                          manpower[j]['shiftEndTime'] = manpower[j]['shiftEndTime'].split(':').first.length == 1 ? '0' + manpower[j]['shiftEndTime'] : manpower[j]['shiftEndTime'];
                           var sSTime = DateFormat('hh:mm')
                                   .format(
                                     DateTime.parse(
-                                      '2020-12-20 ' + manpower[j]['shiftStartTime'],
+                                      '2020-12-20 ' + manpower[j]['shiftStartTime'] ,
                                     ),
                                   )
                                   .toString() +
                               DateFormat('a')
                                   .format(
                                     DateTime.parse(
-                                      '2020-12-20 ' + manpower[j]['shiftStartTime'],
+                                      '2020-12-20 ' + manpower[j]['shiftStartTime'] ,
                                     ),
                                   )
                                   .toString()
@@ -438,7 +443,7 @@ class _AttendancePageState extends State<AttendancePage> {
                                 RaisedButton(
                                   onPressed: () {
                                     print('proceed');
-                                    print('date: ${date.text}');
+                                    print('date: $passDate');
                                     print('client: $clientId');
                                     print('status: $stVal');
                                     print('shift: ${aC.shiftTime}');
@@ -455,14 +460,14 @@ class _AttendancePageState extends State<AttendancePage> {
                                         ),
                                       );
                                     } else {
-                                      print('date: ${date.text}');
+                                      print('date: $passDate');
                                       print('client: $clientId');
                                       print('status: $stVal');
                                       print('shift: ${aC.shiftTime.split('#').first}');
                                       print('time: ${aC.shiftTime.split('#').last}');
                                       Get.offAll(
                                         EmployeeNotation(
-                                          date.text,
+                                          passDate,
                                           clientId,
                                           stVal,
                                           aC.shiftTime.split('#').first,

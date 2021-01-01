@@ -42,7 +42,7 @@ class _LeavePageState extends State<LeavePage> {
               'Processing please wait...',
               style: TextStyle(
                 fontSize: 18.0,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
           ],
@@ -50,7 +50,7 @@ class _LeavePageState extends State<LeavePage> {
       ),
     );
     lC.pr.style(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
     );
     super.initState();
   }

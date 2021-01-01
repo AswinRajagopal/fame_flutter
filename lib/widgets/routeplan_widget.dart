@@ -60,7 +60,7 @@ class RouteplanWidget extends StatelessWidget {
                     maxLines: 1,
                   ),
                   SizedBox(
-                    width: 50.0,
+                    width: 54.0,
                   ),
                   Text(
                     ':',
@@ -130,7 +130,7 @@ class RouteplanWidget extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    width: 10.0,
+                    width: 13.0,
                   ),
                   Text(
                     ':',
@@ -167,7 +167,7 @@ class RouteplanWidget extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    width: 80.0,
+                    width: 85.0,
                   ),
                   Text(
                     ':',

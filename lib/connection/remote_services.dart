@@ -25,8 +25,6 @@ import '../models/otp.dart';
 import '../views/welcome_page.dart';
 import 'package:get/get.dart';
 
-import '../models/profile.dart';
-
 import '../models/signup.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
@@ -148,7 +146,7 @@ class RemoteServices {
     }
   }
 
-  Future<Profile> getEmpDetails() async {
+  Future getEmpDetails() async {
     print('getEmpDetails');
     print(box.get('empid'));
     print(box.get('companyid'));
@@ -165,7 +163,8 @@ class RemoteServices {
     // print(response.body);
     if (response.statusCode == 200) {
       var jsonString = response.body;
-      return profileFromJson(jsonString);
+      // return profileFromJson(jsonString);
+      return jsonDecode(jsonString);
     } else {
       //show error message
       return null;
@@ -706,6 +705,15 @@ class RemoteServices {
   }
 
   Future<Attendance> getClientTimings() async {
+    print(
+      jsonEncode(
+        <String, dynamic>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'roleId': box.get('role').toString(),
+        },
+      ),
+    );
     var response = await client.post(
       '$baseURL/attendance/clients_timing',
       headers: header,
@@ -955,13 +963,23 @@ class RemoteServices {
   }
 
   Future aprRejTransfer(empId, clientId, orderId, status) async {
+    // print('status: $status');
+    // print(jsonEncode(
+    //     <String, dynamic>{
+    //       'companyId': box.get('companyid').toString(),
+    //       'rejected': status == '0' ? true : false,
+    //       'orderId': orderId,
+    //       'empId': empId,
+    //       'clientId': clientId,
+    //     },
+    //   ),);
     var response = await client.post(
       '$baseURL/transfer/approve_transfer',
       headers: header,
       body: jsonEncode(
         <String, dynamic>{
           'companyId': box.get('companyid').toString(),
-          'rejected': status == '0' ? false : true,
+          'rejected': status == '0' ? true : false,
           'orderId': orderId,
           'empId': empId,
           'clientId': clientId,
@@ -1214,6 +1232,28 @@ class RemoteServices {
           'clientId': clientId,
           'date': date,
           'shift': shift,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future sendFeedback(feedback) async {
+    var response = await client.post(
+      '$baseURL/user/new_query',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'companyId': box.get('companyid').toString(),
+          'empId': box.get('empid').toString(),
+          'query': feedback,
         },
       ),
     );

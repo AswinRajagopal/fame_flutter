@@ -70,6 +70,7 @@ dependencies:
   syncfusion_flutter_charts: ^18.4.31
   firebase_messaging: ^7.0.3
   # connectivity_wrapper: ^1.0.4
+  in_app_review: ^1.0.4
 
 flutter_icons:
   image_path: "assets/images/icon.png"
@@ -114,6 +115,28 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+  fonts:
+    - family: Avenir
+      fonts:
+        - asset: assets/fonts/AvenirLTStd-Book.ttf
+          weight: 300
+    - family: AvenirSemiBold
+      fonts:
+        - asset: assets/fonts/Avenir-SemiBold.ttf
+          weight: 100
+    - family: AvenirBold
+      fonts:
+        - asset: assets/fonts/Avenir-Bold.ttf
+    - family: AvenirBlack
+      fonts:
+        - asset: assets/fonts/AvenirLTStd-Black.ttf
+          weight: 500
+    - family: AvenirRegular
+      fonts:
+        - asset: assets/fonts/Avenir-Regular.ttf
+    - family: AvenirMedium
+      fonts:
+        - asset: assets/fonts/Avenir-Medium.ttf
   # fonts:
   #   - family: Schyler
   #     fonts:

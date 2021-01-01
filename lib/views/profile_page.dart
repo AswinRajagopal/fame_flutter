@@ -10,12 +10,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:get/get.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
   final ProfileController pC = Get.put(ProfileController());
 
   @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(milliseconds: 100), pC.getEmpDetails);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration(milliseconds: 100), pC.init);
     pC.pr = ProgressDialog(
       context,
       type: ProgressDialogType.Normal,
@@ -37,7 +47,7 @@ class ProfilePage extends StatelessWidget {
               'Processing please wait...',
               style: TextStyle(
                 fontSize: 18.0,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
           ],
@@ -45,7 +55,7 @@ class ProfilePage extends StatelessWidget {
       ),
     );
     pC.pr.style(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
     );
 
     return Scaffold(
@@ -115,8 +125,8 @@ class ProfilePage extends StatelessWidget {
                         );
                       } else {
                         var img;
-                        if (pC.profileRes.profileImage != null) {
-                          img = pC.profileRes.profileImage.image;
+                        if (pC.profileRes['profileImage'] != null) {
+                          img = pC.profileRes['profileImage']['image'];
                           img = img.contains('data:image') ? img.split(',').last : img;
 
                           print('img.length: ${img.length}');
@@ -155,7 +165,7 @@ class ProfilePage extends StatelessWidget {
                               ),
                               Center(
                                 child: Text(
-                                  pC.profileRes.empDetails.name,
+                                  pC.profileRes['empDetails']['name'] ?? 'N/A',
                                   style: TextStyle(
                                     fontSize: 20.0,
                                     fontWeight: FontWeight.bold,
@@ -164,7 +174,7 @@ class ProfilePage extends StatelessWidget {
                               ),
                               Center(
                                 child: Text(
-                                  pC.profileRes.empDetails.empId,
+                                  pC.profileRes['empDetails']['empId'] ?? 'N/A',
                                   style: TextStyle(
                                     fontSize: 16.0,
                                     color: Colors.grey,
@@ -176,21 +186,21 @@ class ProfilePage extends StatelessWidget {
                               ),
                               ProfileDetailRow(
                                 'assets/images/icon_profile_address.png',
-                                pC.profileRes.empDetails.address,
+                                pC.profileRes['empDetails']['address'] ?? 'N/A',
                               ),
                               SizedBox(
                                 height: 10.0,
                               ),
                               ProfileDetailRow(
                                 'assets/images/icon_profile_call.png',
-                                pC.profileRes.empDetails.phone,
+                                pC.profileRes['empDetails']['phone'] ?? 'N/A',
                               ),
                               SizedBox(
                                 height: 10.0,
                               ),
                               ProfileDetailRow(
                                 'assets/images/icon_profile_mail.png',
-                                pC.profileRes.empDetails.emailId,
+                                pC.profileRes['empDetails']['emailId'] ?? 'N/A',
                               ),
                               SizedBox(
                                 height: 15.0,

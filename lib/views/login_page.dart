@@ -46,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
               'Processing please wait...',
               style: TextStyle(
                 fontSize: 18.0,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
           ],
@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
     loginController.pr.style(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
     );
   }
 
@@ -217,7 +217,7 @@ class _LoginPageState extends State<LoginPage> {
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.w600,
-                                fontSize: 16.0,
+                                fontSize: 15.0,
                               ),
                             ),
                             Spacer(),
@@ -230,7 +230,7 @@ class _LoginPageState extends State<LoginPage> {
                                 style: TextStyle(
                                   color: Colors.orangeAccent,
                                   fontWeight: FontWeight.w600,
-                                  fontSize: 16.0,
+                                  fontSize: 15.0,
                                 ),
                               ),
                             ),

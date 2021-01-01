@@ -127,24 +127,26 @@ class _HomeCalendarState extends State<HomeCalendar> with TickerProviderStateMix
           return GestureDetector(
             onTap: () {
               if (calC.calendarType == 'myRos') {
-                var eveSplit = events.first.split(',');
-                var eveLength = events.first.split(',').length;
-                var showDate = '${date.year}-${date.month <= 9 ? '0' + date.month.toString() : date.month}-${date.day <= 9 ? '0' + date.day.toString() : date.day}';
-                if (eveLength > 1) {
-                  Get.defaultDialog(
-                    title: 'Roster on $showDate',
-                    content: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          '${RemoteServices().box.get('empid')} : ${eveSplit[0]}',
-                        ),
-                        Text(
-                          '${RemoteServices().box.get('empid')} : ${eveSplit[1]}',
-                        ),
-                      ],
-                    ),
-                  );
+                if (events != null) {
+                  var eveSplit = events.first.split(',');
+                  var eveLength = events.first.split(',').length;
+                  var showDate = '${date.year}-${date.month <= 9 ? '0' + date.month.toString() : date.month}-${date.day <= 9 ? '0' + date.day.toString() : date.day}';
+                  if (eveLength > 1) {
+                    Get.defaultDialog(
+                      title: 'Roster on $showDate',
+                      content: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            '${RemoteServices().box.get('empid')} : ${eveSplit[0]}',
+                          ),
+                          Text(
+                            '${RemoteServices().box.get('empid')} : ${eveSplit[1]}',
+                          ),
+                        ],
+                      ),
+                    );
+                  }
                 }
               }
             },

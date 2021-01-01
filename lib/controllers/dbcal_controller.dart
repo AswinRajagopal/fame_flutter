@@ -22,6 +22,7 @@ class DBCalController extends GetxController {
   void init() {
     if (isDisposed) return;
     print('init custom getCalendar');
+    calendarType == 'myCal';
     getCalendar();
   }
 
@@ -38,7 +39,8 @@ class DBCalController extends GetxController {
     var date = DateTime.now().toString();
     if (month == null || month == '') {
       dateParse = DateTime.parse(date);
-      changedDate = '${dateParse.year}-${dateParse.month}-${dateParse.day}';
+      print('Month: ${dateParse.month}');
+      changedDate = '${dateParse.year}-${dateParse.month < 10 ? '0' + dateParse.month.toString() : dateParse.month}-${dateParse.day < 10 ? '0' + dateParse.day.toString() : dateParse.day}';
       var formattedDate = '${dateParse.month}${dateParse.year.toString().substring(2)}';
       month = formattedDate;
     }

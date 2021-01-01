@@ -83,7 +83,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
               'Processing please wait...',
               style: TextStyle(
                 fontSize: 18.0,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
           ],
@@ -91,7 +91,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
       ),
     );
     enC.pr.style(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
     );
     Future.delayed(Duration(milliseconds: 100), () {
       enC.getNotations(
@@ -500,17 +500,25 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                       Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Text(
-                                            emp['name'].toString().trimRight() + ' ' + emp['empId'],
-                                            style: TextStyle(
-                                              fontSize: 16.0,
-                                              fontWeight: FontWeight.bold,
+                                          SizedBox(
+                                            width: 220.0,
+                                            child: Text(
+                                              emp['name'].toString().trimRight() + ' ' + emp['empId'],
+                                              style: TextStyle(
+                                                fontSize: 16.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
-                                          Text(
-                                            enC.designation[emp['designation']],
-                                            style: TextStyle(
-                                              fontSize: 16.0,
+                                          SizedBox(
+                                            width: 220.0,
+                                            child: Text(
+                                              enC.designation[emp['designation']],
+                                              style: TextStyle(
+                                                fontSize: 16.0,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
                                           Visibility(
@@ -611,8 +619,14 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                         fontWeight: FontWeight.bold,
                                                       ),
                                                       hintText: 'Enter remarks',
+                                                      border: OutlineInputBorder(
+                                                        borderRadius: const BorderRadius.all(
+                                                          Radius.circular(5.0),
+                                                        ),
+                                                      ),
                                                     ),
                                                   ),
+                                                  radius: 5.0,
                                                   barrierDismissible: false,
                                                   onConfirm: () {
                                                     if (cRemark.text != '') {
@@ -811,7 +825,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                 if (val == 'OT' && emp['attendanceAlias'] == 'OT') {
                                                   otT.text = emp['overTime'];
                                                   await Get.defaultDialog(
-                                                    title: 'Over Time',
+                                                    title: 'OT hours',
                                                     content: TextField(
                                                       controller: otT,
                                                       readOnly: true,
@@ -827,8 +841,14 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                           fontWeight: FontWeight.bold,
                                                         ),
                                                         hintText: 'hours',
+                                                        border: OutlineInputBorder(
+                                                          borderRadius: const BorderRadius.all(
+                                                            Radius.circular(5.0),
+                                                          ),
+                                                        ),
                                                       ),
                                                     ),
+                                                    radius: 5.0,
                                                     barrierDismissible: false,
                                                     onCancel: () {
                                                       otT.text = '';
@@ -854,8 +874,14 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                           fontWeight: FontWeight.bold,
                                                         ),
                                                         hintText: 'minutes',
+                                                        border: OutlineInputBorder(
+                                                          borderRadius: const BorderRadius.all(
+                                                            Radius.circular(5.0),
+                                                          ),
+                                                        ),
                                                       ),
                                                     ),
+                                                    radius: 5.0,
                                                     barrierDismissible: false,
                                                     onCancel: () {
                                                       ltT.text = '';
@@ -870,7 +896,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                   if (val == 'OT') {
                                                     otT.text = '';
                                                     await Get.defaultDialog(
-                                                      title: 'Over Time',
+                                                      title: 'OT hours',
                                                       content: TextField(
                                                         controller: otT,
                                                         keyboardType: TextInputType.number,
@@ -886,8 +912,14 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                             fontWeight: FontWeight.bold,
                                                           ),
                                                           hintText: 'hours',
+                                                          border: OutlineInputBorder(
+                                                            borderRadius: const BorderRadius.all(
+                                                              Radius.circular(5.0),
+                                                            ),
+                                                          ),
                                                         ),
                                                       ),
+                                                      radius: 5.0,
                                                       barrierDismissible: false,
                                                       onConfirm: () async {
                                                         if (otT.text != '') {
@@ -955,8 +987,14 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                             fontWeight: FontWeight.bold,
                                                           ),
                                                           hintText: 'minutes',
+                                                          border: OutlineInputBorder(
+                                                            borderRadius: const BorderRadius.all(
+                                                              Radius.circular(5.0),
+                                                            ),
+                                                          ),
                                                         ),
                                                       ),
+                                                      radius: 5.0,
                                                       barrierDismissible: false,
                                                       onConfirm: () async {
                                                         if (ltT.text != '') {

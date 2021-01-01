@@ -52,7 +52,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
               'Processing please wait...',
               style: TextStyle(
                 fontSize: 18.0,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
           ],
@@ -60,7 +60,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
       ),
     );
     rpC.pr.style(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
     );
     super.initState();
   }
@@ -91,7 +91,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
     if (picked != null) {
       print('Date selected ${date.text.toString()}');
       setState(() {
-        date.text = DateFormat('yyyy-M-d').format(picked).toString();
+        date.text = DateFormat('yyyy-MM-dd').format(picked).toString();
       });
     }
   }
@@ -148,8 +148,8 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                                     ),
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
-                                        vertical: 7.0,
-                                        horizontal: 25.0,
+                                        vertical: 12.0,
+                                        horizontal: 22.0,
                                       ),
                                       child: Text(
                                         'From Clients',
@@ -175,8 +175,8 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                                     ),
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
-                                        vertical: 7.0,
-                                        horizontal: 25.0,
+                                        vertical: 11.0,
+                                        horizontal: 22.0,
                                       ),
                                       child: Text(
                                         'From Map',

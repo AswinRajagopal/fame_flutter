@@ -42,7 +42,7 @@ class LoginController extends GetxController {
         } else {
           Get.snackbar(
             'Error',
-            'Employee not found',
+            'Username and password are incorrect',
             colorText: Colors.white,
             backgroundColor: Colors.red,
             snackPosition: SnackPosition.BOTTOM,

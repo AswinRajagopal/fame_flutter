@@ -47,7 +47,7 @@ class _FaceRegisterState extends State<FaceRegister> {
               'Processing please wait...',
               style: TextStyle(
                 fontSize: 18.0,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
           ],
@@ -55,7 +55,7 @@ class _FaceRegisterState extends State<FaceRegister> {
       ),
     );
     faceRegC.pr.style(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
     );
   }
 

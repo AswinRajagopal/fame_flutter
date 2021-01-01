@@ -38,7 +38,7 @@ class _SOSState extends State<SOS> {
               'Processing please wait...',
               style: TextStyle(
                 fontSize: 18.0,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
           ],
@@ -46,7 +46,7 @@ class _SOSState extends State<SOS> {
       ),
     );
     sC.pr.style(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
     );
     Future.delayed(Duration(milliseconds: 100), sC.getEmpDetails);
     super.initState();

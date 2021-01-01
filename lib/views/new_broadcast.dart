@@ -38,7 +38,7 @@ class _BroadcastState extends State<Broadcast> {
               'Processing please wait...',
               style: TextStyle(
                 fontSize: 18.0,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
           ],
@@ -46,7 +46,7 @@ class _BroadcastState extends State<Broadcast> {
       ),
     );
     bC.pr.style(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
     );
     Future.delayed(
       Duration(milliseconds: 100),

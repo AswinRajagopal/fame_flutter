@@ -54,7 +54,7 @@ class _DailyEmpRepDetailState extends State<DailyEmpRepDetail> {
               'Processing please wait...',
               style: TextStyle(
                 fontSize: 18.0,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
           ],
@@ -62,7 +62,7 @@ class _DailyEmpRepDetailState extends State<DailyEmpRepDetail> {
       ),
     );
     epC.pr.style(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
     );
     Future.delayed(Duration(milliseconds: 100), () {
       epC.getDailyEmployeeReport(widget.empId, widget.fdate, widget.tdate, AppUtils.NAME);

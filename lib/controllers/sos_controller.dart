@@ -20,11 +20,11 @@ class SOSController extends GetxController {
         isLoading(false);
         await pr.hide();
         // print('profileRes valid: ${res.success}');
-        if (res.empDetails == null || res.empDetails.sosNumber == null) {
+        if (res['empDetails'] == null || res['empDetails']['sosNumber'] == null) {
         } else {
-          update([sosNumber.text = res.empDetails.sosNumber]);
+          update([sosNumber.text = res['empDetails']['sosNumber']]);
         }
-        if (res.success) {
+        if (res['success']) {
         } else {
           Get.snackbar(
             'Error',

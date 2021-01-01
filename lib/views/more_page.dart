@@ -143,8 +143,8 @@ class ListContainer extends StatelessWidget {
                 children: [
                   Image.asset(
                     image,
-                    height: 60.0,
-                    width: 60.0,
+                    height: 45.0,
+                    width: 45.0,
                   ),
                   SizedBox(
                     width: 10.0,
@@ -154,7 +154,7 @@ class ListContainer extends StatelessWidget {
                     child: Text(
                       title,
                       style: TextStyle(
-                        fontSize: 20.0,
+                        fontSize: 18.0,
                       ),
                       overflow: TextOverflow.fade,
                     ),

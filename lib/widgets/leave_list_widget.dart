@@ -126,7 +126,7 @@ class LeaveListWidget extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: 45.0,
+                  width: 43.0,
                 ),
                 Text(
                   ':',
@@ -162,7 +162,7 @@ class LeaveListWidget extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: 65.0,
+                  width: 63.0,
                 ),
                 Text(
                   ':',
@@ -196,7 +196,7 @@ class LeaveListWidget extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: 20.0,
+                  width: 18.0,
                 ),
                 Text(
                   ':',
@@ -230,7 +230,7 @@ class LeaveListWidget extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: 66.0,
+                  width: 68.0,
                 ),
                 Text(
                   ':',
@@ -244,7 +244,7 @@ class LeaveListWidget extends StatelessWidget {
                 Flexible(
                   child: Text(
                     leave['reason'].toString(),
-                    maxLines: 2,
+                    // maxLines: 5,
                     style: TextStyle(
                       fontSize: textSize,
                       color: Colors.grey,
@@ -267,7 +267,7 @@ class LeaveListWidget extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: 40.0,
+                  width: 36.0,
                 ),
                 Text(
                   ':',
@@ -301,7 +301,7 @@ class LeaveListWidget extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: 75.0,
+                  width: 77.0,
                 ),
                 Text(
                   ':',
@@ -323,7 +323,7 @@ class LeaveListWidget extends StatelessWidget {
                 ),
               ],
             ),
-            leave['status'] == '0' && RemoteServices().box.get('role') == '2'
+            leave['status'] == '0' && (RemoteServices().box.get('role') == '2' || RemoteServices().box.get('role') == '3')
                 ? Column(
                     children: [
                       SizedBox(

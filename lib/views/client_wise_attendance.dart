@@ -44,7 +44,7 @@ class _ClientWiseAttendanceState extends State<ClientWiseAttendance> {
               'Processing please wait...',
               style: TextStyle(
                 fontSize: 18.0,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
           ],
@@ -52,7 +52,7 @@ class _ClientWiseAttendanceState extends State<ClientWiseAttendance> {
       ),
     );
     epC.pr.style(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
     );
     Future.delayed(Duration(milliseconds: 100), epC.getClientTimings);
     super.initState();
@@ -91,7 +91,7 @@ class _ClientWiseAttendanceState extends State<ClientWiseAttendance> {
       backgroundColor: AppUtils().innerScaffoldBg,
       appBar: AppBar(
         title: Text(
-          'Shortage Report',
+          'Client Wise Report',
         ),
       ),
       body: SafeArea(
@@ -170,6 +170,8 @@ class _ClientWiseAttendanceState extends State<ClientWiseAttendance> {
                     epC.shift.clear();
                     for (var j = 0; j < manpower.length; j++) {
                       // print('manpower: ${manpower[j]}');
+                      manpower[j]['shiftStartTime'] = manpower[j]['shiftStartTime'].split(':').first.length == 1 ? '0' + manpower[j]['shiftStartTime'] : manpower[j]['shiftStartTime'];
+                      manpower[j]['shiftEndTime'] = manpower[j]['shiftEndTime'].split(':').first.length == 1 ? '0' + manpower[j]['shiftEndTime'] : manpower[j]['shiftEndTime'];
                       var sSTime = DateFormat('hh:mm')
                               .format(
                                 DateTime.parse(

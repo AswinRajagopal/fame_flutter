@@ -53,7 +53,7 @@ class _EmpReportDetailState extends State<EmpReportDetail> {
               'Processing please wait...',
               style: TextStyle(
                 fontSize: 18.0,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
           ],
@@ -61,7 +61,7 @@ class _EmpReportDetailState extends State<EmpReportDetail> {
       ),
     );
     epC.pr.style(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
     );
     Future.delayed(Duration(milliseconds: 100), () {
       epC.getEmpReport(widget.clientId, AppUtils.NAME);
@@ -209,8 +209,8 @@ class _EmpReportDetailState extends State<EmpReportDetail> {
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                  vertical: 7.0,
-                                  horizontal: 45.0,
+                                  vertical: 12.0,
+                                  horizontal: 44.0,
                                 ),
                                 child: Text(
                                   'Name',
@@ -243,8 +243,8 @@ class _EmpReportDetailState extends State<EmpReportDetail> {
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                  vertical: 7.0,
-                                  horizontal: 45.0,
+                                  vertical: 12.0,
+                                  horizontal: 44.0,
                                 ),
                                 child: Text(
                                   'Emp ID',

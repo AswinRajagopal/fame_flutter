@@ -51,7 +51,7 @@ class _PinMyVisitState extends State<PinMyVisit> {
               'Processing please wait...',
               style: TextStyle(
                 fontSize: 18.0,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
           ],
@@ -59,7 +59,7 @@ class _PinMyVisitState extends State<PinMyVisit> {
       ),
     );
     mpC.pr.style(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
     );
   }
 

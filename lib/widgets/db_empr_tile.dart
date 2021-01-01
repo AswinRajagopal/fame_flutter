@@ -41,12 +41,12 @@ class DBEmprTile extends StatelessWidget {
         DateFormat('h:mm').format(empRoute.createdOn).toString() +
         DateFormat('a').format(empRoute.createdOn).toString().toLowerCase();
 
-    return index == 0 && length >= 4
+    return index >= 4
         ? Padding(
             padding: EdgeInsets.fromLTRB(
               10.0,
               70.0,
-              5.0,
+              10.0,
               70.0,
             ),
             child: RaisedButton(
@@ -97,7 +97,7 @@ class DBEmprTile extends StatelessWidget {
             },
             child: Padding(
               padding: EdgeInsets.fromLTRB(
-                index == length - 1 ? 20.0 : 5.0,
+                index == 0 ? 10.0 : 5.0,
                 10.0,
                 index == length ? 20.0 : 5.0,
                 10.0,
@@ -132,7 +132,7 @@ class DBEmprTile extends StatelessWidget {
                             maxLines: 1,
                           ),
                           SizedBox(
-                            width: 50.0,
+                            width: 54.0,
                           ),
                           Text(
                             ':',
@@ -202,7 +202,7 @@ class DBEmprTile extends StatelessWidget {
                             ),
                           ),
                           SizedBox(
-                            width: 10.0,
+                            width: 12.0,
                           ),
                           Text(
                             ':',
@@ -239,7 +239,7 @@ class DBEmprTile extends StatelessWidget {
                             ),
                           ),
                           SizedBox(
-                            width: 80.0,
+                            width: 85.0,
                           ),
                           Text(
                             ':',

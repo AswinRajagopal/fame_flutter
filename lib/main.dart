@@ -8,7 +8,6 @@ import 'views/welcome_page.dart';
 import 'views/forgot_password_page.dart';
 
 import 'views/signup_page.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -39,10 +38,11 @@ class PocketFaME extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       // smartManagement: SmartManagement.keepFactory,
       theme: ThemeData(
-        textTheme: GoogleFonts.nunitoTextTheme(
-          Theme.of(context).textTheme,
-        ),
+        // textTheme: GoogleFonts.nunitoTextTheme(
+        //   Theme.of(context).textTheme,
+        // ),
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        fontFamily: 'AvenirRegular',
       ),
       builder: (context, child) {
         return ScrollConfiguration(
@@ -87,55 +87,3 @@ class MyBehavior extends ScrollBehavior {
     return child;
   }
 }
-
-// import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
-
-// void main() {
-//   runApp(GetMaterialApp(home: HomePage()));
-// }
-
-// class HomePage extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(title: Text('HOME')),
-//       body: Center(
-//         child: RaisedButton(
-//           child: Text('Go Dashboard'),
-//           onPressed: () => Get.to(DashboardPage()),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class DashboardPage extends StatefulWidget {
-//   @override
-//   _DashboardPageState createState() => _DashboardPageState();
-// }
-
-// class _DashboardPageState extends State<DashboardPage> {
-//   final DashboardController dbC = Get.put(DashboardController());
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(title: Text('HOME')),
-//       body: Center(
-//         child: RaisedButton(
-//           child: Text('Return'),
-//           onPressed: () => Get.offAll(HomePage()),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class DashboardController extends GetxController {
-//   @override
-//   void onInit() {
-//     print('dbc onInit');
-//     super.onInit();
-//   }
-// }

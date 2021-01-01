@@ -48,7 +48,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
               'Processing please wait...',
               style: TextStyle(
                 fontSize: 18.0,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
           ],
@@ -56,7 +56,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
       ),
     );
     checkoutController.pr.style(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
     );
   }
 

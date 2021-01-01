@@ -1,4 +1,3 @@
-import '../models/profile.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
 import '../connection/remote_services.dart';
@@ -8,7 +7,7 @@ import 'package:get/get.dart';
 class ProfileController extends GetxController {
   var isLoading = true.obs;
   // var userDetail = <Profile>.obs;
-  Profile profileRes;
+  var profileRes;
   ProgressDialog pr;
   var endPoint = 'register';
   bool isDisposed = false;
@@ -24,36 +23,25 @@ class ProfileController extends GetxController {
     isDisposed = true;
   }
 
-  void init() {
-    print('init custom');
-    getEmpDetails();
-  }
-
-  @override
-  void onReady() {
-    // TODO: implement onReady
-    super.onReady();
-  }
+  // void init() {
+  //   print('init custom');
+  //   getEmpDetails();
+  // }
 
   void getEmpDetails() async {
-    if (isDisposed) {
-      return;
-    }
     try {
       isLoading(true);
       await pr.show();
       profileRes = await RemoteServices().getEmpDetails();
+      print('profileRes valid: $profileRes');
       if (profileRes != null) {
-        isLoading(false);
-        await pr.hide();
-        print('profileRes valid: ${profileRes.success}');
-        if (profileRes.success) {
-          if (profileRes.profileImage == null) {
+        if (profileRes['success']) {
+          if (profileRes['profileImage'] == null) {
             endPoint = 'register';
             await RemoteServices().box.put('pImg', '');
           } else {
             endPoint = 'update_image';
-            await RemoteServices().box.put('pImg', profileRes.profileImage.image.split(',').last);
+            await RemoteServices().box.put('pImg', profileRes['profileImage']['image'].split(',').last);
           }
         } else {
           Get.snackbar(
@@ -68,6 +56,8 @@ class ProfileController extends GetxController {
             ),
           );
         }
+        isLoading(false);
+        await pr.hide();
       }
     } catch (e) {
       print(e);

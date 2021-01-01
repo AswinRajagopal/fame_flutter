@@ -56,7 +56,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
               'Processing please wait...',
               style: TextStyle(
                 fontSize: 18.0,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
           ],
@@ -64,7 +64,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
       ),
     );
     alC.pr.style(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
     );
     super.initState();
   }
@@ -106,13 +106,13 @@ class _ApplyLeaveState extends State<ApplyLeave> {
         } else {
           if (stVal == 'F' || stVal == 'S') {
             setState(() {
-              toDt.text = DateFormat('yyyy-M-d').format(picked).toString();
+              toDt.text = DateFormat('yyyy-MM-dd').format(picked).toString();
             });
           }
         }
       }
       setState(() {
-        fromDt.text = DateFormat('yyyy-M-d').format(picked).toString();
+        fromDt.text = DateFormat('yyyy-MM-dd').format(picked).toString();
       });
     }
   }
@@ -152,7 +152,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
           );
         } else {
           setState(() {
-            toDt.text = DateFormat('yyyy-M-d').format(picked).toString();
+            toDt.text = DateFormat('yyyy-MM-dd').format(picked).toString();
           });
         }
       } else {

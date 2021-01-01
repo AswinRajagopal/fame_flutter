@@ -42,7 +42,7 @@ class _EmployeeProfileState extends State<EmployeeProfile> {
               'Processing please wait...',
               style: TextStyle(
                 fontSize: 18.0,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
           ],
@@ -50,7 +50,7 @@ class _EmployeeProfileState extends State<EmployeeProfile> {
       ),
     );
     epC.pr.style(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
     );
     Future.delayed(Duration(milliseconds: 100), () {
       epC.getEmpDetail(widget.emp['empId']);

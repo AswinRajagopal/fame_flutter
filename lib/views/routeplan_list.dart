@@ -44,7 +44,7 @@ class _RouteplanListState extends State<RouteplanList> {
               'Processing please wait...',
               style: TextStyle(
                 fontSize: 18.0,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
           ],
@@ -52,7 +52,7 @@ class _RouteplanListState extends State<RouteplanList> {
       ),
     );
     epC.pr.style(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
     );
     Future.delayed(
       Duration(milliseconds: 100),

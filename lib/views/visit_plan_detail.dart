@@ -41,7 +41,7 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
               'Processing please wait...',
               style: TextStyle(
                 fontSize: 18.0,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
           ],
@@ -49,7 +49,7 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
       ),
     );
     epC.pr.style(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
     );
     Future.delayed(Duration(milliseconds: 100), () {
       epC.getTimelineReport(widget.empId, widget.date, type: 'visit');

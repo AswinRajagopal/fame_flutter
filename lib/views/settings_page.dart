@@ -1,3 +1,6 @@
+import 'package:progress_dialog/progress_dialog.dart';
+
+import '../connection/remote_services.dart';
 import 'package:share/share.dart';
 
 import 'sos.dart';
@@ -12,10 +15,73 @@ import 'package:get/get.dart';
 import '../utils/utils.dart';
 import 'package:flutter/material.dart';
 
-class SettingsPage extends StatelessWidget {
+import 'package:in_app_review/in_app_review.dart';
+
+class SettingsPage extends StatefulWidget {
+  @override
+  _SettingsPageState createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
+  final InAppReview inAppReview = InAppReview.instance;
+  TextEditingController feedback = TextEditingController();
+  bool isAvailable;
+  ProgressDialog pr;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      inAppReview.isAvailable().then((value) {
+        print('value: $value');
+        isAvailable = value;
+        setState(() {});
+      });
+    });
+
+    pr = ProgressDialog(
+      context,
+      type: ProgressDialogType.Normal,
+      isDismissible: false,
+      showLogs: false,
+      customBody: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20.0,
+          vertical: 15.0,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(
+              width: 20.0,
+            ),
+            Text(
+              'Processing please wait...',
+              style: TextStyle(
+                fontSize: 18.0,
+                color: Colors.black,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+    pr.style(
+      backgroundColor: Colors.white,
+    );
+  }
+
+  @override
+  void dispose() {
+    feedback.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // var roleId = RemoteServices().box.get('role');
+    var roleId = RemoteServices().box.get('role');
     return Scaffold(
       backgroundColor: AppUtils().greyScaffoldBg,
       appBar: AppBar(
@@ -31,7 +97,13 @@ class SettingsPage extends StatelessWidget {
               height: 20.0,
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                print('isAvailable: $isAvailable');
+                // inAppReview.openStoreListing();
+                if (isAvailable) {
+                  inAppReview.requestReview();
+                }
+              },
               child: ListContainer(
                 'assets/images/icon_rating.png',
                 'Rate The App',
@@ -46,17 +118,102 @@ class SettingsPage extends StatelessWidget {
                 'Support',
               ),
             ),
-            GestureDetector(
-              onTap: () {
-                Get.to(ViewBroadcast());
-              },
-              child: ListContainer(
-                'assets/images/msgic.png',
-                'View Broadcast',
+            Visibility(
+              visible: roleId == '3' ? true : false,
+              child: GestureDetector(
+                onTap: () {
+                  Get.to(ViewBroadcast());
+                },
+                child: ListContainer(
+                  'assets/images/msgic.png',
+                  'View Broadcast',
+                ),
               ),
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () async {
+                await Get.defaultDialog(
+                  title: 'Feedback',
+                  content: TextField(
+                    controller: feedback,
+                    // autofocus: true,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 8,
+                    maxLength: 1000,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.all(
+                        10.0,
+                      ),
+                      hintStyle: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      // hintText: 'Feedback',
+                      labelText: 'Feedback',
+                      border: OutlineInputBorder(
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(5.0),
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(5.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                  radius: 5.0,
+                  barrierDismissible: false,
+                  confirmTextColor: Colors.white,
+                  textConfirm: 'Submit',
+                  onCancel: () {
+                    feedback.text = '';
+                  },
+                  onConfirm: () async {
+                    if (feedback.text != null && feedback.text != '') {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                      await pr.show();
+                      var fbRes = await RemoteServices().sendFeedback(feedback.text);
+                      if (fbRes != null) {
+                        await pr.hide();
+                        if (fbRes['success']) {
+                          Get.back();
+                          setState(() {
+                            feedback.clear();
+                          });
+                          Get.snackbar(
+                            'Success',
+                            'Feedback submitted successfully',
+                            colorText: Colors.white,
+                            backgroundColor: Colors.green,
+                            snackPosition: SnackPosition.BOTTOM,
+                            duration: Duration(
+                              seconds: 2,
+                            ),
+                            margin: EdgeInsets.symmetric(
+                              horizontal: 8.0,
+                              vertical: 10.0,
+                            ),
+                          );
+                        } else {
+                          Get.snackbar(
+                            'Error',
+                            'Feedback send failed',
+                            colorText: Colors.white,
+                            backgroundColor: Colors.red,
+                            snackPosition: SnackPosition.BOTTOM,
+                            margin: EdgeInsets.symmetric(
+                              horizontal: 8.0,
+                              vertical: 10.0,
+                            ),
+                          );
+                        }
+                      }
+                    }
+                  },
+                );
+              },
               child: ListContainer(
                 'assets/images/feedbacki.png',
                 'Feedback',
@@ -82,13 +239,16 @@ class SettingsPage extends StatelessWidget {
                 'Share',
               ),
             ),
-            GestureDetector(
-              onTap: () {
-                Get.to(Broadcast());
-              },
-              child: ListContainer(
-                'assets/images/msgic.png',
-                'Broadcast',
+            Visibility(
+              visible: roleId == '3' ? true : false,
+              child: GestureDetector(
+                onTap: () {
+                  Get.to(Broadcast());
+                },
+                child: ListContainer(
+                  'assets/images/msgic.png',
+                  'Broadcast',
+                ),
               ),
             ),
             SizedBox(
@@ -125,8 +285,8 @@ class ListContainer extends StatelessWidget {
                 children: [
                   Image.asset(
                     image,
-                    height: 60.0,
-                    width: 60.0,
+                    height: 45.0,
+                    width: 45.0,
                   ),
                   SizedBox(
                     width: 10.0,
@@ -136,7 +296,7 @@ class ListContainer extends StatelessWidget {
                     child: Text(
                       title,
                       style: TextStyle(
-                        fontSize: 20.0,
+                        fontSize: 18.0,
                       ),
                       overflow: TextOverflow.fade,
                     ),

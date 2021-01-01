@@ -52,7 +52,7 @@ class _ClientAttDetailState extends State<ClientAttDetail> {
               'Processing please wait...',
               style: TextStyle(
                 fontSize: 18.0,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
           ],
@@ -60,7 +60,7 @@ class _ClientAttDetailState extends State<ClientAttDetail> {
       ),
     );
     epC.pr.style(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
     );
     Future.delayed(Duration(milliseconds: 100), () {
       epC.getClientReport(widget.clientId, widget.date, widget.shift, AppUtils.NAME);
@@ -206,8 +206,8 @@ class _ClientAttDetailState extends State<ClientAttDetail> {
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                  vertical: 7.0,
-                                  horizontal: 45.0,
+                                  vertical: 12.0,
+                                  horizontal: 44.0,
                                 ),
                                 child: Text(
                                   'Name',
@@ -240,8 +240,8 @@ class _ClientAttDetailState extends State<ClientAttDetail> {
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                  vertical: 7.0,
-                                  horizontal: 45.0,
+                                  vertical: 12.0,
+                                  horizontal: 44.0,
                                 ),
                                 child: Text(
                                   'Emp ID',
