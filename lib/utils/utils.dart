@@ -10,7 +10,7 @@ class AppUtils {
   // static String GKEY = 'AIzaSyADoNEFbFbgHCpu7mz7yLWhbbUMZqk4yHU';
   static String GKEY = 'AIzaSyBFsUGJKkY5yvYAC3Tb0vHIX9ZW7s5aGog';
   static String EMP_ID = 'EMP_ID';
-  static String ATTENDANCE = 'ATTENDANCE ';
+  static String ATTENDANCE = 'ATTENDANCE';
   static String NAME = 'NAME';
   static String PLAYSTORE = 'https://play.google.com/store/apps/details?id=in.androidfame.attendance';
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomFab extends StatelessWidget {
   final String page;
@@ -16,10 +18,10 @@ class CustomFab extends StatelessWidget {
         children: [
           FloatingActionButton(
             onPressed: () {},
-            child: Icon(
-              Icons.widgets_sharp,
-              size: 32.0,
+            child: SvgPicture.asset(
+              'assets/images/navicon-dashboard.svg',
             ),
+            backgroundColor: HexColor('386eff'),
           ),
           SizedBox(
             height: 5.0,

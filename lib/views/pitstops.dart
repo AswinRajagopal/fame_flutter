@@ -95,10 +95,13 @@ class _PitstopsState extends State<Pitstops> {
         ),
         actions: [
           IconButton(
-            icon: Icon(
-              Icons.notifications_none_outlined,
-              color: Colors.white,
-              size: 30.0,
+            // icon: Icon(
+            //   Icons.notifications_none_outlined,
+            //   color: Colors.white,
+            //   size: 30.0,
+            // ),
+            icon: Image.asset(
+              'assets/images/icon-notification.png',
             ),
             onPressed: () {},
           ),

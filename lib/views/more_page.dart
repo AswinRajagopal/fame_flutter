@@ -122,7 +122,9 @@ class MorePage extends StatelessWidget {
 class ListContainer extends StatelessWidget {
   final String image;
   final String title;
-  ListContainer(this.image, this.title);
+  final double height;
+  final double width;
+  ListContainer(this.image, this.title, {this.height, this.width});
 
   @override
   Widget build(BuildContext context) {
@@ -143,8 +145,8 @@ class ListContainer extends StatelessWidget {
                 children: [
                   Image.asset(
                     image,
-                    height: 45.0,
-                    width: 45.0,
+                    height: height ?? 45.0,
+                    width: width ?? 45.0,
                   ),
                   SizedBox(
                     width: 10.0,

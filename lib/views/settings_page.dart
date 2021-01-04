@@ -119,7 +119,8 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
             Visibility(
-              visible: roleId == '3' ? true : false,
+              // visible: roleId == '3' ? true : false,
+              visible: true,
               child: GestureDetector(
                 onTap: () {
                   Get.to(ViewBroadcast());

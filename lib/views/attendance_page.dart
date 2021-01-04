@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import '../connection/remote_services.dart';
+
 import 'employee_notation.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -70,13 +72,15 @@ class _AttendancePageState extends State<AttendancePage> {
   }
 
   Future<Null> getDate(BuildContext context) async {
+    int attendanceDaysPermitted = jsonDecode(RemoteServices().box.get('appFeature'))['attendanceDaysPermitted'];
     final picked = await showDatePicker(
       context: context,
       initialDate: DateTime.parse(
         passDate.toString(),
       ),
-      firstDate: DateTime.now().add(Duration(days: -365)),
-      lastDate: DateTime.now().add(Duration(days: 365)),
+      firstDate: DateTime.now().add(Duration(days: -(attendanceDaysPermitted - 1))),
+      // lastDate: DateTime.now().add(Duration(days: 365)),
+      lastDate: DateTime.now(),
     );
 
     if (picked != null) {
@@ -94,6 +98,10 @@ class _AttendancePageState extends State<AttendancePage> {
 
   @override
   Widget build(BuildContext context) {
+    // print('appFeature');
+    // print(RemoteServices().box.get('appFeature'));
+    // print(jsonDecode(RemoteServices().box.get('appFeature'))['attendanceDaysPermitted']);
+
     return Scaffold(
       backgroundColor: AppUtils().innerScaffoldBg,
       appBar: PreferredSize(
@@ -188,14 +196,14 @@ class _AttendancePageState extends State<AttendancePage> {
                           var sSTime = DateFormat('hh:mm')
                                   .format(
                                     DateTime.parse(
-                                      '2020-12-20 ' + manpower[j]['shiftStartTime'] ,
+                                      '2020-12-20 ' + manpower[j]['shiftStartTime'],
                                     ),
                                   )
                                   .toString() +
                               DateFormat('a')
                                   .format(
                                     DateTime.parse(
-                                      '2020-12-20 ' + manpower[j]['shiftStartTime'] ,
+                                      '2020-12-20 ' + manpower[j]['shiftStartTime'],
                                     ),
                                   )
                                   .toString()

@@ -82,6 +82,8 @@ class _LocationReportDetailState extends State<LocationReportDetail> {
       // controller.setMapStyle(_mapStyle);
 
       epC.locations.asMap().forEach((index, emp) async {
+        print(emp);
+        var snippetString = '${emp['datetime']}, ${emp['battery']}%';
         _markers.add(
           Marker(
             markerId: MarkerId(
@@ -94,7 +96,8 @@ class _LocationReportDetailState extends State<LocationReportDetail> {
             ),
             infoWindow: InfoWindow(
               title: emp['name'],
-              snippet: emp['datetime'],
+              // snippet: emp['datetime'],
+              snippet: snippetString,
             ),
           ),
         );

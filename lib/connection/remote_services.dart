@@ -1199,6 +1199,17 @@ class RemoteServices {
   }
 
   Future getClientReport(clientId, date, shift, orderBy) async {
+    print(
+      jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'clientId': clientId,
+          'date': date,
+          'shift': shift,
+          'orderBy': orderBy,
+        },
+      ),
+    );
     var response = await client.post(
       '$baseURL/attendance/daily_emp_report',
       headers: header,

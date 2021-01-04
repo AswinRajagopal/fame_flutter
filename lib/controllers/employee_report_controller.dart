@@ -324,7 +324,7 @@ class EmployeeReportController extends GetxController {
             var location = getLocationRes['empDetailsTlnList'][i];
             var date = location['timeStamp'];
 
-            location['datetime'] = DateFormat('hh:mm').format(DateTime.parse(date)).toString() + '' + DateFormat('a').format(DateTime.parse(date)).toString().toLowerCase();
+            location['datetime'] = DateFormat('dd-MM-yyyy hh:mm').format(DateTime.parse(date)).toString() + '' + DateFormat('a').format(DateTime.parse(date)).toString().toLowerCase();
             locations.add(location);
           }
           isLoadingLocation(false);
@@ -376,11 +376,16 @@ class EmployeeReportController extends GetxController {
           for (var i = 0; i < getEmpDetailRepRes['empDailyAttView'].length; i++) {
             var daily = getEmpDetailRepRes['empDailyAttView'][i];
             var chkIn = daily['checkInDateTime'];
-            var chkout = daily['checkInDateTime'];
+            var chkout = daily['checkOutDateTime'];
 
             if (chkIn == null || chkout == null || chkIn == '' || chkout == '') {
-              daily['date'] = 'N/A';
-              daily['time'] = 'N/A';
+              if (chkIn != null && chkIn != '') {
+                daily['date'] = DateFormat('dd').format(DateTime.parse(chkIn)).toString() + ' ' + DateFormat.MMM().format(DateTime.parse(chkIn)).toString() + ' ' + DateFormat.y().format(DateTime.parse(chkIn)).toString();
+                daily['time'] = DateFormat('hh:mm').format(DateTime.parse(chkIn)).toString() + '' + DateFormat('a').format(DateTime.parse(chkIn)).toString().toLowerCase();
+              } else {
+                daily['date'] = 'N/A';
+                daily['time'] = 'N/A';
+              }
             } else {
               daily['date'] = DateFormat('dd').format(DateTime.parse(chkIn)).toString() + ' ' + DateFormat.MMM().format(DateTime.parse(chkIn)).toString() + ' ' + DateFormat.y().format(DateTime.parse(chkIn)).toString();
               daily['time'] = DateFormat('hh:mm').format(DateTime.parse(chkIn)).toString() + '' + DateFormat('a').format(DateTime.parse(chkIn)).toString().toLowerCase() + ' to ' + DateFormat('hh:mm').format(DateTime.parse(chkout)).toString() + '' + DateFormat('a').format(DateTime.parse(chkout)).toString().toLowerCase();
@@ -443,10 +448,14 @@ class EmployeeReportController extends GetxController {
           for (var i = 0; i < getClientRepRes['empDailyAttView'].length; i++) {
             var client = getClientRepRes['empDailyAttView'][i];
             var chkIn = client['checkInDateTime'];
-            var chkout = client['checkInDateTime'];
+            var chkout = client['checkOutDateTime'];
 
             if (chkIn == null || chkout == null || chkIn == '' || chkout == '') {
-              client['showtime'] = 'N/A';
+              if (chkIn != null && chkIn != '') {
+                client['showtime'] = DateFormat('hh:mm').format(DateTime.parse(chkIn)).toString() + '' + DateFormat('a').format(DateTime.parse(chkIn)).toString().toLowerCase();
+              } else {
+                client['showtime'] = 'N/A';
+              }
             } else {
               client['showtime'] = DateFormat('hh:mm').format(DateTime.parse(chkIn)).toString() + '' + DateFormat('a').format(DateTime.parse(chkIn)).toString().toLowerCase() + ' to ' + DateFormat('hh:mm').format(DateTime.parse(chkout)).toString() + '' + DateFormat('a').format(DateTime.parse(chkout)).toString().toLowerCase();
             }

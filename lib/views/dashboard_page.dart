@@ -206,10 +206,13 @@ class _DashboardPageState extends State<DashboardPage> {
                               ),
                               Spacer(),
                               IconButton(
-                                icon: Icon(
-                                  Icons.notifications_none_outlined,
-                                  color: Colors.white,
-                                  size: 30.0,
+                                // icon: Icon(
+                                //   Icons.notifications_none_outlined,
+                                //   color: Colors.white,
+                                //   size: 30.0,
+                                // ),
+                                icon: Image.asset(
+                                  'assets/images/icon-notification.png',
                                 ),
                                 onPressed: () {},
                               ),
@@ -495,12 +498,15 @@ class _DashboardPageState extends State<DashboardPage> {
                                                 ),
                                               );
                                             } else {
+                                              // print('Length: ${dbC.response['clientData']['name'].length}');
+                                              var clientName = dbC.response['clientData']['name'] ?? 'N/A';
+                                              var areaName = dbC.response['empdetails']['area'] ?? 'N/A';
                                               return Row(
                                                 children: [
                                                   SizedBox(
-                                                    width: 110.0,
+                                                    width: 240.0,
                                                     child: Text(
-                                                      dbC.response['clientData']['name'] ?? 'N/A',
+                                                      '$clientName in $areaName',
                                                       style: TextStyle(
                                                         fontSize: 15.0,
                                                         fontWeight: FontWeight.bold,
@@ -508,23 +514,24 @@ class _DashboardPageState extends State<DashboardPage> {
                                                       overflow: TextOverflow.ellipsis,
                                                     ),
                                                   ),
-                                                  Text(
-                                                    ' in ',
-                                                    style: TextStyle(
-                                                      fontSize: 15.0,
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 110.0,
-                                                    child: Text(
-                                                      dbC.response['empdetails']['area'] ?? 'N/A',
-                                                      style: TextStyle(
-                                                        fontSize: 15.0,
-                                                        fontWeight: FontWeight.bold,
-                                                      ),
-                                                      overflow: TextOverflow.ellipsis,
-                                                    ),
-                                                  ),
+                                                  // Text(
+                                                  //   ' in ',
+                                                  //   style: TextStyle(
+                                                  //     fontSize: 15.0,
+                                                  //   ),
+                                                  // ),
+                                                  // SizedBox(
+                                                  //   width: 40.0,
+                                                  //   child: Text(
+                                                  //     // dbC.response['empdetails']['area'] ?? 'N/A',
+                                                  //     'asdasd asdasd asdasdasd',
+                                                  //     style: TextStyle(
+                                                  //       fontSize: 15.0,
+                                                  //       fontWeight: FontWeight.bold,
+                                                  //     ),
+                                                  //     overflow: TextOverflow.ellipsis,
+                                                  //   ),
+                                                  // ),
                                                 ],
                                               );
                                             }

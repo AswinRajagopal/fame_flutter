@@ -9,6 +9,7 @@ import '../views/leave_page.dart';
 import '../views/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class BottomNav extends StatelessWidget {
   final String page;
@@ -60,40 +61,40 @@ class BottomNav extends StatelessWidget {
       unselectedFontSize: 14.0,
       items: [
         BottomNavigationBarItem(
-          icon: Icon(
-            Icons.date_range,
-            size: 30.0,
+          icon: Image.asset(
+            'assets/images/leave.png',
+            height: 30.0,
           ),
           label: 'Leave',
         ),
         BottomNavigationBarItem(
-          icon: Icon(
-            Icons.person_outline,
-            size: 30.0,
+          icon: Image.asset(
+            'assets/images/profile.png',
+            height: 30.0,
           ),
           label: 'Profile',
         ),
         BottomNavigationBarItem(
           icon: Visibility(
             visible: false,
-            child: Icon(
-              Icons.widgets_sharp,
-              size: 30.0,
+            child: Image.asset(
+              'assets/images/navicon-dashboard.png',
             ),
           ),
           label: '',
+          backgroundColor: HexColor('386eff'),
         ),
         BottomNavigationBarItem(
-          icon: Icon(
-            Icons.settings_outlined,
-            size: 30.0,
+          icon: Image.asset(
+            'assets/images/settings.png',
+            height: 30.0,
           ),
           label: 'Settings',
         ),
         BottomNavigationBarItem(
-          icon: Icon(
-            Icons.more_vert,
-            size: 30.0,
+          icon: Image.asset(
+            'assets/images/more.png',
+            height: 30.0,
           ),
           label: 'More',
         ),

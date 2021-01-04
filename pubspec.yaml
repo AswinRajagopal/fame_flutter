@@ -71,6 +71,8 @@ dependencies:
   firebase_messaging: ^7.0.3
   # connectivity_wrapper: ^1.0.4
   in_app_review: ^1.0.4
+  hexcolor: ^1.0.6
+  flutter_svg:
 
 flutter_icons:
   image_path: "assets/images/icon.png"
