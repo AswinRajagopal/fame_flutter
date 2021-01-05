@@ -56,7 +56,7 @@ class LeaveListWidget extends StatelessWidget {
                   maxLines: 1,
                 ),
                 SizedBox(
-                  width: 68.0,
+                  width: 67.0,
                 ),
                 Text(
                   ':',
@@ -91,7 +91,7 @@ class LeaveListWidget extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: 78.0,
+                  width: 75.0,
                 ),
                 Text(
                   ':',
@@ -196,7 +196,7 @@ class LeaveListWidget extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: 18.0,
+                  width: 19.0,
                 ),
                 Text(
                   ':',
@@ -230,7 +230,7 @@ class LeaveListWidget extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: 68.0,
+                  width: 64.0,
                 ),
                 Text(
                   ':',
@@ -301,7 +301,7 @@ class LeaveListWidget extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: 77.0,
+                  width: 72.0,
                 ),
                 Text(
                   ':',

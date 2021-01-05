@@ -15,8 +15,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dashboard_page.dart';
 
-import '../widgets/custom_app_bar.dart';
-
 class RoutePlanning extends StatefulWidget {
   final String goBackTo;
   RoutePlanning({this.goBackTo});
@@ -110,9 +108,16 @@ class _RoutePlanningState extends State<RoutePlanning> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppUtils().innerScaffoldBg,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(56.0),
-        child: CustomAppBar('Route Planning'),
+      appBar: AppBar(
+        title: Text(
+          'Route Planning',
+        ),
+        leading: IconButton(
+          onPressed: backButtonPressed,
+          icon: Icon(
+            Icons.arrow_back,
+          ),
+        ),
       ),
       body: WillPopScope(
         onWillPop: backButtonPressed,
@@ -157,7 +162,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
                                         vertical: 11.0,
-                                        horizontal: 23.0,
+                                        horizontal: 30.0,
                                       ),
                                       child: Text(
                                         'From Clients',

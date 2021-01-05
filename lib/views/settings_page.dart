@@ -25,7 +25,7 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   final InAppReview inAppReview = InAppReview.instance;
   TextEditingController feedback = TextEditingController();
-  bool isAvailable;
+  bool isAvailable = false;
   ProgressDialog pr;
 
   @override

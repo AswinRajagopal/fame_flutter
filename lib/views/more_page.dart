@@ -106,7 +106,7 @@ class MorePage extends StatelessWidget {
               },
               child: ListContainer(
                 'assets/images/my_visit_plan.png',
-                'My Visit Plan',
+                'My Visit Report',
               ),
             ),
             SizedBox(

@@ -1,7 +1,5 @@
 import 'package:intl/intl.dart';
 
-import '../widgets/custom_app_bar.dart';
-
 import '../utils/utils.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
@@ -98,7 +96,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
             'Error',
             'You can not apply for more then 1 day for Half Day leave',
             colorText: Colors.white,
-backgroundColor: Colors.black87,
+            backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,
             margin: EdgeInsets.symmetric(
               horizontal: 8.0,
@@ -147,7 +145,7 @@ backgroundColor: Colors.black87,
             'Error',
             'You can not apply for more then 1 day for Half Day leave',
             colorText: Colors.white,
-backgroundColor: Colors.black87,
+            backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,
             margin: EdgeInsets.symmetric(
               horizontal: 8.0,
@@ -193,7 +191,7 @@ backgroundColor: Colors.black87,
             'Error',
             'You can not apply for more then 1 day for Half Day leave',
             colorText: Colors.white,
-backgroundColor: Colors.black87,
+            backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,
             margin: EdgeInsets.symmetric(
               horizontal: 8.0,
@@ -215,7 +213,7 @@ backgroundColor: Colors.black87,
         'Error',
         'Please select both dates first',
         colorText: Colors.white,
-backgroundColor: Colors.black87,
+        backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.symmetric(
           horizontal: 8.0,
@@ -230,9 +228,16 @@ backgroundColor: Colors.black87,
     // Future.delayed(Duration(milliseconds: 100), alC.init);
     return Scaffold(
       backgroundColor: AppUtils().innerScaffoldBg,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(56.0),
-        child: CustomAppBar('Apply Leave'),
+      appBar: AppBar(
+        title: Text(
+          'Apply Leave',
+        ),
+        leading: IconButton(
+          onPressed: backButtonPressed,
+          icon: Icon(
+            Icons.arrow_back,
+          ),
+        ),
       ),
       body: WillPopScope(
         onWillPop: backButtonPressed,

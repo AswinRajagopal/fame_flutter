@@ -4,7 +4,6 @@ import 'package:google_maps_webservice/places.dart';
 import '../connection/remote_services.dart';
 import '../utils/utils.dart';
 import 'route_planning.dart';
-import '../widgets/custom_app_bar.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -102,9 +101,16 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppUtils().innerScaffoldBg,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(56.0),
-        child: CustomAppBar('Route Planning'),
+      appBar: AppBar(
+        title: Text(
+          'Route Planning',
+        ),
+        leading: IconButton(
+          onPressed: backButtonPressed,
+          icon: Icon(
+            Icons.arrow_back,
+          ),
+        ),
       ),
       body: WillPopScope(
         onWillPop: backButtonPressed,
@@ -178,7 +184,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
                                         vertical: 11.0,
-                                        horizontal: 22.0,
+                                        horizontal: 30.0,
                                       ),
                                       child: Text(
                                         'From Map',

@@ -140,6 +140,9 @@ flutter:
     - family: AvenirMedium
       fonts:
         - asset: assets/fonts/Avenir-Medium.ttf
+    - family: AvenirLight
+      fonts:
+        - asset: assets/fonts/AvenirLight.ttf
   # fonts:
   #   - family: Schyler
   #     fonts:

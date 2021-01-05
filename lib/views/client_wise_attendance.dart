@@ -296,7 +296,7 @@ class _ClientWiseAttendanceState extends State<ClientWiseAttendance> {
                               ),
                               decoration: epC.shift.contains(shiftTime)
                                   ? BoxDecoration(
-                                      color: Colors.green[50],
+                                      color: Colors.green[200],
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(
                                           5.0,
@@ -324,7 +324,7 @@ class _ClientWiseAttendanceState extends State<ClientWiseAttendance> {
                                   style: TextStyle(
                                     color: epC.shift.contains(shiftTime) ? Colors.green[700] : Colors.grey[700],
                                     fontSize: 15.0,
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: epC.shift.contains(shiftTime) ? FontWeight.w900 : FontWeight.w400,
                                   ),
                                 ),
                               ),

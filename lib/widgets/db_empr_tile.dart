@@ -132,7 +132,7 @@ class DBEmprTile extends StatelessWidget {
                             maxLines: 1,
                           ),
                           SizedBox(
-                            width: 54.0,
+                            width: 51.0,
                           ),
                           Text(
                             ':',
@@ -167,7 +167,7 @@ class DBEmprTile extends StatelessWidget {
                             ),
                           ),
                           SizedBox(
-                            width: firstWidth,
+                            width: 50.0,
                           ),
                           Text(
                             ':',
@@ -202,7 +202,7 @@ class DBEmprTile extends StatelessWidget {
                             ),
                           ),
                           SizedBox(
-                            width: 12.0,
+                            width: 13.0,
                           ),
                           Text(
                             ':',
@@ -239,7 +239,7 @@ class DBEmprTile extends StatelessWidget {
                             ),
                           ),
                           SizedBox(
-                            width: 85.0,
+                            width: 81.0,
                           ),
                           Text(
                             ':',
@@ -274,7 +274,7 @@ class DBEmprTile extends StatelessWidget {
                             ),
                           ),
                           SizedBox(
-                            width: firstWidth,
+                            width: 49.0,
                           ),
                           Text(
                             ':',

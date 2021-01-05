@@ -1003,8 +1003,8 @@ class _DashboardPageState extends State<DashboardPage> {
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
-                                      vertical: 12.0,
-                                      horizontal: 23.0,
+                                      vertical: 11.0,
+                                      horizontal: 26.0,
                                     ),
                                     child: Text(
                                       'My Calendar',
@@ -1038,8 +1038,8 @@ class _DashboardPageState extends State<DashboardPage> {
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
-                                      vertical: 12.0,
-                                      horizontal: 23.0,
+                                      vertical: 11.0,
+                                      horizontal: 26.0,
                                     ),
                                     child: Text(
                                       'My Roster',

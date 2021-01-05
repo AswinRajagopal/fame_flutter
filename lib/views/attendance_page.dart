@@ -10,7 +10,6 @@ import '../controllers/attendance_controller.dart';
 import 'package:intl/intl.dart';
 
 import '../utils/utils.dart';
-import '../widgets/custom_app_bar.dart';
 
 import 'dashboard_page.dart';
 import 'package:flutter/material.dart';
@@ -104,9 +103,16 @@ class _AttendancePageState extends State<AttendancePage> {
 
     return Scaffold(
       backgroundColor: AppUtils().innerScaffoldBg,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(56.0),
-        child: CustomAppBar('Attendance'),
+      appBar: AppBar(
+        title: Text(
+          'Attendance',
+        ),
+        leading: IconButton(
+          onPressed: backButtonPressed,
+          icon: Icon(
+            Icons.arrow_back,
+          ),
+        ),
       ),
       body: WillPopScope(
         onWillPop: backButtonPressed,
