@@ -154,7 +154,7 @@ class _EmployeeReportState extends State<EmployeeReport> {
                               'Error',
                               'Please select client',
                               colorText: Colors.white,
-                              backgroundColor: Colors.red,
+                              backgroundColor: Colors.black87,
                               snackPosition: SnackPosition.BOTTOM,
                               margin: EdgeInsets.symmetric(
                                 horizontal: 8.0,

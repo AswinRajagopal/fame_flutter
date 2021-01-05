@@ -1,43 +1,27 @@
 import 'dart:async';
 
 import '../connection/remote_services.dart';
+import '../views/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
-class SignupController extends GetxController {
+class ResetPasswordController extends GetxController {
   var isLoading = true.obs;
   ProgressDialog pr;
-  var signupResponse;
+  var resetPasswordRes;
 
-  Future<bool> registerUser(
-    username,
-    empid,
-    password,
-    mobile,
-    fullname,
-    email,
-    companyname,
-  ) async {
+  void verifyOTP(emailId, newPass) async {
     try {
       await pr.show();
-      signupResponse = await RemoteServices.signup(
-        username,
-        empid,
-        password,
-        mobile,
-        fullname,
-        email,
-        companyname,
-      );
-      if (signupResponse != null) {
+      var resetPassword = await RemoteServices().resetPassword(emailId, newPass);
+      if (resetPassword != null) {
         await pr.hide();
-        print('signupResponse valid: ${signupResponse.success}');
-        if (signupResponse.success) {
-          // storeDetail(signupResponse);
+        print('resetPassword valid: ${resetPassword['success']}');
+        if (resetPassword['success']) {
           Get.snackbar(
             'Success',
-            'Account created, please verify mobile by otp',
+            'Password reset successfully. You will be redirected shortly',
             colorText: Colors.white,
             backgroundColor: Colors.green,
             snackPosition: SnackPosition.BOTTOM,
@@ -46,14 +30,14 @@ class SignupController extends GetxController {
               vertical: 10.0,
             ),
           );
-          // Timer(Duration(seconds: 4), () {
-          //   Get.offAll(LoginPage());
-          // });
-          return true;
+          Timer(Duration(seconds: 4), () {
+            Get.offAll(LoginPage());
+          });
+          // return true;
         } else {
           Get.snackbar(
             'Error',
-            'Account not created',
+            'Something went wrong. Please try again later',
             colorText: Colors.white,
 backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,
@@ -62,7 +46,7 @@ backgroundColor: Colors.black87,
               vertical: 10.0,
             ),
           );
-          return false;
+          // return false;
         }
       }
     } catch (e) {
@@ -79,10 +63,7 @@ backgroundColor: Colors.black87,
           vertical: 10.0,
         ),
       );
-      return false;
-    } finally {
-      await pr.hide();
-      return signupResponse.success;
+      // return false;
     }
   }
 }

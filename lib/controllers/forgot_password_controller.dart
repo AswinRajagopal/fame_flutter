@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import '../views/login_page.dart';
-
 import '../connection/remote_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,12 +8,38 @@ import 'package:progress_dialog/progress_dialog.dart';
 class ForgotPasswordController extends GetxController {
   ProgressDialog pr;
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  void forgotPassword(email) async {
+  Future<bool> forgotPassword(email, context) async {
+    pr = ProgressDialog(
+      context,
+      type: ProgressDialogType.Normal,
+      isDismissible: false,
+      showLogs: false,
+      customBody: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20.0,
+          vertical: 15.0,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(
+              width: 20.0,
+            ),
+            Text(
+              'Processing please wait...',
+              style: TextStyle(
+                fontSize: 18.0,
+                color: Colors.black,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+    pr.style(
+      backgroundColor: Colors.white,
+    );
     try {
       await pr.show();
       var fpResponse = await RemoteServices.forgorPassword(email);
@@ -25,7 +49,7 @@ class ForgotPasswordController extends GetxController {
         if (fpResponse.success) {
           Get.snackbar(
             'Success',
-            'Please check your email. You will be redirected shortly',
+            'Please check your email for OTP',
             colorText: Colors.white,
             backgroundColor: Colors.green,
             snackPosition: SnackPosition.BOTTOM,
@@ -34,23 +58,23 @@ class ForgotPasswordController extends GetxController {
               vertical: 10.0,
             ),
           );
-          Timer(Duration(seconds: 4), () {
-            Get.offAll(LoginPage());
-          });
+          return true;
         } else {
           Get.snackbar(
             'Error',
             'Email address is not associated with any account',
             colorText: Colors.white,
-            backgroundColor: Colors.red,
+backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,
             margin: EdgeInsets.symmetric(
               horizontal: 8.0,
               vertical: 10.0,
             ),
           );
+          return false;
         }
       }
+      return false;
     } catch (e) {
       print(e);
       await pr.hide();
@@ -58,15 +82,14 @@ class ForgotPasswordController extends GetxController {
         'Error',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
-        backgroundColor: Colors.red,
+backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.symmetric(
           horizontal: 8.0,
           vertical: 10.0,
         ),
       );
-    } finally {
-      await pr.hide();
+      return false;
     }
   }
 }

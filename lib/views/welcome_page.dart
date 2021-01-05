@@ -1,10 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:package_info/package_info.dart';
 
 import 'login_page.dart';
 import 'signup_page.dart';
 
-class WelcomePage extends StatelessWidget {
+class WelcomePage extends StatefulWidget {
+  @override
+  _WelcomePageState createState() => _WelcomePageState();
+}
+
+class _WelcomePageState extends State<WelcomePage> {
+  String version;
+
+  @override
+  void initState() {
+    super.initState();
+    PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
+      // String appName = packageInfo.appName;
+      // String packageName = packageInfo.packageName;
+      // String buildNumber = packageInfo.buildNumber;
+      version = packageInfo.version;
+      print('version: ${packageInfo.version}');
+      print('appName: ${packageInfo.appName}');
+      print('packageName: ${packageInfo.packageName}');
+      print('buildNumber: ${packageInfo.buildNumber}');
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,8 +129,11 @@ class WelcomePage extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+                SizedBox(
+                  height: 8.0,
+                ),
                 Text(
-                  'Version 2.0.1',
+                  'Version $version',
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,

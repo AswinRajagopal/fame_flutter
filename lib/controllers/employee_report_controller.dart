@@ -59,7 +59,7 @@ class EmployeeReportController extends GetxController {
             'Error',
             'Client not found',
             colorText: Colors.white,
-            backgroundColor: Colors.red,
+backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,
             margin: EdgeInsets.symmetric(
               horizontal: 8.0,
@@ -76,7 +76,7 @@ class EmployeeReportController extends GetxController {
         'Error',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
-        backgroundColor: Colors.red,
+backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.symmetric(
           horizontal: 8.0,
@@ -106,7 +106,7 @@ class EmployeeReportController extends GetxController {
           //   'Error',
           //   'Client not found',
           //   colorText: Colors.white,
-          //   backgroundColor: Colors.red,
+          //   backgroundColor: Colors.black87,
           //   snackPosition: SnackPosition.BOTTOM,
           //   margin: EdgeInsets.symmetric(
           //     horizontal: 8.0,
@@ -123,7 +123,7 @@ class EmployeeReportController extends GetxController {
         'Error',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
-        backgroundColor: Colors.red,
+backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.symmetric(
           horizontal: 8.0,
@@ -155,7 +155,7 @@ class EmployeeReportController extends GetxController {
           //   'Error',
           //   'Report not found',
           //   colorText: Colors.white,
-          //   backgroundColor: Colors.red,
+          //   backgroundColor: Colors.black87,
           //   snackPosition: SnackPosition.BOTTOM,
           //   margin: EdgeInsets.symmetric(
           //     horizontal: 8.0,
@@ -172,7 +172,7 @@ class EmployeeReportController extends GetxController {
         'Error',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
-        backgroundColor: Colors.red,
+backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.symmetric(
           horizontal: 8.0,
@@ -196,7 +196,7 @@ class EmployeeReportController extends GetxController {
             'Error',
             'Employee not found',
             colorText: Colors.white,
-            backgroundColor: Colors.red,
+backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,
             margin: EdgeInsets.symmetric(
               horizontal: 8.0,
@@ -213,7 +213,7 @@ class EmployeeReportController extends GetxController {
         'Error',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
-        backgroundColor: Colors.red,
+backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.symmetric(
           horizontal: 8.0,
@@ -283,7 +283,7 @@ class EmployeeReportController extends GetxController {
           //   'Error',
           //   'Timeline report not found',
           //   colorText: Colors.white,
-          //   backgroundColor: Colors.red,
+          //   backgroundColor: Colors.black87,
           //   snackPosition: SnackPosition.BOTTOM,
           //   margin: EdgeInsets.symmetric(
           //     horizontal: 8.0,
@@ -300,7 +300,7 @@ class EmployeeReportController extends GetxController {
         'Error',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
-        backgroundColor: Colors.red,
+backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.symmetric(
           horizontal: 8.0,
@@ -336,7 +336,7 @@ class EmployeeReportController extends GetxController {
           //   'Error',
           //   'Location report not found',
           //   colorText: Colors.white,
-          //   backgroundColor: Colors.red,
+          //   backgroundColor: Colors.black87,
           //   snackPosition: SnackPosition.BOTTOM,
           //   margin: EdgeInsets.symmetric(
           //     horizontal: 8.0,
@@ -353,7 +353,7 @@ class EmployeeReportController extends GetxController {
         'Error',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
-        backgroundColor: Colors.red,
+backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.symmetric(
           horizontal: 8.0,
@@ -402,7 +402,7 @@ class EmployeeReportController extends GetxController {
           //   'Error',
           //   'Daily employee report not found',
           //   colorText: Colors.white,
-          //   backgroundColor: Colors.red,
+          //   backgroundColor: Colors.black87,
           //   snackPosition: SnackPosition.BOTTOM,
           //   margin: EdgeInsets.symmetric(
           //     horizontal: 8.0,
@@ -419,7 +419,7 @@ class EmployeeReportController extends GetxController {
         'Error',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
-        backgroundColor: Colors.red,
+backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.symmetric(
           horizontal: 8.0,
@@ -471,7 +471,7 @@ class EmployeeReportController extends GetxController {
           //   'Error',
           //   'Client report not found',
           //   colorText: Colors.white,
-          //   backgroundColor: Colors.red,
+          //   backgroundColor: Colors.black87,
           //   snackPosition: SnackPosition.BOTTOM,
           //   margin: EdgeInsets.symmetric(
           //     horizontal: 8.0,
@@ -488,7 +488,7 @@ class EmployeeReportController extends GetxController {
         'Error',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
-        backgroundColor: Colors.red,
+backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.symmetric(
           horizontal: 8.0,
@@ -517,7 +517,7 @@ class EmployeeReportController extends GetxController {
         'Error',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
-        backgroundColor: Colors.red,
+backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.symmetric(
           horizontal: 8.0,

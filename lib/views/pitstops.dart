@@ -101,7 +101,8 @@ class _PitstopsState extends State<Pitstops> {
             //   size: 30.0,
             // ),
             icon: Image.asset(
-              'assets/images/icon-notification.png',
+              'assets/images/bell_icon.png',
+              height: 22.0,
             ),
             onPressed: () {},
           ),

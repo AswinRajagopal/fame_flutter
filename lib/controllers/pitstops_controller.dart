@@ -83,7 +83,7 @@ class PitstopsController extends GetxController {
               'Error',
               'Face not detected. Please take a picture again',
               colorText: Colors.white,
-              backgroundColor: Colors.red,
+              backgroundColor: Colors.black87,
               snackPosition: SnackPosition.BOTTOM,
               margin: EdgeInsets.symmetric(
                 horizontal: 8.0,
@@ -96,7 +96,7 @@ class PitstopsController extends GetxController {
               'Error',
               'More then one face detected.',
               colorText: Colors.white,
-              backgroundColor: Colors.red,
+              backgroundColor: Colors.black87,
               snackPosition: SnackPosition.BOTTOM,
               margin: EdgeInsets.symmetric(
                 horizontal: 8.0,
@@ -109,7 +109,7 @@ class PitstopsController extends GetxController {
               'Error',
               "Face doesn't match.",
               colorText: Colors.white,
-              backgroundColor: Colors.red,
+              backgroundColor: Colors.black87,
               snackPosition: SnackPosition.BOTTOM,
               margin: EdgeInsets.symmetric(
                 horizontal: 8.0,
@@ -125,7 +125,7 @@ class PitstopsController extends GetxController {
             'Error',
             'Something went wrong! Please try again later',
             colorText: Colors.white,
-            backgroundColor: Colors.red,
+backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,
             margin: EdgeInsets.symmetric(
               horizontal: 8.0,
@@ -142,7 +142,7 @@ class PitstopsController extends GetxController {
         'Error',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
-        backgroundColor: Colors.red,
+backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.symmetric(
           horizontal: 8.0,
@@ -190,7 +190,7 @@ class PitstopsController extends GetxController {
             'Error',
             'Something went wrong! Please try again later',
             colorText: Colors.white,
-            backgroundColor: Colors.red,
+backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,
             margin: EdgeInsets.symmetric(
               horizontal: 8.0,
@@ -207,7 +207,7 @@ class PitstopsController extends GetxController {
         'Error',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
-        backgroundColor: Colors.red,
+backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.symmetric(
           horizontal: 8.0,

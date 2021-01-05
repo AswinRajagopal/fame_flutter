@@ -20,6 +20,7 @@ class _ClientWiseAttendanceState extends State<ClientWiseAttendance> {
   TextEditingController date = TextEditingController();
   var clientId;
   var shift;
+  var sDate;
 
   @override
   void initState() {
@@ -68,19 +69,20 @@ class _ClientWiseAttendanceState extends State<ClientWiseAttendance> {
   Future<Null> getDate(BuildContext context) async {
     final picked = await showDatePicker(
       context: context,
-      initialDate: date.text.isEmpty
+      initialDate: sDate == null
           ? curDate
           : DateTime.parse(
-              date.text.toString(),
+              sDate.toString(),
             ),
       firstDate: DateTime.now().add(Duration(days: -365)),
-      lastDate: DateTime.now().add(Duration(days: 365)),
+      lastDate: DateTime.now(),
     );
 
     if (picked != null) {
       print('Date selected ${date.toString()}');
       setState(() {
-        date.text = DateFormat('yyyy-MM-dd').format(picked).toString();
+        date.text = DateFormat('dd-MM-yyyy').format(picked).toString();
+        sDate = DateFormat('yyyy-MM-dd').format(picked).toString();
       });
     }
   }
@@ -367,12 +369,12 @@ class _ClientWiseAttendanceState extends State<ClientWiseAttendance> {
                         RaisedButton(
                           onPressed: () {
                             FocusScope.of(context).requestFocus(FocusNode());
-                            if (clientId == null || date.text == null || shift == null) {
+                            if (clientId == null || sDate == null || shift == null) {
                               Get.snackbar(
                                 'Error',
                                 'Please select client, shift and date',
                                 colorText: Colors.white,
-                                backgroundColor: Colors.red,
+                                backgroundColor: Colors.black87,
                                 snackPosition: SnackPosition.BOTTOM,
                                 margin: EdgeInsets.symmetric(
                                   horizontal: 8.0,
@@ -383,7 +385,7 @@ class _ClientWiseAttendanceState extends State<ClientWiseAttendance> {
                               print('clientId: $clientId');
                               print('date: ${date.text}');
                               print('shift: $shift');
-                              Get.to(ClientAttDetail(clientId, date.text, shift));
+                              Get.to(ClientAttDetail(clientId, sDate, shift));
                             }
                           },
                           child: Padding(

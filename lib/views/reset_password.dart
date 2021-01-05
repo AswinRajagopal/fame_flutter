@@ -1,31 +1,27 @@
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
-import '../controllers/login_controller.dart';
-
-import 'forgot_password_page.dart';
-
-import 'signup_page.dart';
+import '../controllers/reset_password_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:get/get.dart';
-import '../utils/utils.dart';
 
-class LoginPage extends StatefulWidget {
+class ResetPassword extends StatefulWidget {
+  final String email;
+  ResetPassword(this.email);
+
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _ResetPasswordState createState() => _ResetPasswordState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  final LoginController loginController = Get.put(LoginController());
-  bool rememberMe = true;
-  TextEditingController username = TextEditingController();
-  TextEditingController empid = TextEditingController();
+class _ResetPasswordState extends State<ResetPassword> {
+  final ResetPasswordController rpC = Get.put(ResetPasswordController());
   TextEditingController password = TextEditingController();
+  TextEditingController confirmpassword = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    loginController.pr = ProgressDialog(
+    rpC.pr = ProgressDialog(
       context,
       type: ProgressDialogType.Normal,
       isDismissible: false,
@@ -53,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-    loginController.pr.style(
+    rpC.pr.style(
       backgroundColor: Colors.white,
     );
   }
@@ -61,9 +57,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void dispose() {
     super.dispose();
-    username.dispose();
-    empid.dispose();
     password.dispose();
+    confirmpassword.dispose();
   }
 
   @override
@@ -91,22 +86,11 @@ class _LoginPageState extends State<LoginPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            AppUtils().appName,
+                            'Create new password',
                             style: TextStyle(
                               color: Colors.yellowAccent,
                               fontSize: 22.0,
                               fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 8.0,
-                          ),
-                          Text(
-                            'Sign in to Continue',
-                            style: TextStyle(
-                              color: Colors.yellowAccent,
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.w400,
                             ),
                           ),
                         ],
@@ -134,114 +118,23 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   child: Wrap(
                     children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0,
-                          vertical: 20.0,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            GestureDetector(
-                              onTap: () {},
-                              child: Column(
-                                children: [
-                                  Text(
-                                    'LOGIN',
-                                    style: TextStyle(
-                                      fontSize: 18.0,
-                                      color: Colors.blue,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Container(
-                                    color: Colors.yellowAccent,
-                                    height: 4.0,
-                                    width: 50.0,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                Get.offAll(SignupPage());
-                              },
-                              child: Column(
-                                children: [
-                                  Text(
-                                    'SIGNUP',
-                                    style: TextStyle(
-                                      fontSize: 18.0,
-                                      color: Colors.grey,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                      Container(
+                        height: 35.0,
                       ),
                       CommonTextField(
-                        'Username',
-                        'assets/images/person_male.png',
-                        'text',
-                        username,
-                      ),
-                      CommonTextField(
-                        'Employee Id',
-                        'assets/images/emp_id_icon.png',
-                        'text',
-                        empid,
-                      ),
-                      CommonTextField(
-                        '*********',
+                        'Enter new password',
                         'assets/images/password.png',
                         'password',
                         password,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12.0,
-                        ),
-                        child: Row(
-                          children: [
-                            Checkbox(
-                              value: rememberMe,
-                              onChanged: (value) {
-                                print(value);
-                                setState(() {
-                                  rememberMe = value;
-                                });
-                              },
-                            ),
-                            Text(
-                              'Remember me',
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 15.0,
-                              ),
-                            ),
-                            Spacer(),
-                            FlatButton(
-                              onPressed: () {
-                                Get.to(ForgotPasswordPage());
-                              },
-                              child: Text(
-                                'Forgot password?',
-                                style: TextStyle(
-                                  color: Colors.orangeAccent,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 15.0,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                      CommonTextField(
+                        'Confirm password',
+                        'assets/images/password.png',
+                        'password',
+                        confirmpassword,
                       ),
                       SizedBox(
-                        height: 100.0,
+                        height: 135.0,
                       ),
                     ],
                   ),
@@ -249,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             Positioned(
-              top: 400.0,
+              top: 280.0,
               child: Container(
                 width: 100.0,
                 height: 100.0,
@@ -272,12 +165,24 @@ class _LoginPageState extends State<LoginPage> {
                   child: MaterialButton(
                     color: Colors.orangeAccent,
                     shape: CircleBorder(),
-                    onPressed: () {
+                    onPressed: () async {
                       FocusScope.of(context).requestFocus(FocusNode());
-                      if (username.text == null || username.text == '' || empid.text == null || empid.text == '' || password.text == null || password.text == '') {
+                      if (password.text == null || confirmpassword.text == '') {
                         Get.snackbar(
                           'Error',
-                          'Please provide all detail',
+                          'Please provide password and confirm password',
+                          colorText: Colors.white,
+                          backgroundColor: Colors.black87,
+                          snackPosition: SnackPosition.BOTTOM,
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 10.0,
+                          ),
+                        );
+                      } else if (password.text != confirmpassword.text) {
+                        Get.snackbar(
+                          'Error',
+                          'Password are not matching',
                           colorText: Colors.white,
                           backgroundColor: Colors.black87,
                           snackPosition: SnackPosition.BOTTOM,
@@ -287,13 +192,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         );
                       } else {
-                        // Call Login Controller's Function
-                        print('Login Pressed');
-                        loginController.loginUser(
-                          username.text,
-                          empid.text,
-                          password.text,
-                        );
+                        rpC.verifyOTP(widget.email, password.text);
                       }
                     },
                     child: Padding(
@@ -319,12 +218,12 @@ class CommonTextField extends StatelessWidget {
   final String hintText;
   final String prefixIcon;
   final String type;
-  final TextEditingController inputController;
+  final TextEditingController tec;
   CommonTextField(
     this.hintText,
     this.prefixIcon,
     this.type,
-    this.inputController,
+    this.tec,
   );
 
   @override
@@ -338,8 +237,13 @@ class CommonTextField extends StatelessWidget {
           bottom: 12.0,
         ),
         child: TextField(
-          controller: inputController,
           obscureText: type == 'password' ? true : false,
+          keyboardType: type == 'mobile'
+              ? TextInputType.phone
+              : type == 'email'
+                  ? TextInputType.emailAddress
+                  : TextInputType.text,
+          controller: tec,
           decoration: InputDecoration(
             isDense: true,
             contentPadding: EdgeInsets.all(10),

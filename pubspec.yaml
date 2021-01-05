@@ -73,11 +73,12 @@ dependencies:
   in_app_review: ^1.0.4
   hexcolor: ^1.0.6
   flutter_svg:
+  package_info: ^0.4.3+2
 
-flutter_icons:
-  image_path: "assets/images/icon.png"
-  android: true
-  ios: true
+# flutter_icons:
+#   image_path: "assets/images/icon.png"
+#   android: true
+#   ios: true
 
 flutter_native_splash:
   image: assets/images/splash.png

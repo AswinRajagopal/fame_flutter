@@ -21,6 +21,8 @@ class _DailyEmployeeReportState extends State<DailyEmployeeReport> {
   TextEditingController toDt = TextEditingController();
   TextEditingController empName = TextEditingController();
   var empId;
+  var sfromDate;
+  var stoDate;
 
   @override
   void initState() {
@@ -68,14 +70,14 @@ class _DailyEmployeeReportState extends State<DailyEmployeeReport> {
   Future<Null> fromDate(BuildContext context) async {
     final picked = await showDatePicker(
       context: context,
-      initialDate: fromDt.text.isEmpty
+      initialDate: sfromDate == null
           ? _frmDate
           : DateTime.parse(
-              fromDt.text.toString(),
+              sfromDate.toString(),
             ),
       firstDate: DateTime.now().add(Duration(days: -365)),
-      lastDate: toDt.text != ''
-          ? DateTime.parse(toDt.text.toString()).add(
+      lastDate: stoDate != null
+          ? DateTime.parse(stoDate.toString()).add(
               Duration(days: 0),
             )
           : DateTime.now().add(Duration(days: 365)),
@@ -84,23 +86,24 @@ class _DailyEmployeeReportState extends State<DailyEmployeeReport> {
     if (picked != null) {
       print('Date selected ${_frmDate.toString()}');
       setState(() {
-        fromDt.text = DateFormat('yyyy-MM-dd').format(picked).toString();
+        fromDt.text = DateFormat('dd-MM-yyyy').format(picked).toString();
+        sfromDate = DateFormat('yyyy-MM-dd').format(picked).toString();
       });
     }
   }
 
   Future<Null> toDate(BuildContext context) async {
-    final _toDate = DateTime.parse(fromDt.text.toString()).add(
+    final _toDate = DateTime.parse(sfromDate.toString()).add(
       Duration(days: 0),
     );
     final picked = await showDatePicker(
       context: context,
-      initialDate: toDt.text.isEmpty
+      initialDate: stoDate == null
           ? _toDate
           : DateTime.parse(
-              toDt.text.toString(),
+              stoDate.toString(),
             ),
-      firstDate: DateTime.parse(fromDt.text.toString()).add(
+      firstDate: DateTime.parse(sfromDate.toString()).add(
         Duration(days: 0),
       ),
       lastDate: DateTime.now().add(Duration(days: 365)),
@@ -109,7 +112,8 @@ class _DailyEmployeeReportState extends State<DailyEmployeeReport> {
     if (picked != null) {
       print('Date selected ${_toDate.toString()}');
       setState(() {
-        toDt.text = DateFormat('yyyy-MM-dd').format(picked).toString();
+        toDt.text = DateFormat('dd-MM-yyyy').format(picked).toString();
+        stoDate = DateFormat('yyyy-MM-dd').format(picked).toString();
       });
     }
   }
@@ -186,7 +190,7 @@ class _DailyEmployeeReportState extends State<DailyEmployeeReport> {
                             'Error',
                             'Please select from date',
                             colorText: Colors.white,
-                            backgroundColor: Colors.red,
+                            backgroundColor: Colors.black87,
                             snackPosition: SnackPosition.BOTTOM,
                             margin: EdgeInsets.symmetric(
                               horizontal: 8.0,
@@ -288,12 +292,12 @@ class _DailyEmployeeReportState extends State<DailyEmployeeReport> {
                       RaisedButton(
                         onPressed: () {
                           FocusScope.of(context).requestFocus(FocusNode());
-                          if (empId == null || fromDt.text == null || toDt.text == null) {
+                          if (empId == null || sfromDate == null || stoDate == null) {
                             Get.snackbar(
                               'Error',
                               'Please select employee, from date & to date',
                               colorText: Colors.white,
-                              backgroundColor: Colors.red,
+                              backgroundColor: Colors.black87,
                               snackPosition: SnackPosition.BOTTOM,
                               margin: EdgeInsets.symmetric(
                                 horizontal: 8.0,
@@ -304,7 +308,7 @@ class _DailyEmployeeReportState extends State<DailyEmployeeReport> {
                             print('empId: $empId');
                             print('fromDate: ${fromDt.text}');
                             print('toDate: ${toDt.text}');
-                            Get.to(DailyEmpRepDetail(empId, fromDt.text, toDt.text));
+                            Get.to(DailyEmpRepDetail(empId, sfromDate, stoDate));
                           }
                         },
                         child: Padding(

@@ -90,7 +90,7 @@ class _DashboardPageState extends State<DashboardPage> {
               'Error',
               'You cannot checkin when leave is approved',
               colorText: Colors.white,
-              backgroundColor: Colors.red,
+              backgroundColor: Colors.black87,
               snackPosition: SnackPosition.BOTTOM,
               margin: EdgeInsets.symmetric(
                 horizontal: 8.0,
@@ -105,7 +105,7 @@ class _DashboardPageState extends State<DashboardPage> {
               'Error',
               'You cannot checkin on week off days',
               colorText: Colors.white,
-              backgroundColor: Colors.red,
+              backgroundColor: Colors.black87,
               snackPosition: SnackPosition.BOTTOM,
               margin: EdgeInsets.symmetric(
                 horizontal: 8.0,
@@ -120,7 +120,7 @@ class _DashboardPageState extends State<DashboardPage> {
               'Error',
               'Attendance already given by unit Incharge',
               colorText: Colors.white,
-              backgroundColor: Colors.red,
+              backgroundColor: Colors.black87,
               snackPosition: SnackPosition.BOTTOM,
               margin: EdgeInsets.symmetric(
                 horizontal: 8.0,
@@ -135,7 +135,7 @@ class _DashboardPageState extends State<DashboardPage> {
               'Error',
               'You already checked in for today',
               colorText: Colors.white,
-              backgroundColor: Colors.red,
+              backgroundColor: Colors.black87,
               snackPosition: SnackPosition.BOTTOM,
               margin: EdgeInsets.symmetric(
                 horizontal: 8.0,
@@ -212,7 +212,8 @@ class _DashboardPageState extends State<DashboardPage> {
                                 //   size: 30.0,
                                 // ),
                                 icon: Image.asset(
-                                  'assets/images/icon-notification.png',
+                                  'assets/images/bell_icon.png',
+                                  height: 22.0,
                                 ),
                                 onPressed: () {},
                               ),
@@ -290,499 +291,509 @@ class _DashboardPageState extends State<DashboardPage> {
                 ),
               ],
             ),
-            Align(
-              alignment: Alignment.topCenter,
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                child: Card(
-                  elevation: 6.0,
-                  margin: EdgeInsets.only(
-                    top: 160.0,
-                    right: 12.0,
-                    left: 12.0,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                      15.0,
-                    ),
-                  ),
-                  child: Wrap(
-                    children: [
-                      Obx(() {
-                        if (dbC.isDashboardLoading.value) {
-                          return Padding(
-                            padding: const EdgeInsets.fromLTRB(
-                              10.0,
-                              20.0,
-                              10.0,
-                              20.0,
-                            ),
-                            child: LoadingWidget(
-                              containerHeight: 75.0,
-                              loaderSize: 30.0,
-                              loaderColor: Colors.black87,
-                            ),
-                          );
-                        } else {
-                          var chkinDt = dbC.response['dailyAttendance']['checkInDateTime'];
-                          var chkoutDt = dbC.response['dailyAttendance']['checkOutDateTime'];
-                          return (chkinDt != null && chkinDt != '') && (chkoutDt == null || chkoutDt == '')
-                              ? Padding(
-                                  padding: const EdgeInsets.fromLTRB(
-                                    10.0,
-                                    10.0,
-                                    10.0,
-                                    10.0,
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                            'Current Status: ',
-                                            style: TextStyle(
-                                              fontSize: 16.0,
-                                              color: Colors.grey,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          Text(
-                                            'On Duty',
-                                            style: TextStyle(
-                                              fontSize: 16.0,
-                                              color: Colors.orange,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                            'Checked in on ',
-                                            style: TextStyle(
-                                              fontSize: 16.0,
-                                              color: Colors.grey,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          Text(
-                                            convertTimeForCheckedIn(
-                                              chkinDt,
-                                            ),
-                                            style: TextStyle(
-                                              fontSize: 16.0,
-                                              color: Colors.grey,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                            // maxLines: 2,
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 5.0,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Column(
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    'Checked in at ',
-                                                    style: TextStyle(
-                                                      fontSize: 16.0,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    convertTimeWithoutParse(dbC.response['dailyAttendance']['checkInDateTime']),
-                                                    style: TextStyle(
-                                                      fontSize: 16.0,
-                                                      fontWeight: FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(
-                                                height: 5.0,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    'Shift ends at ',
-                                                    style: TextStyle(
-                                                      fontSize: 16.0,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    convertTimeWithParse(dbC.response['empdetails']['shiftEndTime']),
-                                                    style: TextStyle(
-                                                      fontSize: 16.0,
-                                                      fontWeight: FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                          RaisedButton(
-                                            onPressed: () {
-                                              //Check Condition
-                                              var chk = checkCondition(
-                                                dbC.response,
-                                                'chkout',
-                                              );
-                                              if (chk) {
-                                                Get.to(CheckoutPage());
-                                              }
-                                            },
-                                            child: Text(
-                                              'Check Out',
-                                              style: TextStyle(
-                                                fontSize: 18.0,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            color: Colors.orange[800],
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(
-                                                25.0,
-                                              ),
-                                              side: BorderSide(
-                                                color: Colors.orange[800],
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              : Padding(
-                                  padding: const EdgeInsets.fromLTRB(
-                                    10.0,
-                                    25.0,
-                                    10.0,
-                                    25.0,
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'You are posted in',
-                                            style: TextStyle(
-                                              fontSize: 15.0,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 5.0,
-                                          ),
-                                          Obx(() {
-                                            if (dbC.isDashboardLoading.value) {
-                                              return Text(
-                                                '...',
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 20.0,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              );
-                                            } else {
-                                              // print('Length: ${dbC.response['clientData']['name'].length}');
-                                              var clientName = dbC.response['clientData']['name'] ?? 'N/A';
-                                              var areaName = dbC.response['empdetails']['area'] ?? 'N/A';
-                                              return Row(
-                                                children: [
-                                                  SizedBox(
-                                                    width: 240.0,
-                                                    child: Text(
-                                                      '$clientName in $areaName',
-                                                      style: TextStyle(
-                                                        fontSize: 15.0,
-                                                        fontWeight: FontWeight.bold,
-                                                      ),
-                                                      overflow: TextOverflow.ellipsis,
-                                                    ),
-                                                  ),
-                                                  // Text(
-                                                  //   ' in ',
-                                                  //   style: TextStyle(
-                                                  //     fontSize: 15.0,
-                                                  //   ),
-                                                  // ),
-                                                  // SizedBox(
-                                                  //   width: 40.0,
-                                                  //   child: Text(
-                                                  //     // dbC.response['empdetails']['area'] ?? 'N/A',
-                                                  //     'asdasd asdasd asdasdasd',
-                                                  //     style: TextStyle(
-                                                  //       fontSize: 15.0,
-                                                  //       fontWeight: FontWeight.bold,
-                                                  //     ),
-                                                  //     overflow: TextOverflow.ellipsis,
-                                                  //   ),
-                                                  // ),
-                                                ],
-                                              );
-                                            }
-                                          }),
-                                          SizedBox(
-                                            height: 5.0,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                'Duty Timings:',
-                                                style: TextStyle(
-                                                  fontSize: 15.0,
-                                                ),
-                                              ),
-                                              Text(
-                                                convertTimeWithParse(dbC.response['empdetails']['shiftStartTime']),
-                                                style: TextStyle(
-                                                  fontSize: 15.0,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                              Text(
-                                                ' to ',
-                                                style: TextStyle(
-                                                  fontSize: 15.0,
-                                                ),
-                                              ),
-                                              Text(
-                                                convertTimeWithParse(dbC.response['empdetails']['shiftEndTime']),
-                                                style: TextStyle(
-                                                  fontSize: 15.0,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      RaisedButton(
-                                        onPressed: () {
-                                          //Check Condition
-                                          var chk = checkCondition(
-                                            dbC.response,
-                                            'chkin',
-                                          );
-                                          if (chk) {
-                                            Get.to(CheckinPage());
-                                          }
-                                        },
-                                        child: Text(
-                                          'Check In',
-                                          style: TextStyle(
-                                            fontSize: 16.0,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        color: Colors.green,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            25.0,
-                                          ),
-                                          side: BorderSide(
-                                            color: Colors.green,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                        }
-                      }),
-                    ],
-                  ),
-                ),
-              ),
-            ),
             Positioned(
-              top: 290.0,
+              top: 160.0,
               bottom: 0.0,
               left: 0.0,
               right: 0.0,
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Obx(() {
-                      if (dbC.isDashboardLoading.value) {
-                        return LoadingWidget(
-                          containerHeight: 185.0,
-                          loaderSize: 30.0,
-                          loaderColor: Colors.black87,
-                        );
-                      } else {
-                        var role = RemoteServices().box.get('role');
-                        return dbC.response['psCount'] == null
-                            ? Container(
-                                width: MediaQuery.of(context).size.width,
-                                color: Colors.white,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        top: 5.0,
-                                        left: 20.0,
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            DateFormat.MMMM().format(DateTime.now()).toString(),
-                                            style: TextStyle(
-                                              fontSize: 20.0,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          role == '2' || role == '3'
-                                              ? FlatButton(
-                                                  onPressed: () {
-                                                    Get.offAll(
-                                                      AttendancePage(),
-                                                    );
-                                                  },
-                                                  child: Row(
-                                                    children: [
-                                                      Text(
-                                                        'Enter Attendance',
-                                                        style: TextStyle(
-                                                          fontSize: 16.0,
-                                                          color: Colors.grey,
-                                                        ),
-                                                      ),
-                                                      Icon(
-                                                        Icons.chevron_right,
-                                                        size: 25.0,
-                                                        color: Colors.grey,
-                                                      ),
-                                                    ],
+                    //CHANGED
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: Card(
+                        elevation: 6.0,
+                        margin: EdgeInsets.only(
+                          // top: 00.0,
+                          right: 12.0,
+                          left: 12.0,
+                          bottom: 20.0,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                            15.0,
+                          ),
+                        ),
+                        child: Wrap(
+                          children: [
+                            Obx(() {
+                              if (dbC.isDashboardLoading.value) {
+                                return Padding(
+                                  padding: const EdgeInsets.fromLTRB(
+                                    10.0,
+                                    20.0,
+                                    10.0,
+                                    20.0,
+                                  ),
+                                  child: LoadingWidget(
+                                    containerHeight: 75.0,
+                                    loaderSize: 30.0,
+                                    loaderColor: Colors.black87,
+                                  ),
+                                );
+                              } else {
+                                var chkinDt = dbC.response['dailyAttendance']['checkInDateTime'];
+                                var chkoutDt = dbC.response['dailyAttendance']['checkOutDateTime'];
+                                return (chkinDt != null && chkinDt != '') && (chkoutDt == null || chkoutDt == '')
+                                    ? Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                          10.0,
+                                          10.0,
+                                          10.0,
+                                          10.0,
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              children: [
+                                                Text(
+                                                  'Current Status: ',
+                                                  style: TextStyle(
+                                                    fontSize: 16.0,
+                                                    color: Colors.grey,
+                                                    fontWeight: FontWeight.bold,
                                                   ),
-                                                )
-                                              : Container(),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 10.0,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'No data to show',
-                                          style: TextStyle(
-                                            fontSize: 18.0,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 20.0,
-                                    ),
-                                  ],
-                                ),
-                              )
-                            : Container(
-                                // height: 150.0,
-                                width: MediaQuery.of(context).size.width,
-                                color: Colors.white,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        top: 10.0,
-                                        left: 20.0,
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            DateFormat.MMMM().format(DateTime.now()).toString(),
-                                            style: TextStyle(
-                                              fontSize: 20.0,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          role == '2' || role == '3'
-                                              ? FlatButton(
-                                                  onPressed: () {
-                                                    Get.offAll(
-                                                      AttendancePage(),
-                                                    );
-                                                  },
-                                                  child: Row(
-                                                    children: [
-                                                      Text(
-                                                        'Enter Attendance',
-                                                        style: TextStyle(
-                                                          fontSize: 16.0,
-                                                          color: Colors.grey,
-                                                        ),
-                                                      ),
-                                                      Icon(
-                                                        Icons.chevron_right,
-                                                        size: 25.0,
-                                                        color: Colors.grey,
-                                                      ),
-                                                    ],
+                                                ),
+                                                Text(
+                                                  'On Duty',
+                                                  style: TextStyle(
+                                                    fontSize: 16.0,
+                                                    color: Colors.orange,
+                                                    fontWeight: FontWeight.bold,
                                                   ),
-                                                )
-                                              : Container(),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 10.0,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        CustomProgressIndicator(
-                                          // '23',
-                                          dbC.response['psCount']['shifts'].toString(),
-                                          'Total Days',
-                                          80.0,
-                                          1,
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              children: [
+                                                Text(
+                                                  'Checked in on ',
+                                                  style: TextStyle(
+                                                    fontSize: 16.0,
+                                                    color: Colors.grey,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  convertTimeForCheckedIn(
+                                                    chkinDt,
+                                                  ),
+                                                  style: TextStyle(
+                                                    fontSize: 16.0,
+                                                    color: Colors.grey,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                  // maxLines: 2,
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 5.0,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Column(
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Text(
+                                                          'Checked in at ',
+                                                          style: TextStyle(
+                                                            fontSize: 16.0,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          convertTimeWithoutParse(dbC.response['dailyAttendance']['checkInDateTime']),
+                                                          style: TextStyle(
+                                                            fontSize: 16.0,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      height: 5.0,
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        Text(
+                                                          'Shift ends at ',
+                                                          style: TextStyle(
+                                                            fontSize: 16.0,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          convertTimeWithParse(dbC.response['empdetails']['shiftEndTime']),
+                                                          style: TextStyle(
+                                                            fontSize: 16.0,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                                RaisedButton(
+                                                  onPressed: () {
+                                                    //Check Condition
+                                                    var chk = checkCondition(
+                                                      dbC.response,
+                                                      'chkout',
+                                                    );
+                                                    if (chk) {
+                                                      Get.to(CheckoutPage());
+                                                    }
+                                                  },
+                                                  child: Text(
+                                                    'Check Out',
+                                                    style: TextStyle(
+                                                      fontSize: 18.0,
+                                                      color: Colors.white,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  color: Colors.orange[800],
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(
+                                                      25.0,
+                                                    ),
+                                                    side: BorderSide(
+                                                      color: Colors.orange[800],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
                                         ),
-                                        CustomProgressIndicator(
-                                          dbC.response['psCount']['present'].toString(),
-                                          'Present',
-                                          80.0,
-                                          dbC.response['psCount']['present'] / dbC.response['psCount']['shifts'],
+                                      )
+                                    : Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                          10.0,
+                                          25.0,
+                                          10.0,
+                                          25.0,
                                         ),
-                                        CustomProgressIndicator(
-                                          dbC.response['psCount']['absent'].toString(),
-                                          'Absent',
-                                          80.0,
-                                          dbC.response['psCount']['absent'] / dbC.response['psCount']['shifts'],
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Column(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  'You are posted in',
+                                                  style: TextStyle(
+                                                    fontSize: 15.0,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 5.0,
+                                                ),
+                                                Obx(() {
+                                                  if (dbC.isDashboardLoading.value) {
+                                                    return Text(
+                                                      '...',
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 20.0,
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
+                                                    );
+                                                  } else {
+                                                    // print('Length: ${dbC.response['clientData']['name'].length}');
+                                                    var clientName = dbC.response['clientData']['name'] ?? 'N/A';
+                                                    var areaName = dbC.response['empdetails']['area'] ?? 'N/A';
+                                                    return Row(
+                                                      children: [
+                                                        SizedBox(
+                                                          width: 240.0,
+                                                          child: Text(
+                                                            '$clientName in $areaName',
+                                                            style: TextStyle(
+                                                              fontSize: 15.0,
+                                                              fontWeight: FontWeight.bold,
+                                                            ),
+                                                            overflow: TextOverflow.ellipsis,
+                                                          ),
+                                                        ),
+                                                        // Text(
+                                                        //   ' in ',
+                                                        //   style: TextStyle(
+                                                        //     fontSize: 15.0,
+                                                        //   ),
+                                                        // ),
+                                                        // SizedBox(
+                                                        //   width: 40.0,
+                                                        //   child: Text(
+                                                        //     // dbC.response['empdetails']['area'] ?? 'N/A',
+                                                        //     'asdasd asdasd asdasdasd',
+                                                        //     style: TextStyle(
+                                                        //       fontSize: 15.0,
+                                                        //       fontWeight: FontWeight.bold,
+                                                        //     ),
+                                                        //     overflow: TextOverflow.ellipsis,
+                                                        //   ),
+                                                        // ),
+                                                      ],
+                                                    );
+                                                  }
+                                                }),
+                                                SizedBox(
+                                                  height: 5.0,
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      'Duty Timings:',
+                                                      style: TextStyle(
+                                                        fontSize: 15.0,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      convertTimeWithParse(dbC.response['empdetails']['shiftStartTime']),
+                                                      style: TextStyle(
+                                                        fontSize: 15.0,
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      ' to ',
+                                                      style: TextStyle(
+                                                        fontSize: 15.0,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      convertTimeWithParse(dbC.response['empdetails']['shiftEndTime']),
+                                                      style: TextStyle(
+                                                        fontSize: 15.0,
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                            RaisedButton(
+                                              onPressed: () {
+                                                //Check Condition
+                                                var chk = checkCondition(
+                                                  dbC.response,
+                                                  'chkin',
+                                                );
+                                                if (chk) {
+                                                  Get.to(CheckinPage());
+                                                }
+                                              },
+                                              child: Text(
+                                                'Check In',
+                                                style: TextStyle(
+                                                  fontSize: 16.0,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              color: Colors.green,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(
+                                                  25.0,
+                                                ),
+                                                side: BorderSide(
+                                                  color: Colors.green,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 20.0,
-                                    ),
-                                  ],
-                                ),
+                                      );
+                              }
+                            }),
+                          ],
+                        ),
+                      ),
+                    ),
+                    // Container(
+                    //   color: AppUtils().greyScaffoldBg,
+                    //   height: 16.0,
+                    // ),
+                    Container(
+                      color: AppUtils().greyScaffoldBg,
+                      child: Column(
+                        children: [
+                          Obx(() {
+                            if (dbC.isDashboardLoading.value) {
+                              return LoadingWidget(
+                                containerHeight: 185.0,
+                                loaderSize: 30.0,
+                                loaderColor: Colors.black87,
                               );
-                      }
-                    }),
+                            } else {
+                              var role = RemoteServices().box.get('role');
+                              return dbC.response['psCount'] == null
+                                  ? Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      color: Colors.white,
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                              top: 5.0,
+                                              left: 20.0,
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Text(
+                                                  DateFormat.MMMM().format(DateTime.now()).toString(),
+                                                  style: TextStyle(
+                                                    fontSize: 20.0,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                role == '2' || role == '3'
+                                                    ? FlatButton(
+                                                        onPressed: () {
+                                                          Get.offAll(
+                                                            AttendancePage(),
+                                                          );
+                                                        },
+                                                        child: Row(
+                                                          children: [
+                                                            Text(
+                                                              'Enter Attendance',
+                                                              style: TextStyle(
+                                                                fontSize: 16.0,
+                                                                color: Colors.grey,
+                                                              ),
+                                                            ),
+                                                            Icon(
+                                                              Icons.chevron_right,
+                                                              size: 25.0,
+                                                              color: Colors.grey,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      )
+                                                    : Container(),
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 10.0,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                'No data to show',
+                                                style: TextStyle(
+                                                  fontSize: 18.0,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 20.0,
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : Container(
+                                      // height: 150.0,
+                                      width: MediaQuery.of(context).size.width,
+                                      color: Colors.white,
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                              top: 10.0,
+                                              left: 20.0,
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Text(
+                                                  DateFormat.MMMM().format(DateTime.now()).toString(),
+                                                  style: TextStyle(
+                                                    fontSize: 20.0,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                role == '2' || role == '3'
+                                                    ? FlatButton(
+                                                        onPressed: () {
+                                                          Get.offAll(
+                                                            AttendancePage(),
+                                                          );
+                                                        },
+                                                        child: Row(
+                                                          children: [
+                                                            Text(
+                                                              'Enter Attendance',
+                                                              style: TextStyle(
+                                                                fontSize: 16.0,
+                                                                color: Colors.grey,
+                                                              ),
+                                                            ),
+                                                            Icon(
+                                                              Icons.chevron_right,
+                                                              size: 25.0,
+                                                              color: Colors.grey,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      )
+                                                    : Container(),
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 10.0,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              CustomProgressIndicator(
+                                                // '23',
+                                                dbC.response['psCount']['shifts'].toString(),
+                                                'Total Days',
+                                                75.0,
+                                                1,
+                                              ),
+                                              CustomProgressIndicator(
+                                                dbC.response['psCount']['present'].toString(),
+                                                'Present',
+                                                75.0,
+                                                dbC.response['psCount']['present'] / dbC.response['psCount']['shifts'],
+                                              ),
+                                              CustomProgressIndicator(
+                                                dbC.response['psCount']['absent'].toString(),
+                                                'Absent',
+                                                75.0,
+                                                dbC.response['psCount']['absent'] / dbC.response['psCount']['shifts'],
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 20.0,
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                            }
+                          }),
+                        ],
+                      ),
+                    ),
                     Obx(() {
                       if (!dbC.isDashboardLoading.value) {
                         return SizedBox(
@@ -791,43 +802,46 @@ class _DashboardPageState extends State<DashboardPage> {
                       }
                       return Container();
                     }),
-                    Obx(() {
-                      if (dbC.isDashboardLoading.value) {
-                        return LoadingWidget(
-                          containerColor: Colors.grey[300],
-                          containerHeight: 180.0,
-                          loaderSize: 30.0,
-                          loaderColor: Colors.black87,
-                        );
-                      } else {
-                        return Visibility(
-                          visible: dbC.response['empActivities'] == null || dbC.response['empActivities'].length == 0 ? false : true,
-                          child: Container(
-                            height: 180.0,
-                            width: MediaQuery.of(context).size.width,
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                top: 15.0,
-                                bottom: 15.0,
-                                // left: 20.0,
-                              ),
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: dbC.response['empActivities'].length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  var empAct = dbC.response['empActivities'][index];
-                                  return DBActivityTile(
-                                    empAct,
-                                    index,
-                                    dbC.response['empActivities'].length,
-                                  );
-                                },
+                    Container(
+                      color: AppUtils().greyScaffoldBg,
+                      child: Obx(() {
+                        if (dbC.isDashboardLoading.value) {
+                          return LoadingWidget(
+                            containerColor: Colors.grey[300],
+                            containerHeight: 180.0,
+                            loaderSize: 30.0,
+                            loaderColor: Colors.black87,
+                          );
+                        } else {
+                          return Visibility(
+                            visible: dbC.response['empActivities'] == null || dbC.response['empActivities'].length == 0 ? false : true,
+                            child: Container(
+                              height: 180.0,
+                              width: MediaQuery.of(context).size.width,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 15.0,
+                                  bottom: 15.0,
+                                  // left: 20.0,
+                                ),
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: dbC.response['empActivities'].length,
+                                  itemBuilder: (BuildContext context, int index) {
+                                    var empAct = dbC.response['empActivities'][index];
+                                    return DBActivityTile(
+                                      empAct,
+                                      index,
+                                      dbC.response['empActivities'].length,
+                                    );
+                                  },
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      }
-                    }),
+                          );
+                        }
+                      }),
+                    ),
                     SizedBox(
                       width: 20.0,
                     ),
@@ -889,47 +903,52 @@ class _DashboardPageState extends State<DashboardPage> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    Container(
+                      color: AppUtils().greyScaffoldBg,
                       height: 20.0,
                     ),
-                    Obx(() {
-                      if (erpC.isEmpLoading.value) {
-                        return LoadingWidget(
-                          containerColor: Colors.grey[300],
-                          containerHeight: 210.0,
-                          loaderSize: 30.0,
-                          loaderColor: Colors.black87,
-                        );
-                      } else {
-                        return Container(
-                          height: erpC.empRes.routePlanList == null || erpC.empRes.routePlanList.length == 0 ? 0.0 : 210.0,
-                          width: MediaQuery.of(context).size.width,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                              bottom: 15.0,
+                    Container(
+                      color: AppUtils().greyScaffoldBg,
+                      child: Obx(() {
+                        if (erpC.isEmpLoading.value) {
+                          return LoadingWidget(
+                            containerColor: Colors.grey[300],
+                            containerHeight: 210.0,
+                            loaderSize: 30.0,
+                            loaderColor: Colors.black87,
+                          );
+                        } else {
+                          return Container(
+                            color: AppUtils().greyScaffoldBg,
+                            height: erpC.empRes.routePlanList == null || erpC.empRes.routePlanList.length == 0 ? 0.0 : 200.0,
+                            width: MediaQuery.of(context).size.width,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                bottom: 15.0,
+                              ),
+                              child: erpC.empRes.routePlanList == null || erpC.empRes.routePlanList.length == 0
+                                  ? Container()
+                                  : ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      // itemCount: erpC.empRes.routePlanList.length,
+                                      itemCount: erpC.empRes.routePlanList.length > 4 ? 5 : erpC.empRes.routePlanList.length,
+                                      itemBuilder: (context, index) {
+                                        var length = erpC.empRes.routePlanList.length;
+                                        var empRoute = erpC.empRes.routePlanList[index];
+                                        // print('index: $index');
+                                        return DBEmprTile(
+                                          empRoute,
+                                          index,
+                                          // erpC.empRes.routePlanList.length,
+                                          length > 4 ? 4 : length,
+                                        );
+                                      },
+                                    ),
                             ),
-                            child: erpC.empRes.routePlanList == null || erpC.empRes.routePlanList.length == 0
-                                ? Container()
-                                : ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    // itemCount: erpC.empRes.routePlanList.length,
-                                    itemCount: erpC.empRes.routePlanList.length > 4 ? 5 : erpC.empRes.routePlanList.length,
-                                    itemBuilder: (context, index) {
-                                      var length = erpC.empRes.routePlanList.length;
-                                      var empRoute = erpC.empRes.routePlanList[index];
-                                      // print('index: $index');
-                                      return DBEmprTile(
-                                        empRoute,
-                                        index,
-                                        // erpC.empRes.routePlanList.length,
-                                        length > 4 ? 4 : length,
-                                      );
-                                    },
-                                  ),
-                          ),
-                        );
-                      }
-                    }),
+                          );
+                        }
+                      }),
+                    ),
                     // DotsIndicator(
                     //   dotsCount: erpC.empRes.routePlanList.length,
                     //   position: 0,
@@ -940,115 +959,124 @@ class _DashboardPageState extends State<DashboardPage> {
                     // SizedBox(
                     //   height: 20.0,
                     // ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 15.0,
-                      ),
-                      child: Container(
-                        height: 50.0,
-                        width: MediaQuery.of(context).size.width / 1.3,
-                        decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(
-                              50.0,
+                    Container(
+                      color: AppUtils().greyScaffoldBg,
+                      width: MediaQuery.of(context).size.width,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 15.0,
+                          horizontal: 45.0
+                        ),
+                        child: Container(
+                          height: 50.0,
+                          width: MediaQuery.of(context).size.width / 1.3,
+                          decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(
+                                50.0,
+                              ),
                             ),
                           ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                if (calC.calendarType != 'myCal') {
-                                  calC.calendarType = 'myCal';
-                                  var dateParse = DateTime.parse(calC.changedDate);
-                                  var formattedDate = '${dateParse.month}${dateParse.year.toString().substring(2)}';
-                                  calC.getCalendar(month: formattedDate);
-                                  setState(() {});
-                                }
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: calC.calendarType == 'myCal' ? Colors.white : Colors.blue,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(
-                                      50.0,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  if (calC.calendarType != 'myCal') {
+                                    calC.calendarType = 'myCal';
+                                    var dateParse = DateTime.parse(calC.changedDate);
+                                    var formattedDate = '${dateParse.month}${dateParse.year.toString().substring(2)}';
+                                    calC.getCalendar(month: formattedDate);
+                                    setState(() {});
+                                  }
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: calC.calendarType == 'myCal' ? Colors.white : Colors.blue,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(
+                                        50.0,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 12.0,
-                                    horizontal: 23.0,
-                                  ),
-                                  child: Text(
-                                    'My Calendar',
-                                    style: TextStyle(
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.bold,
-                                      color: calC.calendarType == 'myCal' ? Colors.blue : Colors.white,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 12.0,
+                                      horizontal: 23.0,
                                     ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                if (calC.calendarType != 'myRos') {
-                                  calC.calendarType = 'myRos';
-                                  var dateParse = DateTime.parse(calC.changedDate);
-                                  var formattedDate = '${dateParse.month}${dateParse.year.toString().substring(2)}';
-                                  calC.getCalendar(month: formattedDate);
-                                  setState(() {});
-                                }
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: calC.calendarType == 'myRos' ? Colors.white : Colors.blue,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(
-                                      50.0,
-                                    ),
-                                  ),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 12.0,
-                                    horizontal: 23.0,
-                                  ),
-                                  child: Text(
-                                    'My Roster',
-                                    style: TextStyle(
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.bold,
-                                      color: calC.calendarType == 'myRos' ? Colors.blue : Colors.white,
+                                    child: Text(
+                                      'My Calendar',
+                                      style: TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold,
+                                        color: calC.calendarType == 'myCal' ? Colors.blue : Colors.white,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                              GestureDetector(
+                                onTap: () {
+                                  if (calC.calendarType != 'myRos') {
+                                    calC.calendarType = 'myRos';
+                                    var dateParse = DateTime.parse(calC.changedDate);
+                                    var formattedDate = '${dateParse.month}${dateParse.year.toString().substring(2)}';
+                                    calC.getCalendar(month: formattedDate);
+                                    setState(() {});
+                                  }
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: calC.calendarType == 'myRos' ? Colors.white : Colors.blue,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(
+                                        50.0,
+                                      ),
+                                    ),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 12.0,
+                                      horizontal: 23.0,
+                                    ),
+                                    child: Text(
+                                      'My Roster',
+                                      style: TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold,
+                                        color: calC.calendarType == 'myRos' ? Colors.blue : Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                    SizedBox(
+                    Container(
+                      color: AppUtils().greyScaffoldBg,
                       height: 20.0,
                     ),
-                    Obx(() {
-                      if (calC.isEventLoading.value) {
-                        return LoadingWidget(
-                          containerHeight: 420.0,
-                          loaderSize: 30.0,
-                          loaderColor: Colors.black87,
-                        );
-                      } else {
-                        return HomeCalendar(
-                          calC.calendarType,
-                        );
-                      }
-                    }),
+                    Container(
+                      color: AppUtils().greyScaffoldBg,
+                      child: Obx(() {
+                        if (calC.isEventLoading.value) {
+                          return LoadingWidget(
+                            containerHeight: 420.0,
+                            loaderSize: 30.0,
+                            loaderColor: Colors.black87,
+                          );
+                        } else {
+                          return HomeCalendar(
+                            calC.calendarType,
+                          );
+                        }
+                      }),
+                    ),
                     SizedBox(
                       height: 50.0,
                     ),

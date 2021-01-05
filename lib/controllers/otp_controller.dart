@@ -42,7 +42,7 @@ class OTPController extends GetxController {
             'Error',
             'OTP is wrong',
             colorText: Colors.white,
-            backgroundColor: Colors.red,
+backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,
             margin: EdgeInsets.symmetric(
               horizontal: 8.0,
@@ -59,7 +59,7 @@ class OTPController extends GetxController {
         'Error',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
-        backgroundColor: Colors.red,
+backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.symmetric(
           horizontal: 8.0,
@@ -67,9 +67,91 @@ class OTPController extends GetxController {
         ),
       );
       // return false;
-    } finally {
+    }
+  }
+
+  Future<bool> verifyForgotOTP(email, otp, context) async {
+    pr = ProgressDialog(
+      context,
+      type: ProgressDialogType.Normal,
+      isDismissible: false,
+      showLogs: false,
+      customBody: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20.0,
+          vertical: 15.0,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(
+              width: 20.0,
+            ),
+            Text(
+              'Processing please wait...',
+              style: TextStyle(
+                fontSize: 18.0,
+                color: Colors.black,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+    pr.style(
+      backgroundColor: Colors.white,
+    );
+    try {
+      await pr.show();
+      var forgotOtpResponse = await RemoteServices().forgotOtpVerify(email, otp);
+      if (forgotOtpResponse != null) {
+        await pr.hide();
+        print('forgotOtpResponse valid: ${forgotOtpResponse['success']}');
+        if (forgotOtpResponse['success'] != null && forgotOtpResponse['success']) {
+          // Get.snackbar(
+          //   'Success',
+          //   'OTP verified successfully.',
+          //   colorText: Colors.white,
+          //   backgroundColor: Colors.green,
+          //   snackPosition: SnackPosition.BOTTOM,
+          //   margin: EdgeInsets.symmetric(
+          //     horizontal: 8.0,
+          //     vertical: 10.0,
+          //   ),
+          // );
+          return true;
+        } else {
+          Get.snackbar(
+            'Error',
+            'OTP is wrong',
+            colorText: Colors.white,
+backgroundColor: Colors.black87,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+          );
+          return false;
+        }
+      }
+      return false;
+    } catch (e) {
+      print(e);
       await pr.hide();
-      // return false;
+      Get.snackbar(
+        'Error',
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+      );
+      return false;
     }
   }
 }

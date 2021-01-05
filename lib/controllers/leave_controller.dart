@@ -42,7 +42,7 @@ class LeaveController extends GetxController {
             'Error',
             'Leave not found',
             colorText: Colors.white,
-            backgroundColor: Colors.red,
+backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,
             margin: EdgeInsets.symmetric(
               horizontal: 8.0,
@@ -59,7 +59,7 @@ class LeaveController extends GetxController {
         'Error',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
-        backgroundColor: Colors.red,
+backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.symmetric(
           horizontal: 8.0,
@@ -87,7 +87,7 @@ class LeaveController extends GetxController {
             'Error',
             'Leave not updated',
             colorText: Colors.white,
-            backgroundColor: Colors.red,
+backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,
             margin: EdgeInsets.symmetric(
               horizontal: 8.0,
@@ -104,7 +104,7 @@ class LeaveController extends GetxController {
         'Error',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
-        backgroundColor: Colors.red,
+backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.symmetric(
           horizontal: 8.0,

@@ -21,6 +21,7 @@ class _ShortageReportState extends State<ShortageReport> {
   TextEditingController date = TextEditingController();
   var clientId;
   var shift;
+  var selectedDate;
 
   @override
   void initState() {
@@ -69,19 +70,20 @@ class _ShortageReportState extends State<ShortageReport> {
   Future<Null> getDate(BuildContext context) async {
     final picked = await showDatePicker(
       context: context,
-      initialDate: date.text.isEmpty
+      initialDate: selectedDate == null
           ? curDate
           : DateTime.parse(
-              date.text.toString(),
+              selectedDate.toString(),
             ),
       firstDate: DateTime.now().add(Duration(days: -365)),
-      lastDate: DateTime.now().add(Duration(days: 365)),
+      lastDate: DateTime.now(),
     );
 
     if (picked != null) {
       print('Date selected ${date.toString()}');
       setState(() {
-        date.text = DateFormat('yyyy-MM-dd').format(picked).toString();
+        date.text = DateFormat('dd-MM-yyyy').format(picked).toString();
+        selectedDate = DateFormat('yyyy-MM-dd').format(picked).toString();
       });
     }
   }
@@ -368,12 +370,12 @@ class _ShortageReportState extends State<ShortageReport> {
                         RaisedButton(
                           onPressed: () {
                             FocusScope.of(context).requestFocus(FocusNode());
-                            if (clientId == null || date.text == null || shift == null) {
+                            if (clientId == null || selectedDate == null || shift == null) {
                               Get.snackbar(
                                 'Error',
                                 'Please select client, shift and date',
                                 colorText: Colors.white,
-                                backgroundColor: Colors.red,
+                                backgroundColor: Colors.black87,
                                 snackPosition: SnackPosition.BOTTOM,
                                 margin: EdgeInsets.symmetric(
                                   horizontal: 8.0,
@@ -384,7 +386,7 @@ class _ShortageReportState extends State<ShortageReport> {
                               print('clientId: $clientId');
                               print('date: ${date.text}');
                               print('shift: $shift');
-                              Get.to(ShortageReportDetail(clientId, date.text, shift));
+                              Get.to(ShortageReportDetail(clientId, selectedDate, shift));
                             }
                           },
                           child: Padding(

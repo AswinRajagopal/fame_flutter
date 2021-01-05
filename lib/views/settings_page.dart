@@ -114,7 +114,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 Get.to(Support());
               },
               child: ListContainer(
-                'assets/images/icon_rating.png',
+                'assets/images/supportic.png',
                 'Support',
               ),
             ),
@@ -202,7 +202,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             'Error',
                             'Feedback send failed',
                             colorText: Colors.white,
-                            backgroundColor: Colors.red,
+                            backgroundColor: Colors.black87,
                             snackPosition: SnackPosition.BOTTOM,
                             margin: EdgeInsets.symmetric(
                               horizontal: 8.0,
@@ -236,7 +236,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 );
               },
               child: ListContainer(
-                'assets/images/icon_attendance.png',
+                'assets/images/shareic.png',
                 'Share',
               ),
             ),

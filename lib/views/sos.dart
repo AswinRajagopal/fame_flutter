@@ -120,7 +120,7 @@ class _SOSState extends State<SOS> {
                               'Error',
                               'Please enter SOS number',
                               colorText: Colors.white,
-                              backgroundColor: Colors.red,
+                              backgroundColor: Colors.black87,
                               snackPosition: SnackPosition.BOTTOM,
                               margin: EdgeInsets.symmetric(
                                 horizontal: 8.0,
@@ -132,7 +132,7 @@ class _SOSState extends State<SOS> {
                               'Error',
                               'Please enter 10 digit SOS number',
                               colorText: Colors.white,
-                              backgroundColor: Colors.red,
+                              backgroundColor: Colors.black87,
                               snackPosition: SnackPosition.BOTTOM,
                               margin: EdgeInsets.symmetric(
                                 horizontal: 8.0,

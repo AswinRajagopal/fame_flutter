@@ -109,7 +109,7 @@ class _UpdatePitstopsState extends State<UpdatePitstops> {
       'Error',
       '${e.code}\n${e.description}',
       colorText: Colors.white,
-      backgroundColor: Colors.red,
+      backgroundColor: Colors.black87,
       snackPosition: SnackPosition.BOTTOM,
       margin: EdgeInsets.symmetric(
         horizontal: 8.0,
@@ -135,7 +135,7 @@ class _UpdatePitstopsState extends State<UpdatePitstops> {
           'Error',
           '${controller.value.errorDescription}',
           colorText: Colors.white,
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.black87,
           snackPosition: SnackPosition.BOTTOM,
           margin: EdgeInsets.symmetric(
             horizontal: 8.0,
@@ -162,7 +162,7 @@ class _UpdatePitstopsState extends State<UpdatePitstops> {
         'Error',
         'select a camera first.',
         colorText: Colors.white,
-        backgroundColor: Colors.red,
+backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.symmetric(
           horizontal: 8.0,
@@ -284,7 +284,7 @@ class _UpdatePitstopsState extends State<UpdatePitstops> {
               'Error',
               'Something went wrong! Please try again later',
               colorText: Colors.white,
-              backgroundColor: Colors.red,
+              backgroundColor: Colors.black87,
               snackPosition: SnackPosition.BOTTOM,
               margin: EdgeInsets.symmetric(
                 horizontal: 8.0,

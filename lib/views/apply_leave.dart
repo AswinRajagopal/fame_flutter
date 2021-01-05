@@ -27,6 +27,8 @@ class _ApplyLeaveState extends State<ApplyLeave> {
   var daysDiff;
   var from;
   var to;
+  var sfromDt;
+  var stoDt;
 
   @override
   void dispose() {
@@ -74,14 +76,14 @@ class _ApplyLeaveState extends State<ApplyLeave> {
   Future<Null> fromDate(BuildContext context) async {
     final picked = await showDatePicker(
       context: context,
-      initialDate: fromDt.text.isEmpty
+      initialDate: sfromDt == null
           ? _frmDate
           : DateTime.parse(
-              fromDt.text.toString(),
+              sfromDt.toString(),
             ),
       firstDate: DateTime.now().add(Duration(days: 1)),
-      lastDate: toDt.text != ''
-          ? DateTime.parse(toDt.text.toString()).add(
+      lastDate: stoDt != null
+          ? DateTime.parse(stoDt.text.toString()).add(
               Duration(days: 0),
             )
           : DateTime.now().add(Duration(days: stVal == 'F' || stVal == 'S' ? 1 : 5)),
@@ -96,7 +98,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
             'Error',
             'You can not apply for more then 1 day for Half Day leave',
             colorText: Colors.white,
-            backgroundColor: Colors.red,
+backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,
             margin: EdgeInsets.symmetric(
               horizontal: 8.0,
@@ -106,29 +108,31 @@ class _ApplyLeaveState extends State<ApplyLeave> {
         } else {
           if (stVal == 'F' || stVal == 'S') {
             setState(() {
-              toDt.text = DateFormat('yyyy-MM-dd').format(picked).toString();
+              toDt.text = DateFormat('dd-MM-yyyy').format(picked).toString();
+              stoDt = DateFormat('yyyy-MM-dd').format(picked).toString();
             });
           }
         }
       }
       setState(() {
-        fromDt.text = DateFormat('yyyy-MM-dd').format(picked).toString();
+        fromDt.text = DateFormat('dd-MM-yyyy').format(picked).toString();
+        sfromDt = DateFormat('yyyy-MM-dd').format(picked).toString();
       });
     }
   }
 
   Future<Null> toDate(BuildContext context) async {
-    final _toDate = DateTime.parse(fromDt.text.toString()).add(
+    final _toDate = DateTime.parse(sfromDt.toString()).add(
       Duration(days: 0),
     );
     final picked = await showDatePicker(
       context: context,
-      initialDate: toDt.text.isEmpty
+      initialDate: stoDt == null
           ? _toDate
           : DateTime.parse(
-              toDt.text.toString(),
+              stoDt.toString(),
             ),
-      firstDate: DateTime.parse(fromDt.text.toString()).add(
+      firstDate: DateTime.parse(sfromDt.toString()).add(
         Duration(days: 0),
       ),
       lastDate: DateTime.now().add(Duration(days: 5)),
@@ -143,7 +147,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
             'Error',
             'You can not apply for more then 1 day for Half Day leave',
             colorText: Colors.white,
-            backgroundColor: Colors.red,
+backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,
             margin: EdgeInsets.symmetric(
               horizontal: 8.0,
@@ -152,7 +156,8 @@ class _ApplyLeaveState extends State<ApplyLeave> {
           );
         } else {
           setState(() {
-            toDt.text = DateFormat('yyyy-MM-dd').format(picked).toString();
+            toDt.text = DateFormat('dd-MM-yyyy').format(picked).toString();
+            stoDt = DateFormat('yyyy-MM-dd').format(picked).toString();
           });
         }
       } else {
@@ -160,7 +165,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
           'Error',
           'Please select from date first',
           colorText: Colors.white,
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.black87,
           snackPosition: SnackPosition.BOTTOM,
           margin: EdgeInsets.symmetric(
             horizontal: 8.0,
@@ -188,7 +193,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
             'Error',
             'You can not apply for more then 1 day for Half Day leave',
             colorText: Colors.white,
-            backgroundColor: Colors.red,
+backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,
             margin: EdgeInsets.symmetric(
               horizontal: 8.0,
@@ -210,7 +215,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
         'Error',
         'Please select both dates first',
         colorText: Colors.white,
-        backgroundColor: Colors.red,
+backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.symmetric(
           horizontal: 8.0,
@@ -299,7 +304,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                                   'Error',
                                   'Please select from date',
                                   colorText: Colors.white,
-                                  backgroundColor: Colors.red,
+                                  backgroundColor: Colors.black87,
                                   snackPosition: SnackPosition.BOTTOM,
                                   margin: EdgeInsets.symmetric(
                                     horizontal: 8.0,
@@ -500,7 +505,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                                     'Error',
                                     'Please fill all data',
                                     colorText: Colors.white,
-                                    backgroundColor: Colors.red,
+                                    backgroundColor: Colors.black87,
                                     snackPosition: SnackPosition.BOTTOM,
                                     margin: EdgeInsets.symmetric(
                                       horizontal: 8.0,

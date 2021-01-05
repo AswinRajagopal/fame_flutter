@@ -1,8 +1,12 @@
+import 'reset_password.dart';
+
+import '../controllers/otp_controller.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
+
 import '../controllers/forgot_password_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:get/get.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   @override
@@ -11,50 +15,20 @@ class ForgotPasswordPage extends StatefulWidget {
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final ForgotPasswordController fpController = Get.put(ForgotPasswordController());
+  final OTPController otpController = Get.put(OTPController());
   bool rememberMe = true;
   TextEditingController email = TextEditingController();
+  TextEditingController otp = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    fpController.pr = ProgressDialog(
-      context,
-      type: ProgressDialogType.Normal,
-      isDismissible: false,
-      showLogs: false,
-      customBody: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20.0,
-          vertical: 15.0,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            CircularProgressIndicator(),
-            SizedBox(
-              width: 20.0,
-            ),
-            Text(
-              'Processing please wait...',
-              style: TextStyle(
-                fontSize: 18.0,
-                color: Colors.black,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-    fpController.pr.style(
-      backgroundColor: Colors.white,
-    );
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    email.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -84,15 +58,18 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                             'Forgot Password?',
                             style: TextStyle(
                               color: Colors.yellowAccent,
-                              fontSize: 25.0,
+                              fontSize: 22.0,
                               fontWeight: FontWeight.w800,
                             ),
+                          ),
+                          SizedBox(
+                            height: 8.0,
                           ),
                           Text(
                             'Enter the email associated with your account',
                             style: TextStyle(
                               color: Colors.yellowAccent,
-                              fontSize: 17.0,
+                              fontSize: 16.0,
                               fontWeight: FontWeight.w400,
                             ),
                           ),
@@ -182,14 +159,14 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   child: MaterialButton(
                     color: Colors.orangeAccent,
                     shape: CircleBorder(),
-                    onPressed: () {
+                    onPressed: () async {
                       FocusScope.of(context).requestFocus(FocusNode());
                       if (email.text == null || email.text == '') {
                         Get.snackbar(
                           'Error',
                           'Please provide email',
                           colorText: Colors.white,
-                          backgroundColor: Colors.red,
+                          backgroundColor: Colors.black87,
                           snackPosition: SnackPosition.BOTTOM,
                           margin: EdgeInsets.symmetric(
                             horizontal: 8.0,
@@ -201,7 +178,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                           'Error',
                           'Please provide valid email',
                           colorText: Colors.white,
-                          backgroundColor: Colors.red,
+                          backgroundColor: Colors.black87,
                           snackPosition: SnackPosition.BOTTOM,
                           margin: EdgeInsets.symmetric(
                             horizontal: 8.0,
@@ -209,9 +186,216 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                           ),
                         );
                       } else {
-                        fpController.forgotPassword(
+                        var forgotpwd = await fpController.forgotPassword(
                           email.text,
+                          context,
                         );
+                        if (forgotpwd) {
+                          // ignore: unawaited_futures
+                          Get.bottomSheet(
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 40.0,
+                                // vertical: 20.0,
+                              ),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    SizedBox(
+                                      height: 5.0,
+                                    ),
+                                    // Container(
+                                    //   height: 8.0,
+                                    //   width: 80.0,
+                                    //   color: Colors.white38,
+                                    // ),
+                                    SizedBox(
+                                      height: 20.0,
+                                    ),
+                                    Text(
+                                      'Verification',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 30.0,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 20.0,
+                                    ),
+                                    Text(
+                                      "Please enter the OTP you've received on your registered email",
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 16.0,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    SizedBox(
+                                      height: 30.0,
+                                    ),
+                                    PinCodeTextField(
+                                      appContext: context,
+                                      length: 4,
+                                      obscureText: false,
+                                      animationType: AnimationType.fade,
+                                      controller: otp,
+                                      pinTheme: PinTheme(
+                                        shape: PinCodeFieldShape.underline,
+                                        fieldHeight: 65,
+                                        fieldWidth: 65,
+                                        activeColor: Colors.blue,
+                                        activeFillColor: Colors.blue,
+                                        selectedColor: Colors.blue,
+                                        selectedFillColor: Colors.blue,
+                                        inactiveColor: Colors.blue,
+                                      ),
+                                      cursorColor: Colors.transparent,
+                                      cursorHeight: 40.0,
+                                      cursorWidth: 2.0,
+                                      // autoFocus: false,
+                                      backgroundColor: Colors.transparent,
+                                      keyboardType: TextInputType.number,
+                                      textStyle: TextStyle(
+                                        fontSize: 16.0,
+                                      ),
+                                      autoDisposeControllers: false,
+                                      onCompleted: (v) {
+                                        print('Completed');
+                                      },
+                                      beforeTextPaste: (text) {
+                                        print('Allowing to paste $text');
+                                        return true;
+                                      },
+                                      onChanged: (String value) {
+                                        print(value);
+                                      },
+                                    ),
+                                    SizedBox(
+                                      height: 20.0,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "If you didn't receive the code!",
+                                          style: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 16.0,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        SizedBox(
+                                          width: 5.0,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () async {
+                                            var resend = await fpController.forgotPassword(
+                                              email.text,
+                                              context,
+                                            );
+                                            if (resend) {
+                                              Get.snackbar(
+                                                'Success',
+                                                'OTP sent',
+                                                colorText: Colors.white,
+                                                backgroundColor: Colors.green,
+                                                snackPosition: SnackPosition.BOTTOM,
+                                                margin: EdgeInsets.symmetric(
+                                                  horizontal: 8.0,
+                                                  vertical: 10.0,
+                                                ),
+                                              );
+                                            } else {
+                                              Get.snackbar(
+                                                'Error',
+                                                'OTP not sent',
+                                                colorText: Colors.white,
+                                                backgroundColor: Colors.black87,
+                                                snackPosition: SnackPosition.BOTTOM,
+                                                margin: EdgeInsets.symmetric(
+                                                  horizontal: 8.0,
+                                                  vertical: 10.0,
+                                                ),
+                                              );
+                                            }
+                                          },
+                                          child: Text(
+                                            'Resend',
+                                            style: TextStyle(
+                                              color: Colors.blue,
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 40.0,
+                                    ),
+                                    RaisedButton(
+                                      onPressed: () async {
+                                        if (otp.text == null || otp.text == '') {
+                                          Get.snackbar(
+                                            'Error',
+                                            'Please enter otp',
+                                            colorText: Colors.white,
+                                            backgroundColor: Colors.black87,
+                                            snackPosition: SnackPosition.BOTTOM,
+                                            margin: EdgeInsets.symmetric(
+                                              horizontal: 8.0,
+                                              vertical: 10.0,
+                                            ),
+                                          );
+                                        } else {
+                                          var otpVerify = await otpController.verifyForgotOTP(
+                                            email.text,
+                                            otp.text,
+                                            context,
+                                          );
+                                          if (otpVerify) {
+                                            await Get.back();
+                                            otp.clear();
+                                            await Get.to(ResetPassword(email.text));
+                                          }
+                                        }
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 50.0,
+                                          vertical: 18.0,
+                                        ),
+                                        child: Text(
+                                          'SUBMIT',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w800,
+                                            fontSize: 16.0,
+                                          ),
+                                        ),
+                                      ),
+                                      color: Colors.blue,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                          30.0,
+                                        ),
+                                        side: BorderSide(
+                                          color: Colors.blue,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 20.0,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            backgroundColor: Colors.white,
+                          );
+                        }
                       }
                     },
                     child: Padding(

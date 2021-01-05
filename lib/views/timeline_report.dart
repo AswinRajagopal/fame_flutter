@@ -20,6 +20,7 @@ class _TimelineReportState extends State<TimelineReport> {
   TextEditingController date = TextEditingController();
   TextEditingController empName = TextEditingController();
   var empId;
+  var sDate;
 
   @override
   void dispose() {
@@ -31,19 +32,20 @@ class _TimelineReportState extends State<TimelineReport> {
   Future<Null> getDate(BuildContext context) async {
     final picked = await showDatePicker(
       context: context,
-      initialDate: date.text.isEmpty
+      initialDate: sDate == null
           ? curDate
           : DateTime.parse(
-              date.text.toString(),
+              sDate.toString(),
             ),
       firstDate: DateTime.now().add(Duration(days: -365)),
-      lastDate: DateTime.now().add(Duration(days: 365)),
+      lastDate: DateTime.now(),
     );
 
     if (picked != null) {
       print('Date selected ${date.toString()}');
       setState(() {
-        date.text = DateFormat('yyyy-MM-dd').format(picked).toString();
+        date.text = DateFormat('dd-MM-yyyy').format(picked).toString();
+        sDate = DateFormat('yyyy-MM-dd').format(picked).toString();
       });
     }
   }
@@ -171,12 +173,12 @@ class _TimelineReportState extends State<TimelineReport> {
                       RaisedButton(
                         onPressed: () {
                           FocusScope.of(context).requestFocus(FocusNode());
-                          if (empId == null || date.text == null || date.text == '') {
+                          if (empId == null || sDate == null || sDate == '') {
                             Get.snackbar(
                               'Error',
                               'Please select employee and date',
                               colorText: Colors.white,
-                              backgroundColor: Colors.red,
+                              backgroundColor: Colors.black87,
                               snackPosition: SnackPosition.BOTTOM,
                               margin: EdgeInsets.symmetric(
                                 horizontal: 8.0,
@@ -186,7 +188,7 @@ class _TimelineReportState extends State<TimelineReport> {
                           } else {
                             print('empId: $empId');
                             print('date: ${date.text}');
-                            Get.to(TimelineReportDetail(empId, date.text));
+                            Get.to(TimelineReportDetail(empId, sDate));
                           }
                         },
                         child: Padding(

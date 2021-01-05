@@ -93,7 +93,7 @@ class _FaceRegisterState extends State<FaceRegister> {
         'Error',
         'select a camera first.',
         colorText: Colors.white,
-        backgroundColor: Colors.red,
+backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.symmetric(
           horizontal: 8.0,
@@ -200,7 +200,7 @@ class _FaceRegisterState extends State<FaceRegister> {
       'Error',
       '${e.code}\n${e.description}',
       colorText: Colors.white,
-      backgroundColor: Colors.red,
+      backgroundColor: Colors.black87,
       snackPosition: SnackPosition.BOTTOM,
       margin: EdgeInsets.symmetric(
         horizontal: 8.0,
@@ -226,7 +226,7 @@ class _FaceRegisterState extends State<FaceRegister> {
           'Error',
           '${controller.value.errorDescription}',
           colorText: Colors.white,
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.black87,
           snackPosition: SnackPosition.BOTTOM,
           margin: EdgeInsets.symmetric(
             horizontal: 8.0,

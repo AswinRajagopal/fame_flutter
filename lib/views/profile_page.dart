@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:package_info/package_info.dart';
+
 import 'face_register.dart';
 
 import '../connection/remote_services.dart';
@@ -17,11 +19,23 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final ProfileController pC = Get.put(ProfileController());
+  String version;
 
   @override
   void initState() {
     super.initState();
     Future.delayed(Duration(milliseconds: 100), pC.getEmpDetails);
+    PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
+      // String appName = packageInfo.appName;
+      // String packageName = packageInfo.packageName;
+      // String buildNumber = packageInfo.buildNumber;
+      version = packageInfo.version;
+      print('version: ${packageInfo.version}');
+      print('appName: ${packageInfo.appName}');
+      print('packageName: ${packageInfo.packageName}');
+      print('buildNumber: ${packageInfo.buildNumber}');
+      setState(() {});
+    });
   }
 
   @override
@@ -66,7 +80,21 @@ class _ProfilePageState extends State<ProfilePage> {
         actions: [
           FlatButton(
             onPressed: () {
-              RemoteServices().logout();
+              Get.defaultDialog(
+                title: 'Logout',
+                radius: 10.0,
+                content: Text(
+                  'Are you sure?',
+                ),
+                barrierDismissible: false,
+                onConfirm: () {
+                  RemoteServices().logout();
+                },
+                onCancel: () {},
+                confirmTextColor: Colors.white,
+                textConfirm: 'Yes',
+                textCancel: 'No',
+              );
             },
             child: Text(
               'LOGOUT',
@@ -207,7 +235,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                               Center(
                                 child: Text(
-                                  'Version 2.0.1',
+                                  'Version $version',
                                   style: TextStyle(
                                     color: Colors.grey,
                                   ),

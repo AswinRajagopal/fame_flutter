@@ -192,6 +192,27 @@ class RemoteServices {
     }
   }
 
+  Future forgotOtpVerify(email, otp) async {
+    var response = await client.post(
+      '$baseURL/user/verify_otp',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'emailId': email,
+          'otp': otp,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
   static Future<ForgotPassword> forgorPassword(email) async {
     var response = await client.post(
       '$baseURL/user/forgot_pass',
@@ -1265,6 +1286,27 @@ class RemoteServices {
           'companyId': box.get('companyid').toString(),
           'empId': box.get('empid').toString(),
           'query': feedback,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future resetPassword(emailId, newPass) async {
+    var response = await client.post(
+      '$baseURL/user/reset_pass',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'emailId': emailId,
+          'newPass': newPass,
         },
       ),
     );

@@ -31,11 +31,14 @@ class CustomProgressIndicator extends StatelessWidget {
       backgroundColor: Colors.grey[350],
       progressColor: Colors.blue,
       circularStrokeCap: CircularStrokeCap.round,
-      footer: Text(
-        footerText,
-        style: TextStyle(
-          fontSize: 16.0,
-          fontWeight: FontWeight.bold,
+      footer: Padding(
+        padding: const EdgeInsets.only(top: 10.0),
+        child: Text(
+          footerText,
+          style: TextStyle(
+            fontSize: 16.0,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );

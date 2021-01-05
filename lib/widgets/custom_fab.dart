@@ -14,7 +14,6 @@ class CustomFab extends StatelessWidget {
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           FloatingActionButton(
             onPressed: () {},
@@ -24,7 +23,7 @@ class CustomFab extends StatelessWidget {
             backgroundColor: HexColor('386eff'),
           ),
           SizedBox(
-            height: 5.0,
+            height: 15.0,
           ),
           Text(
             'Dashboard',

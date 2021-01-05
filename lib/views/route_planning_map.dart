@@ -28,6 +28,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
   TextEditingController date = TextEditingController();
   TextEditingController cRemark = TextEditingController();
   var assignedTo;
+  var sDate;
 
   @override
   void initState() {
@@ -79,10 +80,10 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
   Future<Null> fromDate(BuildContext context) async {
     final picked = await showDatePicker(
       context: context,
-      initialDate: date.text.isEmpty
+      initialDate: sDate == null
           ? _frmDate
           : DateTime.parse(
-              date.text.toString(),
+              sDate.toString(),
             ),
       firstDate: DateTime.now(),
       lastDate: DateTime.now().add(Duration(days: 365)),
@@ -91,7 +92,8 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
     if (picked != null) {
       print('Date selected ${date.text.toString()}');
       setState(() {
-        date.text = DateFormat('yyyy-MM-dd').format(picked).toString();
+        date.text = DateFormat('dd-MM-yyyy').format(picked).toString();
+        sDate = DateFormat('yyyy-MM-dd').format(picked).toString();
       });
     }
   }
@@ -362,7 +364,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                                           'Error',
                                           'Already added',
                                           colorText: Colors.white,
-                                          backgroundColor: Colors.red,
+                                          backgroundColor: Colors.black87,
                                           snackPosition: SnackPosition.BOTTOM,
                                           margin: EdgeInsets.symmetric(
                                             horizontal: 8.0,
@@ -614,12 +616,12 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                             onPressed: () {
                               print('Submit');
                               FocusScope.of(context).requestFocus(FocusNode());
-                              if (planName.text == null || planName.text == '' || empName.text == null || empName.text == '' || remarks.text == null || remarks.text == '' || date.text == null || date.text == '' || assignedTo == null) {
+                              if (planName.text == null || planName.text == '' || empName.text == null || empName.text == '' || remarks.text == null || remarks.text == '' || sDate == null || sDate == '' || assignedTo == null) {
                                 Get.snackbar(
                                   'Error',
                                   'Please fill all data',
                                   colorText: Colors.white,
-                                  backgroundColor: Colors.red,
+                                  backgroundColor: Colors.black87,
                                   snackPosition: SnackPosition.BOTTOM,
                                   margin: EdgeInsets.symmetric(
                                     horizontal: 8.0,
@@ -631,7 +633,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                                   'Error',
                                   'Please select atleast one address',
                                   colorText: Colors.white,
-                                  backgroundColor: Colors.red,
+                                  backgroundColor: Colors.black87,
                                   snackPosition: SnackPosition.BOTTOM,
                                   margin: EdgeInsets.symmetric(
                                     horizontal: 8.0,
@@ -649,14 +651,14 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                                       'lat': rpC.sC[i]['lat'].toString(),
                                       'lng': rpC.sC[i]['lng'].toString(),
                                       'clientId': '',
-                                      'date': date.text,
+                                      'date': sDate,
                                     };
                                   } else {
                                     addData = {
                                       'lat': rpC.sC[i]['lat'].toString(),
                                       'lng': rpC.sC[i]['lng'].toString(),
                                       'clientId': '',
-                                      'date': date.text,
+                                      'date': sDate,
                                       'adminRemarks': rpC.sC[i]['remarks'].toString(),
                                     };
                                   }
@@ -666,7 +668,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                                 rpC.saveRPlan(
                                   assignedTo,
                                   planName.text,
-                                  date.text,
+                                  sDate,
                                   pitstops,
                                 );
                               }

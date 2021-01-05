@@ -114,7 +114,7 @@ class EmployeeNotationsController extends GetxController {
           //   'Error',
           //   'Notations not found',
           //   colorText: Colors.white,
-          //   backgroundColor: Colors.red,
+          //   backgroundColor: Colors.black87,
           //   snackPosition: SnackPosition.BOTTOM,
           //   margin: EdgeInsets.symmetric(
           //     horizontal: 8.0,
@@ -131,7 +131,7 @@ class EmployeeNotationsController extends GetxController {
         'Error',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
-        backgroundColor: Colors.red,
+backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.symmetric(
           horizontal: 8.0,
@@ -178,7 +178,7 @@ class EmployeeNotationsController extends GetxController {
             'Error',
             extraName != null && extraName == 'Clear' ? 'Attendance not cleared' : 'Attendance not given',
             colorText: Colors.white,
-            backgroundColor: Colors.red,
+backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,
             margin: EdgeInsets.symmetric(
               horizontal: 8.0,
@@ -196,7 +196,7 @@ class EmployeeNotationsController extends GetxController {
         'Error',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
-        backgroundColor: Colors.red,
+backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.symmetric(
           horizontal: 8.0,

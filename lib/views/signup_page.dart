@@ -135,15 +135,18 @@ class _SignupPageState extends State<SignupPage> {
                             AppUtils().appName,
                             style: TextStyle(
                               color: Colors.yellowAccent,
-                              fontSize: 25.0,
+                              fontSize: 22.0,
                               fontWeight: FontWeight.w800,
                             ),
+                          ),
+                          SizedBox(
+                            height: 8.0,
                           ),
                           Text(
                             'Sign up to Continue',
                             style: TextStyle(
                               color: Colors.yellowAccent,
-                              fontSize: 17.0,
+                              fontSize: 16.0,
                               fontWeight: FontWeight.w400,
                             ),
                           ),
@@ -241,7 +244,7 @@ class _SignupPageState extends State<SignupPage> {
                         ),
                         CommonTextField(
                           'Mobile no. (without +91)',
-                          'assets/images/email.png',
+                          'assets/images/icon_mobile.png',
                           'mobile',
                           mobile,
                         ),
@@ -330,7 +333,7 @@ class _SignupPageState extends State<SignupPage> {
                           'Error',
                           'Please provide all detail',
                           colorText: Colors.white,
-                          backgroundColor: Colors.red,
+                          backgroundColor: Colors.black87,
                           snackPosition: SnackPosition.BOTTOM,
                           margin: EdgeInsets.symmetric(
                             horizontal: 8.0,
@@ -342,7 +345,7 @@ class _SignupPageState extends State<SignupPage> {
                           'Error',
                           'Please provide valid email',
                           colorText: Colors.white,
-                          backgroundColor: Colors.red,
+                          backgroundColor: Colors.black87,
                           snackPosition: SnackPosition.BOTTOM,
                           margin: EdgeInsets.symmetric(
                             horizontal: 8.0,
@@ -354,7 +357,7 @@ class _SignupPageState extends State<SignupPage> {
                           'Error',
                           'Please provide valid 10 digit mobile',
                           colorText: Colors.white,
-                          backgroundColor: Colors.red,
+                          backgroundColor: Colors.black87,
                           snackPosition: SnackPosition.BOTTOM,
                           margin: EdgeInsets.symmetric(
                             horizontal: 8.0,
@@ -400,7 +403,6 @@ class _SignupPageState extends State<SignupPage> {
                                     Text(
                                       'Verification',
                                       style: TextStyle(
-                                        color: Colors.white,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 30.0,
                                       ),
@@ -411,7 +413,7 @@ class _SignupPageState extends State<SignupPage> {
                                     Text(
                                       "Please enter the OTP you've received on your registered email",
                                       style: TextStyle(
-                                        color: Colors.white54,
+                                        color: Colors.grey,
                                         fontSize: 16.0,
                                       ),
                                       textAlign: TextAlign.center,
@@ -442,7 +444,6 @@ class _SignupPageState extends State<SignupPage> {
                                       backgroundColor: Colors.transparent,
                                       keyboardType: TextInputType.number,
                                       textStyle: TextStyle(
-                                        color: Colors.white,
                                         fontSize: 16.0,
                                       ),
                                       autoDisposeControllers: false,
@@ -466,7 +467,7 @@ class _SignupPageState extends State<SignupPage> {
                                         Text(
                                           "If you didn't receive the code!",
                                           style: TextStyle(
-                                            color: Colors.white54,
+                                            color: Colors.grey,
                                             fontSize: 16.0,
                                           ),
                                           textAlign: TextAlign.center,
@@ -476,16 +477,40 @@ class _SignupPageState extends State<SignupPage> {
                                         ),
                                         GestureDetector(
                                           onTap: () async {
-                                            // var signup = await signupController
-                                            //     .registerUser(
-                                            //   username.text,
-                                            //   empid.text,
-                                            //   password.text,
-                                            //   mobile.text,
-                                            //   fullname.text,
-                                            //   email.text,
-                                            //   company.text,
-                                            // );
+                                            var resend = await signupController.registerUser(
+                                              username.text,
+                                              empid.text,
+                                              password.text,
+                                              mobile.text,
+                                              fullname.text,
+                                              email.text,
+                                              company.text,
+                                            );
+                                            if (resend) {
+                                              Get.snackbar(
+                                                'Success',
+                                                'OTP sent',
+                                                colorText: Colors.white,
+                                                backgroundColor: Colors.green,
+                                                snackPosition: SnackPosition.BOTTOM,
+                                                margin: EdgeInsets.symmetric(
+                                                  horizontal: 8.0,
+                                                  vertical: 10.0,
+                                                ),
+                                              );
+                                            } else {
+                                              Get.snackbar(
+                                                'Error',
+                                                'OTP not sent',
+                                                colorText: Colors.white,
+                                                backgroundColor: Colors.black87,
+                                                snackPosition: SnackPosition.BOTTOM,
+                                                margin: EdgeInsets.symmetric(
+                                                  horizontal: 8.0,
+                                                  vertical: 10.0,
+                                                ),
+                                              );
+                                            }
                                           },
                                           child: Text(
                                             'Resend',
@@ -509,7 +534,7 @@ class _SignupPageState extends State<SignupPage> {
                                             'Error',
                                             'Please enter otp',
                                             colorText: Colors.white,
-                                            backgroundColor: Colors.red,
+                                            backgroundColor: Colors.black87,
                                             snackPosition: SnackPosition.BOTTOM,
                                             margin: EdgeInsets.symmetric(
                                               horizontal: 8.0,
@@ -554,7 +579,7 @@ class _SignupPageState extends State<SignupPage> {
                                 ),
                               ),
                             ),
-                            backgroundColor: Colors.grey[850],
+                            backgroundColor: Colors.white,
                           );
                         }
                       }
@@ -623,7 +648,7 @@ class CommonTextField extends StatelessWidget {
             hintText: hintText,
             prefixIcon: Image.asset(
               prefixIcon,
-              scale: 1.5,
+              scale: type == 'mobile' ? 2.2 : 1.5,
             ),
           ),
         ),

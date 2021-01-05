@@ -460,7 +460,7 @@ class _AttendancePageState extends State<AttendancePage> {
                                         'Error',
                                         'Please select client and shift timing',
                                         colorText: Colors.white,
-                                        backgroundColor: Colors.red,
+                                        backgroundColor: Colors.black87,
                                         snackPosition: SnackPosition.BOTTOM,
                                         margin: EdgeInsets.symmetric(
                                           horizontal: 8.0,

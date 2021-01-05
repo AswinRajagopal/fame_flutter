@@ -38,7 +38,7 @@ class BottomNav extends StatelessWidget {
               'Error',
               'Only FO and admin can access this',
               colorText: Colors.white,
-              backgroundColor: Colors.red,
+              backgroundColor: Colors.black87,
               snackPosition: SnackPosition.BOTTOM,
               margin: EdgeInsets.symmetric(
                 horizontal: 8.0,
@@ -61,16 +61,22 @@ class BottomNav extends StatelessWidget {
       unselectedFontSize: 14.0,
       items: [
         BottomNavigationBarItem(
-          icon: Image.asset(
-            'assets/images/leave.png',
-            height: 30.0,
+          icon: Padding(
+            padding: const EdgeInsets.only(bottom: 5.0),
+            child: Image.asset(
+              'assets/images/leave.png',
+              height: 30.0,
+            ),
           ),
           label: 'Leave',
         ),
         BottomNavigationBarItem(
-          icon: Image.asset(
-            'assets/images/profile.png',
-            height: 30.0,
+          icon: Padding(
+            padding: const EdgeInsets.only(bottom: 5.0),
+            child: Image.asset(
+              'assets/images/profile.png',
+              height: 30.0,
+            ),
           ),
           label: 'Profile',
         ),
@@ -85,16 +91,22 @@ class BottomNav extends StatelessWidget {
           backgroundColor: HexColor('386eff'),
         ),
         BottomNavigationBarItem(
-          icon: Image.asset(
-            'assets/images/settings.png',
-            height: 30.0,
+          icon: Padding(
+            padding: const EdgeInsets.only(bottom: 5.0),
+            child: Image.asset(
+              'assets/images/settings.png',
+              height: 30.0,
+            ),
           ),
           label: 'Settings',
         ),
         BottomNavigationBarItem(
-          icon: Image.asset(
-            'assets/images/more.png',
-            height: 30.0,
+          icon: Padding(
+            padding: const EdgeInsets.only(bottom: 5.0),
+            child: Image.asset(
+              'assets/images/more.png',
+              height: 30.0,
+            ),
           ),
           label: 'More',
         ),
