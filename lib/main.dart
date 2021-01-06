@@ -42,7 +42,7 @@ class PocketFaME extends StatelessWidget {
         //   Theme.of(context).textTheme,
         // ),
         visualDensity: VisualDensity.adaptivePlatformDensity,
-        fontFamily: 'AvenirLight',
+        fontFamily: 'AvenirMedium',
       ),
       builder: (context, child) {
         return ScrollConfiguration(

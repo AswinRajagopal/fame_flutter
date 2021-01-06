@@ -56,6 +56,8 @@ class _ClientWiseAttendanceState extends State<ClientWiseAttendance> {
       backgroundColor: Colors.white,
     );
     Future.delayed(Duration(milliseconds: 100), epC.getClientTimings);
+    date.text = DateFormat('dd-MM-yyyy').format(curDate).toString();
+    sDate = DateFormat('yyyy-MM-dd').format(curDate).toString();
     super.initState();
   }
 

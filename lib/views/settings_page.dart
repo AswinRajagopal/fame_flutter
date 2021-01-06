@@ -286,8 +286,8 @@ class ListContainer extends StatelessWidget {
                 children: [
                   Image.asset(
                     image,
-                    height: 45.0,
-                    width: 45.0,
+                    height: 40.0,
+                    width: 40.0,
                   ),
                   SizedBox(
                     width: 10.0,
@@ -297,7 +297,7 @@ class ListContainer extends StatelessWidget {
                     child: Text(
                       title,
                       style: TextStyle(
-                        fontSize: 18.0,
+                        fontSize: 16.0,
                       ),
                       overflow: TextOverflow.fade,
                     ),
@@ -312,7 +312,7 @@ class ListContainer extends StatelessWidget {
           ),
           Divider(
             color: Colors.grey,
-            indent: 65.0,
+            indent: 50.0,
             endIndent: 10.0,
           ),
         ],

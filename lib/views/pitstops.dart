@@ -93,20 +93,15 @@ class _PitstopsState extends State<Pitstops> {
           ),
           onPressed: backButtonPressed,
         ),
-        actions: [
-          IconButton(
-            // icon: Icon(
-            //   Icons.notifications_none_outlined,
-            //   color: Colors.white,
-            //   size: 30.0,
-            // ),
-            icon: Image.asset(
-              'assets/images/bell_icon.png',
-              height: 22.0,
-            ),
-            onPressed: () {},
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     icon: Image.asset(
+        //       'assets/images/bell_icon.png',
+        //       height: 22.0,
+        //     ),
+        //     onPressed: () {},
+        //   ),
+        // ],
       ),
       body: WillPopScope(
         onWillPop: backButtonPressed,

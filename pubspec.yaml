@@ -126,7 +126,6 @@ flutter:
     - family: AvenirSemiBold
       fonts:
         - asset: assets/fonts/Avenir-SemiBold.ttf
-          weight: 100
     - family: AvenirBold
       fonts:
         - asset: assets/fonts/Avenir-Bold.ttf

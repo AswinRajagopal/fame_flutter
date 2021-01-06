@@ -162,7 +162,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
                                         vertical: 11.0,
-                                        horizontal: 30.0,
+                                        horizontal: 22.0,
                                       ),
                                       child: Text(
                                         'From Clients',

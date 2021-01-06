@@ -1319,4 +1319,25 @@ class RemoteServices {
       return null;
     }
   }
+
+  Future getNotification() async {
+    var response = await client.post(
+      '$baseURL/user/get_notifications',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
 }

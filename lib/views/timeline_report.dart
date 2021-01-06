@@ -23,6 +23,13 @@ class _TimelineReportState extends State<TimelineReport> {
   var sDate;
 
   @override
+  void initState() { 
+    super.initState();
+    date.text = DateFormat('dd-MM-yyyy').format(curDate).toString();
+    sDate = DateFormat('yyyy-MM-dd').format(curDate).toString();
+  }
+
+  @override
   void dispose() {
     super.dispose();
   }

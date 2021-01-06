@@ -422,7 +422,7 @@ class _AttendancePageState extends State<AttendancePage> {
                                             shiftTime,
                                             style: TextStyle(
                                               color: Colors.grey[600],
-                                              fontSize: 15.0,
+                                              fontSize: 14.0,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),

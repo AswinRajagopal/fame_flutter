@@ -297,7 +297,7 @@ class _TransferPageState extends State<TransferPage> {
                           ),
                           isExpanded: true,
                           items: tC.shiftList.map((item) {
-                            // print('item: $item');
+                            print('item: $item');
                             return DropdownMenuItem(
                               child: Text(
                                 item['shift'],

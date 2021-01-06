@@ -210,7 +210,7 @@ class _EmpReportDetailState extends State<EmpReportDetail> {
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 10.0,
-                                  horizontal: 47.0,
+                                  horizontal: 45.0,
                                 ),
                                 child: Text(
                                   'Name',
@@ -244,7 +244,7 @@ class _EmpReportDetailState extends State<EmpReportDetail> {
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 10.0,
-                                  horizontal: 45.0,
+                                  horizontal: 40.0,
                                 ),
                                 child: Text(
                                   'Emp ID',

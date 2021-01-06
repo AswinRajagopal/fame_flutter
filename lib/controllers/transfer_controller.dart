@@ -12,11 +12,13 @@ class TransferController extends GetxController {
   var shiftRes;
   var res;
   final List shiftList = [];
+  final List checkList = [];
   bool isDisposed = false;
   final List transferList = [].obs;
 
   void getShift(clientId) async {
     shiftList.clear();
+    checkList.clear();
     try {
       isLoading(true);
       await pr.show();
@@ -28,7 +30,12 @@ class TransferController extends GetxController {
         if (res['success']) {
           if (res['manpowerReqList'] != null) {
             for (var i = 0; i < res['manpowerReqList'].length; i++) {
-              shiftList.add(res['manpowerReqList'][i]);
+              // print(res['manpowerReqList'][i]['shift']);
+              // print(checkList.contains(res['manpowerReqList'][i]['shift']));
+              if (!checkList.contains(res['manpowerReqList'][i]['shift'])) {
+                shiftList.add(res['manpowerReqList'][i]);
+                checkList.add(res['manpowerReqList'][i]['shift']);
+              }
             }
           }
           print('shiftRes: $shiftList');
@@ -37,7 +44,7 @@ class TransferController extends GetxController {
             'Error',
             'Shift not found',
             colorText: Colors.white,
-backgroundColor: Colors.black87,
+            backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,
             margin: EdgeInsets.symmetric(
               horizontal: 8.0,
@@ -54,7 +61,7 @@ backgroundColor: Colors.black87,
         'Error',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
-backgroundColor: Colors.black87,
+        backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.symmetric(
           horizontal: 8.0,
@@ -95,7 +102,7 @@ backgroundColor: Colors.black87,
             'Error',
             'Transfer add failed',
             colorText: Colors.white,
-backgroundColor: Colors.black87,
+            backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,
             margin: EdgeInsets.symmetric(
               horizontal: 8.0,
@@ -111,7 +118,7 @@ backgroundColor: Colors.black87,
         'Error',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
-backgroundColor: Colors.black87,
+        backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.symmetric(
           horizontal: 8.0,
@@ -142,7 +149,7 @@ backgroundColor: Colors.black87,
             'Error',
             'Transfer not found',
             colorText: Colors.white,
-backgroundColor: Colors.black87,
+            backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,
             margin: EdgeInsets.symmetric(
               horizontal: 8.0,
@@ -159,7 +166,7 @@ backgroundColor: Colors.black87,
         'Error',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
-backgroundColor: Colors.black87,
+        backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.symmetric(
           horizontal: 8.0,
@@ -183,7 +190,7 @@ backgroundColor: Colors.black87,
             'Error',
             'Transfer request not updated',
             colorText: Colors.white,
-backgroundColor: Colors.black87,
+            backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,
             margin: EdgeInsets.symmetric(
               horizontal: 8.0,
@@ -199,7 +206,7 @@ backgroundColor: Colors.black87,
         'Error',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
-backgroundColor: Colors.black87,
+        backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.symmetric(
           horizontal: 8.0,

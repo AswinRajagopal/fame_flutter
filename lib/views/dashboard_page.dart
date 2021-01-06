@@ -1,3 +1,5 @@
+import 'notification.dart';
+
 import 'attendance_page.dart';
 
 import 'route_planning.dart';
@@ -215,7 +217,9 @@ class _DashboardPageState extends State<DashboardPage> {
                                   'assets/images/bell_icon.png',
                                   height: 22.0,
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  Get.to(NotificationPage());
+                                },
                               ),
                             ],
                           ),
@@ -796,7 +800,8 @@ class _DashboardPageState extends State<DashboardPage> {
                     ),
                     Obx(() {
                       if (!dbC.isDashboardLoading.value) {
-                        return SizedBox(
+                        return Container(
+                          color: AppUtils().greyScaffoldBg,
                           height: dbC.response['empActivities'] == null || dbC.response['empActivities'].length == 0 ? 30.0 : 0.0,
                         );
                       }
@@ -1004,7 +1009,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                       vertical: 11.0,
-                                      horizontal: 26.0,
+                                      horizontal: 23.0,
                                     ),
                                     child: Text(
                                       'My Calendar',
@@ -1039,7 +1044,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                       vertical: 11.0,
-                                      horizontal: 26.0,
+                                      horizontal: 23.0,
                                     ),
                                     child: Text(
                                       'My Roster',

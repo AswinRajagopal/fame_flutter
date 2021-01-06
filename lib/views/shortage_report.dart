@@ -57,6 +57,8 @@ class _ShortageReportState extends State<ShortageReport> {
       backgroundColor: Colors.white,
     );
     Future.delayed(Duration(milliseconds: 100), epC.getClientTimings);
+    date.text = DateFormat('dd-MM-yyyy').format(curDate).toString();
+    selectedDate = DateFormat('yyyy-MM-dd').format(curDate).toString();
     super.initState();
   }
 

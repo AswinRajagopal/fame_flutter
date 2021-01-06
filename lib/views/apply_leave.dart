@@ -505,7 +505,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                               onPressed: () {
                                 print('Apply Leave');
                                 FocusScope.of(context).requestFocus(FocusNode());
-                                if (fromDt.text == null || fromDt.text == '' || toDt.text == null || toDt.text == '' || reason.text == null || reason.text == '' || leaveType == '') {
+                                if (sfromDt == null || sfromDt == '' || stoDt == null || stoDt == '' || reason.text == null || reason.text == '' || leaveType == '') {
                                   Get.snackbar(
                                     'Error',
                                     'Please fill all data',
@@ -524,8 +524,8 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                                   // print('dayType: $stVal');
                                   // print('leaveTypeId: $leaveType');
                                   alC.applyLeave(
-                                    fromDt.text,
-                                    toDt.text,
+                                    sfromDt,
+                                    stoDt,
                                     reason.text,
                                     stVal,
                                     leaveType,

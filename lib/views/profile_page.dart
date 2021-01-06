@@ -80,21 +80,48 @@ class _ProfilePageState extends State<ProfilePage> {
         actions: [
           FlatButton(
             onPressed: () {
-              Get.defaultDialog(
-                title: 'Logout',
-                radius: 10.0,
-                content: Text(
-                  'Are you sure?',
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text('Logout'),
+                  content: Text(
+                    'Are you sure?',
+                    style: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                  actions: <Widget>[
+                    FlatButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      child: Text('NO'),
+                    ),
+                    FlatButton(
+                      onPressed: () {
+                        pC.pr.show();
+                        RemoteServices().logout();
+                      },
+                      child: Text('YES'),
+                    ),
+                  ],
                 ),
-                barrierDismissible: false,
-                onConfirm: () {
-                  RemoteServices().logout();
-                },
-                onCancel: () {},
-                confirmTextColor: Colors.white,
-                textConfirm: 'Yes',
-                textCancel: 'No',
               );
+              // Get.defaultDialog(
+              //   title: 'Logout',
+              //   radius: 10.0,
+              //   content: Text(
+              //     'Are you sure?',
+              //   ),
+              //   barrierDismissible: false,
+              //   onConfirm: () {
+              //     RemoteServices().logout();
+              //   },
+              //   onCancel: () {},
+              //   confirmTextColor: Colors.white,
+              //   textConfirm: 'Yes',
+              //   textCancel: 'No',
+              // );
             },
             child: Text(
               'LOGOUT',
