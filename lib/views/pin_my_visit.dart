@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import '../utils/utils.dart';
 import 'routeplan_list.dart';
 import '../connection/remote_services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -25,11 +26,19 @@ class _PinMyVisitState extends State<PinMyVisit> {
   var currentTime = DateFormat().add_jm().format(DateTime.now()).toString();
   File attachment;
   final TextEditingController remarks = TextEditingController();
+  var size;
+  var deviceRatio;
+  var xScale;
+  var faceApi;
 
   @override
   void initState() {
     super.initState();
-    initCam();
+    if (RemoteServices().box.get('faceApi') == 1) {
+      initCam();
+    } else {
+      mpC.getCurrentLocation();
+    }
     mpC.pr = ProgressDialog(
       context,
       type: ProgressDialogType.Normal,
@@ -151,47 +160,54 @@ class _PinMyVisitState extends State<PinMyVisit> {
     }
   }
 
-  void takePicture() async {
-    if (!controller.value.isInitialized) {
-      Get.snackbar(
-        'Error',
-        'select a camera first.',
-        colorText: Colors.white,
-backgroundColor: Colors.black87,
-        snackPosition: SnackPosition.BOTTOM,
-        margin: EdgeInsets.symmetric(
-          horizontal: 8.0,
-          vertical: 10.0,
-        ),
-      );
-      return null;
-    }
-    final extDir = await getApplicationDocumentsDirectory();
-    final dirPath = '${extDir.path}/Pictures/flutter_test';
-    await Directory(dirPath).create(recursive: true);
-    final filePath = '$dirPath/image.jpg';
-    var dir = Directory(filePath);
-    try {
-      dir.deleteSync(recursive: true);
-    } catch (e) {
-      print(e.toString());
-    }
-    if (controller.value.isTakingPicture) {
-      // A capture is already pending, do nothing.
-      return null;
+  void takePicture(type) async {
+    var file;
+    var res;
+    if (type == 1) {
+      if (!controller.value.isInitialized) {
+        Get.snackbar(
+          'Error',
+          'select a camera first.',
+          colorText: Colors.white,
+          backgroundColor: Colors.black87,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: EdgeInsets.symmetric(
+            horizontal: 8.0,
+            vertical: 10.0,
+          ),
+        );
+        return null;
+      }
+      final extDir = await getApplicationDocumentsDirectory();
+      final dirPath = '${extDir.path}/Pictures/flutter_test';
+      await Directory(dirPath).create(recursive: true);
+      final filePath = '$dirPath/image.jpg';
+      var dir = Directory(filePath);
+      try {
+        dir.deleteSync(recursive: true);
+      } catch (e) {
+        print(e.toString());
+      }
+      if (controller.value.isTakingPicture) {
+        // A capture is already pending, do nothing.
+        return null;
+      }
+
+      try {
+        await controller.takePicture(filePath);
+      } on CameraException catch (e) {
+        _showCameraException(e);
+        return null;
+      }
+      file = File(filePath);
+      // networkcall(file);
+      res = await mpC.uploadImage(file);
+    } else {
+      res = true;
     }
 
-    try {
-      await controller.takePicture(filePath);
-    } on CameraException catch (e) {
-      _showCameraException(e);
-      return null;
-    }
-    var file = File(filePath);
-    // networkcall(file);
-    var res = await mpC.uploadImage(file);
     print(res);
-    if (res) {
+    if (res != null && res) {
       await Get.defaultDialog(
         title: 'Attach Image or Remarks',
         content: Column(
@@ -298,28 +314,34 @@ backgroundColor: Colors.black87,
 
   @override
   Widget build(BuildContext context) {
-    if (controller == null) return Container();
-    final size = MediaQuery.of(context).size;
-    final deviceRatio = size.width / size.height;
-    final xScale = controller.value.aspectRatio / deviceRatio;
+    if (controller == null && RemoteServices().box.get('faceApi') == 1) return Container();
+    if (RemoteServices().box.get('faceApi') == 1) {
+      size = MediaQuery.of(context).size;
+      deviceRatio = size.width / size.height;
+      xScale = controller.value.aspectRatio / deviceRatio;
+    }
     // Modify the yScale if you are in Landscape
     final yScale = 1.0;
     return Scaffold(
       body: SafeArea(
         child: Stack(
           children: [
-            Container(
-              child: AspectRatio(
-                aspectRatio: deviceRatio,
-                child: Transform(
-                  alignment: Alignment.center,
-                  transform: Matrix4.diagonal3Values(xScale, yScale, 1),
-                  child: CameraPreview(
-                    controller,
+            RemoteServices().box.get('faceApi') == 1
+                ? Container(
+                    child: AspectRatio(
+                      aspectRatio: deviceRatio,
+                      child: Transform(
+                        alignment: Alignment.center,
+                        transform: Matrix4.diagonal3Values(xScale, yScale, 1),
+                        child: CameraPreview(
+                          controller,
+                        ),
+                      ),
+                    ),
+                  )
+                : Container(
+                    color: AppUtils().greyScaffoldBg,
                   ),
-                ),
-              ),
-            ),
             GestureDetector(
               onTap: () {
                 Get.back();
@@ -477,7 +499,11 @@ backgroundColor: Colors.black87,
                     Obx(() {
                       return RaisedButton(
                         // onPressed: mpC.currentAddress.value == 'Fetching your location...' || mpC.dis.value == 'Finding distance from site...' ? null : takePicture,
-                        onPressed: mpC.currentAddress.value == 'Fetching your location...' ? null : takePicture,
+                        onPressed: mpC.currentAddress.value == 'Fetching your location...'
+                            ? null
+                            : () {
+                                takePicture(RemoteServices().box.get('faceApi'));
+                              },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 30.0,

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import '../utils/utils.dart';
 import 'dashboard_page.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -10,7 +11,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+// ignore: must_be_immutable
 class CheckinPage extends StatefulWidget {
+  var faceApi;
+  CheckinPage(this.faceApi);
+
   @override
   _CheckinPageState createState() => _CheckinPageState();
 }
@@ -22,11 +27,18 @@ class _CheckinPageState extends State<CheckinPage> {
   var currentTime = DateFormat().add_jm().format(DateTime.now()).toString();
   // Position _currentPosition;
   // String currentAddress = 'Fetching your location...';
+  var size;
+  var deviceRatio;
+  var xScale;
 
   @override
   void initState() {
     super.initState();
-    initCam();
+    if (widget.faceApi == 1) {
+      initCam();
+    } else {
+      checkinController.getCurrentLocation();
+    }
     checkinController.pr = ProgressDialog(
       context,
       type: ProgressDialogType.Normal,
@@ -95,47 +107,54 @@ class _CheckinPageState extends State<CheckinPage> {
     }
   }
 
-  void takePicture() async {
-    if (!controller.value.isInitialized) {
-      Get.snackbar(
-        'Error',
-        'select a camera first.',
-        colorText: Colors.white,
-backgroundColor: Colors.black87,
-        snackPosition: SnackPosition.BOTTOM,
-        margin: EdgeInsets.symmetric(
-          horizontal: 8.0,
-          vertical: 10.0,
-        ),
-      );
-      return null;
-    }
-    final extDir = await getApplicationDocumentsDirectory();
-    final dirPath = '${extDir.path}/Pictures/flutter_test';
-    await Directory(dirPath).create(recursive: true);
-    final filePath = '$dirPath/image.jpg';
-    var dir = Directory(filePath);
-    try {
-      dir.deleteSync(recursive: true);
-    } catch (e) {
-      print(e.toString());
-    }
-    if (controller.value.isTakingPicture) {
-      // A capture is already pending, do nothing.
-      return null;
+  void takePicture(type) async {
+    var file;
+    var res;
+    if (type == 1) {
+      if (!controller.value.isInitialized) {
+        Get.snackbar(
+          'Error',
+          'select a camera first.',
+          colorText: Colors.white,
+          backgroundColor: Colors.black87,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: EdgeInsets.symmetric(
+            horizontal: 8.0,
+            vertical: 10.0,
+          ),
+        );
+        return null;
+      }
+      final extDir = await getApplicationDocumentsDirectory();
+      final dirPath = '${extDir.path}/Pictures/flutter_test';
+      await Directory(dirPath).create(recursive: true);
+      final filePath = '$dirPath/image.jpg';
+      var dir = Directory(filePath);
+      try {
+        dir.deleteSync(recursive: true);
+      } catch (e) {
+        print(e.toString());
+      }
+      if (controller.value.isTakingPicture) {
+        // A capture is already pending, do nothing.
+        return null;
+      }
+
+      try {
+        await controller.takePicture(filePath);
+      } on CameraException catch (e) {
+        _showCameraException(e);
+        return null;
+      }
+      file = File(filePath);
+      // networkcall(file);
+      res = await checkinController.uploadImage(file);
+    } else {
+      res = await checkinController.justCheckin();
     }
 
-    try {
-      await controller.takePicture(filePath);
-    } on CameraException catch (e) {
-      _showCameraException(e);
-      return null;
-    }
-    var file = File(filePath);
-    // networkcall(file);
-    var res = await checkinController.uploadImage(file);
     print(res);
-    if (res) {
+    if (res != null && res) {
       // ignore: unawaited_futures
       Get.bottomSheet(
         Container(
@@ -268,28 +287,34 @@ backgroundColor: Colors.black87,
 
   @override
   Widget build(BuildContext context) {
-    if (controller == null) return Container();
-    final size = MediaQuery.of(context).size;
-    final deviceRatio = size.width / size.height;
-    final xScale = controller.value.aspectRatio / deviceRatio;
+    if (controller == null && widget.faceApi == 1) return Container();
+    if (widget.faceApi == 1) {
+      size = MediaQuery.of(context).size;
+      deviceRatio = size.width / size.height;
+      xScale = controller.value.aspectRatio / deviceRatio;
+    }
     // Modify the yScale if you are in Landscape
     final yScale = 1.0;
     return Scaffold(
       body: SafeArea(
         child: Stack(
           children: [
-            Container(
-              child: AspectRatio(
-                aspectRatio: deviceRatio,
-                child: Transform(
-                  alignment: Alignment.center,
-                  transform: Matrix4.diagonal3Values(xScale, yScale, 1),
-                  child: CameraPreview(
-                    controller,
+            widget.faceApi == 1
+                ? Container(
+                    child: AspectRatio(
+                      aspectRatio: deviceRatio,
+                      child: Transform(
+                        alignment: Alignment.center,
+                        transform: Matrix4.diagonal3Values(xScale, yScale, 1),
+                        child: CameraPreview(
+                          controller,
+                        ),
+                      ),
+                    ),
+                  )
+                : Container(
+                    color: AppUtils().greyScaffoldBg,
                   ),
-                ),
-              ),
-            ),
             GestureDetector(
               onTap: () {
                 Get.back();
@@ -381,6 +406,7 @@ backgroundColor: Colors.black87,
                                     ),
                                     SizedBox(
                                       width: 10.0,
+                                      height: 8.0,
                                     ),
                                     Obx(() {
                                       return Text(
@@ -439,7 +465,11 @@ backgroundColor: Colors.black87,
                     ),
                     Obx(() {
                       return RaisedButton(
-                        onPressed: checkinController.currentAddress.value == 'Fetching your location...' ? null : takePicture,
+                        onPressed: checkinController.currentAddress.value == 'Fetching your location...'
+                            ? null
+                            : () {
+                                takePicture(widget.faceApi);
+                              },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 30.0,

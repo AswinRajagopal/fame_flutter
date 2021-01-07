@@ -25,7 +25,7 @@ class SupportController extends GetxController {
             'Error',
             'Something went wrong! Please try again later',
             colorText: Colors.white,
-backgroundColor: Colors.black87,
+            backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,
             margin: EdgeInsets.symmetric(
               horizontal: 8.0,
@@ -42,7 +42,7 @@ backgroundColor: Colors.black87,
         'Error',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
-backgroundColor: Colors.black87,
+        backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.symmetric(
           horizontal: 8.0,

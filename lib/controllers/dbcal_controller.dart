@@ -10,7 +10,6 @@ class DBCalController extends GetxController {
   var calRes;
   var changedDate;
   Map<DateTime, List> events = {};
-  bool isDisposed = false;
   var calendarType = 'myCal';
 
   @override
@@ -20,16 +19,13 @@ class DBCalController extends GetxController {
   }
 
   void init() {
-    if (isDisposed) return;
     print('init custom getCalendar');
-    calendarType == 'myCal';
     getCalendar();
   }
 
   @override
   void dispose() {
     super.dispose();
-    isDisposed = true;
   }
 
   void getCalendar({month, chDt}) async {

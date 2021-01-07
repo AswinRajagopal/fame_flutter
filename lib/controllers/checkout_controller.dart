@@ -112,13 +112,13 @@ class CheckoutController extends GetxController {
             // print(currentAddress.value);
             // print(currentPosition.latitude);
             // print(currentPosition.longitude);
-            var checkin = await RemoteServices().checkout(
+            var checkout = await RemoteServices().checkout(
               currentPosition.latitude,
               currentPosition.longitude,
               currentAddress.value,
             );
             // print(checkin);
-            if (checkin != null && checkin['success']) {
+            if (checkout != null && checkout['success']) {
               return true;
             } else {
               Get.snackbar(
@@ -140,7 +140,7 @@ class CheckoutController extends GetxController {
             'Error',
             'Something went wrong! Please try again later',
             colorText: Colors.white,
-backgroundColor: Colors.black87,
+            backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,
             margin: EdgeInsets.symmetric(
               horizontal: 8.0,
@@ -157,7 +157,7 @@ backgroundColor: Colors.black87,
         'Error',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
-backgroundColor: Colors.black87,
+        backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.symmetric(
           horizontal: 8.0,
@@ -165,9 +165,34 @@ backgroundColor: Colors.black87,
         ),
       );
       return false;
-    } finally {
+    }
+  }
+
+  Future<bool> justCheckout() async {
+    await pr.show();
+    var checkout = await RemoteServices().checkout(
+      currentPosition.latitude,
+      currentPosition.longitude,
+      currentAddress.value,
+    );
+    // print(checkin);
+    if (checkout != null && checkout['success']) {
       await pr.hide();
-      // return checkoutResponse.success;
+      return true;
+    } else {
+      await pr.hide();
+      Get.snackbar(
+        'Error',
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+      );
+      return false;
     }
   }
 }

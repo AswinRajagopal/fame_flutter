@@ -147,7 +147,7 @@ class CheckinController extends GetxController {
             'Error',
             'Something went wrong! Please try again later',
             colorText: Colors.white,
-backgroundColor: Colors.black87,
+            backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,
             margin: EdgeInsets.symmetric(
               horizontal: 8.0,
@@ -164,7 +164,7 @@ backgroundColor: Colors.black87,
         'Error',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
-backgroundColor: Colors.black87,
+        backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.symmetric(
           horizontal: 8.0,
@@ -172,9 +172,34 @@ backgroundColor: Colors.black87,
         ),
       );
       return false;
-    } finally {
+    }
+  }
+
+  Future<bool> justCheckin() async {
+    await pr.show();
+    var checkin = await RemoteServices().checkin(
+      currentPosition.latitude,
+      currentPosition.longitude,
+      currentAddress.value,
+    );
+    // print(checkin);
+    if (checkin != null && checkin['success']) {
       await pr.hide();
-      // return checkinResponse.success;
+      return true;
+    } else {
+      await pr.hide();
+      Get.snackbar(
+        'Error',
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+      );
+      return false;
     }
   }
 }

@@ -451,7 +451,8 @@ class _DashboardPageState extends State<DashboardPage> {
                                                       'chkout',
                                                     );
                                                     if (chk) {
-                                                      Get.to(CheckoutPage());
+                                                      Get.to(CheckoutPage(RemoteServices().box.get('faceApi')));
+                                                      // Get.to(CheckoutPage(0));
                                                     }
                                                   },
                                                   child: Text(
@@ -592,7 +593,9 @@ class _DashboardPageState extends State<DashboardPage> {
                                                   'chkin',
                                                 );
                                                 if (chk) {
-                                                  Get.to(CheckinPage());
+                                                  print(RemoteServices().box.get('faceApi'));
+                                                  Get.to(CheckinPage(RemoteServices().box.get('faceApi')));
+                                                  // Get.to(CheckinPage(0));
                                                 }
                                               },
                                               child: Text(
@@ -968,10 +971,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       color: AppUtils().greyScaffoldBg,
                       width: MediaQuery.of(context).size.width,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 15.0,
-                          horizontal: 45.0
-                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 45.0),
                         child: Container(
                           height: 50.0,
                           width: MediaQuery.of(context).size.width / 1.3,

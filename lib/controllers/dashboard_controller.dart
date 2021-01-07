@@ -59,13 +59,14 @@ class DashboardController extends GetxController {
         await RemoteServices().box.put('shift', response['dailyAttendance']['shift']);
         await RemoteServices().box.put('clientId', response['dailyAttendance']['clientId']);
         await RemoteServices().box.put('empName', response['empdetails']['name']);
+        await RemoteServices().box.put('faceApi', response['clientData']['faceApi']);
         if (response['success']) {
         } else {
           Get.snackbar(
             'Error',
             'Something went wrong! Please try again later',
             colorText: Colors.white,
-backgroundColor: Colors.black87,
+            backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,
             margin: EdgeInsets.symmetric(
               horizontal: 8.0,
@@ -81,7 +82,7 @@ backgroundColor: Colors.black87,
         'Error',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
-backgroundColor: Colors.black87,
+        backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.symmetric(
           horizontal: 8.0,
