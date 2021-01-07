@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
@@ -17,6 +18,7 @@ class _ResetPasswordState extends State<ResetPassword> {
   final ResetPasswordController rpC = Get.put(ResetPasswordController());
   TextEditingController password = TextEditingController();
   TextEditingController confirmpassword = TextEditingController();
+  var _obscureText = true;
 
   @override
   void initState() {
@@ -121,17 +123,105 @@ class _ResetPasswordState extends State<ResetPassword> {
                       Container(
                         height: 35.0,
                       ),
-                      CommonTextField(
-                        'Enter new password',
-                        'assets/images/password.png',
-                        'password',
-                        password,
+                      // CommonTextField(
+                      //   'Enter new password',
+                      //   'assets/images/password.png',
+                      //   'password',
+                      //   password,
+                      // ),
+                      Container(
+                        height: 60.0,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            right: 15.0,
+                            left: 15.0,
+                            bottom: 12.0,
+                          ),
+                          child: TextField(
+                            controller: password,
+                            obscureText: _obscureText,
+                            decoration: InputDecoration(
+                              suffixIcon: GestureDetector(
+                                dragStartBehavior: DragStartBehavior.down,
+                                onTap: () {
+                                  print('herer');
+                                  _obscureText = !_obscureText;
+                                  setState(() {});
+                                },
+                                child: Icon(
+                                  _obscureText ? Icons.visibility : Icons.visibility_off,
+                                  size: 22.0,
+                                ),
+                              ),
+                              isDense: true,
+                              contentPadding: EdgeInsets.all(10),
+                              border: OutlineInputBorder(
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(30.0),
+                                ),
+                              ),
+                              hintStyle: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 18.0,
+                              ),
+                              hintText: 'Enter new password',
+                              prefixIcon: Image.asset(
+                                'assets/images/password.png',
+                                scale: 1.5,
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
-                      CommonTextField(
-                        'Confirm password',
-                        'assets/images/password.png',
-                        'password',
-                        confirmpassword,
+                      // CommonTextField(
+                      //   'Confirm password',
+                      //   'assets/images/password.png',
+                      //   'password',
+                      //   confirmpassword,
+                      // ),
+                      Container(
+                        height: 60.0,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            right: 15.0,
+                            left: 15.0,
+                            bottom: 12.0,
+                          ),
+                          child: TextField(
+                            controller: confirmpassword,
+                            obscureText: _obscureText,
+                            decoration: InputDecoration(
+                              // suffixIcon: GestureDetector(
+                              //   dragStartBehavior: DragStartBehavior.down,
+                              //   onTap: () {
+                              //     print('herer');
+                              //     _obscureText = !_obscureText;
+                              //     setState(() {});
+                              //   },
+                              //   child: Icon(
+                              //     _obscureText ? Icons.visibility : Icons.visibility_off,
+                              //     size: 22.0,
+                              //   ),
+                              // ),
+                              isDense: true,
+                              contentPadding: EdgeInsets.all(10),
+                              border: OutlineInputBorder(
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(30.0),
+                                ),
+                              ),
+                              hintStyle: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 18.0,
+                              ),
+                              hintText: 'Confirm password',
+                              prefixIcon: Image.asset(
+                                'assets/images/password.png',
+                                scale: 1.5,
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                       SizedBox(
                         height: 135.0,

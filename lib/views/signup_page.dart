@@ -1,3 +1,5 @@
+import 'package:flutter/gestures.dart';
+
 import '../controllers/otp_controller.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -26,6 +28,7 @@ class _SignupPageState extends State<SignupPage> {
   TextEditingController fullname = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController otp = TextEditingController();
+  var _obscureText = true;
 
   @override
   void initState() {
@@ -266,11 +269,55 @@ class _SignupPageState extends State<SignupPage> {
                           'text',
                           username,
                         ),
-                        CommonTextField(
-                          'Password',
-                          'assets/images/password.png',
-                          'password',
-                          password,
+                        // CommonTextField(
+                        //   'Password',
+                        //   'assets/images/password.png',
+                        //   'password',
+                        //   password,
+                        // ),
+                        Container(
+                          height: 60.0,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              right: 15.0,
+                              left: 15.0,
+                              bottom: 12.0,
+                            ),
+                            child: TextField(
+                              controller: password,
+                              obscureText: _obscureText,
+                              decoration: InputDecoration(
+                                suffixIcon: GestureDetector(
+                                  dragStartBehavior: DragStartBehavior.down,
+                                  onTap: () {
+                                    print('herer');
+                                    _obscureText = !_obscureText;
+                                    setState(() {});
+                                  },
+                                  child: Icon(
+                                    _obscureText ? Icons.visibility : Icons.visibility_off,
+                                    size: 22.0,
+                                  ),
+                                ),
+                                isDense: true,
+                                contentPadding: EdgeInsets.all(10),
+                                border: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(30.0),
+                                  ),
+                                ),
+                                hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 18.0,
+                                ),
+                                hintText: 'Password',
+                                prefixIcon: Image.asset(
+                                  'assets/images/password.png',
+                                  scale: 1.5,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                         Center(
                           child: Column(

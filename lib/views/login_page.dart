@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
 import '../controllers/login_controller.dart';
@@ -21,6 +22,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController username = TextEditingController();
   TextEditingController empid = TextEditingController();
   TextEditingController password = TextEditingController();
+  var _obscureText = true;
 
   @override
   void initState() {
@@ -194,11 +196,55 @@ class _LoginPageState extends State<LoginPage> {
                         'text',
                         empid,
                       ),
-                      CommonTextField(
-                        '*********',
-                        'assets/images/password.png',
-                        'password',
-                        password,
+                      // CommonTextField(
+                      //   '*********',
+                      //   'assets/images/password.png',
+                      //   'password',
+                      //   password,
+                      // ),
+                      Container(
+                        height: 60.0,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            right: 15.0,
+                            left: 15.0,
+                            bottom: 12.0,
+                          ),
+                          child: TextField(
+                            controller: password,
+                            obscureText: _obscureText,
+                            decoration: InputDecoration(
+                              suffixIcon: GestureDetector(
+                                dragStartBehavior: DragStartBehavior.down,
+                                onTap: () {
+                                  print('herer');
+                                  _obscureText = !_obscureText;
+                                  setState(() {});
+                                },
+                                child: Icon(
+                                  _obscureText ? Icons.visibility : Icons.visibility_off,
+                                  size: 22.0,
+                                ),
+                              ),
+                              isDense: true,
+                              contentPadding: EdgeInsets.all(10),
+                              border: OutlineInputBorder(
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(30.0),
+                                ),
+                              ),
+                              hintStyle: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 18.0,
+                              ),
+                              hintText: 'password',
+                              prefixIcon: Image.asset(
+                                'assets/images/password.png',
+                                scale: 1.5,
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
