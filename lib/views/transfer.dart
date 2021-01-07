@@ -30,6 +30,8 @@ class _TransferPageState extends State<TransferPage> {
   var toUnit;
   var fromPeriod;
   var toPeriod;
+  var fD;
+  var tD;
 
   @override
   void dispose() {
@@ -78,14 +80,14 @@ class _TransferPageState extends State<TransferPage> {
   Future<Null> fromDate(BuildContext context) async {
     final picked = await showDatePicker(
       context: context,
-      initialDate: fromDt.text.isEmpty
+      initialDate: fD == null
           ? _frmDate
           : DateTime.parse(
-              fromDt.text.toString(),
+              fD.toString(),
             ),
       firstDate: DateTime.now().add(Duration(days: 1)),
-      lastDate: toDt.text != ''
-          ? DateTime.parse(toDt.text.toString()).add(
+      lastDate: tD != null
+          ? DateTime.parse(tD.toString()).add(
               Duration(days: -1),
             )
           : DateTime.now().add(Duration(days: 365)),
@@ -94,33 +96,31 @@ class _TransferPageState extends State<TransferPage> {
     if (picked != null) {
       print('Date selected ${_frmDate.toString()}');
       setState(() {
-        fromDt.text = DateFormat('yyyy-MM-dd').format(picked).toString();
+        fromDt.text = DateFormat('dd-MM-yyyy').format(picked).toString();
+        fD = DateFormat('yyyy-MM-dd').format(picked).toString();
         fromPeriod = DateFormat('dd-MM-yyyy').format(picked).toString();
       });
     }
   }
 
   Future<Null> toDate(BuildContext context) async {
-    final _toDate = DateTime.parse(fromDt.text.toString()).add(
-      Duration(days: 1),
-    );
+    final _toDate = DateTime.parse(fD.toString());
     final picked = await showDatePicker(
       context: context,
-      initialDate: toDt.text.isEmpty
+      initialDate: tD == null
           ? _toDate
           : DateTime.parse(
-              toDt.text.toString(),
+              tD.toString(),
             ),
-      firstDate: DateTime.parse(fromDt.text.toString()).add(
-        Duration(days: 1),
-      ),
+      firstDate: DateTime.parse(fD.toString()),
       lastDate: DateTime.now().add(Duration(days: 365)),
     );
 
     if (picked != null) {
       print('Date selected ${_toDate.toString()}');
       setState(() {
-        toDt.text = DateFormat('yyyy-MM-dd').format(picked).toString();
+        toDt.text = DateFormat('dd-MM-yyyy').format(picked).toString();
+        tD = DateFormat('yyyy-MM-dd').format(picked).toString();
         toPeriod = DateFormat('dd-MM-yyyy').format(picked).toString();
       });
     }
