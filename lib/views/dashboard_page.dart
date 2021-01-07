@@ -50,7 +50,9 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(milliseconds: 100), dbC.init);
+    Future.delayed(Duration(milliseconds: 100), () {
+      dbC.init(context: context);
+    });
     Future.delayed(Duration(milliseconds: 100), () {
       erpC.init(fromWhere: 'db');
     });

@@ -21,10 +21,10 @@ class DashboardController extends GetxController {
     super.onInit();
   }
 
-  void init() {
+  void init({context}) {
     // if (isDisposed) return;
     print('init custom');
-    getDashboardDetails();
+    getDashboardDetails(context: context);
     updateTime();
   }
 
@@ -49,19 +49,62 @@ class DashboardController extends GetxController {
     });
   }
 
-  void getDashboardDetails() async {
+  void getDashboardDetails({context}) async {
     try {
       isDashboardLoading(true);
       response = await RemoteServices().getDbDetails();
       // print('response: $response');
       if (response != null) {
-        isDashboardLoading(false);
-        await RemoteServices().box.put('shift', response['dailyAttendance']['shift']);
-        await RemoteServices().box.put('clientId', response['dailyAttendance']['clientId']);
-        await RemoteServices().box.put('empName', response['empdetails']['name']);
-        await RemoteServices().box.put('faceApi', response['clientData']['faceApi']);
         if (response['success']) {
+          await RemoteServices().box.put('shift', response['dailyAttendance']['shift']);
+          await RemoteServices().box.put('clientId', response['dailyAttendance']['clientId']);
+          await RemoteServices().box.put('empName', response['empdetails']['name']);
+          await RemoteServices().box.put('faceApi', response['clientData']['faceApi']);
+          if (response['empdetails']['empStatus'] != 1 && response['companyActive'] != true) {
+            await showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) => WillPopScope(
+                onWillPop: () async => false,
+                child: AlertDialog(
+                  title: Text('Error'),
+                  content: Text(
+                    'Your account is blocked. Please contact your Company Admin',
+                    style: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                  actions: <Widget>[
+                    FlatButton(
+                      onPressed: () {
+                        RemoteServices().logout();
+                      },
+                      child: Text('OKAY'),
+                    ),
+                  ],
+                ),
+              ),
+            );
+            // Get.snackbar(
+            //   'Error',
+            //   'You are not allowed',
+            //   duration: Duration(seconds: 2),
+            //   colorText: Colors.white,
+            //   backgroundColor: Colors.black87,
+            //   snackPosition: SnackPosition.BOTTOM,
+            //   margin: EdgeInsets.symmetric(
+            //     horizontal: 8.0,
+            //     vertical: 10.0,
+            //   ),
+            // );
+            // Timer(Duration(seconds: 2), () {
+            //   RemoteServices().logout();
+            // });
+          } else {
+            isDashboardLoading(false);
+          }
         } else {
+          isDashboardLoading(false);
           Get.snackbar(
             'Error',
             'Something went wrong! Please try again later',
