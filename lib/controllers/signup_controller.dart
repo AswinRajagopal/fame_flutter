@@ -13,6 +13,7 @@ class SignupController extends GetxController {
   Future<bool> registerUser(
     username,
     empid,
+    empNo,
     password,
     mobile,
     fullname,
@@ -24,6 +25,7 @@ class SignupController extends GetxController {
       signupResponse = await RemoteServices.signup(
         username,
         empid,
+        empNo,
         password,
         mobile,
         fullname,

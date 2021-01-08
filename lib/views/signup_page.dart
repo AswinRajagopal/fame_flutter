@@ -22,6 +22,7 @@ class _SignupPageState extends State<SignupPage> {
   final OTPController otpController = Get.put(OTPController());
   TextEditingController username = TextEditingController();
   TextEditingController empid = TextEditingController();
+  TextEditingController empNo = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController mobile = TextEditingController();
   TextEditingController company = TextEditingController();
@@ -103,6 +104,7 @@ class _SignupPageState extends State<SignupPage> {
     super.dispose();
     username.dispose();
     empid.dispose();
+    empNo.dispose();
     password.dispose();
     mobile.dispose();
     fullname.dispose();
@@ -264,6 +266,12 @@ class _SignupPageState extends State<SignupPage> {
                           empid,
                         ),
                         CommonTextField(
+                          'Employee Number',
+                          'assets/images/emp_id_icon.png',
+                          'text',
+                          empNo,
+                        ),
+                        CommonTextField(
                           'Username',
                           'assets/images/person_male.png',
                           'text',
@@ -350,7 +358,7 @@ class _SignupPageState extends State<SignupPage> {
               ),
             ),
             Positioned(
-              top: 630.0,
+              top: 690.0,
               child: Container(
                 width: 100.0,
                 height: 100.0,
@@ -375,7 +383,7 @@ class _SignupPageState extends State<SignupPage> {
                     shape: CircleBorder(),
                     onPressed: () async {
                       FocusScope.of(context).requestFocus(FocusNode());
-                      if (username.text == null || username.text == '' || empid.text == null || empid.text == '' || password.text == null || password.text == '' || fullname.text == null || fullname.text == '' || email.text == null || email.text == '' || mobile.text == null || mobile.text == '' || company.text == null || company.text == '') {
+                      if (username.text == null || username.text == '' || empid.text == null || empid.text == '' || password.text == null || password.text == '' || fullname.text == null || fullname.text == '' || email.text == null || email.text == '' || mobile.text == null || mobile.text == '' || company.text == null || company.text == '' || empNo.text.isNullOrBlank) {
                         Get.snackbar(
                           'Error',
                           'Please provide all detail',
@@ -417,6 +425,7 @@ class _SignupPageState extends State<SignupPage> {
                         var signup = await signupController.registerUser(
                           username.text,
                           empid.text,
+                          empNo.text,
                           password.text,
                           mobile.text,
                           fullname.text,
@@ -527,6 +536,7 @@ class _SignupPageState extends State<SignupPage> {
                                             var resend = await signupController.registerUser(
                                               username.text,
                                               empid.text,
+                                              empNo.text,
                                               password.text,
                                               mobile.text,
                                               fullname.text,

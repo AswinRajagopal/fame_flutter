@@ -115,6 +115,7 @@ class RemoteServices {
   static Future<Signup> signup(
     username,
     empid,
+    empNo,
     password,
     mobile,
     fullname,
@@ -128,6 +129,7 @@ class RemoteServices {
         <String, String>{
           'userName': username,
           'empId': empid,
+          'empNo': empNo,
           'password': password,
           'mobileNo': mobile,
           'fullName': fullname,
