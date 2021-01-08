@@ -56,8 +56,13 @@ class DashboardController extends GetxController {
       // print('response: $response');
       if (response != null) {
         if (response['success']) {
-          await RemoteServices().box.put('shift', response['dailyAttendance']['shift']);
-          await RemoteServices().box.put('clientId', response['dailyAttendance']['clientId']);
+          if (response['dailyAttendance'] != null) {
+            await RemoteServices().box.put('shift', response['dailyAttendance']['shift']);
+            await RemoteServices().box.put('clientId', response['dailyAttendance']['clientId']);
+          } else {
+            await RemoteServices().box.put('shift', response['empdetails']['shift']);
+            await RemoteServices().box.put('clientId', response['clientData']['id']);
+          }
           await RemoteServices().box.put('empName', response['empdetails']['name']);
           await RemoteServices().box.put('faceApi', response['clientData']['faceApi']);
           if (response['empdetails']['empStatus'] != 1 && response['companyActive'] != true) {
@@ -85,21 +90,6 @@ class DashboardController extends GetxController {
                 ),
               ),
             );
-            // Get.snackbar(
-            //   'Error',
-            //   'You are not allowed',
-            //   duration: Duration(seconds: 2),
-            //   colorText: Colors.white,
-            //   backgroundColor: Colors.black87,
-            //   snackPosition: SnackPosition.BOTTOM,
-            //   margin: EdgeInsets.symmetric(
-            //     horizontal: 8.0,
-            //     vertical: 10.0,
-            //   ),
-            // );
-            // Timer(Duration(seconds: 2), () {
-            //   RemoteServices().logout();
-            // });
           } else {
             isDashboardLoading(false);
           }

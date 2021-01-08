@@ -338,6 +338,122 @@ class _DashboardPageState extends State<DashboardPage> {
                                     loaderColor: Colors.black87,
                                   ),
                                 );
+                              } else if (dbC.response['dailyAttendance'] == null) {
+                                return Padding(
+                                  padding: const EdgeInsets.fromLTRB(
+                                    10.0,
+                                    25.0,
+                                    10.0,
+                                    25.0,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'You are posted in',
+                                            style: TextStyle(
+                                              fontSize: 15.0,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 5.0,
+                                          ),
+                                          Obx(() {
+                                            if (dbC.isDashboardLoading.value) {
+                                              return Text(
+                                                '...',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 20.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              );
+                                            } else {
+                                              // print('Length: ${dbC.response['clientData']['name'].length}');
+                                              var clientName = dbC.response['clientData']['name'] ?? 'N/A';
+                                              var areaName = dbC.response['empdetails']['area'] ?? 'N/A';
+                                              return Row(
+                                                children: [
+                                                  SizedBox(
+                                                    width: 240.0,
+                                                    child: Text(
+                                                      '$clientName in $areaName',
+                                                      style: TextStyle(
+                                                        fontSize: 15.0,
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
+                                                      overflow: TextOverflow.ellipsis,
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            }
+                                          }),
+                                          SizedBox(
+                                            height: 5.0,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                'Duty Timings:',
+                                                style: TextStyle(
+                                                  fontSize: 15.0,
+                                                ),
+                                              ),
+                                              Text(
+                                                convertTimeWithParse(dbC.response['empdetails']['shiftStartTime']),
+                                                style: TextStyle(
+                                                  fontSize: 15.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              Text(
+                                                ' to ',
+                                                style: TextStyle(
+                                                  fontSize: 15.0,
+                                                ),
+                                              ),
+                                              Text(
+                                                convertTimeWithParse(dbC.response['empdetails']['shiftEndTime']),
+                                                style: TextStyle(
+                                                  fontSize: 15.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      RaisedButton(
+                                        onPressed: () {
+                                          print(RemoteServices().box.get('faceApi'));
+                                          Get.to(CheckinPage(RemoteServices().box.get('faceApi')));
+                                        },
+                                        child: Text(
+                                          'Check In',
+                                          style: TextStyle(
+                                            fontSize: 16.0,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        color: Colors.green,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            25.0,
+                                          ),
+                                          side: BorderSide(
+                                            color: Colors.green,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
                               } else {
                                 var chkinDt = dbC.response['dailyAttendance']['checkInDateTime'];
                                 var chkoutDt = dbC.response['dailyAttendance']['checkOutDateTime'];

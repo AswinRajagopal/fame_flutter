@@ -21,7 +21,7 @@ class OnboardingPage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                // Get.to(TransferList());
+                // Get.to(AddClient());
               },
               child: ListContainer(
                 'assets/images/client.png',
