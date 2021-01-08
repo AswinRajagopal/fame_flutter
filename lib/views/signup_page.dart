@@ -277,12 +277,6 @@ class _SignupPageState extends State<SignupPage> {
                           'text',
                           username,
                         ),
-                        // CommonTextField(
-                        //   'Password',
-                        //   'assets/images/password.png',
-                        //   'password',
-                        //   password,
-                        // ),
                         Container(
                           height: 60.0,
                           child: Padding(
@@ -327,29 +321,30 @@ class _SignupPageState extends State<SignupPage> {
                             ),
                           ),
                         ),
-                        Center(
-                          child: Column(
-                            children: [
-                              Text(
-                                'By pressing "Submit" you agree to our',
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {},
-                                child: Text(
-                                  'Terms & Conditions',
-                                  style: TextStyle(
-                                    color: Colors.orangeAccent,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        // Center(
+                        //   child: Column(
+                        //     children: [
+                        //       Text(
+                        //         'By pressing "Submit" you agree to our',
+                        //         style: TextStyle(
+                        //           color: Colors.grey,
+                        //         ),
+                        //       ),
+                        //       GestureDetector(
+                        //         onTap: () {},
+                        //         child: Text(
+                        //           'Terms & Conditions',
+                        //           style: TextStyle(
+                        //             color: Colors.orangeAccent,
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
                         SizedBox(
-                          height: 95.0,
+                          // height: 95.0,
+                          height: 105.0,
                         ),
                       ],
                     ),
@@ -358,7 +353,8 @@ class _SignupPageState extends State<SignupPage> {
               ),
             ),
             Positioned(
-              top: 690.0,
+              // top: 690.0,
+              top: 640.0,
               child: Container(
                 width: 100.0,
                 height: 100.0,
