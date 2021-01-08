@@ -406,6 +406,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                     ),
                                     SizedBox(
                                       width: 10.0,
+                                      height: 8.0,
                                     ),
                                     Obx(() {
                                       return Text(

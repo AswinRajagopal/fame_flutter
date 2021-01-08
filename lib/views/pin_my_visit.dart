@@ -433,6 +433,7 @@ class _PinMyVisitState extends State<PinMyVisit> {
                                     ),
                                     SizedBox(
                                       width: 10.0,
+                                      height: 8.0,
                                     ),
                                     Obx(() {
                                       return Text(

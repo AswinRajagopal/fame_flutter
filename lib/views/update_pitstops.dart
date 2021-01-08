@@ -416,6 +416,7 @@ backgroundColor: Colors.black87,
                                     ),
                                     SizedBox(
                                       width: 10.0,
+                                      height: 8.0,
                                     ),
                                     Obx(() {
                                       return Text(
