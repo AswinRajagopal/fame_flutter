@@ -439,6 +439,7 @@ class _UpdatePitstopsState extends State<UpdatePitstops> {
                                     ),
                                     SizedBox(
                                       width: 10.0,
+                                      height: 8.0,
                                     ),
                                     Obx(() {
                                       return Text(
