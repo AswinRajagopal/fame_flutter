@@ -1,3 +1,7 @@
+import 'onboarding_page.dart';
+
+import '../connection/remote_services.dart';
+
 import 'visit_plan.dart';
 
 import 'client_wise_attendance.dart';
@@ -22,7 +26,7 @@ import 'package:flutter/material.dart';
 class MorePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // var roleId = RemoteServices().box.get('role');
+    var roleId = RemoteServices().box.get('role');
     return Scaffold(
       backgroundColor: AppUtils().greyScaffoldBg,
       appBar: AppBar(
@@ -107,6 +111,18 @@ class MorePage extends StatelessWidget {
               child: ListContainer(
                 'assets/images/my_visit_plan.png',
                 'My Visit Report',
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Get.to(OnboardingPage());
+              },
+              child: Visibility(
+                visible: roleId == '3' ? true : false,
+                child: ListContainer(
+                  'assets/images/onboarding.png',
+                  'Onboarding',
+                ),
               ),
             ),
             SizedBox(

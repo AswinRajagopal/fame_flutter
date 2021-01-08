@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import '../utils/utils.dart';
 import 'dashboard_page.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -93,7 +94,7 @@ class _FaceRegisterState extends State<FaceRegister> {
         'Error',
         'select a camera first.',
         colorText: Colors.white,
-backgroundColor: Colors.black87,
+        backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.symmetric(
           horizontal: 8.0,
@@ -257,22 +258,46 @@ backgroundColor: Colors.black87,
   Widget build(BuildContext context) {
     if (controller == null) return Container();
     final size = MediaQuery.of(context).size;
-    final deviceRatio = size.width / size.height;
-    final xScale = controller.value.aspectRatio / deviceRatio;
+    // final deviceRatio = size.width / size.height;
+    // final xScale = controller.value.aspectRatio / deviceRatio;
     // Modify the yScale if you are in Landscape
-    final yScale = 1.0;
+    // final yScale = 1.0;
+    // print(size.height / 2.45);
+    // print(size.width / 1.194);
     return Scaffold(
+      backgroundColor: AppUtils().greyScaffoldBg,
       body: SafeArea(
         child: Stack(
           children: [
-            Container(
-              child: AspectRatio(
-                aspectRatio: deviceRatio,
-                child: Transform(
-                  alignment: Alignment.center,
-                  transform: Matrix4.diagonal3Values(xScale, yScale, 1),
-                  child: CameraPreview(
-                    controller,
+            // Container(
+            //   child: AspectRatio(
+            //     aspectRatio: deviceRatio,
+            //     child: Transform(
+            //       alignment: Alignment.center,
+            //       transform: Matrix4.diagonal3Values(xScale, yScale, 1),
+            //       child: CameraPreview(
+            //         controller,
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 120.0,
+              ),
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(250.0),
+                  ),
+                  child: Container(
+                    height: size.height / 2.45,
+                    width: size.width / 1.194,
+                    child: AspectRatio(
+                      aspectRatio: controller.value.aspectRatio,
+                      child: CameraPreview(controller),
+                    ),
                   ),
                 ),
               ),
@@ -331,6 +356,35 @@ backgroundColor: Colors.black87,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        20.0,
+                        20.0,
+                        20.0,
+                        50.0,
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Please look straight into the phone and place your face inside the frame.',
+                            style: TextStyle(
+                              fontSize: 17.0,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(
+                            height: 15.0,
+                          ),
+                          Text(
+                            'Please remove mask or cap for registration purpose.',
+                            style: TextStyle(
+                              fontSize: 17.0,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    ),
                     RaisedButton(
                       onPressed: takePicture,
                       child: Padding(
