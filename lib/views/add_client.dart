@@ -19,6 +19,7 @@ class _AddClientState extends State<AddClient> {
   TextEditingController address = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController unitIncharge = TextEditingController();
+  TextEditingController clientId = TextEditingController();
   var latitude;
   var longitude;
 
@@ -66,6 +67,7 @@ class _AddClientState extends State<AddClient> {
     address.dispose();
     email.dispose();
     unitIncharge.dispose();
+    clientId.dispose();
   }
 
   @override
@@ -102,6 +104,11 @@ class _AddClientState extends State<AddClient> {
                     MyTextField(
                       'Email',
                       email,
+                      false,
+                    ),
+                    MyTextField(
+                      'Client ID',
+                      clientId,
                       false,
                     ),
                     MyTextField(
@@ -200,7 +207,7 @@ class _AddClientState extends State<AddClient> {
                           onPressed: () {
                             print('Submit');
                             FocusScope.of(context).requestFocus(FocusNode());
-                            if (name.text.isNullOrBlank || phone.text.isNullOrBlank || email.text.isNullOrBlank || unitIncharge.text.isNullOrBlank || address.text.isNullOrBlank || latitude == null || longitude == null) {
+                            if (name.text.isNullOrBlank || phone.text.isNullOrBlank || email.text.isNullOrBlank || unitIncharge.text.isNullOrBlank || address.text.isNullOrBlank || clientId.isNullOrBlank || latitude == null || longitude == null) {
                               Get.snackbar(
                                 'Error',
                                 'Please fill all fields',
@@ -241,9 +248,11 @@ class _AddClientState extends State<AddClient> {
                               print('phone: ${phone.text}');
                               print('email: ${email.text}');
                               print('unitIncharge: ${unitIncharge.text}');
+                              print('clientId: ${clientId.text}');
                               print('address: ${address.text}');
                               print('latitude: $latitude');
                               print('longitude: $longitude');
+                              adminC.addClient(name.text, phone.text, clientId.text, unitIncharge.text, address.text, latitude, longitude);
                             }
                           },
                           child: Padding(

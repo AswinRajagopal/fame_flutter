@@ -1365,4 +1365,31 @@ class RemoteServices {
       return null;
     }
   }
+
+  Future addClient(name, phone, clientId, inchargeId, address, lat, lng) async {
+    var response = await client.post(
+      '$baseURL/trial/create_client',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'companyId': box.get('companyid').toString(),
+          'address': address,
+          'name': name,
+          'lat': lat,
+          'lng': lng,
+          'phone': phone,
+          'clientId': clientId,
+          'inchargeId': inchargeId,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
 }
