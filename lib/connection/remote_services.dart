@@ -1340,4 +1340,27 @@ class RemoteServices {
       return null;
     }
   }
+
+  Future addShift(shiftName, startTime, endTime) async {
+    var response = await client.post(
+      '$baseURL/trial/create_shift',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'companyId': box.get('companyid').toString(),
+          'shiftName': shiftName,
+          'startTime': startTime,
+          'endTime': endTime,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
 }

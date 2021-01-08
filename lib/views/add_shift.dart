@@ -1,26 +1,22 @@
+import 'package:time_range_picker/time_range_picker.dart';
+
 import '../utils/utils.dart';
-import 'package:flutter_google_places/flutter_google_places.dart';
-import 'package:google_maps_webservice/places.dart';
+import 'package:get/get.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
 import '../controllers/admin_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
-class AddClient extends StatefulWidget {
+class AddShift extends StatefulWidget {
   @override
-  _AddClientState createState() => _AddClientState();
+  _AddShiftState createState() => _AddShiftState();
 }
 
-class _AddClientState extends State<AddClient> {
+class _AddShiftState extends State<AddShift> {
   final AdminController adminC = Get.put(AdminController());
-  TextEditingController name = TextEditingController();
-  TextEditingController phone = TextEditingController();
-  TextEditingController address = TextEditingController();
-  TextEditingController email = TextEditingController();
-  TextEditingController unitIncharge = TextEditingController();
-  var latitude;
-  var longitude;
+  TextEditingController shiftname = TextEditingController();
+  TextEditingController starttime = TextEditingController();
+  TextEditingController endtime = TextEditingController();
 
   @override
   void initState() {
@@ -61,11 +57,6 @@ class _AddClientState extends State<AddClient> {
   @override
   void dispose() {
     super.dispose();
-    name.dispose();
-    phone.dispose();
-    address.dispose();
-    email.dispose();
-    unitIncharge.dispose();
   }
 
   @override
@@ -74,7 +65,7 @@ class _AddClientState extends State<AddClient> {
       backgroundColor: AppUtils().innerScaffoldBg,
       appBar: AppBar(
         title: Text(
-          'Add Client',
+          'Add Shift',
         ),
       ),
       body: SafeArea(
@@ -90,23 +81,8 @@ class _AddClientState extends State<AddClient> {
                   physics: ScrollPhysics(),
                   children: [
                     MyTextField(
-                      'Name',
-                      name,
-                      false,
-                    ),
-                    MyTextField(
-                      'Phone Number',
-                      phone,
-                      false,
-                    ),
-                    MyTextField(
-                      'Email',
-                      email,
-                      false,
-                    ),
-                    MyTextField(
-                      'Unit Incharge',
-                      unitIncharge,
+                      'Shift Name',
+                      shiftname,
                       false,
                     ),
                     Padding(
@@ -115,40 +91,9 @@ class _AddClientState extends State<AddClient> {
                         vertical: 10.0,
                       ),
                       child: TextField(
-                        controller: address,
+                        controller: starttime,
                         readOnly: true,
-                        onTap: () async {
-                          var p = await PlacesAutocomplete.show(
-                            context: context,
-                            apiKey: AppUtils.GKEY,
-                            mode: Mode.overlay,
-                            language: 'en',
-                            components: [
-                              Component(
-                                Component.country,
-                                'in',
-                              ),
-                            ],
-                          );
-                          // print('P: $p');
-                          if (p != null) {
-                            var places = GoogleMapsPlaces(
-                              apiKey: AppUtils.GKEY,
-                            );
-                            var detail = await places.getDetailsByPlaceId(
-                              p.placeId,
-                            );
-                            // print(p.placeId);
-                            // print(p.description);
-                            // print(detail.result.geometry.location.lat.toString());
-                            // print(detail.result.geometry.location.lng.toString());
-                            setState(() {
-                              address.text = p.description.toString();
-                              latitude = detail.result.geometry.location.lat;
-                              longitude = detail.result.geometry.location.lng;
-                            });
-                          }
-                        },
+                        keyboardType: null,
                         decoration: InputDecoration(
                           isDense: true,
                           contentPadding: EdgeInsets.all(10),
@@ -157,8 +102,85 @@ class _AddClientState extends State<AddClient> {
                             fontSize: 18.0,
                             fontWeight: FontWeight.bold,
                           ),
-                          hintText: 'Address',
+                          hintText: 'Start Time',
                         ),
+                        onTap: () async {
+                          TimeRange result = await showTimeRangePicker(
+                            context: context,
+                            paintingStyle: PaintingStyle.fill,
+                            labels: [
+                              '12 PM',
+                              '3 AM',
+                              '6 AM',
+                              '9 AM',
+                              '12 AM',
+                              '3 PM',
+                              '6 PM',
+                              '9 PM',
+                            ].asMap().entries.map((e) {
+                              return ClockLabel.fromIndex(
+                                idx: e.key,
+                                length: 8,
+                                text: e.value,
+                              );
+                            }).toList(),
+                            labelOffset: 35,
+                            rotateLabels: false,
+                            padding: 60,
+                          );
+                          if (result != null) {
+                            var sth = result.startTime.hour;
+                            var stm = result.startTime.minute;
+                            var enh = result.endTime.hour;
+                            var enm = result.endTime.minute;
+                            var stH = sth < 9 ? '0' + sth.toString() : sth;
+                            var stM = stm < 9 ? '0' + stm.toString() : stm;
+                            var enH = enh < 9 ? '0' + enh.toString() : enh;
+                            var enM = enm < 9 ? '0' + enm.toString() : enm;
+                            var start = '$stH:$stM:00.000';
+                            var end = '$enH:$enM:00.000';
+                            print('start: $start');
+                            print('end: $end');
+                            setState(() {
+                              starttime.text = '$stH:$stM:00';
+                              endtime.text = '$enH:$enM:00';
+                            });
+                          }
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0,
+                        vertical: 10.0,
+                      ),
+                      child: TextField(
+                        controller: endtime,
+                        readOnly: true,
+                        keyboardType: null,
+                        decoration: InputDecoration(
+                          isDense: true,
+                          contentPadding: EdgeInsets.all(10),
+                          hintStyle: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          hintText: 'End Time',
+                        ),
+                        onTap: () {
+                          Get.snackbar(
+                            'Error',
+                            'Click on start time to change the time',
+                            colorText: Colors.white,
+                            backgroundColor: Colors.black87,
+                            snackPosition: SnackPosition.BOTTOM,
+                            margin: EdgeInsets.symmetric(
+                              horizontal: 8.0,
+                              vertical: 10.0,
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ],
@@ -200,7 +222,7 @@ class _AddClientState extends State<AddClient> {
                           onPressed: () {
                             print('Submit');
                             FocusScope.of(context).requestFocus(FocusNode());
-                            if (name.text.isNullOrBlank || phone.text.isNullOrBlank || email.text.isNullOrBlank || unitIncharge.text.isNullOrBlank || address.text.isNullOrBlank || latitude == null || longitude == null) {
+                            if (shiftname.text.isNullOrBlank || starttime.text.isNullOrBlank || endtime.text.isNullOrBlank) {
                               Get.snackbar(
                                 'Error',
                                 'Please fill all fields',
@@ -212,38 +234,11 @@ class _AddClientState extends State<AddClient> {
                                   vertical: 10.0,
                                 ),
                               );
-                            } else if (!GetUtils.isLengthEqualTo(phone.text, 10)) {
-                              Get.snackbar(
-                                'Error',
-                                'Please provide 10 digit phone number',
-                                colorText: Colors.white,
-                                backgroundColor: Colors.black87,
-                                snackPosition: SnackPosition.BOTTOM,
-                                margin: EdgeInsets.symmetric(
-                                  horizontal: 8.0,
-                                  vertical: 10.0,
-                                ),
-                              );
-                            } else if (!GetUtils.isEmail(email.text)) {
-                              Get.snackbar(
-                                'Error',
-                                'Please provide valid email',
-                                colorText: Colors.white,
-                                backgroundColor: Colors.black87,
-                                snackPosition: SnackPosition.BOTTOM,
-                                margin: EdgeInsets.symmetric(
-                                  horizontal: 8.0,
-                                  vertical: 10.0,
-                                ),
-                              );
                             } else {
-                              print('name: ${name.text}');
-                              print('phone: ${phone.text}');
-                              print('email: ${email.text}');
-                              print('unitIncharge: ${unitIncharge.text}');
-                              print('address: ${address.text}');
-                              print('latitude: $latitude');
-                              print('longitude: $longitude');
+                              print('shift name: ${shiftname.text}');
+                              print('start time: ${starttime.text}');
+                              print('end time: ${endtime.text}');
+                              adminC.addShift(shiftname.text, starttime.text, endtime.text);
                             }
                           },
                           child: Padding(

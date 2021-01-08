@@ -1,6 +1,10 @@
+import 'add_shift.dart';
+
 import '../utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import 'add_client.dart';
 
 class OnboardingPage extends StatelessWidget {
   @override
@@ -21,7 +25,7 @@ class OnboardingPage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                // Get.to(AddClient());
+                Get.to(AddClient());
               },
               child: ListContainer(
                 'assets/images/client.png',
@@ -30,7 +34,7 @@ class OnboardingPage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                // Get.to(ShortageReport());
+                Get.to(AddShift());
               },
               child: ListContainer(
                 'assets/images/shift.png',
