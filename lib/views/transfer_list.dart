@@ -81,6 +81,7 @@ class _TransferListState extends State<TransferList> {
               Icons.add,
               size: 32.0,
             ),
+            backgroundColor: Theme.of(context).primaryColor,
           ),
         ],
       ),

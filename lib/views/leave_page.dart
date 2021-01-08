@@ -91,6 +91,7 @@ class _LeavePageState extends State<LeavePage> {
               Icons.add,
               size: 32.0,
             ),
+            backgroundColor: Theme.of(context).primaryColor,
           ),
         ],
       ),

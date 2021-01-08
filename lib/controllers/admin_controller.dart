@@ -11,6 +11,7 @@ class AdminController extends GetxController {
   var isLoading = true.obs;
   ProgressDialog pr;
   var resAddShift;
+  var resAddClient;
 
   void addShift(shiftName, startTime, endTime) async {
     try {

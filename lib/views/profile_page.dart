@@ -99,6 +99,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     FlatButton(
                       onPressed: () {
+                        Get.back();
                         pC.pr.show();
                         RemoteServices().logout();
                       },

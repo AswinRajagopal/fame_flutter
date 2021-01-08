@@ -256,21 +256,22 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
           ),
         ],
       ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            onPressed: () {
-              // Get.offAll(ApplyLeave());
-            },
-            child: Icon(
-              Icons.add,
-              size: 32.0,
-            ),
-          ),
-        ],
-      ),
+      // floatingActionButton: Column(
+      //   mainAxisAlignment: MainAxisAlignment.end,
+      //   crossAxisAlignment: CrossAxisAlignment.end,
+      //   children: [
+      //     FloatingActionButton(
+      //       onPressed: () {
+      //         // Get.offAll(ApplyLeave());
+      //       },
+      //       child: Icon(
+      //         Icons.add,
+      //         size: 32.0,
+      //       ),
+      //       backgroundColor: Theme.of(context).primaryColor,
+      //     ),
+      //   ],
+      // ),
       body: WillPopScope(
         onWillPop: backButtonPressed,
         child: SafeArea(
