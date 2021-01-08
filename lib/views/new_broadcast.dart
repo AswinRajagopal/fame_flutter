@@ -197,7 +197,7 @@ class _BroadcastState extends State<Broadcast> {
                           child: Text(
                             'Cancel',
                             style: TextStyle(
-                              color: Colors.blue,
+                              color: Theme.of(context).primaryColor,
                               fontWeight: FontWeight.bold,
                               fontSize: 20.0,
                             ),

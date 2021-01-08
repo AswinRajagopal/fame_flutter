@@ -190,7 +190,7 @@ class _AddClientState extends State<AddClient> {
                           child: Text(
                             'Cancel',
                             style: TextStyle(
-                              color: Colors.blue,
+                              color: Theme.of(context).primaryColor,
                               fontWeight: FontWeight.bold,
                               fontSize: 20.0,
                             ),

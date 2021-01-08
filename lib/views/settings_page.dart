@@ -187,7 +187,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             'Success',
                             'Feedback submitted successfully',
                             colorText: Colors.white,
-                            backgroundColor: Colors.green,
+                            backgroundColor: AppUtils().greenColor,
                             snackPosition: SnackPosition.BOTTOM,
                             duration: Duration(
                               seconds: 2,

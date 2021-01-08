@@ -306,7 +306,7 @@ class _ShortageReportState extends State<ShortageReport> {
                                         ),
                                       ),
                                       border: Border.all(
-                                        color: Colors.green,
+                                        color: AppUtils().greenColor,
                                       ),
                                     )
                                   : BoxDecoration(
@@ -363,7 +363,7 @@ class _ShortageReportState extends State<ShortageReport> {
                           child: Text(
                             'Cancel',
                             style: TextStyle(
-                              color: Colors.blue,
+                              color: Theme.of(context).primaryColor,
                               fontWeight: FontWeight.bold,
                               fontSize: 20.0,
                             ),

@@ -130,7 +130,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                             height: 50.0,
                             width: MediaQuery.of(context).size.width / 1.3,
                             decoration: BoxDecoration(
-                              color: Colors.blue,
+                              color: Theme.of(context).primaryColor,
                               borderRadius: BorderRadius.all(
                                 Radius.circular(
                                   50.0,
@@ -147,7 +147,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      color: Colors.blue,
+                                      color: Theme.of(context).primaryColor,
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(
                                           50.0,
@@ -191,7 +191,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                                         style: TextStyle(
                                           fontSize: 18.0,
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.blue,
+                                          color: Theme.of(context).primaryColor,
                                         ),
                                       ),
                                     ),
@@ -387,7 +387,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                                     child: Image.asset(
                                       'assets/images/add_icon.png',
                                       scale: 30.0,
-                                      color: Colors.green,
+                                      color: AppUtils().greenColor,
                                     ),
                                   ),
                                 ),
@@ -493,7 +493,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                                                     height: 25.0,
                                                     width: 25.0,
                                                     decoration: BoxDecoration(
-                                                      color: rpC.sC.contains(address) ? Colors.blue : Colors.white,
+                                                      color: rpC.sC.contains(address) ? Theme.of(context).primaryColor : Colors.white,
                                                       borderRadius: BorderRadius.all(
                                                         Radius.circular(
                                                           5.0,
@@ -612,7 +612,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                             child: Text(
                               'Cancel',
                               style: TextStyle(
-                                color: Colors.blue,
+                                color: Theme.of(context).primaryColor,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20.0,
                               ),

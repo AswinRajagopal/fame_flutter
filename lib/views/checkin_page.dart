@@ -173,7 +173,7 @@ class _CheckinPageState extends State<CheckinPage> {
               Image.asset(
                 'assets/images/success.png',
                 scale: 2.0,
-                color: Colors.green,
+                color: AppUtils().greenColor,
               ),
               SizedBox(
                 height: 15.0,
@@ -192,7 +192,7 @@ class _CheckinPageState extends State<CheckinPage> {
                 DateFormat().add_jm().format(DateTime.now()).toString(),
                 style: TextStyle(
                   fontSize: 20.0,
-                  color: Colors.blue,
+                  color: Theme.of(context).primaryColor,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -205,7 +205,7 @@ class _CheckinPageState extends State<CheckinPage> {
                   vertical: 12.0,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.green,
+                  color: AppUtils().greenColor,
                   borderRadius: BorderRadius.all(
                     Radius.circular(
                       30.0,
@@ -449,7 +449,7 @@ class _CheckinPageState extends State<CheckinPage> {
                                 return Text(
                                   checkinController.todayString.value,
                                   style: TextStyle(
-                                    color: Colors.blue,
+                                    color: Theme.of(context).primaryColor,
                                     fontSize: 20.0,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -496,13 +496,13 @@ class _CheckinPageState extends State<CheckinPage> {
                             ],
                           ),
                         ),
-                        color: Colors.green,
+                        color: AppUtils().greenColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(
                             30.0,
                           ),
                           side: BorderSide(
-                            color: Colors.green,
+                            color: AppUtils().greenColor,
                           ),
                         ),
                       );

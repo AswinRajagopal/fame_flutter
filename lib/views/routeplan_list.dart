@@ -90,7 +90,7 @@ class _RouteplanListState extends State<RouteplanList> {
         animatedIconTheme: IconThemeData(
           size: 22,
         ),
-        backgroundColor: Colors.blue,
+        backgroundColor: Theme.of(context).primaryColor,
         visible: true,
         curve: Curves.easeInOut,
         children: [
@@ -98,7 +98,7 @@ class _RouteplanListState extends State<RouteplanList> {
             child: Icon(
               Icons.add,
             ),
-            backgroundColor: Colors.blue,
+            backgroundColor: Theme.of(context).primaryColor,
             onTap: () {
               Get.offAll(
                 RoutePlanning(
@@ -112,13 +112,13 @@ class _RouteplanListState extends State<RouteplanList> {
               color: Colors.white,
               fontSize: 16.0,
             ),
-            labelBackgroundColor: Colors.blue,
+            labelBackgroundColor: Theme.of(context).primaryColor,
           ),
           SpeedDialChild(
             child: Icon(
               Icons.pin_drop,
             ),
-            backgroundColor: Colors.blue,
+            backgroundColor: Theme.of(context).primaryColor,
             onTap: () {
               Get.to(PinMyVisit());
             },
@@ -128,7 +128,7 @@ class _RouteplanListState extends State<RouteplanList> {
               color: Colors.white,
               fontSize: 16.0,
             ),
-            labelBackgroundColor: Colors.blue,
+            labelBackgroundColor: Theme.of(context).primaryColor,
           ),
         ],
       ),

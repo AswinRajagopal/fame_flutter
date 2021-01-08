@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import '../connection/remote_services.dart';
+import '../utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -83,7 +84,7 @@ class TransferController extends GetxController {
             'Success',
             'Transfer addedd successfully',
             colorText: Colors.white,
-            backgroundColor: Colors.green,
+            backgroundColor: AppUtils().greenColor,
             snackPosition: SnackPosition.BOTTOM,
             duration: Duration(
               seconds: 2,

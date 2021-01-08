@@ -1,3 +1,5 @@
+import 'package:hexcolor/hexcolor.dart';
+
 import 'views/dashboard_page.dart';
 
 import 'connection/remote_services.dart';
@@ -43,6 +45,7 @@ class PocketFaME extends StatelessWidget {
         // ),
         visualDensity: VisualDensity.adaptivePlatformDensity,
         fontFamily: 'AvenirMedium',
+        primaryColor: HexColor('4981DB'),
       ),
       builder: (context, child) {
         return ScrollConfiguration(

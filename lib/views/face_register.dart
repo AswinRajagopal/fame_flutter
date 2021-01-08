@@ -147,7 +147,7 @@ class _FaceRegisterState extends State<FaceRegister> {
               Image.asset(
                 'assets/images/success.png',
                 scale: 2.0,
-                color: Colors.green,
+                color: AppUtils().greenColor,
               ),
               SizedBox(
                 height: 15.0,
@@ -168,7 +168,7 @@ class _FaceRegisterState extends State<FaceRegister> {
                   vertical: 12.0,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.green,
+                  color: AppUtils().greenColor,
                   borderRadius: BorderRadius.all(
                     Radius.circular(
                       30.0,
@@ -413,13 +413,13 @@ class _FaceRegisterState extends State<FaceRegister> {
                           ],
                         ),
                       ),
-                      color: Colors.green,
+                      color: AppUtils().greenColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(
                           30.0,
                         ),
                         side: BorderSide(
-                          color: Colors.green,
+                          color: AppUtils().greenColor,
                         ),
                       ),
                     ),

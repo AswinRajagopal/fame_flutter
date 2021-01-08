@@ -403,7 +403,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                               'P : ${enC.p.value.toString()}',
                               style: TextStyle(
                                 fontSize: 18.0,
-                                color: Colors.blue,
+                                color: Theme.of(context).primaryColor,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -417,7 +417,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                               'W.O. : ${enC.wo.value.toString()}',
                               style: TextStyle(
                                 fontSize: 18.0,
-                                color: Colors.blue,
+                                color: Theme.of(context).primaryColor,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -431,7 +431,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                               'L : ${enC.l.value.toString()}',
                               style: TextStyle(
                                 fontSize: 18.0,
-                                color: Colors.blue,
+                                color: Theme.of(context).primaryColor,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),

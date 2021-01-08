@@ -174,7 +174,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   child: Container(
                     height: 250,
                     width: MediaQuery.of(context).size.width,
-                    color: Colors.blue,
+                    color: Theme.of(context).primaryColor,
                     child: Padding(
                       padding: const EdgeInsets.only(
                         top: 15.0,
@@ -441,13 +441,13 @@ class _DashboardPageState extends State<DashboardPage> {
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                        color: Colors.green,
+                                        color: AppUtils().greenColor,
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(
                                             25.0,
                                           ),
                                           side: BorderSide(
-                                            color: Colors.green,
+                                            color: AppUtils().greenColor,
                                           ),
                                         ),
                                       ),
@@ -482,7 +482,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                   'On Duty',
                                                   style: TextStyle(
                                                     fontSize: 16.0,
-                                                    color: Colors.orange,
+                                                    color: AppUtils().orangeColor,
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
@@ -581,13 +581,13 @@ class _DashboardPageState extends State<DashboardPage> {
                                                       fontWeight: FontWeight.bold,
                                                     ),
                                                   ),
-                                                  color: Colors.orange[800],
+                                                  color: AppUtils().orangeColor,
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius: BorderRadius.circular(
                                                       25.0,
                                                     ),
                                                     side: BorderSide(
-                                                      color: Colors.orange[800],
+                                                      color: AppUtils().orangeColor,
                                                     ),
                                                   ),
                                                 ),
@@ -724,13 +724,13 @@ class _DashboardPageState extends State<DashboardPage> {
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               ),
-                                              color: Colors.green,
+                                              color: AppUtils().greenColor,
                                               shape: RoundedRectangleBorder(
                                                 borderRadius: BorderRadius.circular(
                                                   25.0,
                                                 ),
                                                 side: BorderSide(
-                                                  color: Colors.green,
+                                                  color: AppUtils().greenColor,
                                                 ),
                                               ),
                                             ),
@@ -1094,7 +1094,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           height: 50.0,
                           width: MediaQuery.of(context).size.width / 1.3,
                           decoration: BoxDecoration(
-                            color: Colors.blue,
+                            color: Theme.of(context).primaryColor,
                             borderRadius: BorderRadius.all(
                               Radius.circular(
                                 50.0,
@@ -1117,7 +1117,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
-                                    color: calC.calendarType == 'myCal' ? Colors.white : Colors.blue,
+                                    color: calC.calendarType == 'myCal' ? Colors.white : Theme.of(context).primaryColor,
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(
                                         50.0,
@@ -1134,7 +1134,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                       style: TextStyle(
                                         fontSize: 18.0,
                                         fontWeight: FontWeight.bold,
-                                        color: calC.calendarType == 'myCal' ? Colors.blue : Colors.white,
+                                        color: calC.calendarType == 'myCal' ? Theme.of(context).primaryColor : Colors.white,
                                       ),
                                     ),
                                   ),
@@ -1152,7 +1152,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
-                                    color: calC.calendarType == 'myRos' ? Colors.white : Colors.blue,
+                                    color: calC.calendarType == 'myRos' ? Colors.white : Theme.of(context).primaryColor,
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(
                                         50.0,
@@ -1169,7 +1169,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                       style: TextStyle(
                                         fontSize: 18.0,
                                         fontWeight: FontWeight.bold,
-                                        color: calC.calendarType == 'myRos' ? Colors.blue : Colors.white,
+                                        color: calC.calendarType == 'myRos' ? Theme.of(context).primaryColor : Colors.white,
                                       ),
                                     ),
                                   ),

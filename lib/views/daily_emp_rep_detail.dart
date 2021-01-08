@@ -177,7 +177,7 @@ class _DailyEmpRepDetailState extends State<DailyEmpRepDetail> {
             //           height: 50.0,
             //           width: MediaQuery.of(context).size.width / 1.3,
             //           decoration: BoxDecoration(
-            //             color: Colors.blue,
+            //             color: Theme.of(context).primaryColor,
             //             borderRadius: BorderRadius.all(
             //               Radius.circular(
             //                 50.0,
@@ -199,7 +199,7 @@ class _DailyEmpRepDetailState extends State<DailyEmpRepDetail> {
             //                 },
             //                 child: Container(
             //                   decoration: BoxDecoration(
-            //                     color: epC.reportType == 'name' ? Colors.white : Colors.blue,
+            //                     color: epC.reportType == 'name' ? Colors.white : Theme.of(context).primaryColor,
             //                     borderRadius: BorderRadius.all(
             //                       Radius.circular(
             //                         50.0,
@@ -216,7 +216,7 @@ class _DailyEmpRepDetailState extends State<DailyEmpRepDetail> {
             //                       style: TextStyle(
             //                         fontSize: 18.0,
             //                         fontWeight: FontWeight.bold,
-            //                         color: epC.reportType == 'name' ? Colors.blue : Colors.white,
+            //                         color: epC.reportType == 'name' ? Theme.of(context).primaryColor : Colors.white,
             //                       ),
             //                     ),
             //                   ),
@@ -233,7 +233,7 @@ class _DailyEmpRepDetailState extends State<DailyEmpRepDetail> {
             //                 },
             //                 child: Container(
             //                   decoration: BoxDecoration(
-            //                     color: epC.reportType == 'empid' ? Colors.white : Colors.blue,
+            //                     color: epC.reportType == 'empid' ? Colors.white : Theme.of(context).primaryColor,
             //                     borderRadius: BorderRadius.all(
             //                       Radius.circular(
             //                         50.0,
@@ -250,7 +250,7 @@ class _DailyEmpRepDetailState extends State<DailyEmpRepDetail> {
             //                       style: TextStyle(
             //                         fontSize: 18.0,
             //                         fontWeight: FontWeight.bold,
-            //                         color: epC.reportType == 'empid' ? Colors.blue : Colors.white,
+            //                         color: epC.reportType == 'empid' ? Theme.of(context).primaryColor : Colors.white,
             //                       ),
             //                     ),
             //                   ),
@@ -312,7 +312,7 @@ class _DailyEmpRepDetailState extends State<DailyEmpRepDetail> {
                                       style: TextStyle(
                                         fontSize: 15.0,
                                         fontWeight: FontWeight.w900,
-                                        color: Colors.blue,
+                                        color: Theme.of(context).primaryColor,
                                       ),
                                     ),
                                     Text(
@@ -354,7 +354,7 @@ class _DailyEmpRepDetailState extends State<DailyEmpRepDetail> {
                                       'Creator : ${emp['checkInLatitude'] == '0E-8' ? 'Unit incharge' : 'Self'}',
                                       style: TextStyle(
                                         fontSize: 15.0,
-                                        color: Colors.orange,
+                                        color: AppUtils().orangeColor,
                                       ),
                                     ),
                                   ],

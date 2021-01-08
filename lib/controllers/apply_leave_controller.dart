@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import '../views/leave_page.dart';
+import '../utils/utils.dart';
 
 import '../connection/remote_services.dart';
 import 'package:flutter/material.dart';
@@ -100,7 +101,7 @@ class ApplyLeaveController extends GetxController {
             'Success',
             'Leave applied',
             colorText: Colors.white,
-            backgroundColor: Colors.green,
+            backgroundColor: AppUtils().greenColor,
             snackPosition: SnackPosition.BOTTOM,
             margin: EdgeInsets.symmetric(
               horizontal: 8.0,

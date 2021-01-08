@@ -50,7 +50,7 @@ class BottomNav extends StatelessWidget {
       },
       type: BottomNavigationBarType.fixed,
       currentIndex: 2,
-      fixedColor: Colors.blue,
+      fixedColor: Theme.of(context).primaryColor,
       unselectedItemColor: Colors.black,
       unselectedLabelStyle: TextStyle(
         color: Colors.black,

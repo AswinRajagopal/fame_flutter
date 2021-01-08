@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import '../connection/remote_services.dart';
+import '../utils/utils.dart';
 import '../views/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,7 +24,7 @@ class ResetPasswordController extends GetxController {
             'Success',
             'Password reset successfully. You will be redirected shortly',
             colorText: Colors.white,
-            backgroundColor: Colors.green,
+            backgroundColor: AppUtils().greenColor,
             snackPosition: SnackPosition.BOTTOM,
             margin: EdgeInsets.symmetric(
               horizontal: 8.0,

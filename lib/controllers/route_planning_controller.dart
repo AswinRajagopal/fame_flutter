@@ -2,6 +2,7 @@ import 'dart:async';
 
 import '../views/dashboard_page.dart';
 import 'package:flutter/material.dart';
+import '../utils/utils.dart';
 
 import '../connection/remote_services.dart';
 import 'package:get/get.dart';
@@ -95,7 +96,7 @@ class RoutePlanningController extends GetxController {
             'Success',
             'Route plan created',
             colorText: Colors.white,
-            backgroundColor: Colors.green,
+            backgroundColor: AppUtils().greenColor,
             snackPosition: SnackPosition.BOTTOM,
             margin: EdgeInsets.symmetric(
               horizontal: 8.0,

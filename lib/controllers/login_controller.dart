@@ -31,7 +31,7 @@ class LoginController extends GetxController {
           //   'Success',
           //   'Employee found',
           //   colorText: Colors.white,
-          //   backgroundColor: Colors.green,
+          //   backgroundColor: AppUtils().greenColor,
           //   snackPosition: SnackPosition.BOTTOM,
           //   margin: EdgeInsets.symmetric(
           //     horizontal: 8.0,

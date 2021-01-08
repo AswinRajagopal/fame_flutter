@@ -82,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Container(
                     height: 250,
                     width: MediaQuery.of(context).size.width,
-                    color: Colors.blue,
+                    color: Theme.of(context).primaryColor,
                     child: Padding(
                       padding: const EdgeInsets.only(
                         top: 30.0,
@@ -152,7 +152,7 @@ class _LoginPageState extends State<LoginPage> {
                                     'LOGIN',
                                     style: TextStyle(
                                       fontSize: 18.0,
-                                      color: Colors.blue,
+                                      color: Theme.of(context).primaryColor,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -277,7 +277,7 @@ class _LoginPageState extends State<LoginPage> {
                               child: Text(
                                 'Forgot password?',
                                 style: TextStyle(
-                                  color: Colors.orangeAccent,
+                                  color: AppUtils().orangeColor,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 15.0,
                                 ),
@@ -316,7 +316,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 child: Center(
                   child: MaterialButton(
-                    color: Colors.orangeAccent,
+                    color: AppUtils().orangeColor,
                     shape: CircleBorder(),
                     onPressed: () {
                       FocusScope.of(context).requestFocus(FocusNode());

@@ -105,7 +105,7 @@ class _SOSState extends State<SOS> {
                         child: Text(
                           'Cancel',
                           style: TextStyle(
-                            color: Colors.blue,
+                            color: Theme.of(context).primaryColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 20.0,
                           ),

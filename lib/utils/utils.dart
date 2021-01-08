@@ -6,6 +6,10 @@ class AppUtils {
   Color grScaffoldBg = Colors.grey[300];
   Color greyScaffoldBg = HexColor('eff4f6');
   Color innerScaffoldBg = Colors.white;
+  Color greenColor = HexColor('4DB734');
+  Color darkBlueColor = HexColor('3C6BB7');
+  Color lightBlueColor = HexColor('54D2DB');
+  Color orangeColor = HexColor('FF7933');
   static String WHOLEDAY = 'W';
   static String FIRSTHALF = 'F';
   static String SECONDHALF = 'S';

@@ -75,13 +75,13 @@ class _WelcomePageState extends State<WelcomePage> {
                           ),
                         ),
                       ),
-                      color: Colors.blueAccent,
+                      color: Theme.of(context).primaryColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(
                           25.0,
                         ),
                         side: BorderSide(
-                          color: Colors.blueAccent,
+                          color: Theme.of(context).primaryColor,
                         ),
                       ),
                     ),
@@ -100,7 +100,7 @@ class _WelcomePageState extends State<WelcomePage> {
                         child: Text(
                           'LOGIN',
                           style: TextStyle(
-                            color: Colors.blueAccent,
+                            color: Theme.of(context).primaryColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 16.0,
                           ),
@@ -112,7 +112,7 @@ class _WelcomePageState extends State<WelcomePage> {
                           25.0,
                         ),
                         side: BorderSide(
-                          color: Colors.blueAccent,
+                          color: Theme.of(context).primaryColor,
                           width: 2.0,
                         ),
                       ),

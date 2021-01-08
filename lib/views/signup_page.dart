@@ -126,7 +126,7 @@ class _SignupPageState extends State<SignupPage> {
                   child: Container(
                     height: 250,
                     width: MediaQuery.of(context).size.width,
-                    color: Colors.blue,
+                    color: Theme.of(context).primaryColor,
                     child: Padding(
                       padding: const EdgeInsets.only(
                         top: 30.0,
@@ -220,7 +220,7 @@ class _SignupPageState extends State<SignupPage> {
                                       'SIGNUP',
                                       style: TextStyle(
                                         fontSize: 18.0,
-                                        color: Colors.blue,
+                                        color: Theme.of(context).primaryColor,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -335,7 +335,7 @@ class _SignupPageState extends State<SignupPage> {
                         //         child: Text(
                         //           'Terms & Conditions',
                         //           style: TextStyle(
-                        //             color: Colors.orangeAccent,
+                        //             color: AppUtils().orangeColor,
                         //           ),
                         //         ),
                         //       ),
@@ -375,7 +375,7 @@ class _SignupPageState extends State<SignupPage> {
                 ),
                 child: Center(
                   child: MaterialButton(
-                    color: Colors.orangeAccent,
+                    color: AppUtils().orangeColor,
                     shape: CircleBorder(),
                     onPressed: () async {
                       FocusScope.of(context).requestFocus(FocusNode());
@@ -483,11 +483,11 @@ class _SignupPageState extends State<SignupPage> {
                                         shape: PinCodeFieldShape.underline,
                                         fieldHeight: 65,
                                         fieldWidth: 65,
-                                        activeColor: Colors.blue,
-                                        activeFillColor: Colors.blue,
-                                        selectedColor: Colors.blue,
-                                        selectedFillColor: Colors.blue,
-                                        inactiveColor: Colors.blue,
+                                        activeColor: Theme.of(context).primaryColor,
+                                        activeFillColor: Theme.of(context).primaryColor,
+                                        selectedColor: Theme.of(context).primaryColor,
+                                        selectedFillColor: Theme.of(context).primaryColor,
+                                        inactiveColor: Theme.of(context).primaryColor,
                                       ),
                                       cursorColor: Colors.transparent,
                                       cursorHeight: 40.0,
@@ -544,7 +544,7 @@ class _SignupPageState extends State<SignupPage> {
                                                 'Success',
                                                 'OTP sent',
                                                 colorText: Colors.white,
-                                                backgroundColor: Colors.green,
+                                                backgroundColor: AppUtils().greenColor,
                                                 snackPosition: SnackPosition.BOTTOM,
                                                 margin: EdgeInsets.symmetric(
                                                   horizontal: 8.0,
@@ -568,7 +568,7 @@ class _SignupPageState extends State<SignupPage> {
                                           child: Text(
                                             'Resend',
                                             style: TextStyle(
-                                              color: Colors.blue,
+                                              color: Theme.of(context).primaryColor,
                                               fontSize: 16.0,
                                               fontWeight: FontWeight.bold,
                                             ),
@@ -615,13 +615,13 @@ class _SignupPageState extends State<SignupPage> {
                                           ),
                                         ),
                                       ),
-                                      color: Colors.blue,
+                                      color: Theme.of(context).primaryColor,
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(
                                           30.0,
                                         ),
                                         side: BorderSide(
-                                          color: Colors.blue,
+                                          color: Theme.of(context).primaryColor,
                                         ),
                                       ),
                                     ),

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import '../connection/remote_services.dart';
+import '../utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -41,7 +42,7 @@ class SignupController extends GetxController {
             'Success',
             'Account created, please verify mobile by otp',
             colorText: Colors.white,
-            backgroundColor: Colors.green,
+            backgroundColor: AppUtils().greenColor,
             snackPosition: SnackPosition.BOTTOM,
             margin: EdgeInsets.symmetric(
               horizontal: 8.0,

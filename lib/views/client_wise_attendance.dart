@@ -305,7 +305,7 @@ class _ClientWiseAttendanceState extends State<ClientWiseAttendance> {
                                         ),
                                       ),
                                       border: Border.all(
-                                        color: Colors.green,
+                                        color: AppUtils().greenColor,
                                       ),
                                     )
                                   : BoxDecoration(
@@ -362,7 +362,7 @@ class _ClientWiseAttendanceState extends State<ClientWiseAttendance> {
                           child: Text(
                             'Cancel',
                             style: TextStyle(
-                              color: Colors.blue,
+                              color: Theme.of(context).primaryColor,
                               fontWeight: FontWeight.bold,
                               fontSize: 20.0,
                             ),

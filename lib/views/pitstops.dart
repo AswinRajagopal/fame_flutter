@@ -129,14 +129,14 @@ class _PitstopsState extends State<Pitstops> {
                           return DashedLineConnector(
                             dash: 6.0,
                             gap: 3.0,
-                            color: Colors.blue,
+                            color: Theme.of(context).primaryColor,
                           );
                         },
                         indicatorBuilder: (context, index) {
                           return OutlinedDotIndicator(
                             size: 25.0,
                             backgroundColor: Colors.white,
-                            color: Colors.blue,
+                            color: Theme.of(context).primaryColor,
                             borderWidth: 7.0,
                           );
                         },
@@ -270,14 +270,14 @@ class _PitstopsState extends State<Pitstops> {
                                                 backgroundColor: Colors.green[100],
                                                 shape: RoundedRectangleBorder(
                                                   side: BorderSide(
-                                                    color: Colors.green,
+                                                    color: AppUtils().greenColor,
                                                   ),
                                                   borderRadius: BorderRadius.all(
                                                     Radius.circular(5.0),
                                                   ),
                                                 ),
                                                 labelStyle: TextStyle(
-                                                  color: Colors.green,
+                                                  color: AppUtils().greenColor,
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               )
@@ -308,7 +308,7 @@ class _PitstopsState extends State<Pitstops> {
                                   // indicator: OutlinedDotIndicator(
                                   //   size: 25.0,
                                   //   backgroundColor: Colors.white,
-                                  //   color: Colors.blue,
+                                  //   color: Theme.of(context).primaryColor,
                                   //   borderWidth: 7.0,
                                   // ),
                                   // indicatorPosition: 0.15,
@@ -317,7 +317,7 @@ class _PitstopsState extends State<Pitstops> {
                                   //   child: DashedLineConnector(
                                   //     dash: 6.0,
                                   //     gap: 3.0,
-                                  //     color: Colors.blue,
+                                  //     color: Theme.of(context).primaryColor,
                                   //   ),
                                   // ),
                                   // endConnector: Visibility(
@@ -325,7 +325,7 @@ class _PitstopsState extends State<Pitstops> {
                                   //   child: DashedLineConnector(
                                   //     dash: 6.0,
                                   //     gap: 3.0,
-                                  //     color: Colors.blue,
+                                  //     color: Theme.of(context).primaryColor,
                                   //   ),
                                   // ),
                                   ),

@@ -483,7 +483,7 @@ class _PinMyVisitState extends State<PinMyVisit> {
                                 return Text(
                                   mpC.todayString.value,
                                   style: TextStyle(
-                                    color: Colors.blue,
+                                    color: Theme.of(context).primaryColor,
                                     fontSize: 20.0,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -531,13 +531,13 @@ class _PinMyVisitState extends State<PinMyVisit> {
                             ],
                           ),
                         ),
-                        color: Colors.green,
+                        color: AppUtils().greenColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(
                             30.0,
                           ),
                           side: BorderSide(
-                            color: Colors.green,
+                            color: AppUtils().greenColor,
                           ),
                         ),
                       );

@@ -146,21 +146,7 @@ class _CalendarDemoState extends State<CalendarDemo> with TickerProviderStateMix
       rowHeight: 70.0,
       calendarStyle: CalendarStyle(
         outsideDaysVisible: false,
-        // weekendStyle: TextStyle().copyWith(color: Colors.blue[800]),
-        // holidayStyle: TextStyle().copyWith(color: Colors.blue[800]),
-        // outsideStyle: TextStyle(
-        //   color: Colors.grey[200],
-        // ),
-        // unavailableStyle: TextStyle(
-        //   color: Colors.grey[200],
-        // ),
-        // weekdayStyle: TextStyle(
-        //   color: Colors.grey[200],
-        // ),
       ),
-      // daysOfWeekStyle: DaysOfWeekStyle(
-      // weekendStyle: TextStyle().copyWith(color: Colors.blue[600]),
-      // ),
       headerStyle: HeaderStyle(
         centerHeaderTitle: true,
         formatButtonVisible: false,
@@ -265,14 +251,6 @@ class _CalendarDemoState extends State<CalendarDemo> with TickerProviderStateMix
     // print(events.first);
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
-      // decoration: BoxDecoration(
-      // shape: BoxShape.rectangle,
-      // color: _calendarController.isSelected(date)
-      //     ? Colors.brown[500]
-      //     : _calendarController.isToday(date)
-      //         ? Colors.brown[300]
-      //         : Colors.blue[400],
-      // ),
       width: 50.0,
       height: 30.0,
       child: Center(

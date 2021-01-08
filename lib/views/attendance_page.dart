@@ -504,11 +504,11 @@ class _AttendancePageState extends State<AttendancePage> {
                                       ),
                                     ),
                                   ),
-                                  color: Colors.blue,
+                                  color: Theme.of(context).primaryColor,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5.0),
                                     side: BorderSide(
-                                      color: Colors.blue,
+                                      color: Theme.of(context).primaryColor,
                                     ),
                                   ),
                                 ),

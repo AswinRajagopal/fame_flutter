@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import '../connection/remote_services.dart';
+import '../utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -117,7 +118,7 @@ class BroadcastController extends GetxController {
             'Success',
             'Broadcast sent successfully',
             colorText: Colors.white,
-            backgroundColor: Colors.green,
+            backgroundColor: AppUtils().greenColor,
             snackPosition: SnackPosition.BOTTOM,
             duration: Duration(
               seconds: 2,

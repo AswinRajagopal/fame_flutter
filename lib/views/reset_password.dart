@@ -1,3 +1,4 @@
+import '../utils/utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -77,7 +78,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                   child: Container(
                     height: 250,
                     width: MediaQuery.of(context).size.width,
-                    color: Colors.blue,
+                    color: Theme.of(context).primaryColor,
                     child: Padding(
                       padding: const EdgeInsets.only(
                         top: 30.0,
@@ -253,7 +254,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                 ),
                 child: Center(
                   child: MaterialButton(
-                    color: Colors.orangeAccent,
+                    color: AppUtils().orangeColor,
                     shape: CircleBorder(),
                     onPressed: () async {
                       FocusScope.of(context).requestFocus(FocusNode());

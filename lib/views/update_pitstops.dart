@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import '../utils/utils.dart';
 import 'pitstops.dart';
 import '../connection/remote_services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -162,7 +163,7 @@ class _UpdatePitstopsState extends State<UpdatePitstops> {
         'Error',
         'select a camera first.',
         colorText: Colors.white,
-backgroundColor: Colors.black87,
+        backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.symmetric(
           horizontal: 8.0,
@@ -466,7 +467,7 @@ backgroundColor: Colors.black87,
                                 return Text(
                                   psC.todayString.value,
                                   style: TextStyle(
-                                    color: Colors.blue,
+                                    color: Theme.of(context).primaryColor,
                                     fontSize: 20.0,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -509,13 +510,13 @@ backgroundColor: Colors.black87,
                             ],
                           ),
                         ),
-                        color: Colors.green,
+                        color: AppUtils().greenColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(
                             30.0,
                           ),
                           side: BorderSide(
-                            color: Colors.green,
+                            color: AppUtils().greenColor,
                           ),
                         ),
                       );

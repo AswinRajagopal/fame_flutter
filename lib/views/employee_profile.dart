@@ -82,7 +82,7 @@ class _EmployeeProfileState extends State<EmployeeProfile> {
                   child: Container(
                     height: 250,
                     width: MediaQuery.of(context).size.width,
-                    color: Colors.blue,
+                    color: Theme.of(context).primaryColor,
                     child: Padding(
                       padding: const EdgeInsets.only(
                         top: 30.0,

@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import '../utils/utils.dart';
+
 import '../connection/remote_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -25,7 +27,7 @@ class AdminController extends GetxController {
             'Shift created successfully',
             colorText: Colors.white,
             duration: Duration(seconds: 2),
-            backgroundColor: Colors.green,
+            backgroundColor: AppUtils().greenColor,
             snackPosition: SnackPosition.BOTTOM,
             margin: EdgeInsets.symmetric(
               horizontal: 8.0,

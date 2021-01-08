@@ -201,7 +201,7 @@ class _HomeCalendarState extends State<HomeCalendar> with TickerProviderStateMix
         child: Text(
           showEvent,
           style: TextStyle().copyWith(
-            color: Colors.blue,
+            color: Theme.of(context).primaryColor,
             fontSize: 16.0,
             fontWeight: FontWeight.w900,
           ),

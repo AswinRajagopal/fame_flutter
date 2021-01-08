@@ -34,7 +34,7 @@ class EmpRepDetailWidget extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 15.0,
                       fontWeight: FontWeight.w900,
-                      color: Colors.blue,
+                      color: Theme.of(context).primaryColor,
                     ),
                   ),
                 ],

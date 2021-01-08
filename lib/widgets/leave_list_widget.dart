@@ -382,11 +382,11 @@ class LeaveListWidget extends StatelessWidget {
                                   fontSize: 16.0,
                                 ),
                               ),
-                              color: Colors.blue,
+                              color: Theme.of(context).primaryColor,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5.0),
                                 side: BorderSide(
-                                  color: Colors.blue,
+                                  color: Theme.of(context).primaryColor,
                                 ),
                               ),
                             ),

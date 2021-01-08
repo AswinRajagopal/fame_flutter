@@ -29,7 +29,7 @@ class CustomProgressIndicator extends StatelessWidget {
       animationDuration: 2000,
       curve: Curves.easeInOut,
       backgroundColor: Colors.grey[350],
-      progressColor: Colors.blue,
+      progressColor: Theme.of(context).primaryColor,
       circularStrokeCap: CircularStrokeCap.round,
       footer: Padding(
         padding: const EdgeInsets.only(top: 10.0),

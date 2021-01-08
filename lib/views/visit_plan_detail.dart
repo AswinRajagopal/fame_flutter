@@ -120,14 +120,14 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
                         return DashedLineConnector(
                           dash: 6.0,
                           gap: 3.0,
-                          color: Colors.blue,
+                          color: Theme.of(context).primaryColor,
                         );
                       },
                       indicatorBuilder: (context, index) {
                         return OutlinedDotIndicator(
                           size: 25.0,
                           backgroundColor: Colors.white,
-                          color: Colors.blue,
+                          color: Theme.of(context).primaryColor,
                           borderWidth: 7.0,
                         );
                       },

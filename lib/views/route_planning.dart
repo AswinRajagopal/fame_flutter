@@ -137,7 +137,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                             height: 50.0,
                             width: MediaQuery.of(context).size.width / 1.3,
                             decoration: BoxDecoration(
-                              color: Colors.blue,
+                              color: Theme.of(context).primaryColor,
                               borderRadius: BorderRadius.all(
                                 Radius.circular(
                                   50.0,
@@ -169,7 +169,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                         style: TextStyle(
                                           fontSize: 18.0,
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.blue,
+                                          color: Theme.of(context).primaryColor,
                                         ),
                                       ),
                                     ),
@@ -181,7 +181,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      color: Colors.blue,
+                                      color: Theme.of(context).primaryColor,
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(
                                           50.0,
@@ -341,7 +341,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                   ),
                                 ),
                                 shape: BadgeShape.circle,
-                                badgeColor: Colors.orange,
+                                badgeColor: AppUtils().orangeColor,
                                 toAnimate: true,
                                 animationType: BadgeAnimationType.scale,
                                 padding: EdgeInsets.all(
@@ -418,7 +418,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                                     height: 25.0,
                                                     width: 25.0,
                                                     decoration: BoxDecoration(
-                                                      color: rpC.sC.contains(client) ? Colors.blue : Colors.white,
+                                                      color: rpC.sC.contains(client) ? Theme.of(context).primaryColor : Colors.white,
                                                       borderRadius: BorderRadius.all(
                                                         Radius.circular(
                                                           5.0,
@@ -547,7 +547,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                             child: Text(
                               'Cancel',
                               style: TextStyle(
-                                color: Colors.blue,
+                                color: Theme.of(context).primaryColor,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20.0,
                               ),
