@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -5,6 +6,8 @@ import 'dart:developer' as developer;
 
 import 'package:dio/dio.dart' as mydio;
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart';
 import '../models/support.dart';
 import '../models/transfer_list.dart';
 import '../models/attendance.dart';
@@ -29,6 +32,7 @@ import '../models/signup.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import '../models/login.dart';
+import 'package:battery/battery.dart';
 
 class RemoteServices {
   // static var baseURL = 'http://13.232.255.84:8090/v1/api';
@@ -1391,5 +1395,70 @@ class RemoteServices {
       //show error message
       return null;
     }
+  }
+
+  void saveLocationLog() async {
+    int timeInterval = jsonDecode(RemoteServices().box.get('appFeature'))['trackingInterval'] ?? 15;
+
+    Geolocator.getPositionStream(
+      desiredAccuracy: LocationAccuracy.bestForNavigation,
+      // distanceFilter: 10,
+      intervalDuration: Duration(minutes: timeInterval),
+    ).listen((Position position) async {
+      if (position == null) {
+        print('Unknown');
+      } else {
+        // var currDate = DateTime.now();
+        var currDate = DateFormat('yyyy-MM-dd hh:mm:ss').format(DateTime.now()).toString();
+        var _battery = Battery();
+        var level = await _battery.batteryLevel;
+        // print(
+        //   jsonEncode(
+        //     <String, dynamic>{
+        //       'empId': box.get('empid').toString(),
+        //       'companyId': box.get('companyid').toString(),
+        //       'empTimelineList': [
+        //         {
+        //           'lat': position.latitude.toString(),
+        //           'lng': position.longitude.toString(),
+        //           'battery': level.toString(),
+        //           'timeStamp': currDate.toString(),
+        //         },
+        //       ],
+        //     },
+        //   ),
+        // );
+        // print(position.latitude.toString());
+        // print(position.longitude.toString());
+        var response = await client.post(
+          '$baseURL/location/save_location_log',
+          headers: header,
+          body: jsonEncode(
+            <String, dynamic>{
+              'empId': box.get('empid').toString(),
+              'companyId': box.get('companyid').toString(),
+              'empTimelineList': [
+                {
+                  'lat': position.latitude.toString(),
+                  'lng': position.longitude.toString(),
+                  'battery': level.toString(),
+                  'timeStamp': currDate.toString(),
+                },
+              ],
+            },
+          ),
+        );
+        print(response.statusCode);
+        if (response.statusCode == 200) {
+          var jsonString = response.body;
+          print(json.decode(jsonString));
+          // return json.decode(jsonString);
+        } else {
+          //show error message
+          // return null;
+          print('error');
+        }
+      }
+    });
   }
 }

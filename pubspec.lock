@@ -43,6 +43,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.6"
+  battery:
+    dependency: "direct main"
+    description:
+      name: battery
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.11"
+  battery_platform_interface:
+    dependency: transitive
+    description:
+      name: battery_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   boolean_selector:
     dependency: transitive
     description:

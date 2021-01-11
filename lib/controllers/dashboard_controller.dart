@@ -92,6 +92,9 @@ class DashboardController extends GetxController {
             );
           } else {
             isDashboardLoading(false);
+            if (response['empdetails']['gpsTracking'] != null && response['empdetails']['gpsTracking'] == true) {
+              RemoteServices().saveLocationLog();
+            }
           }
         } else {
           isDashboardLoading(false);
