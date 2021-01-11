@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 
 class DBActivityTile extends StatelessWidget {
