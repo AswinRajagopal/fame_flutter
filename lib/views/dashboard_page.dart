@@ -47,31 +47,6 @@ class _DashboardPageState extends State<DashboardPage> {
   final EmprplanController erpC = Get.put(EmprplanController());
   final DBCalController calC = Get.put(DBCalController());
 
-  // Platform messages are asynchronous, so we initialize in an async method.
-  // Future<void> checkForUpdate() async {
-  //   await InAppUpdate.checkForUpdate().then((info) {
-  //     if (info != null && info.updateAvailable) {
-  //       // ignore: unnecessary_lambdas
-  //       InAppUpdate.performImmediateUpdate().catchError((e) => _showError(e));
-  //     }
-  //     // ignore: unnecessary_lambdas
-  //   }).catchError((e) => _showError(e));
-  // }
-
-  // void _showError(dynamic exception) {
-  //   Get.snackbar(
-  //     'Error',
-  //     exception.toString(),
-  //     colorText: Colors.white,
-  //     backgroundColor: Colors.black87,
-  //     snackPosition: SnackPosition.BOTTOM,
-  //     margin: EdgeInsets.symmetric(
-  //       horizontal: 8.0,
-  //       vertical: 10.0,
-  //     ),
-  //   );
-  // }
-
   @override
   void initState() {
     super.initState();
@@ -95,7 +70,7 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   String convertTimeForCheckedIn(time) {
-    return DateFormat('dd').format(DateTime.parse(time)).toString() + '/' + DateFormat('MM').format(DateTime.parse(time)).toString() + '/' + DateFormat('yyyy').format(DateTime.parse(time)).toString() + ' @ ' + DateFormat().add_jm().format(DateTime.parse(time)).toString();
+    return DateFormat('dd').format(DateTime.parse(time)).toString() + '/' + DateFormat('MM').format(DateTime.parse(time)).toString() + ' @ ' + DateFormat().add_jm().format(DateTime.parse(time)).toString();
     // DateFormat('a').format(time).toString().toLowerCase();
   }
 

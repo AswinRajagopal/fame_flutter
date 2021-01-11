@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:intl/intl.dart';
 
 class DBActivityTile extends StatelessWidget {
   final empAct;
   final int index;
   final int length;
   DBActivityTile(this.empAct, this.index, this.length);
+
+  String convertDate(date) {
+    return DateFormat('dd').format(DateTime.parse(date)).toString() + '-' + DateFormat('MM').format(DateTime.parse(date)).toString() + '-' + DateFormat.y().format(DateTime.parse(date)).toString() + ' @ ' + DateFormat('hh:mm').format(DateTime.parse(date)).toString() + '' + DateFormat('a').format(DateTime.parse(date)).toString().toLowerCase();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +25,7 @@ class DBActivityTile extends StatelessWidget {
         width: 330.0,
         decoration: BoxDecoration(
           color: Colors.teal[300],
+          // color: HexColor('06c5d1'),
           borderRadius: BorderRadius.all(
             Radius.circular(
               15.0,
@@ -38,7 +45,11 @@ class DBActivityTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Leave Status',
+                    empAct['activity'].toString().contains('Leave')
+                        ? 'Leave Status'
+                        : empAct['activity'].toString().contains('Attendance')
+                            ? 'Attendance Status'
+                            : 'Activity Status',
                     style: TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
@@ -46,7 +57,7 @@ class DBActivityTile extends StatelessWidget {
                   ),
                   Chip(
                     label: Text(
-                      'Approved',
+                      empAct['activity'].toString().contains('Approved') ? 'Approved' : 'Rejected',
                     ),
                     backgroundColor: Colors.teal[200],
                   ),
@@ -62,9 +73,19 @@ class DBActivityTile extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              // SizedBox(
-              //   height: 5.0,
-              // ),
+              SizedBox(
+                height: 15.0,
+              ),
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: Text(
+                  convertDate(empAct['createdOn'].toString()),
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
               // Align(
               //   alignment: Alignment.centerRight,
               //   child: Container(

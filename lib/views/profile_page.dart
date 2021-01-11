@@ -312,7 +312,7 @@ class ProfileDetailRow extends StatelessWidget {
               ),
               Flexible(
                 child: Text(
-                  text == '' ? 'N/A' : text,
+                  text == null || text == '' ? 'N/A' : text,
                   maxLines: 3,
                   style: TextStyle(
                     fontSize: 16.0,

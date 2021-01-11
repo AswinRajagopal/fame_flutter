@@ -17,6 +17,8 @@ import 'package:path_provider/path_provider.dart';
 import 'views/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:device_preview/device_preview.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +26,13 @@ void main() async {
 
   Hive.init(appDocumentDir.path);
   await Hive.openBox('fame_pocket');
-  runApp(PocketFaME());
+  // runApp(PocketFaME());
+  runApp(
+    DevicePreview(
+      enabled: false,
+      builder: (context) => PocketFaME(), // Wrap your app
+    ),
+  );
 }
 
 // ignore: must_be_immutable
@@ -50,14 +58,14 @@ class PocketFaME extends StatelessWidget {
     InAppUpdate.checkForUpdate().then((info) {
       if (info != null && info.updateAvailable) {
         // ignore: unnecessary_lambdas
-        InAppUpdate.performImmediateUpdate().catchError((e) => _showError(e));
+        // InAppUpdate.performImmediateUpdate().catchError((e) => _showError(e));
       }
       // ignore: unnecessary_lambdas
     }).catchError((e) => _showError(e));
 
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        statusBarColor: Colors.black, //or set color with: Color(0xFF0000FF)
+        statusBarColor: Colors.black,
       ),
     );
 
@@ -65,6 +73,7 @@ class PocketFaME extends StatelessWidget {
       title: 'FaME',
       debugShowCheckedModeBanner: false,
       // smartManagement: SmartManagement.keepFactory,
+      locale: DevicePreview.locale(context),
       theme: ThemeData(
         // textTheme: GoogleFonts.nunitoTextTheme(
         //   Theme.of(context).textTheme,
@@ -73,12 +82,26 @@ class PocketFaME extends StatelessWidget {
         fontFamily: 'AvenirMedium',
         primaryColor: HexColor('4981DB'),
       ),
-      builder: (context, child) {
-        return ScrollConfiguration(
+      // builder: (context, child) {
+      //   return ScrollConfiguration(
+      //     behavior: MyBehavior(),
+      //     child: child,
+      //   );
+      // },
+      builder: (context, widget) => ResponsiveWrapper.builder(
+        ScrollConfiguration(
           behavior: MyBehavior(),
-          child: child,
-        );
-      },
+          child: widget,
+        ),
+        // maxWidth: 1200,
+        // minWidth: 480,
+        // defaultScale: true,
+        breakpoints: [
+          ResponsiveBreakpoint.resize(480, name: MOBILE),
+          ResponsiveBreakpoint.autoScale(800, name: TABLET),
+          ResponsiveBreakpoint.resize(1000, name: DESKTOP),
+        ],
+      ),
       home: RemoteServices().box.get('empid') != null && RemoteServices().box.get('empid') != '' ? DashboardPage() : WelcomePage(),
       getPages: [
         GetPage(

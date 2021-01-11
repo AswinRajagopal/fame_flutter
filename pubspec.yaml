@@ -75,6 +75,8 @@ dependencies:
   flutter_svg:
   package_info: ^0.4.3+2
   in_app_update: ^1.1.15
+  device_preview: ^0.5.5
+  responsive_framework: ^0.0.14
 
 # flutter_icons:
 #   image_path: "assets/images/icon.png"
