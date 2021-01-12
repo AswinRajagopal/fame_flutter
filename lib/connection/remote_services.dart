@@ -1397,68 +1397,80 @@ class RemoteServices {
     }
   }
 
-  void saveLocationLog() async {
+  void saveLocationLog({lat, lng}) async {
     int timeInterval = jsonDecode(RemoteServices().box.get('appFeature'))['trackingInterval'] ?? 15;
 
-    Geolocator.getPositionStream(
-      desiredAccuracy: LocationAccuracy.bestForNavigation,
-      // distanceFilter: 10,
-      intervalDuration: Duration(minutes: timeInterval),
-    ).listen((Position position) async {
-      if (position == null) {
-        print('Unknown');
+    if (lat != null && lng != null) {
+      var currDate = DateFormat('yyyy-MM-dd hh:mm:ss').format(DateTime.now()).toString();
+      var _battery = Battery();
+      var level = await _battery.batteryLevel;
+      print(lat.toString());
+      print(lng.toString());
+      var response = await client.post(
+        '$baseURL/location/save_location_log',
+        headers: header,
+        body: jsonEncode(
+          <String, dynamic>{
+            'empId': box.get('empid').toString(),
+            'companyId': box.get('companyid').toString(),
+            'empTimelineList': [
+              {
+                'lat': lat.toString(),
+                'lng': lng.toString(),
+                'battery': level.toString(),
+                'timeStamp': currDate.toString(),
+              },
+            ],
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        var jsonString = response.body;
+        print(json.decode(jsonString));
       } else {
-        // var currDate = DateTime.now();
-        var currDate = DateFormat('yyyy-MM-dd hh:mm:ss').format(DateTime.now()).toString();
-        var _battery = Battery();
-        var level = await _battery.batteryLevel;
-        // print(
-        //   jsonEncode(
-        //     <String, dynamic>{
-        //       'empId': box.get('empid').toString(),
-        //       'companyId': box.get('companyid').toString(),
-        //       'empTimelineList': [
-        //         {
-        //           'lat': position.latitude.toString(),
-        //           'lng': position.longitude.toString(),
-        //           'battery': level.toString(),
-        //           'timeStamp': currDate.toString(),
-        //         },
-        //       ],
-        //     },
-        //   ),
-        // );
-        // print(position.latitude.toString());
-        // print(position.longitude.toString());
-        var response = await client.post(
-          '$baseURL/location/save_location_log',
-          headers: header,
-          body: jsonEncode(
-            <String, dynamic>{
-              'empId': box.get('empid').toString(),
-              'companyId': box.get('companyid').toString(),
-              'empTimelineList': [
-                {
-                  'lat': position.latitude.toString(),
-                  'lng': position.longitude.toString(),
-                  'battery': level.toString(),
-                  'timeStamp': currDate.toString(),
-                },
-              ],
-            },
-          ),
-        );
-        print(response.statusCode);
-        if (response.statusCode == 200) {
-          var jsonString = response.body;
-          print(json.decode(jsonString));
-          // return json.decode(jsonString);
-        } else {
-          //show error message
-          // return null;
-          print('error');
-        }
+        print('error');
       }
-    });
+    } else {
+      Geolocator.getPositionStream(
+        desiredAccuracy: LocationAccuracy.bestForNavigation,
+        // distanceFilter: 10,
+        intervalDuration: Duration(minutes: timeInterval),
+      ).listen((Position position) async {
+        if (position == null) {
+          print('Unknown');
+        } else {
+          // var currDate = DateTime.now();
+          var currDate = DateFormat('yyyy-MM-dd hh:mm:ss').format(DateTime.now()).toString();
+          var _battery = Battery();
+          var level = await _battery.batteryLevel;
+          // print(position.latitude.toString());
+          // print(position.longitude.toString());
+          var response = await client.post(
+            '$baseURL/location/save_location_log',
+            headers: header,
+            body: jsonEncode(
+              <String, dynamic>{
+                'empId': box.get('empid').toString(),
+                'companyId': box.get('companyid').toString(),
+                'empTimelineList': [
+                  {
+                    'lat': position.latitude.toString(),
+                    'lng': position.longitude.toString(),
+                    'battery': level.toString(),
+                    'timeStamp': currDate.toString(),
+                  },
+                ],
+              },
+            ),
+          );
+          if (response.statusCode == 200) {
+            var jsonString = response.body;
+            print(json.decode(jsonString));
+          } else {
+            print('error');
+          }
+        }
+      });
+    }
   }
 }

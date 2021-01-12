@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:background_location/background_location.dart';
 import 'package:intl/intl.dart';
 
 import '../connection/remote_services.dart';
@@ -94,6 +95,24 @@ class DashboardController extends GetxController {
             isDashboardLoading(false);
             if (response['empdetails']['gpsTracking'] != null && response['empdetails']['gpsTracking'] == true) {
               RemoteServices().saveLocationLog();
+              // BackgroundLocation.getPermissions(
+              //   onGranted: () {
+              //     BackgroundLocation.setAndroidNotification(
+              //       title: 'FaME',
+              //       message: 'Your live tracking is running',
+              //     );
+              //     BackgroundLocation.setAndroidConfiguration(interval: 15000);
+              //     BackgroundLocation.startLocationService();
+              //     BackgroundLocation.getLocationUpdates((location) {
+              //       print('location: $location');
+              //       RemoteServices().saveLocationLog(
+              //         lat: location.latitude.toString(),
+              //         lng: location.longitude.toString(),
+              //       );
+              //     });
+              //   },
+              //   onDenied: () {},
+              // );
             }
           }
         } else {
