@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:background_location/background_location.dart';
 import 'package:intl/intl.dart';
 
 import '../connection/remote_services.dart';
