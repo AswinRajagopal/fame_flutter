@@ -80,7 +80,7 @@ class _DailyEmployeeReportState extends State<DailyEmployeeReport> {
           ? DateTime.parse(stoDate.toString()).add(
               Duration(days: 0),
             )
-          : DateTime.now().add(Duration(days: 365)),
+          : DateTime.now(),
     );
 
     if (picked != null) {
@@ -106,7 +106,7 @@ class _DailyEmployeeReportState extends State<DailyEmployeeReport> {
       firstDate: DateTime.parse(sfromDate.toString()).add(
         Duration(days: 0),
       ),
-      lastDate: DateTime.now().add(Duration(days: 365)),
+      lastDate: DateTime.now(),
     );
 
     if (picked != null) {
