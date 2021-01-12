@@ -64,7 +64,7 @@ class _FaceRegisterState extends State<FaceRegister> {
     cameras = await availableCameras();
     controller = CameraController(
       cameras[1],
-      ResolutionPreset.high,
+      ResolutionPreset.medium,
     );
     await controller.initialize().then((_) {
       if (!mounted) {
