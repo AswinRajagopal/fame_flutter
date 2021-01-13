@@ -149,7 +149,7 @@ class _ShortageReportState extends State<ShortageReport> {
                       style: TextStyle(
                         color: Colors.grey[600],
                         fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
+                        // fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
@@ -235,7 +235,7 @@ class _ShortageReportState extends State<ShortageReport> {
                       style: TextStyle(
                         color: Colors.grey[600],
                         fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
+                        // fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],

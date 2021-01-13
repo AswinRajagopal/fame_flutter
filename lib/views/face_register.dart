@@ -338,7 +338,7 @@ class _FaceRegisterState extends State<FaceRegister> {
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
+           // fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],

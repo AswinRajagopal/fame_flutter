@@ -81,7 +81,7 @@ class _VisitPlanState extends State<VisitPlan> {
                     hintStyle: TextStyle(
                       color: Colors.grey[600],
                       fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
+                      // fontWeight: FontWeight.bold,
                     ),
                     hintText: 'Employee name',
                   ),

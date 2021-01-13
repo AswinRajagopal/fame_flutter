@@ -142,7 +142,7 @@ class _TransferPageState extends State<TransferPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                height: MediaQuery.of(context).size.height / 1.24,
+                height: MediaQuery.of(context).size.height / 1.20,
                 child: ListView(
                   shrinkWrap: true,
                   primary: true,
@@ -162,7 +162,7 @@ class _TransferPageState extends State<TransferPage> {
                             hintStyle: TextStyle(
                               color: Colors.grey[600],
                               fontSize: 18.0,
-                              fontWeight: FontWeight.bold,
+                              // fontWeight: FontWeight.bold,
                             ),
                             hintText: 'Enter Employee Name',
                           ),
@@ -229,7 +229,7 @@ class _TransferPageState extends State<TransferPage> {
                             hintStyle: TextStyle(
                               color: Colors.grey[600],
                               fontSize: 18.0,
-                              fontWeight: FontWeight.bold,
+                              // fontWeight: FontWeight.bold,
                             ),
                             hintText: 'Required for Unit',
                           ),
@@ -291,7 +291,7 @@ class _TransferPageState extends State<TransferPage> {
                               style: TextStyle(
                                 color: Colors.grey[600],
                                 fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
+                                // fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
@@ -337,7 +337,7 @@ class _TransferPageState extends State<TransferPage> {
                           hintStyle: TextStyle(
                             color: Colors.grey[600],
                             fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
+                            // fontWeight: FontWeight.bold,
                           ),
                           hintText: 'Required On',
                         ),
@@ -361,7 +361,7 @@ class _TransferPageState extends State<TransferPage> {
                           hintStyle: TextStyle(
                             color: Colors.grey[600],
                             fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
+                            // fontWeight: FontWeight.bold,
                           ),
                           hintText: 'Required Till',
                         ),
@@ -485,7 +485,7 @@ class MyTextField extends StatelessWidget {
           hintStyle: TextStyle(
             color: Colors.grey[600],
             fontSize: 18.0,
-            fontWeight: FontWeight.bold,
+           // fontWeight: FontWeight.bold,
           ),
           hintText: hintText,
         ),

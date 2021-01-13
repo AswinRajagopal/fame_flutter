@@ -75,7 +75,7 @@ class _BroadcastState extends State<Broadcast> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                height: MediaQuery.of(context).size.height / 1.24,
+                height: MediaQuery.of(context).size.height / 1.20,
                 child: ListView(
                   shrinkWrap: true,
                   children: [
@@ -140,7 +140,7 @@ class _BroadcastState extends State<Broadcast> {
                               style: TextStyle(
                                 color: Colors.grey[600],
                                 fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
+                                // fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
@@ -280,7 +280,7 @@ class MyTextField extends StatelessWidget {
           hintStyle: TextStyle(
             color: Colors.grey[600],
             fontSize: 18.0,
-            fontWeight: FontWeight.bold,
+           // fontWeight: FontWeight.bold,
           ),
           hintText: hintText,
         ),

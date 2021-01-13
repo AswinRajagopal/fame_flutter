@@ -351,7 +351,7 @@ class _CheckinPageState extends State<CheckinPage> {
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
+           // fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
@@ -417,20 +417,6 @@ class _CheckinPageState extends State<CheckinPage> {
                                         ),
                                       );
                                     }),
-                                    // Text(
-                                    //   'Arcesium at Mindspace.',
-                                    //   style: TextStyle(
-                                    //     color: Colors.white,
-                                    //     fontSize: 16.0,
-                                    //   ),
-                                    // ),
-                                    // Text(
-                                    //   'Hyderabad, Telangana, 500085, India.',
-                                    //   style: TextStyle(
-                                    //     color: Colors.white,
-                                    //     fontSize: 16.0,
-                                    //   ),
-                                    // ),
                                   ],
                                 ),
                               ),

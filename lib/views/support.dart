@@ -142,7 +142,7 @@ class _SupportState extends State<Support> {
                               padding: const EdgeInsets.only(left: 55.0),
                               child: DottedLine(
                                 direction: Axis.horizontal,
-                                lineLength: 260.0,
+                                lineLength: 340.0,
                                 lineThickness: 1.5,
                                 dashLength: 4.0,
                                 dashColor: Colors.grey[500],
@@ -196,7 +196,7 @@ class _SupportState extends State<Support> {
                               padding: const EdgeInsets.only(left: 55.0),
                               child: DottedLine(
                                 direction: Axis.horizontal,
-                                lineLength: 260.0,
+                                lineLength: 340.0,
                                 lineThickness: 1.5,
                                 dashLength: 4.0,
                                 dashColor: Colors.grey[500],
@@ -250,7 +250,7 @@ class _SupportState extends State<Support> {
                               padding: const EdgeInsets.only(left: 55.0),
                               child: DottedLine(
                                 direction: Axis.horizontal,
-                                lineLength: 260.0,
+                                lineLength: 340.0,
                                 lineThickness: 1.5,
                                 dashLength: 4.0,
                                 dashColor: Colors.grey[500],
@@ -304,7 +304,7 @@ class _SupportState extends State<Support> {
                               padding: const EdgeInsets.only(left: 55.0),
                               child: DottedLine(
                                 direction: Axis.horizontal,
-                                lineLength: 260.0,
+                                lineLength: 340.0,
                                 lineThickness: 1.5,
                                 dashLength: 4.0,
                                 dashColor: Colors.grey[500],

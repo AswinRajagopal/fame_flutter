@@ -114,7 +114,7 @@ class _HomeCalendarState extends State<HomeCalendar> with TickerProviderStateMix
         selectedDayBuilder: (context, date, _) {
           return Container(
             margin: const EdgeInsets.only(top: 4.0),
-            padding: const EdgeInsets.only(top: 1.0, left: 18.0),
+            padding: const EdgeInsets.only(top: 15.0, left: 28.0),
             width: 100,
             height: 300,
             child: Text(
@@ -153,7 +153,7 @@ class _HomeCalendarState extends State<HomeCalendar> with TickerProviderStateMix
             child: Container(
               // margin: const EdgeInsets.all(4.0),
               margin: const EdgeInsets.only(top: 4.0),
-              padding: const EdgeInsets.only(top: 1.0, left: 18.0),
+              padding: const EdgeInsets.only(top: 15.0, left: 28.0),
               width: 100,
               height: 300,
               child: Text(

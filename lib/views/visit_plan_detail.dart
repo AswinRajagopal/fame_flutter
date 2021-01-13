@@ -91,7 +91,7 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
                         'No data found for employee and selected date',
                         style: TextStyle(
                           fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
+           // fontWeight: FontWeight.bold,
                         ),
                         textAlign: TextAlign.center,
                       ),

@@ -162,7 +162,7 @@ class _AddClientState extends State<AddClient> {
                           hintStyle: TextStyle(
                             color: Colors.grey[600],
                             fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
+                            // fontWeight: FontWeight.bold,
                           ),
                           hintText: 'Address',
                         ),
@@ -317,7 +317,7 @@ class MyTextField extends StatelessWidget {
           hintStyle: TextStyle(
             color: Colors.grey[600],
             fontSize: 18.0,
-            fontWeight: FontWeight.bold,
+            // fontWeight: FontWeight.bold,
           ),
           hintText: hintText,
         ),

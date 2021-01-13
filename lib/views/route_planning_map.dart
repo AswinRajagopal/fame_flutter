@@ -231,7 +231,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                               hintStyle: TextStyle(
                                 color: Colors.grey[600],
                                 fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
+                                // fontWeight: FontWeight.bold,
                               ),
                               hintText: 'Enter employee name',
                             ),
@@ -284,7 +284,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                             hintStyle: TextStyle(
                               color: Colors.grey[600],
                               fontSize: 18.0,
-                              fontWeight: FontWeight.bold,
+                              // fontWeight: FontWeight.bold,
                             ),
                             hintText: 'Select date',
                             suffixIcon: Image.asset(
@@ -321,7 +321,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                                     style: TextStyle(
                                       color: Colors.grey[600],
                                       fontSize: 18.0,
-                                      fontWeight: FontWeight.bold,
+                                      // fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ),
@@ -535,7 +535,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                                                       hintStyle: TextStyle(
                                                         color: Colors.grey[600],
                                                         fontSize: 18.0,
-                                                        fontWeight: FontWeight.bold,
+                                                        // fontWeight: FontWeight.bold,
                                                       ),
                                                       hintText: 'Enter remarks',
                                                     ),
@@ -734,7 +734,7 @@ class MyTextField extends StatelessWidget {
           hintStyle: TextStyle(
             color: Colors.grey[600],
             fontSize: 18.0,
-            fontWeight: FontWeight.bold,
+            // fontWeight: FontWeight.bold,
           ),
           hintText: hintText,
         ),

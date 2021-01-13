@@ -100,7 +100,7 @@ class _AddShiftState extends State<AddShift> {
                           hintStyle: TextStyle(
                             color: Colors.grey[600],
                             fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
+                            // fontWeight: FontWeight.bold,
                           ),
                           hintText: 'Start Time',
                         ),
@@ -164,7 +164,7 @@ class _AddShiftState extends State<AddShift> {
                           hintStyle: TextStyle(
                             color: Colors.grey[600],
                             fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
+                            // fontWeight: FontWeight.bold,
                           ),
                           hintText: 'End Time',
                         ),
@@ -303,7 +303,7 @@ class MyTextField extends StatelessWidget {
           hintStyle: TextStyle(
             color: Colors.grey[600],
             fontSize: 18.0,
-            fontWeight: FontWeight.bold,
+           // fontWeight: FontWeight.bold,
           ),
           hintText: hintText,
         ),

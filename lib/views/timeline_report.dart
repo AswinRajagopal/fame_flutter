@@ -83,7 +83,7 @@ class _TimelineReportState extends State<TimelineReport> {
                     hintStyle: TextStyle(
                       color: Colors.grey[600],
                       fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
+                      // fontWeight: FontWeight.bold,
                     ),
                     hintText: 'Employee name',
                   ),

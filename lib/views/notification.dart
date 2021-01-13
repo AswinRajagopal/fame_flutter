@@ -91,7 +91,7 @@ class _NotificationPageState extends State<NotificationPage> {
                           'No notification found',
                           style: TextStyle(
                             fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
+           // fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],

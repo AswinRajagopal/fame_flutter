@@ -147,7 +147,7 @@ class _DailyEmployeeReportState extends State<DailyEmployeeReport> {
                         hintStyle: TextStyle(
                           color: Colors.grey[600],
                           fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
+           // fontWeight: FontWeight.bold,
                         ),
                         hintText: 'From date',
                         suffixIcon: Icon(
@@ -174,7 +174,7 @@ class _DailyEmployeeReportState extends State<DailyEmployeeReport> {
                         hintStyle: TextStyle(
                           color: Colors.grey[600],
                           fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
+           // fontWeight: FontWeight.bold,
                         ),
                         hintText: 'To date',
                         suffixIcon: Icon(
@@ -223,7 +223,7 @@ class _DailyEmployeeReportState extends State<DailyEmployeeReport> {
                     hintStyle: TextStyle(
                       color: Colors.grey[600],
                       fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
+                      // fontWeight: FontWeight.bold,
                     ),
                     hintText: 'Employee name',
                   ),

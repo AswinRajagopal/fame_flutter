@@ -266,7 +266,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                               hintStyle: TextStyle(
                                 color: Colors.grey[600],
                                 fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
+                                // fontWeight: FontWeight.bold,
                               ),
                               hintText: 'From date',
                               suffixIcon: Icon(
@@ -293,7 +293,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                               hintStyle: TextStyle(
                                 color: Colors.grey[600],
                                 fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
+                                // fontWeight: FontWeight.bold,
                               ),
                               hintText: 'To date',
                               suffixIcon: Icon(
@@ -341,7 +341,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                           style: TextStyle(
                             color: Colors.grey[600],
                             fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
+                            // fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
@@ -379,7 +379,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                           style: TextStyle(
                             color: Colors.grey[600],
                             fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
+                            // fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
@@ -402,7 +402,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                             style: TextStyle(
                               color: Colors.grey[600],
                               fontSize: 16.0,
-                              fontWeight: FontWeight.bold,
+                              // fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
@@ -421,7 +421,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                             style: TextStyle(
                               color: Colors.grey[600],
                               fontSize: 16.0,
-                              fontWeight: FontWeight.bold,
+                              // fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
@@ -440,7 +440,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                             style: TextStyle(
                               color: Colors.grey[600],
                               fontSize: 16.0,
-                              fontWeight: FontWeight.bold,
+                              // fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
@@ -463,7 +463,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                         hintStyle: TextStyle(
                           color: Colors.grey[600],
                           fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
+                          // fontWeight: FontWeight.bold,
                         ),
                         hintText: 'Reason',
                       ),

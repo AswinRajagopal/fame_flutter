@@ -139,7 +139,7 @@ class _AttendancePageState extends State<AttendancePage> {
                         hintStyle: TextStyle(
                           color: Colors.grey[600],
                           fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
+                          // fontWeight: FontWeight.bold,
                         ),
                         hintText: 'Select Date',
                         suffixIcon: Icon(
@@ -170,7 +170,7 @@ class _AttendancePageState extends State<AttendancePage> {
                           style: TextStyle(
                             color: Colors.grey[600],
                             fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
+                            // fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
@@ -257,7 +257,7 @@ class _AttendancePageState extends State<AttendancePage> {
                           style: TextStyle(
                             color: Colors.grey[600],
                             fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
+                            // fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],

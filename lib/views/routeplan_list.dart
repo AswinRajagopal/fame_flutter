@@ -155,7 +155,7 @@ class _RouteplanListState extends State<RouteplanList> {
                           'No route plan found',
                           style: TextStyle(
                             fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
+           // fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],

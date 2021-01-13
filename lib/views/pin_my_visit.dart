@@ -378,7 +378,7 @@ class _PinMyVisitState extends State<PinMyVisit> {
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
+           // fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
