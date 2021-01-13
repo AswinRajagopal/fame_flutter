@@ -1047,7 +1047,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         } else {
                           return Container(
                             color: AppUtils().greyScaffoldBg,
-                            height: erpC.empRes.routePlanList == null || erpC.empRes.routePlanList.length == 0 ? 0.0 : 200.0,
+                            height: erpC.empRes.routePlanList == null || erpC.empRes.routePlanList.length == 0 ? 0.0 : 230.0,
                             width: MediaQuery.of(context).size.width,
                             child: Padding(
                               padding: const EdgeInsets.only(

@@ -13,7 +13,7 @@ class LeaveListWidget extends StatelessWidget {
 
   final double firstWidth = 48.0;
   final double secondWidth = 7.0;
-  final double rowAfterSize = 3.0;
+  final double rowAfterSize = 8.0;
   final double titleSize = 16.0;
   final double textSize = 16.0;
 
@@ -50,7 +50,7 @@ class LeaveListWidget extends StatelessWidget {
                 Text(
                   'Emp ID',
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                    // fontWeight: FontWeight.bold,
                     fontSize: titleSize,
                   ),
                   maxLines: 1,
@@ -86,7 +86,7 @@ class LeaveListWidget extends StatelessWidget {
                 Text(
                   'Name',
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                    // fontWeight: FontWeight.bold,
                     fontSize: titleSize,
                   ),
                 ),
@@ -121,7 +121,7 @@ class LeaveListWidget extends StatelessWidget {
                 Text(
                   'From Date',
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                    // fontWeight: FontWeight.bold,
                     fontSize: titleSize,
                   ),
                 ),
@@ -157,7 +157,7 @@ class LeaveListWidget extends StatelessWidget {
                 Text(
                   'To Date',
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                    // fontWeight: FontWeight.bold,
                     fontSize: titleSize,
                   ),
                 ),
@@ -191,7 +191,7 @@ class LeaveListWidget extends StatelessWidget {
                 Text(
                   'Requested on',
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                    // fontWeight: FontWeight.bold,
                     fontSize: titleSize,
                   ),
                 ),
@@ -225,7 +225,7 @@ class LeaveListWidget extends StatelessWidget {
                 Text(
                   'Reason',
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                    // fontWeight: FontWeight.bold,
                     fontSize: titleSize,
                   ),
                 ),
@@ -262,7 +262,7 @@ class LeaveListWidget extends StatelessWidget {
                 Text(
                   'Leave Type',
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                    // fontWeight: FontWeight.bold,
                     fontSize: titleSize,
                   ),
                 ),
@@ -296,7 +296,7 @@ class LeaveListWidget extends StatelessWidget {
                 Text(
                   'Status',
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                    // fontWeight: FontWeight.bold,
                     fontSize: titleSize,
                   ),
                 ),

@@ -11,7 +11,7 @@ class RouteplanWidget extends StatelessWidget {
 
   final double firstWidth = 48.0;
   final double secondWidth = 7.0;
-  final double rowAfterSize = 3.0;
+  final double rowAfterSize = 8.0;
   final double titleSize = 16.0;
   final double textSize = 16.0;
 
@@ -54,7 +54,7 @@ class RouteplanWidget extends StatelessWidget {
                   Text(
                     'Plan name',
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                      //fontWeight: FontWeight.bold,
                       fontSize: titleSize,
                     ),
                     maxLines: 1,
@@ -90,7 +90,7 @@ class RouteplanWidget extends StatelessWidget {
                   Text(
                     'Created by',
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                      //fontWeight: FontWeight.bold,
                       fontSize: titleSize,
                     ),
                   ),
@@ -125,7 +125,7 @@ class RouteplanWidget extends StatelessWidget {
                   Text(
                     'Admin Remarks',
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                      //fontWeight: FontWeight.bold,
                       fontSize: titleSize,
                     ),
                   ),
@@ -162,7 +162,7 @@ class RouteplanWidget extends StatelessWidget {
                   Text(
                     'Status',
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                      //fontWeight: FontWeight.bold,
                       fontSize: titleSize,
                     ),
                   ),
@@ -196,7 +196,7 @@ class RouteplanWidget extends StatelessWidget {
                   Text(
                     'Created on',
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                      //fontWeight: FontWeight.bold,
                       fontSize: titleSize,
                     ),
                   ),
