@@ -10,6 +10,7 @@ import 'package:progress_dialog/progress_dialog.dart';
 class EmployeeNotationsController extends GetxController {
   var isLoading = true.obs;
   var res;
+  var resSearch;
   ProgressDialog pr;
   final List designation = [].obs;
   final List aprrej = [
@@ -49,6 +50,62 @@ class EmployeeNotationsController extends GetxController {
   String timeConvert(time) {
     print(DateFormat.jm().format(DateTime.parse(time)).toString());
     return DateFormat.jm().format(DateTime.parse(time)).toString();
+  }
+
+  void getNotationsBySearch(date, clientId, empName) async {
+    searchList.clear();
+    try {
+      resSearch = await RemoteServices().getNotationsBySearch(date, clientId, empName);
+      if (resSearch != null) {
+        // print('res valid: $res');
+        if (resSearch['success']) {
+          // print('clientList: $clientList');
+          // print(resSearch.empDailyAttView);
+          // print('here: ${resSearch.attendanceNotations}');
+          for (var j = 0; j < resSearch['empSuggest'].length; j++) {
+            var emp = resSearch['empSuggest'][j];
+            emp['showTime'] = '';
+            emp['showType'] = 'att';
+            if (emp['checkInLatitude'] != null && emp['checkInLatitude'] != '0E-8') {
+              var strToTime = emp['checkInDateTime'];
+              if (emp['checkOutDateTime'] != null) {
+                strToTime = timeConvert(strToTime.toString()) + ' to ' + timeConvert(emp['checkOutDateTime'].toString());
+
+                emp['showTime'] = strToTime;
+                // showType = 'apprej';
+                emp['showType'] = 'apprej';
+              } else {
+                strToTime = timeConvert(strToTime.toString());
+                emp['showTime'] = strToTime;
+                // showType = 'remark';
+                emp['showType'] = 'remark';
+              }
+            }
+            if (emp['attendanceAlias'] == 'P') {
+              p.value++;
+            } else if (emp['attendanceAlias'] == 'WO') {
+              wo.value++;
+            } else if (emp['attendanceAlias'] == 'L') {
+              l.value++;
+            }
+            searchList.add(emp);
+          }
+        }
+      }
+    } catch (e) {
+      print(e);
+      Get.snackbar(
+        'Error',
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+      );
+    }
   }
 
   void getNotations(

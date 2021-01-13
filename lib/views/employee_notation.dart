@@ -1,4 +1,5 @@
 import 'package:chips_choice/chips_choice.dart';
+import '../utils/debounce_class.dart';
 import 'package:intl/intl.dart';
 import 'package:time_range_picker/time_range_picker.dart';
 
@@ -44,6 +45,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
   );
   String searchText = '';
   Widget appBarTitle;
+  final _debouncer = Debouncer(milliseconds: 500);
 
   @override
   void initState() {
@@ -151,11 +153,13 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
       return;
     }
 
-    enC.res['empDailyAttView'].forEach((emp) {
-      if (emp['name'].toString().toLowerCase().contains(text.toLowerCase()) || emp['empId'].toString().toLowerCase().contains(text.toLowerCase())) {
-        enC.searchList.add(emp);
-      }
-    });
+    enC.getNotationsBySearch(widget.date, widget.clientId, text);
+
+    // enC.res['empDailyAttView'].forEach((emp) {
+    // if (emp['name'].toString().toLowerCase().contains(text.toLowerCase()) || emp['empId'].toString().toLowerCase().contains(text.toLowerCase())) {
+    //   enC.searchList.add(emp);
+    // }
+    // });
 
     // print(enC.searchList);
 
@@ -244,7 +248,10 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                     ),
                     cursorColor: Colors.white,
                     onChanged: (query) {
-                      onSearchTextChanged(query);
+                      // onSearchTextChanged(query);
+                      _debouncer.run(() {
+                        onSearchTextChanged(query);
+                      });
                     },
                   );
                   handleSearchStart();
@@ -451,7 +458,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                 child: Obx(() {
                   if (enC.isLoading.value) {
                     return Column();
-                  } else if (enC.res['empDailyAttView'] == null) {
+                  } else if (enC.res['empDailyAttView'] == null || (isSearching && searchQuery.text != '' && enC.searchList.isNullOrBlank)) {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -515,7 +522,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                           SizedBox(
                                             width: 220.0,
                                             child: Text(
-                                              enC.designation[emp['designation']],
+                                              enC.designation[int.parse(emp['designation'].toString())],
                                               style: TextStyle(
                                                 fontSize: 16.0,
                                               ),

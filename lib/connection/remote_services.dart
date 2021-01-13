@@ -797,6 +797,32 @@ class RemoteServices {
     }
   }
 
+  Future getNotationsBySearch(date, clientId, empName) async {
+    var dt = date.toString().split('-')[2] + '-' + date.toString().split('-')[1] + '-' + date.toString().split('-')[0];
+    var response = await client.post(
+      '$baseURL/attendance/get_att_suggest',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'date': dt,
+          'clientId': clientId,
+          'empName': empName,
+        },
+      ),
+    );
+
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      // return employeeNotationsFromJson(jsonString);
+      return json.decode(jsonString);
+    } else {
+      return null;
+    }
+  }
+
   Future giveAttendance(
     date,
     shift,
