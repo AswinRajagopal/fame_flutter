@@ -93,7 +93,15 @@ class DashboardController extends GetxController {
           } else {
             isDashboardLoading(false);
             if (response['empdetails']['gpsTracking'] != null && response['empdetails']['gpsTracking'] == true) {
-              RemoteServices().saveLocationLog();
+              var dA = response['dailyAttendance'];
+              if (dA != null && (dA['checkInDateTime'] != null && dA['checkInDateTime'] != '') && (dA['checkOutDateTime'] == null || dA['checkOutDateTime'] == '')) {
+                print('tracking');
+                RemoteServices().saveLocationLog();
+              } else {
+                print('not tracking');
+                // await RemoteServices().getPositionSubscription.cancel();
+                await RemoteServices().saveLocationLog(cancel: true);
+              }
               // BackgroundLocation.getPermissions(
               //   onGranted: () {
               //     BackgroundLocation.setAndroidNotification(

@@ -44,6 +44,7 @@ class RemoteServices {
   var box = Hive.box('fame_pocket');
   static var accessKey = 'diyos2020';
   final FirebaseMessaging _fbm = FirebaseMessaging();
+  StreamSubscription getPositionSubscription;
 
   Future<String> setFirebaseNotification() async {
     var pushCode = '';
@@ -1423,7 +1424,7 @@ class RemoteServices {
     }
   }
 
-  void saveLocationLog({lat, lng}) async {
+  void saveLocationLog({lat, lng, cancel}) async {
     int timeInterval = jsonDecode(RemoteServices().box.get('appFeature'))['trackingInterval'] ?? 15;
 
     if (lat != null && lng != null) {
@@ -1457,7 +1458,7 @@ class RemoteServices {
         print('error');
       }
     } else {
-      Geolocator.getPositionStream(
+      getPositionSubscription = Geolocator.getPositionStream(
         desiredAccuracy: LocationAccuracy.bestForNavigation,
         // distanceFilter: 10,
         intervalDuration: Duration(minutes: timeInterval),
@@ -1497,6 +1498,9 @@ class RemoteServices {
           }
         }
       });
+      if (cancel != null) {
+        await getPositionSubscription.cancel();
+      }
     }
   }
 }

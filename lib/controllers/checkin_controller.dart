@@ -126,6 +126,7 @@ class CheckinController extends GetxController {
             );
             // print(checkin);
             if (checkin != null && checkin['success']) {
+              RemoteServices().saveLocationLog();
               return true;
             } else {
               Get.snackbar(

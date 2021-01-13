@@ -119,6 +119,7 @@ class CheckoutController extends GetxController {
             );
             // print(checkin);
             if (checkout != null && checkout['success']) {
+              await RemoteServices().saveLocationLog(cancel: true);
               return true;
             } else {
               Get.snackbar(
