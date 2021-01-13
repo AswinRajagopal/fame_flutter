@@ -145,7 +145,7 @@ flutter:
         - asset: assets/fonts/Avenir-Regular.ttf
     - family: AvenirMedium
       fonts:
-        - asset: assets/fonts/Avenir-Medium.ttf
+        - asset: assets/fonts/AvenirMedium.ttf
     - family: AvenirLight
       fonts:
         - asset: assets/fonts/AvenirLight.ttf

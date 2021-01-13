@@ -383,7 +383,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                   SizedBox(
                                                     width: 240.0,
                                                     child: Text(
-                                                      '$clientName in $areaName',
+                                                      '$clientName at $areaName',
                                                       style: TextStyle(
                                                         fontSize: 15.0,
                                                         fontWeight: FontWeight.bold,
@@ -401,7 +401,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                           Row(
                                             children: [
                                               Text(
-                                                'Duty Timings:',
+                                                'Duty Timings : ',
                                                 style: TextStyle(
                                                   fontSize: 15.0,
                                                 ),
@@ -640,7 +640,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                         SizedBox(
                                                           width: 240.0,
                                                           child: Text(
-                                                            '$clientName in $areaName',
+                                                            '$clientName at $areaName',
                                                             style: TextStyle(
                                                               fontSize: 15.0,
                                                               fontWeight: FontWeight.bold,
@@ -676,7 +676,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                 Row(
                                                   children: [
                                                     Text(
-                                                      'Duty Timings:',
+                                                      'Duty Timings : ',
                                                       style: TextStyle(
                                                         fontSize: 15.0,
                                                       ),
@@ -1048,7 +1048,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         } else {
                           return Container(
                             color: AppUtils().greyScaffoldBg,
-                            height: erpC.empRes.routePlanList == null || erpC.empRes.routePlanList.length == 0 ? 0.0 : 210.0,
+                            height: erpC.empRes.routePlanList == null || erpC.empRes.routePlanList.length == 0 ? 0.0 : 220.0,
                             width: MediaQuery.of(context).size.width,
                             child: Padding(
                               padding: const EdgeInsets.only(
@@ -1131,12 +1131,12 @@ class _DashboardPageState extends State<DashboardPage> {
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
-                                      vertical: 11.0,
+                                      vertical: 9.0,
                                       horizontal: 33.0,
                                     ),
                                     child: SizedBox(
-                                      width: 120.0,
-                                      height: 17.0,
+                                      width: 122.0,
+                                      height: 23.0,
                                       child: Center(
                                         child: Text(
                                           'My Calendar',
@@ -1172,12 +1172,12 @@ class _DashboardPageState extends State<DashboardPage> {
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
-                                      vertical: 11.0,
+                                      vertical: 9.0,
                                       horizontal: 33.0,
                                     ),
                                     child: SizedBox(
-                                      width: 120.0,
-                                      height: 17.0,
+                                      width: 122.0,
+                                      height: 23.0,
                                       child: Center(
                                         child: Text(
                                           'My Roster',

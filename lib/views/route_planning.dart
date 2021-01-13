@@ -161,12 +161,12 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                     ),
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
-                                        vertical: 11.0,
+                                        vertical: 8.0,
                                         horizontal: 28.0,
                                       ),
                                       child: SizedBox(
                                         width: 120.0,
-                                        height: 17.0,
+                                        height: 23.0,
                                         child: Center(
                                           child: Text(
                                             'From Clients',
@@ -201,7 +201,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                       ),
                                       child: SizedBox(
                                         width: 120.0,
-                                        height: 17.0,
+                                        height: 23.0,
                                         child: Center(
                                           child: Text(
                                             'From Map',

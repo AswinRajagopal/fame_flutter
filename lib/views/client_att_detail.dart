@@ -206,12 +206,12 @@ class _ClientAttDetailState extends State<ClientAttDetail> {
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                  vertical: 10.0,
+                                  vertical: 8.0,
                                   horizontal: 28.0,
                                 ),
                                 child: SizedBox(
                                   width: 120.0,
-                                  height: 17.0,
+                                  height: 23.0,
                                   child: Center(
                                     child: Text(
                                       'Name',
@@ -246,12 +246,12 @@ class _ClientAttDetailState extends State<ClientAttDetail> {
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                  vertical: 10.0,
+                                  vertical: 8.0,
                                   horizontal: 28.0,
                                 ),
                                 child: SizedBox(
                                   width: 120.0,
-                                  height: 17.0,
+                                  height: 23.0,
                                   child: Center(
                                     child: Text(
                                       'Emp ID',
