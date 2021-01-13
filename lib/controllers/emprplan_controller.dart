@@ -45,17 +45,17 @@ class EmprplanController extends GetxController {
         }
         if (empRes.success) {
         } else {
-          Get.snackbar(
-            'Error',
-            'Something went wrong! Please try again later',
-            colorText: Colors.white,
-            backgroundColor: Colors.black87,
-            snackPosition: SnackPosition.BOTTOM,
-            margin: EdgeInsets.symmetric(
-              horizontal: 8.0,
-              vertical: 10.0,
-            ),
-          );
+          // Get.snackbar(
+          //   'Error',
+          //   'Something went wrong! Please try again later',
+          //   colorText: Colors.white,
+          //   backgroundColor: Colors.black87,
+          //   snackPosition: SnackPosition.BOTTOM,
+          //   margin: EdgeInsets.symmetric(
+          //     horizontal: 8.0,
+          //     vertical: 10.0,
+          //   ),
+          // );
         }
       }
     } catch (e) {

@@ -104,7 +104,7 @@ class PocketFaME extends StatelessWidget {
         minWidth: 480,
         // minWidth: MediaQuery.of(context).size.width,
         defaultScale: true,
-        debugLog: true,
+        debugLog: false,
         breakpoints: [
           ResponsiveBreakpoint.resize(480, name: MOBILE),
           ResponsiveBreakpoint.autoScale(800, name: TABLET),

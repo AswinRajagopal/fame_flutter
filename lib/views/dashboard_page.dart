@@ -159,7 +159,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    print('width: ${MediaQuery.of(context).size.width}');
+    // print('width: ${MediaQuery.of(context).size.width}');
     return Scaffold(
       backgroundColor: AppUtils().greyScaffoldBg,
       floatingActionButton: CustomFab('dashboard'),
