@@ -157,7 +157,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
                                         vertical: 12.0,
-                                        horizontal: 22.0,
+                                        horizontal: 42.0,
                                       ),
                                       child: Text(
                                         'From Clients',
@@ -184,7 +184,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
                                         vertical: 11.0,
-                                        horizontal: 22.0,
+                                        horizontal: 35.0,
                                       ),
                                       child: Text(
                                         'From Map',
@@ -203,7 +203,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                         ),
                       ),
                 Container(
-                  height: RemoteServices().box.get('role') != '3' ? MediaQuery.of(context).size.height / 1.24 : MediaQuery.of(context).size.height / 1.44,
+                  height: RemoteServices().box.get('role') != '3' ? MediaQuery.of(context).size.height / 1.24 : MediaQuery.of(context).size.height / 1.35,
                   child: ListView(
                     shrinkWrap: true,
                     primary: true,
@@ -586,7 +586,6 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                   ),
                 ),
                 Flexible(
-                  fit: FlexFit.loose,
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: Container(

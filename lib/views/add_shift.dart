@@ -74,7 +74,7 @@ class _AddShiftState extends State<AddShift> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                height: MediaQuery.of(context).size.height / 1.24,
+                height: MediaQuery.of(context).size.height / 1.20,
                 child: ListView(
                   shrinkWrap: true,
                   primary: true,
