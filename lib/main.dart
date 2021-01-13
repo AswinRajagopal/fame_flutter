@@ -27,7 +27,7 @@ void main() async {
   await Firebase.initializeApp();
   // Pass all uncaught errors from the framework to Crashlytics.
   await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
-  FirebaseCrashlytics.instance.crash();
+  // FirebaseCrashlytics.instance.crash();
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   final appDocumentDir = await getApplicationDocumentsDirectory();
 

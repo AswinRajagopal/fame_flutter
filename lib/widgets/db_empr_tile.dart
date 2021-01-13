@@ -45,9 +45,9 @@ class DBEmprTile extends StatelessWidget {
         ? Padding(
             padding: EdgeInsets.fromLTRB(
               10.0,
-              85.0,
+              75.0,
               10.0,
-              85.0,
+              75.0,
             ),
             child: RaisedButton(
               onPressed: () {

@@ -1047,11 +1047,11 @@ class _DashboardPageState extends State<DashboardPage> {
                         } else {
                           return Container(
                             color: AppUtils().greyScaffoldBg,
-                            height: erpC.empRes.routePlanList == null || erpC.empRes.routePlanList.length == 0 ? 0.0 : 230.0,
+                            height: erpC.empRes.routePlanList == null || erpC.empRes.routePlanList.length == 0 ? 0.0 : 220.0,
                             width: MediaQuery.of(context).size.width,
                             child: Padding(
                               padding: const EdgeInsets.only(
-                                bottom: 15.0,
+                                bottom: 20.0,
                               ),
                               child: erpC.empRes.routePlanList == null || erpC.empRes.routePlanList.length == 0
                                   ? Container()
@@ -1090,7 +1090,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       color: AppUtils().greyScaffoldBg,
                       width: MediaQuery.of(context).size.width,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 45.0),
+                        padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 45.0),
                         child: Container(
                           height: 50.0,
                           width: MediaQuery.of(context).size.width / 1.3,
