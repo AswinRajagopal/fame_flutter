@@ -159,6 +159,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
+    print('width: ${MediaQuery.of(context).size.width}');
     return Scaffold(
       backgroundColor: AppUtils().greyScaffoldBg,
       floatingActionButton: CustomFab('dashboard'),
@@ -1047,7 +1048,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         } else {
                           return Container(
                             color: AppUtils().greyScaffoldBg,
-                            height: erpC.empRes.routePlanList == null || erpC.empRes.routePlanList.length == 0 ? 0.0 : 220.0,
+                            height: erpC.empRes.routePlanList == null || erpC.empRes.routePlanList.length == 0 ? 0.0 : 210.0,
                             width: MediaQuery.of(context).size.width,
                             child: Padding(
                               padding: const EdgeInsets.only(

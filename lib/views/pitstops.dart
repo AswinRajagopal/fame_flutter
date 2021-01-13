@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:hexcolor/hexcolor.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 
 import 'update_pitstops.dart';
@@ -214,7 +215,7 @@ class _PitstopsState extends State<Pitstops> {
                               direction: Axis.vertical,
                               nodePosition: 0.01,
                               contents: Card(
-                                elevation: 5.0,
+                                elevation: 0.0,
                                 margin: EdgeInsets.only(
                                   left: 10.0,
                                   bottom: index == psC.pitsStops.length - 1 ? 50.0 : 20.0,
@@ -267,17 +268,17 @@ class _PitstopsState extends State<Pitstops> {
                                                 label: Text(
                                                   'Completed',
                                                 ),
-                                                backgroundColor: Colors.green[100],
+                                                backgroundColor: HexColor('ccf8d8'),
                                                 shape: RoundedRectangleBorder(
                                                   side: BorderSide(
-                                                    color: AppUtils().greenColor,
+                                                    color: HexColor('ccf8d8'),
                                                   ),
                                                   borderRadius: BorderRadius.all(
                                                     Radius.circular(5.0),
                                                   ),
                                                 ),
                                                 labelStyle: TextStyle(
-                                                  color: AppUtils().greenColor,
+                                                  color: HexColor('3f7f33'),
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               )
@@ -285,17 +286,17 @@ class _PitstopsState extends State<Pitstops> {
                                                 label: Text(
                                                   'Not Completed',
                                                 ),
-                                                backgroundColor: Colors.red[100],
+                                                backgroundColor: HexColor('ffeae6'),
                                                 shape: RoundedRectangleBorder(
                                                   side: BorderSide(
-                                                    color: Colors.redAccent,
+                                                    color: HexColor('ffeae6'),
                                                   ),
                                                   borderRadius: BorderRadius.all(
                                                     Radius.circular(5.0),
                                                   ),
                                                 ),
                                                 labelStyle: TextStyle(
-                                                  color: Colors.redAccent,
+                                                  color: HexColor('bf695b'),
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               ),

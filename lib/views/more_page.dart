@@ -74,7 +74,7 @@ class MorePage extends StatelessWidget {
               },
               child: ListContainer(
                 'assets/images/day_wise_attendance.png',
-                'Day Wise Employee Attendance',
+                'Day Wise Emp. Attendance',
               ),
             ),
             GestureDetector(

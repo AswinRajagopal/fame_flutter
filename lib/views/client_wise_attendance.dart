@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:hexcolor/hexcolor.dart';
+
 import 'client_att_detail.dart';
 
 import '../controllers/employee_report_controller.dart';
@@ -298,14 +300,14 @@ class _ClientWiseAttendanceState extends State<ClientWiseAttendance> {
                               ),
                               decoration: epC.shift.contains(shiftTime)
                                   ? BoxDecoration(
-                                      color: Colors.green[200],
+                                      color: HexColor('ccf8d8'),
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(
                                           5.0,
                                         ),
                                       ),
                                       border: Border.all(
-                                        color: AppUtils().greenColor,
+                                        color: HexColor('ccf8d8'),
                                       ),
                                     )
                                   : BoxDecoration(
@@ -324,7 +326,7 @@ class _ClientWiseAttendanceState extends State<ClientWiseAttendance> {
                                 child: Text(
                                   shiftTime,
                                   style: TextStyle(
-                                    color: epC.shift.contains(shiftTime) ? Colors.green[700] : Colors.grey[700],
+                                    color: epC.shift.contains(shiftTime) ? HexColor('3f7f33') : Colors.grey[700],
                                     fontSize: 15.0,
                                     fontWeight: epC.shift.contains(shiftTime) ? FontWeight.w900 : FontWeight.w400,
                                   ),
