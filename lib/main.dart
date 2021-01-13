@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:in_app_update/in_app_update.dart';
 
@@ -19,9 +20,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  // Pass all uncaught errors from the framework to Crashlytics.
+  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+  FirebaseCrashlytics.instance.crash();
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   final appDocumentDir = await getApplicationDocumentsDirectory();
 
   Hive.init(appDocumentDir.path);
