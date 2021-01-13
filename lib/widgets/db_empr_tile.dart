@@ -16,6 +16,8 @@ class DBEmprTile extends StatelessWidget {
   final double rowAfterSize = 8.0;
   final double titleSize = 16.0;
   final double textSize = 16.0;
+  final double sBox = 130.0;
+  final double sBoxSpace = 10.0;
 
   String getStatus(status) {
     if (status == 0) {
@@ -123,16 +125,19 @@ class DBEmprTile extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text(
-                            'Plan name',
-                            style: TextStyle(
-                              // fontWeight: FontWeight.bold,
-                              fontSize: titleSize,
+                          SizedBox(
+                            width: sBox,
+                            child: Text(
+                              'Plan name',
+                              style: TextStyle(
+                                // fontWeight: FontWeight.bold,
+                                fontSize: titleSize,
+                              ),
+                              maxLines: 1,
                             ),
-                            maxLines: 1,
                           ),
                           SizedBox(
-                            width: 54.0,
+                            width: sBoxSpace,
                           ),
                           Text(
                             ':',
@@ -159,15 +164,18 @@ class DBEmprTile extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text(
-                            'Created by',
-                            style: TextStyle(
-                              // fontWeight: FontWeight.bold,
-                              fontSize: titleSize,
+                          SizedBox(
+                            width: sBox,
+                            child: Text(
+                              'Created by',
+                              style: TextStyle(
+                                // fontWeight: FontWeight.bold,
+                                fontSize: titleSize,
+                              ),
                             ),
                           ),
                           SizedBox(
-                            width: 48.0,
+                            width: sBoxSpace,
                           ),
                           Text(
                             ':',
@@ -194,15 +202,18 @@ class DBEmprTile extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text(
-                            'Admin Remarks',
-                            style: TextStyle(
-                              // fontWeight: FontWeight.bold,
-                              fontSize: titleSize,
+                          SizedBox(
+                            width: sBox,
+                            child: Text(
+                              'Admin Remarks',
+                              style: TextStyle(
+                                // fontWeight: FontWeight.bold,
+                                fontSize: titleSize,
+                              ),
                             ),
                           ),
                           SizedBox(
-                            width: 13.0,
+                            width: sBoxSpace,
                           ),
                           Text(
                             ':',
@@ -231,15 +242,18 @@ class DBEmprTile extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text(
-                            'Status',
-                            style: TextStyle(
-                              // fontWeight: FontWeight.bold,
-                              fontSize: titleSize,
+                          SizedBox(
+                            width: sBox,
+                            child: Text(
+                              'Status',
+                              style: TextStyle(
+                                // fontWeight: FontWeight.bold,
+                                fontSize: titleSize,
+                              ),
                             ),
                           ),
                           SizedBox(
-                            width: 86.0,
+                            width: sBoxSpace,
                           ),
                           Text(
                             ':',
@@ -266,15 +280,18 @@ class DBEmprTile extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text(
-                            'Created on',
-                            style: TextStyle(
-                              // fontWeight: FontWeight.bold,
-                              fontSize: titleSize,
+                          SizedBox(
+                            width: sBox,
+                            child: Text(
+                              'Created on',
+                              style: TextStyle(
+                                // fontWeight: FontWeight.bold,
+                                fontSize: titleSize,
+                              ),
                             ),
                           ),
                           SizedBox(
-                            width: 48.0,
+                            width: sBoxSpace,
                           ),
                           Text(
                             ':',

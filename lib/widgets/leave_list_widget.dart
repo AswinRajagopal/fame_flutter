@@ -16,6 +16,8 @@ class LeaveListWidget extends StatelessWidget {
   final double rowAfterSize = 8.0;
   final double titleSize = 16.0;
   final double textSize = 16.0;
+  final double sBox = 120.0;
+  final double sBoxSpace = 10.0;
 
   String convertDate(date) {
     return DateFormat('dd').format(DateTime.parse(date)).toString() + '-' + DateFormat('MM').format(DateTime.parse(date)).toString() + '-' + DateFormat.y().format(DateTime.parse(date)).toString();
@@ -47,16 +49,19 @@ class LeaveListWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
-                  'Emp ID',
-                  style: TextStyle(
-                    // fontWeight: FontWeight.bold,
-                    fontSize: titleSize,
+                SizedBox(
+                  width: sBox,
+                  child: Text(
+                    'Emp ID',
+                    style: TextStyle(
+                      // fontWeight: FontWeight.bold,
+                      fontSize: titleSize,
+                    ),
+                    maxLines: 1,
                   ),
-                  maxLines: 1,
                 ),
                 SizedBox(
-                  width: 71.0,
+                  width: sBoxSpace,
                 ),
                 Text(
                   ':',
@@ -83,15 +88,18 @@ class LeaveListWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
-                  'Name',
-                  style: TextStyle(
-                    // fontWeight: FontWeight.bold,
-                    fontSize: titleSize,
+                SizedBox(
+                  width: sBox,
+                  child: Text(
+                    'Name',
+                    style: TextStyle(
+                      // fontWeight: FontWeight.bold,
+                      fontSize: titleSize,
+                    ),
                   ),
                 ),
                 SizedBox(
-                  width: 81.0,
+                  width: sBoxSpace
                 ),
                 Text(
                   ':',
@@ -118,15 +126,18 @@ class LeaveListWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
-                  'From Date',
-                  style: TextStyle(
-                    // fontWeight: FontWeight.bold,
-                    fontSize: titleSize,
+                SizedBox(
+                  width: sBox,
+                  child: Text(
+                    'From Date',
+                    style: TextStyle(
+                      // fontWeight: FontWeight.bold,
+                      fontSize: titleSize,
+                    ),
                   ),
                 ),
                 SizedBox(
-                  width: 44.0,
+                  width: sBoxSpace,
                 ),
                 Text(
                   ':',
@@ -154,15 +165,18 @@ class LeaveListWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
-                  'To Date',
-                  style: TextStyle(
-                    // fontWeight: FontWeight.bold,
-                    fontSize: titleSize,
+                SizedBox(
+                  width: sBox,
+                  child: Text(
+                    'To Date',
+                    style: TextStyle(
+                      // fontWeight: FontWeight.bold,
+                      fontSize: titleSize,
+                    ),
                   ),
                 ),
                 SizedBox(
-                  width: 65.0,
+                  width: sBoxSpace,
                 ),
                 Text(
                   ':',
@@ -188,15 +202,18 @@ class LeaveListWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
-                  'Requested on',
-                  style: TextStyle(
-                    // fontWeight: FontWeight.bold,
-                    fontSize: titleSize,
+                SizedBox(
+                  width: sBox,
+                  child: Text(
+                    'Requested on',
+                    style: TextStyle(
+                      // fontWeight: FontWeight.bold,
+                      fontSize: titleSize,
+                    ),
                   ),
                 ),
                 SizedBox(
-                  width: 19.0,
+                  width: sBoxSpace,
                 ),
                 Text(
                   ':',
@@ -222,15 +239,18 @@ class LeaveListWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
-                  'Reason',
-                  style: TextStyle(
-                    // fontWeight: FontWeight.bold,
-                    fontSize: titleSize,
+                SizedBox(
+                  width: sBox,
+                  child: Text(
+                    'Reason',
+                    style: TextStyle(
+                      // fontWeight: FontWeight.bold,
+                      fontSize: titleSize,
+                    ),
                   ),
                 ),
                 SizedBox(
-                  width: 70.0,
+                  width: sBoxSpace,
                 ),
                 Text(
                   ':',
@@ -259,15 +279,18 @@ class LeaveListWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
-                  'Leave Type',
-                  style: TextStyle(
-                    // fontWeight: FontWeight.bold,
-                    fontSize: titleSize,
+                SizedBox(
+                  width: sBox,
+                  child: Text(
+                    'Leave Type',
+                    style: TextStyle(
+                      // fontWeight: FontWeight.bold,
+                      fontSize: titleSize,
+                    ),
                   ),
                 ),
                 SizedBox(
-                  width: 37.0,
+                  width: sBoxSpace,
                 ),
                 Text(
                   ':',
@@ -293,15 +316,18 @@ class LeaveListWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
-                  'Status',
-                  style: TextStyle(
-                    // fontWeight: FontWeight.bold,
-                    fontSize: titleSize,
+                SizedBox(
+                  width: sBox,
+                  child: Text(
+                    'Status',
+                    style: TextStyle(
+                      // fontWeight: FontWeight.bold,
+                      fontSize: titleSize,
+                    ),
                   ),
                 ),
                 SizedBox(
-                  width: 78.0,
+                  width: sBoxSpace,
                 ),
                 Text(
                   ':',
