@@ -162,14 +162,20 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
                                         vertical: 11.0,
-                                        horizontal: 42.0,
+                                        horizontal: 28.0,
                                       ),
-                                      child: Text(
-                                        'From Clients',
-                                        style: TextStyle(
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.bold,
-                                          color: Theme.of(context).primaryColor,
+                                      child: SizedBox(
+                                        width: 120.0,
+                                        height: 17.0,
+                                        child: Center(
+                                          child: Text(
+                                            'From Clients',
+                                            style: TextStyle(
+                                              fontSize: 18.0,
+                                              fontWeight: FontWeight.bold,
+                                              color: Theme.of(context).primaryColor,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -191,14 +197,20 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
                                         vertical: 5.0,
-                                        horizontal: 35.0,
+                                        horizontal: 28.0,
                                       ),
-                                      child: Text(
-                                        'From Map',
-                                        style: TextStyle(
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
+                                      child: SizedBox(
+                                        width: 120.0,
+                                        height: 17.0,
+                                        child: Center(
+                                          child: Text(
+                                            'From Map',
+                                            style: TextStyle(
+                                              fontSize: 18.0,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -520,7 +532,6 @@ class _RoutePlanningState extends State<RoutePlanning> {
                   ),
                 ),
                 Flexible(
-                  fit: FlexFit.loose,
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: Container(

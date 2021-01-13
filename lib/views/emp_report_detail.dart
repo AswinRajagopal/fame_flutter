@@ -210,14 +210,20 @@ class _EmpReportDetailState extends State<EmpReportDetail> {
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 10.0,
-                                  horizontal: 70.0,
+                                  horizontal: 28.0,
                                 ),
-                                child: Text(
-                                  'Name',
-                                  style: TextStyle(
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: epC.reportType == 'name' ? Theme.of(context).primaryColor : Colors.white,
+                                child: SizedBox(
+                                  width: 120.0,
+                                  height: 17.0,
+                                  child: Center(
+                                    child: Text(
+                                      'Name',
+                                      style: TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold,
+                                        color: epC.reportType == 'name' ? Theme.of(context).primaryColor : Colors.white,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -244,14 +250,20 @@ class _EmpReportDetailState extends State<EmpReportDetail> {
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 10.0,
-                                  horizontal: 48.0,
+                                  horizontal: 28.0,
                                 ),
-                                child: Text(
-                                  'Emp ID',
-                                  style: TextStyle(
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: epC.reportType == 'empid' ? Theme.of(context).primaryColor : Colors.white,
+                                child: SizedBox(
+                                  width: 120.0,
+                                  height: 17.0,
+                                  child: Center(
+                                    child: Text(
+                                      'Emp ID',
+                                      style: TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold,
+                                        color: epC.reportType == 'empid' ? Theme.of(context).primaryColor : Colors.white,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),

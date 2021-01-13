@@ -1091,7 +1091,10 @@ class _DashboardPageState extends State<DashboardPage> {
                       color: AppUtils().greyScaffoldBg,
                       width: MediaQuery.of(context).size.width,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 45.0),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 5.0,
+                          horizontal: 45.0,
+                        ),
                         child: Container(
                           height: 50.0,
                           width: MediaQuery.of(context).size.width / 1.3,
@@ -1129,14 +1132,20 @@ class _DashboardPageState extends State<DashboardPage> {
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                       vertical: 11.0,
-                                      horizontal: 45.0,
+                                      horizontal: 33.0,
                                     ),
-                                    child: Text(
-                                      'My Calendar',
-                                      style: TextStyle(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.bold,
-                                        color: calC.calendarType == 'myCal' ? Theme.of(context).primaryColor : Colors.white,
+                                    child: SizedBox(
+                                      width: 120.0,
+                                      height: 17.0,
+                                      child: Center(
+                                        child: Text(
+                                          'My Calendar',
+                                          style: TextStyle(
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.bold,
+                                            color: calC.calendarType == 'myCal' ? Theme.of(context).primaryColor : Colors.white,
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -1164,14 +1173,20 @@ class _DashboardPageState extends State<DashboardPage> {
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                       vertical: 11.0,
-                                      horizontal: 45.0,
+                                      horizontal: 33.0,
                                     ),
-                                    child: Text(
-                                      'My Roster',
-                                      style: TextStyle(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.bold,
-                                        color: calC.calendarType == 'myRos' ? Theme.of(context).primaryColor : Colors.white,
+                                    child: SizedBox(
+                                      width: 120.0,
+                                      height: 17.0,
+                                      child: Center(
+                                        child: Text(
+                                          'My Roster',
+                                          style: TextStyle(
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.bold,
+                                            color: calC.calendarType == 'myRos' ? Theme.of(context).primaryColor : Colors.white,
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
