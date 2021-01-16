@@ -41,6 +41,15 @@ class OnboardingPage extends StatelessWidget {
                 'Add Shift',
               ),
             ),
+            GestureDetector(
+              onTap: () {
+                Get.to(AddShift());
+              },
+              child: ListContainer(
+                'assets/images/shift.png',
+                'Add Employee',
+              ),
+            ),
             SizedBox(
               height: 20.0,
             ),
