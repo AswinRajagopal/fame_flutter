@@ -46,7 +46,7 @@ class OnboardingPage extends StatelessWidget {
                 Get.to(AddShift());
               },
               child: ListContainer(
-                'assets/images/shift.png',
+                'assets/images/employee.png',
                 'Add Employee',
               ),
             ),

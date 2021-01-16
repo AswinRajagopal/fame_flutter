@@ -222,7 +222,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                         ),
                       ),
                 Container(
-                  height: RemoteServices().box.get('role') != '3' ? MediaQuery.of(context).size.height / 1.24 : MediaQuery.of(context).size.height / 1.35,
+                  height: RemoteServices().box.get('role') != '3' ? MediaQuery.of(context).size.height / 1.20 : MediaQuery.of(context).size.height / 1.35,
                   child: ListView(
                     shrinkWrap: true,
                     primary: true,
