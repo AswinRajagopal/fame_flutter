@@ -259,6 +259,7 @@ class _FaceRegisterState extends State<FaceRegister> {
     if (controller == null) return Container();
     final size = MediaQuery.of(context).size;
     // final deviceRatio = size.width / size.height;
+    // print('deviceRatio: $deviceRatio');
     // final xScale = controller.value.aspectRatio / deviceRatio;
     // Modify the yScale if you are in Landscape
     // final yScale = 1.0;
@@ -295,7 +296,7 @@ class _FaceRegisterState extends State<FaceRegister> {
                     height: size.height / 2.45,
                     width: size.width / 1.194,
                     child: AspectRatio(
-                      aspectRatio: controller.value.aspectRatio,
+                      aspectRatio: 4.0 / 3.0,
                       child: CameraPreview(controller),
                     ),
                   ),
@@ -338,7 +339,7 @@ class _FaceRegisterState extends State<FaceRegister> {
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18.0,
-           // fontWeight: FontWeight.bold,
+                            // fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
