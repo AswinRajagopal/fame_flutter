@@ -50,7 +50,6 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   void initState() {
     super.initState();
-    // checkForUpdate();
     Future.delayed(Duration(milliseconds: 100), () {
       dbC.init(context: context);
     });
