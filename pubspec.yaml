@@ -81,6 +81,7 @@ dependencies:
   background_location: ^0.3.0
   firebase_crashlytics: 
   firebase_core:
+  flutter_local_notifications: 
 
 # flutter_icons:
 #   image_path: "assets/images/icon.png"

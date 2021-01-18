@@ -1503,4 +1503,26 @@ class RemoteServices {
       }
     }
   }
+
+  Future getClientsSugg(unitName) async {
+    // print('empName: $empName');
+    var response = await client.post(
+      '$baseURL/transfer/get_unit_suggest',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'unitName': unitName,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString)['clientsSuggest'];
+    } else {
+      //show error message
+      return null;
+    }
+  }
 }

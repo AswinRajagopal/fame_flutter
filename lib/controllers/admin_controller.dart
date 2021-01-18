@@ -12,6 +12,7 @@ class AdminController extends GetxController {
   ProgressDialog pr;
   var resAddShift;
   var resAddClient;
+  final List clientList = [].obs;
 
   void addShift(shiftName, startTime, endTime) async {
     try {
@@ -102,6 +103,53 @@ class AdminController extends GetxController {
       }
     } catch (e) {
       print(e);
+      await pr.hide();
+      Get.snackbar(
+        'Error',
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+      );
+    }
+  }
+
+  void getClient() async {
+    clientList.clear();
+    try {
+      isLoading(true);
+      await pr.show();
+      var getClientRes = await RemoteServices().getClients();
+      if (getClientRes != null) {
+        await pr.hide();
+        isLoading(false);
+        // print('getClientRes valid: $getClientRes');
+        if (getClientRes['success']) {
+          for (var i = 0; i < getClientRes['clientsList'].length; i++) {
+            clientList.add(getClientRes['clientsList'][i]);
+          }
+          // print('clientsList: $clientList');
+        } else {
+          // Get.snackbar(
+          //   'Error',
+          //   'Client not found',
+          //   colorText: Colors.white,
+          //   backgroundColor: Colors.black87,
+          //   snackPosition: SnackPosition.BOTTOM,
+          //   margin: EdgeInsets.symmetric(
+          //     horizontal: 8.0,
+          //     vertical: 10.0,
+          //   ),
+          // );
+        }
+      }
+    } catch (e) {
+      print(e);
+      isLoading(false);
       await pr.hide();
       Get.snackbar(
         'Error',

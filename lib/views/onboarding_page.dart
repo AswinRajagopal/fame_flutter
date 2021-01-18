@@ -1,3 +1,5 @@
+import 'add_employee.dart';
+
 import 'add_shift.dart';
 
 import '../utils/utils.dart';
@@ -43,7 +45,7 @@ class OnboardingPage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                Get.to(AddShift());
+                Get.to(AddEmployee());
               },
               child: ListContainer(
                 'assets/images/employee.png',

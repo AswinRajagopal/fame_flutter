@@ -115,7 +115,7 @@ class _LocationReportDetailState extends State<LocationReportDetail> {
       backgroundColor: AppUtils().innerScaffoldBg,
       appBar: AppBar(
         title: Text(
-          'Tracking',
+          'Current Location',
         ),
       ),
       body: SafeArea(
