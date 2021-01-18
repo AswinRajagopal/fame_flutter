@@ -1,10 +1,15 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 
 import '../connection/remote_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+// import 'package:timezone/data/latest.dart' as tz;
+// import 'package:timezone/timezone.dart' as tz;
 
 class DashboardController extends GetxController {
   var isDashboardLoading = true.obs;
@@ -12,12 +17,18 @@ class DashboardController extends GetxController {
   var todayString = (DateFormat.E().format(DateTime.now()).toString() + ' ' + DateFormat.d().format(DateTime.now()).toString() + ' ' + DateFormat.MMM().format(DateTime.now()).toString() + ', ' + DateFormat('h:mm').format(DateTime.now()).toString() + '' + DateFormat('a').format(DateTime.now()).toString().toLowerCase()).obs;
   var greetings = '...'.obs;
   bool isDisposed = false;
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  var initializationSettings;
+  var initializationSettingsAndroid;
+  var initializationSettingsIOS;
+  // var currentTimeZone;
 
   @override
-  void onInit() {
+  void onInit() async {
     print('dbc onInit');
     // getDashboardDetails();
     // updateTime();
+    // tz.initializeTimeZones();
     super.onInit();
   }
 
@@ -26,12 +37,39 @@ class DashboardController extends GetxController {
     print('init custom');
     getDashboardDetails(context: context);
     updateTime();
+    setupNotification();
   }
 
   @override
   void dispose() {
     super.dispose();
     isDisposed = true;
+  }
+
+  void setupNotification() {
+    flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
+          alert: true,
+          badge: true,
+          sound: true,
+        );
+    initializationSettingsAndroid = AndroidInitializationSettings('ic_notification');
+    initializationSettingsIOS = IOSInitializationSettings(
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: false,
+      onDidReceiveLocalNotification: (id, title, body, payload) async {
+        // your call back to the UI
+      },
+    );
+    initializationSettings = InitializationSettings(
+      initializationSettingsAndroid,
+      initializationSettingsIOS,
+    );
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  Future<void> cancelNotification() async {
+    await flutterLocalNotificationsPlugin.cancelAll();
   }
 
   void updateTime() {
@@ -47,6 +85,56 @@ class DashboardController extends GetxController {
         greetings.value = 'Evening';
       }
     });
+  }
+
+  String convertTimeWithParse(time) {
+    return DateFormat('h:mm').format(DateFormat('HH:mm:ss').parse(time)).toString() + DateFormat('a').format(DateFormat('HH:mm:ss').parse(time)).toString().toLowerCase();
+  }
+
+  Future<void> scheduleNotification(type, time, addTime) async {
+    print('type: $type');
+    var todayDate = DateFormat('yyyy-MM-dd').format(DateTime.now()).toString();
+    var reminderDate = DateTime.parse('$todayDate $time');
+    var currentDate = DateTime.now();
+    if (currentDate.isAfter(reminderDate)) {
+      todayDate = DateFormat('yyyy-MM-dd').format(DateTime.now().add(Duration(days: 1))).toString();
+    }
+    var body = '';
+    var scheduleNotificationDateTime = DateTime.parse('$todayDate $time').add(Duration(minutes: addTime));
+    await cancelNotification();
+    if (type == 'setupcheckout') {
+      // Reminder for checkout
+      body = "Hey ${RemoteServices().box.get('empName')}, your shift ended at ${convertTimeWithParse(time)}. Seems you haven't checked out yet. Please checkout";
+    } else {
+      // Reminder for checkin
+      body = "Hey ${RemoteServices().box.get('empName')}, your shift time is ${convertTimeWithParse(time)}. Seems you haven't checked in yet. Please check-in to FaME to avoid Late Check In";
+    }
+    print('scheduleNotificationDateTime: $scheduleNotificationDateTime');
+    var androidChannelSpecifics = AndroidNotificationDetails(
+      'FaME',
+      'FaME Channel',
+      'Send notification for checkin and checkout',
+      enableLights: true,
+      importance: Importance.Max,
+      priority: Priority.High,
+      playSound: true,
+      styleInformation: DefaultStyleInformation(true, true),
+    );
+    var iosChannelSpecifics = IOSNotificationDetails();
+    var platformChannelSpecifics = NotificationDetails(
+      androidChannelSpecifics,
+      iosChannelSpecifics,
+    );
+    await flutterLocalNotificationsPlugin.schedule(
+      0,
+      'FaME',
+      body,
+      scheduleNotificationDateTime,
+      platformChannelSpecifics,
+      androidAllowWhileIdle: true,
+      // uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+      payload: type,
+    );
   }
 
   void getDashboardDetails({context}) async {
@@ -92,34 +180,25 @@ class DashboardController extends GetxController {
             );
           } else {
             isDashboardLoading(false);
+            var dA = response['dailyAttendance'];
             if (response['empdetails']['gpsTracking'] != null && response['empdetails']['gpsTracking'] == true) {
-              var dA = response['dailyAttendance'];
               if (dA != null && (dA['checkInDateTime'] != null && dA['checkInDateTime'] != '') && (dA['checkOutDateTime'] == null || dA['checkOutDateTime'] == '')) {
                 print('tracking');
                 RemoteServices().saveLocationLog();
               } else {
                 print('not tracking');
-                // await RemoteServices().getPositionSubscription.cancel();
                 await RemoteServices().saveLocationLog(cancel: true);
               }
-              // BackgroundLocation.getPermissions(
-              //   onGranted: () {
-              //     BackgroundLocation.setAndroidNotification(
-              //       title: 'FaME',
-              //       message: 'Your live tracking is running',
-              //     );
-              //     BackgroundLocation.setAndroidConfiguration(interval: 15000);
-              //     BackgroundLocation.startLocationService();
-              //     BackgroundLocation.getLocationUpdates((location) {
-              //       print('location: $location');
-              //       RemoteServices().saveLocationLog(
-              //         lat: location.latitude.toString(),
-              //         lng: location.longitude.toString(),
-              //       );
-              //     });
-              //   },
-              //   onDenied: () {},
-              // );
+            }
+
+            if (jsonDecode(RemoteServices().box.get('appFeature'))['checkoutDial'] != null && jsonDecode(RemoteServices().box.get('appFeature'))['checkoutDial']) {
+              if (dA != null && (dA['checkInDateTime'] != null && dA['checkInDateTime'] != '') && (dA['checkOutDateTime'] == null || dA['checkOutDateTime'] == '')) {
+                // checked in
+                await scheduleNotification('setupcheckout', response['empdetails']['shiftEndTime'], jsonDecode(RemoteServices().box.get('appFeature'))['checkoutDialTime'] ?? 30);
+              } else {
+                // checked out
+                await scheduleNotification('setupcheckin', response['empdetails']['shiftStartTime'], jsonDecode(RemoteServices().box.get('appFeature'))['checkinDialTime'] ?? 15);
+              }
             }
           }
         } else {
