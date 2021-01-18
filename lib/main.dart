@@ -95,21 +95,24 @@ class PocketFaME extends StatelessWidget {
       //     child: child,
       //   );
       // },
-      builder: (context, widget) => ResponsiveWrapper.builder(
-        ScrollConfiguration(
-          behavior: MyBehavior(),
-          child: widget,
+      builder: (context, widget) => MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+        child: ResponsiveWrapper.builder(
+          ScrollConfiguration(
+            behavior: MyBehavior(),
+            child: widget,
+          ),
+          maxWidth: 1200,
+          minWidth: 480,
+          // minWidth: MediaQuery.of(context).size.width,
+          defaultScale: true,
+          debugLog: false,
+          breakpoints: [
+            ResponsiveBreakpoint.resize(480, name: MOBILE),
+            ResponsiveBreakpoint.autoScale(800, name: TABLET),
+            ResponsiveBreakpoint.resize(1000, name: DESKTOP),
+          ],
         ),
-        maxWidth: 1200,
-        minWidth: 480,
-        // minWidth: MediaQuery.of(context).size.width,
-        defaultScale: true,
-        debugLog: false,
-        breakpoints: [
-          ResponsiveBreakpoint.resize(480, name: MOBILE),
-          ResponsiveBreakpoint.autoScale(800, name: TABLET),
-          ResponsiveBreakpoint.resize(1000, name: DESKTOP),
-        ],
       ),
       home: RemoteServices().box.get('empid') != null && RemoteServices().box.get('empid') != '' ? DashboardPage() : WelcomePage(),
       getPages: [
