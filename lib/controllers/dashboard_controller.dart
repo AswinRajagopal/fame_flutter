@@ -8,9 +8,6 @@ import '../connection/remote_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-// import 'package:timezone/data/latest.dart' as tz;
-// import 'package:timezone/timezone.dart' as tz;
-
 class DashboardController extends GetxController {
   var isDashboardLoading = true.obs;
   var response;
@@ -21,14 +18,10 @@ class DashboardController extends GetxController {
   var initializationSettings;
   var initializationSettingsAndroid;
   var initializationSettingsIOS;
-  // var currentTimeZone;
 
   @override
   void onInit() async {
     print('dbc onInit');
-    // getDashboardDetails();
-    // updateTime();
-    // tz.initializeTimeZones();
     super.onInit();
   }
 
@@ -47,16 +40,16 @@ class DashboardController extends GetxController {
   }
 
   void setupNotification() {
-    flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
-          alert: true,
-          badge: true,
-          sound: true,
-        );
+    // flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
+    //       alert: true,
+    //       badge: true,
+    //       sound: true,
+    //     );
     initializationSettingsAndroid = AndroidInitializationSettings('ic_notification');
     initializationSettingsIOS = IOSInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
-      requestSoundPermission: false,
+      requestSoundPermission: true,
       onDidReceiveLocalNotification: (id, title, body, payload) async {
         // your call back to the UI
       },
