@@ -98,9 +98,7 @@ class LeaveListWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(
-                  width: sBoxSpace
-                ),
+                SizedBox(width: sBoxSpace),
                 Text(
                   ':',
                   style: TextStyle(
@@ -263,7 +261,7 @@ class LeaveListWidget extends StatelessWidget {
                 ),
                 Flexible(
                   child: Text(
-                    leave['reason'].toString(),
+                    leave['reason'],
                     // maxLines: 5,
                     style: TextStyle(
                       fontSize: textSize,
@@ -339,9 +337,11 @@ class LeaveListWidget extends StatelessWidget {
                   width: secondWidth,
                 ),
                 Text(
-                  getStatus(
-                    int.parse(leave['status']),
-                  ),
+                  leave['status'].length > 1
+                      ? leave['status']
+                      : getStatus(
+                          int.parse(leave['status']),
+                        ),
                   style: TextStyle(
                     fontSize: textSize,
                     color: Colors.grey,
@@ -349,7 +349,7 @@ class LeaveListWidget extends StatelessWidget {
                 ),
               ],
             ),
-            leave['status'] == '0' && (RemoteServices().box.get('role') == '2' || RemoteServices().box.get('role') == '3')
+            leave['status'] == '0' || leave['status'] == 'Pending' && (RemoteServices().box.get('role') == '2' || RemoteServices().box.get('role') == '3')
                 ? Column(
                     children: [
                       SizedBox(

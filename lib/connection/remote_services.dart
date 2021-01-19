@@ -305,7 +305,7 @@ class RemoteServices {
     var pushCode = await setFirebaseNotification();
     // print('getDashboardDetails');
     // print(box.get('empid'));
-    // print(box.get('companyid'));
+    print(box.get('companyid'));
     var response = await client.post(
       '$baseURL/attendance/dashboard_flut',
       headers: header,

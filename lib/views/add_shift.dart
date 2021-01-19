@@ -133,10 +133,10 @@ class _AddShiftState extends State<AddShift> {
                             var stm = result.startTime.minute;
                             var enh = result.endTime.hour;
                             var enm = result.endTime.minute;
-                            var stH = sth < 9 ? '0' + sth.toString() : sth;
-                            var stM = stm < 9 ? '0' + stm.toString() : stm;
-                            var enH = enh < 9 ? '0' + enh.toString() : enh;
-                            var enM = enm < 9 ? '0' + enm.toString() : enm;
+                            var stH = sth < 10 ? '0' + sth.toString() : sth;
+                            var stM = stm < 10 ? '0' + stm.toString() : stm;
+                            var enH = enh < 10 ? '0' + enh.toString() : enh;
+                            var enM = enm < 10 ? '0' + enm.toString() : enm;
                             var start = '$stH:$stM:00.000';
                             var end = '$enH:$enM:00.000';
                             print('start: $start');

@@ -24,7 +24,7 @@ class _AttendancePageState extends State<AttendancePage> {
   final AttendanceController aC = Get.put(AttendanceController());
   TextEditingController date = TextEditingController();
   var stVal = 'all';
-  var clientId;
+  // var clientId;
   var passDate;
 
   @override
@@ -175,7 +175,8 @@ class _AttendancePageState extends State<AttendancePage> {
                         ),
                       ),
                       isExpanded: true,
-                      // value: aC.clientList.first.client.id.toString(),
+                      // value: json.encode(aC.clientList.first.clientManpowerList),
+                      value: aC.selectedVal,
                       items: aC.clientList.map((item) {
                         // print('item: ${item.client.id}');
                         var sC = item.client.name + ' - ' + item.client.id.toString();
@@ -192,7 +193,7 @@ class _AttendancePageState extends State<AttendancePage> {
                       onChanged: (value) {
                         var manpower = json.decode(value);
                         // print('value: $manpower');
-                        clientId = manpower.first['clientId'];
+                        aC.clientId = manpower.first['clientId'];
                         aC.timings.clear();
                         aC.shiftTime = '';
                         for (var j = 0; j < manpower.length; j++) {
@@ -239,6 +240,9 @@ class _AttendancePageState extends State<AttendancePage> {
                             aC.timings.add(addTiming);
                           }
                         }
+                        var timing = aC.timings.first;
+                        var shiftTimeCtrl = timing['shiftStartTime'] + ' - ' + timing['shiftEndTime'];
+                        aC.shiftTime = timing['shift'] + '#' + shiftTimeCtrl;
                       },
                     ),
                   ),
@@ -404,7 +408,7 @@ class _AttendancePageState extends State<AttendancePage> {
                                     crossAxisCount: 2,
                                     itemCount: aC.timings.length,
                                     itemBuilder: (context, index) {
-                                      // print(aC.timings);
+                                      print(aC.shiftTime);
                                       var timing = aC.timings[index];
                                       var shiftTime = timing['shiftStartTime'] + ' - ' + timing['shiftEndTime'];
                                       return Row(
@@ -458,10 +462,10 @@ class _AttendancePageState extends State<AttendancePage> {
                                   onPressed: () {
                                     print('proceed');
                                     print('date: $passDate');
-                                    print('client: $clientId');
+                                    print('client: ${aC.clientId}');
                                     print('status: $stVal');
                                     print('shift: ${aC.shiftTime}');
-                                    if (clientId == null || aC.shiftTime == null || aC.shiftTime == '') {
+                                    if (aC.clientId == null || aC.shiftTime == null || aC.shiftTime == '') {
                                       Get.snackbar(
                                         'Error',
                                         'Please select client and shift timing',
@@ -475,14 +479,14 @@ class _AttendancePageState extends State<AttendancePage> {
                                       );
                                     } else {
                                       print('date: $passDate');
-                                      print('client: $clientId');
+                                      print('client: ${aC.clientId}');
                                       print('status: $stVal');
                                       print('shift: ${aC.shiftTime.split('#').first}');
                                       print('time: ${aC.shiftTime.split('#').last}');
                                       Get.offAll(
                                         EmployeeNotation(
                                           passDate,
-                                          clientId,
+                                          aC.clientId,
                                           stVal,
                                           aC.shiftTime.split('#').first,
                                           aC.shiftTime.split('#').last,

@@ -84,6 +84,7 @@ dependencies:
   # flutter_local_notifications: ^3.0.3
   flutter_local_notifications: ^1.4.4+1
   # timezone: 
+  # flutter_html: ^1.2.0
 
 # flutter_icons:
 #   image_path: "assets/images/icon.png"

@@ -29,8 +29,6 @@ class BottomNav extends StatelessWidget {
           Get.to(ProfilePage());
         } else if (index == 2) {
         } else if (index == 3) {
-          Get.to(SettingsPage());
-        } else if (index == 4) {
           if (roleId == '2' || roleId == '3') {
             Get.to(MorePage());
           } else {
@@ -46,6 +44,8 @@ class BottomNav extends StatelessWidget {
               ),
             );
           }
+        } else if (index == 4) {
+          Get.to(SettingsPage());
         }
       },
       type: BottomNavigationBarType.fixed,
@@ -98,7 +98,7 @@ class BottomNav extends StatelessWidget {
               height: 30.0,
             ),
           ),
-          label: 'Settings',
+          label: 'Reports',
         ),
         BottomNavigationBarItem(
           icon: Padding(

@@ -1,3 +1,5 @@
+import 'onboarding_page.dart';
+import 'transfer_list.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
 import '../connection/remote_services.dart';
@@ -95,6 +97,27 @@ class _SettingsPageState extends State<SettingsPage> {
           children: [
             SizedBox(
               height: 20.0,
+            ),
+            GestureDetector(
+              onTap: () {
+                Get.to(TransferList());
+              },
+              child: ListContainer(
+                'assets/images/icon_transfer.png',
+                'Transfer',
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Get.to(OnboardingPage());
+              },
+              child: Visibility(
+                visible: roleId == '3' ? true : false,
+                child: ListContainer(
+                  'assets/images/onboarding.png',
+                  'Onboarding',
+                ),
+              ),
             ),
             GestureDetector(
               onTap: () {

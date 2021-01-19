@@ -118,7 +118,7 @@ class _LeavePageState extends State<LeavePage> {
                           'No leave found',
                           style: TextStyle(
                             fontSize: 18.0,
-           // fontWeight: FontWeight.bold,
+                            // fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],

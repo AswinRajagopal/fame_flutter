@@ -1,5 +1,3 @@
-import 'onboarding_page.dart';
-
 import '../connection/remote_services.dart';
 
 import 'visit_plan.dart';
@@ -16,8 +14,6 @@ import 'timeline_report.dart';
 
 import 'daily_employee_report.dart';
 
-import 'transfer_list.dart';
-
 import 'package:get/get.dart';
 
 import '../utils/utils.dart';
@@ -27,6 +23,7 @@ class MorePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var roleId = RemoteServices().box.get('role');
+    print('roleId: $roleId');
     return Scaffold(
       backgroundColor: AppUtils().greyScaffoldBg,
       appBar: AppBar(
@@ -41,15 +38,15 @@ class MorePage extends StatelessWidget {
             SizedBox(
               height: 20.0,
             ),
-            GestureDetector(
-              onTap: () {
-                Get.to(TransferList());
-              },
-              child: ListContainer(
-                'assets/images/icon_transfer.png',
-                'Transfer',
-              ),
-            ),
+            // GestureDetector(
+            //   onTap: () {
+            //     Get.to(TransferList());
+            //   },
+            //   child: ListContainer(
+            //     'assets/images/icon_transfer.png',
+            //     'Transfer',
+            //   ),
+            // ),
             GestureDetector(
               onTap: () {
                 Get.to(ShortageReport());
@@ -113,18 +110,18 @@ class MorePage extends StatelessWidget {
                 'My Visit Report',
               ),
             ),
-            GestureDetector(
-              onTap: () {
-                Get.to(OnboardingPage());
-              },
-              child: Visibility(
-                visible: roleId == '3' ? true : false,
-                child: ListContainer(
-                  'assets/images/onboarding.png',
-                  'Onboarding',
-                ),
-              ),
-            ),
+            // GestureDetector(
+            //   onTap: () {
+            //     Get.to(OnboardingPage());
+            //   },
+            //   child: Visibility(
+            //     visible: roleId == '3' ? true : false,
+            //     child: ListContainer(
+            //       'assets/images/onboarding.png',
+            //       'Onboarding',
+            //     ),
+            //   ),
+            // ),
             SizedBox(
               height: 20.0,
             ),

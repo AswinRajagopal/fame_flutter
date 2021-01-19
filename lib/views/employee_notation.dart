@@ -509,7 +509,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           SizedBox(
-                                            width: 220.0,
+                                            width: 270.0,
                                             child: Text(
                                               emp['name'].toString().trimRight() + ' ' + emp['empId'],
                                               style: TextStyle(
@@ -520,7 +520,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                             ),
                                           ),
                                           SizedBox(
-                                            width: 220.0,
+                                            width: 270.0,
                                             child: Text(
                                               enC.designation[int.parse(emp['designation'].toString())],
                                               style: TextStyle(
@@ -735,10 +735,10 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                             var stm = result.startTime.minute;
                                                             var enh = result.endTime.hour;
                                                             var enm = result.endTime.minute;
-                                                            var stH = sth < 9 ? '0' + sth.toString() : sth;
-                                                            var stM = stm < 9 ? '0' + stm.toString() : stm;
-                                                            var enH = enh < 9 ? '0' + enh.toString() : enh;
-                                                            var enM = enm < 9 ? '0' + enm.toString() : enm;
+                                                            var stH = sth < 10 ? '0' + sth.toString() : sth;
+                                                            var stM = stm < 10 ? '0' + stm.toString() : stm;
+                                                            var enH = enh < 10 ? '0' + enh.toString() : enh;
+                                                            var enM = enm < 10 ? '0' + enm.toString() : enm;
                                                             var dt = widget.date;
                                                             var start = dt + ' $stH:$stM:00.000';
                                                             var end = dt + ' $enH:$enM:00.000';
@@ -760,8 +760,17 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                             if (atRes) {
                                                               emp['attendanceAlias'] = val;
                                                               emp['status'] = '1';
+                                                              setState(() {});
+                                                              Future.delayed(Duration(milliseconds: 100), () {
+                                                                enC.getNotations(
+                                                                  widget.date,
+                                                                  widget.shift,
+                                                                  widget.clientId,
+                                                                  AppUtils.NAME,
+                                                                  widget.status,
+                                                                );
+                                                              });
                                                             }
-                                                            setState(() {});
                                                           }
                                                         } else {
                                                           atRes = await enC.giveAttendance(
