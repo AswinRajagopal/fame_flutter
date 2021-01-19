@@ -138,7 +138,7 @@ class _LocationReportDetailState extends State<LocationReportDetail> {
                         'No data found for employee',
                         style: TextStyle(
                           fontSize: 18.0,
-           // fontWeight: FontWeight.bold,
+                          // fontWeight: FontWeight.bold,
                         ),
                         textAlign: TextAlign.center,
                       ),

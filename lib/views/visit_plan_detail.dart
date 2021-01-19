@@ -1,3 +1,5 @@
+import 'visit_plan_route.dart';
+
 import '../utils/utils.dart';
 import 'package:timelines/timelines.dart';
 
@@ -71,6 +73,23 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
           'Visit Plan',
         ),
       ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: () {
+              // Get.offAll(ApplyLeave());
+              Get.to(VisitPlanRoute(widget.empId, widget.date));
+            },
+            child: Icon(
+              Icons.location_history,
+              size: 32.0,
+            ),
+            backgroundColor: Theme.of(context).primaryColor,
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Obx(() {
           if (epC.isLoadingTimeline.value) {
@@ -91,7 +110,7 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
                         'No data found for employee and selected date',
                         style: TextStyle(
                           fontSize: 18.0,
-           // fontWeight: FontWeight.bold,
+                          // fontWeight: FontWeight.bold,
                         ),
                         textAlign: TextAlign.center,
                       ),

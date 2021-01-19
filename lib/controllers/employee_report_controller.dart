@@ -1,3 +1,4 @@
+import '../connection/locationpath.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:intl/intl.dart';
 
@@ -39,6 +40,7 @@ class EmployeeReportController extends GetxController {
   var shortageRes;
   var oB = AppUtils.NAME;
   final List pitsStops = [].obs;
+  double totalDistance = 0;
 
   void getClientTimings() async {
     try {
@@ -273,6 +275,75 @@ class EmployeeReportController extends GetxController {
               }
               pitsStops.add(pitstop);
             }
+          }
+          isLoadingTimeline(false);
+          await pr.hide();
+        } else {
+          isLoadingTimeline(false);
+          await pr.hide();
+          // Get.snackbar(
+          //   'Error',
+          //   'Timeline report not found',
+          //   colorText: Colors.white,
+          //   backgroundColor: Colors.black87,
+          //   snackPosition: SnackPosition.BOTTOM,
+          //   margin: EdgeInsets.symmetric(
+          //     horizontal: 8.0,
+          //     vertical: 10.0,
+          //   ),
+          // );
+        }
+      }
+    } catch (e) {
+      print(e);
+      isLoadingTimeline(false);
+      await pr.hide();
+      Get.snackbar(
+        'Error',
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+      );
+    }
+  }
+
+  void getVisitPlanRoute(empId, searchDate, {type}) async {
+    isLoadingTimeline(true);
+    pitsStops.clear();
+    totalDistance = 0;
+    try {
+      await pr.show();
+      getTimelineRes = await RemoteServices().getTimelineReport(empId, searchDate, type: type);
+      if (getTimelineRes != null) {
+        if (getTimelineRes['success']) {
+          // print('getTimelineRes: $getTimelineRes');
+          // print('type: $type');
+          for (var i = 0; i < getTimelineRes['pitstopList'].length; i++) {
+            var pitstop = getTimelineRes['pitstopList'][i];
+            var date = pitstop['updatedOn'];
+
+            pitstop['datetime'] = DateFormat('dd').format(DateTime.parse(date)).toString() + '-' + DateFormat('MM').format(DateTime.parse(date)).toString() + '-' + DateFormat.y().format(DateTime.parse(date)).toString() + ', ' + DateFormat('hh:mm').format(DateTime.parse(date)).toString() + '' + DateFormat('a').format(DateTime.parse(date)).toString().toLowerCase();
+            if (pitstop['checkinLat'] == null || pitstop['checkinLat'] == '' || pitstop['checkinLng'] == null || pitstop['checkinLng'] == '') {
+              pitstop['address'] = 'N/A';
+            } else {
+              var placemark = await placemarkFromCoordinates(
+                double.parse(pitstop['checkinLat']),
+                double.parse(pitstop['checkinLng']),
+              );
+              var first = placemark.first;
+              // print(first);
+              var address = '${first.street}, ${first.thoroughfare}, ${first.subLocality}, ${first.locality}, ${first.administrativeArea}, ${first.postalCode}, ${first.country}';
+              pitstop['address'] = address;
+            }
+            pitsStops.add(pitstop);
+          }
+          for (var d = 0; d < pitsStops.length - 1; d++) {
+            totalDistance += Locationpath().calculateDistance(double.parse(pitsStops[d]['checkinLat']), double.parse(pitsStops[d]['checkinLng']), double.parse(pitsStops[d + 1]['checkinLat']), double.parse(pitsStops[d + 1]['checkinLng']));
           }
           isLoadingTimeline(false);
           await pr.hide();
