@@ -459,6 +459,31 @@ class _AddEmployeeState extends State<AddEmployee> {
                           onPressed: () {
                             print('Submit');
                             FocusScope.of(context).requestFocus(FocusNode());
+                            if (name.text.isNullOrBlank || empid.text.isNullOrBlank || designation.text.isNullOrBlank || gender == '' || dtOfBirth.text.isNullOrBlank || empPhone.text.isNullOrBlank || address.text.isNullOrBlank || shift.text.isNullOrBlank || sitePostedTo == null) {
+                              Get.snackbar(
+                                'Error',
+                                'Please fill all the fields',
+                                colorText: Colors.white,
+                                backgroundColor: Colors.black87,
+                                snackPosition: SnackPosition.BOTTOM,
+                                margin: EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                  vertical: 10.0,
+                                ),
+                              );
+                            } else if (empPhone.text != '' && empPhone.text.length != 10) {
+                              Get.snackbar(
+                                'Error',
+                                'Please provide valid 10 digit mobile',
+                                colorText: Colors.white,
+                                backgroundColor: Colors.black87,
+                                snackPosition: SnackPosition.BOTTOM,
+                                margin: EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                  vertical: 10.0,
+                                ),
+                              );
+                            }
                           },
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
