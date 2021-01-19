@@ -701,8 +701,8 @@ class RemoteServices {
 
     print(response.statusCode);
     if (response.statusCode == 200) {
-      var jsonString = response.body;
-      return leaveListFromJson(jsonString);
+      // var jsonString = response.body;
+      return leaveListFromJson(utf8.decode(response.bodyBytes));
     } else {
       return null;
     }
