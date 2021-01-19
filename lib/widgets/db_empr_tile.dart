@@ -95,7 +95,8 @@ class DBEmprTile extends StatelessWidget {
             onTap: () {
               print(empRoute.routePlanId);
               print(empRoute.companyId);
-              Get.offAll(Pitstops(empRoute.routePlanId, empRoute.companyId, 'db'));
+              // Get.offAll(Pitstops(empRoute.routePlanId, empRoute.companyId, 'db'));
+              Get.to(Pitstops(empRoute.routePlanId, empRoute.companyId, empRoute.status.toString(), 'db'));
             },
             child: Padding(
               padding: EdgeInsets.fromLTRB(

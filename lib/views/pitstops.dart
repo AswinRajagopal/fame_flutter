@@ -19,8 +19,9 @@ import 'routeplan_list.dart';
 class Pitstops extends StatefulWidget {
   final String id;
   final String company;
+  final String status;
   final String goBackTo;
-  Pitstops(this.id, this.company, this.goBackTo);
+  Pitstops(this.id, this.company, this.status, this.goBackTo);
 
   @override
   _PitstopsState createState() => _PitstopsState();
@@ -104,53 +105,65 @@ class _PitstopsState extends State<Pitstops> {
         //   ),
         // ],
       ),
-      body: WillPopScope(
-        onWillPop: backButtonPressed,
-        child: SafeArea(
-          child: Obx(() {
-            if (psC.isLoading.value) {
-              return Column();
-            }
-            return Column(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 15.0,
-                      vertical: 0.0,
+      body: SafeArea(
+        child: Obx(() {
+          if (psC.isLoading.value) {
+            return Column();
+          }
+          return Column(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 15.0,
+                    vertical: 0.0,
+                  ),
+                  child: Timeline.tileBuilder(
+                    theme: TimelineThemeData(
+                      direction: Axis.vertical,
+                      nodePosition: 0.01,
                     ),
-                    child: Timeline.tileBuilder(
-                      theme: TimelineThemeData(
-                        direction: Axis.vertical,
-                        nodePosition: 0.01,
-                      ),
-                      builder: TimelineTileBuilder.connected(
-                        itemCount: psC.pitsStops.length,
-                        connectorBuilder: (context, index, type) {
-                          return DashedLineConnector(
-                            dash: 6.0,
-                            gap: 3.0,
-                            color: Theme.of(context).primaryColor,
-                          );
-                        },
-                        indicatorBuilder: (context, index) {
-                          return OutlinedDotIndicator(
-                            size: 25.0,
-                            backgroundColor: Colors.white,
-                            color: Theme.of(context).primaryColor,
-                            borderWidth: 7.0,
-                          );
-                        },
-                        indicatorPositionBuilder: (context, index) {
-                          return index == 0 ? 0.30 : 0.08;
-                        },
-                        contentsBuilder: (context, index) {
-                          var pitstop = psC.pitsStops[index];
-                          return GestureDetector(
-                            onTap: pitstop['checkinLat'] != null
-                                ? null
-                                : () {
-                                    print('clicked');
+                    builder: TimelineTileBuilder.connected(
+                      itemCount: psC.pitsStops.length,
+                      connectorBuilder: (context, index, type) {
+                        return DashedLineConnector(
+                          dash: 6.0,
+                          gap: 3.0,
+                          color: Theme.of(context).primaryColor,
+                        );
+                      },
+                      indicatorBuilder: (context, index) {
+                        return OutlinedDotIndicator(
+                          size: 25.0,
+                          backgroundColor: Colors.white,
+                          color: Theme.of(context).primaryColor,
+                          borderWidth: 7.0,
+                        );
+                      },
+                      indicatorPositionBuilder: (context, index) {
+                        return index == 0 ? 0.30 : 0.08;
+                      },
+                      contentsBuilder: (context, index) {
+                        var pitstop = psC.pitsStops[index];
+                        return GestureDetector(
+                          onTap: pitstop['checkinLat'] != null
+                              ? null
+                              : () {
+                                  print('clicked');
+                                  print(widget.status);
+                                  if (widget.status == '0') {
+                                    Get.snackbar(
+                                      'Error',
+                                      'Route Plan is not approved by admin yet',
+                                      colorText: Colors.white,
+                                      backgroundColor: Colors.black87,
+                                      snackPosition: SnackPosition.BOTTOM,
+                                      margin: EdgeInsets.symmetric(
+                                        horizontal: 8.0,
+                                        vertical: 10.0,
+                                      ),
+                                    );
+                                  } else {
                                     Get.defaultDialog(
                                       title: 'Navigate or Complete?',
                                       content: Row(
@@ -208,139 +221,139 @@ class _PitstopsState extends State<Pitstops> {
                                         ],
                                       ),
                                     );
-                                  },
-                            child: TimelineTile(
-                              nodeAlign: TimelineNodeAlign.basic,
-                              // mainAxisExtent: 200.0,
-                              direction: Axis.vertical,
-                              nodePosition: 0.01,
-                              contents: Card(
-                                elevation: 0.0,
-                                margin: EdgeInsets.only(
-                                  left: 10.0,
-                                  bottom: index == psC.pitsStops.length - 1 ? 50.0 : 20.0,
-                                  top: index == 0 ? 50.0 : 0.0,
-                                  right: 10.0,
+                                  }
+                                },
+                          child: TimelineTile(
+                            nodeAlign: TimelineNodeAlign.basic,
+                            // mainAxisExtent: 200.0,
+                            direction: Axis.vertical,
+                            nodePosition: 0.01,
+                            contents: Card(
+                              elevation: 0.0,
+                              margin: EdgeInsets.only(
+                                left: 10.0,
+                                bottom: index == psC.pitsStops.length - 1 ? 50.0 : 20.0,
+                                top: index == 0 ? 50.0 : 0.0,
+                                right: 10.0,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10.0),
                                 ),
-                                shape: RoundedRectangleBorder(
+                              ),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
                                   borderRadius: BorderRadius.all(
-                                    Radius.circular(10.0),
+                                    Radius.circular(
+                                      15.0,
+                                    ),
                                   ),
                                 ),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(
-                                        15.0,
-                                      ),
-                                    ),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 15.0,
+                                    horizontal: 15.0,
                                   ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 15.0,
-                                      horizontal: 15.0,
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          pitstop['clientName'] + ' ' + pitstop['clientId'],
-                                          style: TextStyle(
-                                            fontSize: 17.0,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        pitstop['clientName'] + ' ' + pitstop['clientId'],
+                                        style: TextStyle(
+                                          fontSize: 17.0,
+                                          fontWeight: FontWeight.bold,
                                         ),
-                                        SizedBox(
-                                          height: 5.0,
+                                      ),
+                                      SizedBox(
+                                        height: 5.0,
+                                      ),
+                                      Text(
+                                        pitstop['address'],
+                                        style: TextStyle(
+                                          fontSize: 17.0,
                                         ),
-                                        Text(
-                                          pitstop['address'],
-                                          style: TextStyle(
-                                            fontSize: 17.0,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 5.0,
-                                        ),
-                                        pitstop['checkinLat'] != null
-                                            ? Chip(
-                                                label: Text(
-                                                  'Completed',
+                                      ),
+                                      SizedBox(
+                                        height: 5.0,
+                                      ),
+                                      pitstop['checkinLat'] != null
+                                          ? Chip(
+                                              label: Text(
+                                                'Completed',
+                                              ),
+                                              backgroundColor: HexColor('ccf8d8'),
+                                              shape: RoundedRectangleBorder(
+                                                side: BorderSide(
+                                                  color: HexColor('ccf8d8'),
                                                 ),
-                                                backgroundColor: HexColor('ccf8d8'),
-                                                shape: RoundedRectangleBorder(
-                                                  side: BorderSide(
-                                                    color: HexColor('ccf8d8'),
-                                                  ),
-                                                  borderRadius: BorderRadius.all(
-                                                    Radius.circular(5.0),
-                                                  ),
-                                                ),
-                                                labelStyle: TextStyle(
-                                                  color: HexColor('3f7f33'),
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              )
-                                            : Chip(
-                                                label: Text(
-                                                  'Not Completed',
-                                                ),
-                                                backgroundColor: HexColor('ffeae6'),
-                                                shape: RoundedRectangleBorder(
-                                                  side: BorderSide(
-                                                    color: HexColor('ffeae6'),
-                                                  ),
-                                                  borderRadius: BorderRadius.all(
-                                                    Radius.circular(5.0),
-                                                  ),
-                                                ),
-                                                labelStyle: TextStyle(
-                                                  color: HexColor('bf695b'),
-                                                  fontWeight: FontWeight.bold,
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(5.0),
                                                 ),
                                               ),
-                                      ],
-                                    ),
+                                              labelStyle: TextStyle(
+                                                color: HexColor('3f7f33'),
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            )
+                                          : Chip(
+                                              label: Text(
+                                                'Not Completed',
+                                              ),
+                                              backgroundColor: HexColor('ffeae6'),
+                                              shape: RoundedRectangleBorder(
+                                                side: BorderSide(
+                                                  color: HexColor('ffeae6'),
+                                                ),
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(5.0),
+                                                ),
+                                              ),
+                                              labelStyle: TextStyle(
+                                                color: HexColor('bf695b'),
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                    ],
                                   ),
                                 ),
                               ),
-                              node: TimelineNode(
-                                  // indicator: OutlinedDotIndicator(
-                                  //   size: 25.0,
-                                  //   backgroundColor: Colors.white,
-                                  //   color: Theme.of(context).primaryColor,
-                                  //   borderWidth: 7.0,
-                                  // ),
-                                  // indicatorPosition: 0.15,
-                                  // startConnector: Visibility(
-                                  //   visible: index == 0 ? false : true,
-                                  //   child: DashedLineConnector(
-                                  //     dash: 6.0,
-                                  //     gap: 3.0,
-                                  //     color: Theme.of(context).primaryColor,
-                                  //   ),
-                                  // ),
-                                  // endConnector: Visibility(
-                                  //   visible: index == psC.pitsStops.length - 1 ? false : true,
-                                  //   child: DashedLineConnector(
-                                  //     dash: 6.0,
-                                  //     gap: 3.0,
-                                  //     color: Theme.of(context).primaryColor,
-                                  //   ),
-                                  // ),
-                                  ),
                             ),
-                          );
-                        },
-                      ),
+                            node: TimelineNode(
+                                // indicator: OutlinedDotIndicator(
+                                //   size: 25.0,
+                                //   backgroundColor: Colors.white,
+                                //   color: Theme.of(context).primaryColor,
+                                //   borderWidth: 7.0,
+                                // ),
+                                // indicatorPosition: 0.15,
+                                // startConnector: Visibility(
+                                //   visible: index == 0 ? false : true,
+                                //   child: DashedLineConnector(
+                                //     dash: 6.0,
+                                //     gap: 3.0,
+                                //     color: Theme.of(context).primaryColor,
+                                //   ),
+                                // ),
+                                // endConnector: Visibility(
+                                //   visible: index == psC.pitsStops.length - 1 ? false : true,
+                                //   child: DashedLineConnector(
+                                //     dash: 6.0,
+                                //     gap: 3.0,
+                                //     color: Theme.of(context).primaryColor,
+                                //   ),
+                                // ),
+                                ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ),
-              ],
-            );
-          }),
-        ),
+              ),
+            ],
+          );
+        }),
       ),
     );
   }

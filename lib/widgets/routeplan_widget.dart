@@ -37,7 +37,8 @@ class RouteplanWidget extends StatelessWidget {
       onTap: () {
         print(route.routePlanId);
         print(route.companyId);
-        Get.offAll(Pitstops(route.routePlanId, route.companyId, 'list'));
+        // Get.offAll(Pitstops(route.routePlanId, route.companyId, 'list'));
+        Get.to(Pitstops(route.routePlanId, route.companyId, route.status.toString(), 'list'));
       },
       child: Container(
         color: Colors.white,
@@ -141,7 +142,7 @@ class RouteplanWidget extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                   width: sBoxSpace,
+                    width: sBoxSpace,
                   ),
                   Text(
                     ':',

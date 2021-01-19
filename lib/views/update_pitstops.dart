@@ -278,7 +278,7 @@ class _UpdatePitstopsState extends State<UpdatePitstops> {
           print(updatePit);
           if (updatePit != null && updatePit['success'] == true) {
             await psC.pr.hide();
-            await Get.offAll(Pitstops(pit['routePlanId'], widget.company, widget.goBackTo));
+            await Get.offAll(Pitstops(pit['routePlanId'], widget.company, pit['status'], widget.goBackTo));
           } else {
             await psC.pr.hide();
             Get.snackbar(
@@ -363,7 +363,7 @@ class _UpdatePitstopsState extends State<UpdatePitstops> {
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18.0,
-           // fontWeight: FontWeight.bold,
+                            // fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
