@@ -760,17 +760,17 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                             if (atRes) {
                                                               emp['attendanceAlias'] = val;
                                                               emp['status'] = '1';
-                                                              setState(() {});
-                                                              Future.delayed(Duration(milliseconds: 100), () {
-                                                                enC.getNotations(
-                                                                  widget.date,
-                                                                  widget.shift,
-                                                                  widget.clientId,
-                                                                  AppUtils.NAME,
-                                                                  widget.status,
-                                                                );
-                                                              });
+                                                              // Future.delayed(Duration(milliseconds: 100), () {
+                                                              //   enC.getNotations(
+                                                              //     widget.date,
+                                                              //     widget.shift,
+                                                              //     widget.clientId,
+                                                              //     AppUtils.NAME,
+                                                              //     widget.status,
+                                                              //   );
+                                                              // });
                                                             }
+                                                            setState(() {});
                                                           }
                                                         } else {
                                                           atRes = await enC.giveAttendance(
