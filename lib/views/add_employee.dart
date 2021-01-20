@@ -24,8 +24,10 @@ class _AddEmployeeState extends State<AddEmployee> {
   TextEditingController address = TextEditingController();
   TextEditingController shift = TextEditingController();
   TextEditingController clientName = TextEditingController();
-  var gender = 'male';
+  TextEditingController email = TextEditingController();
+  var gender = 'M';
   var sitePostedTo;
+  var dob;
 
   @override
   void initState() {
@@ -60,10 +62,10 @@ class _AddEmployeeState extends State<AddEmployee> {
     adminC.pr.style(
       backgroundColor: Colors.white,
     );
-    // Future.delayed(
-    //   Duration(milliseconds: 100),
-    //   adminC.getClient,
-    // );
+    Future.delayed(
+      Duration(milliseconds: 100),
+      adminC.getDesignation,
+    );
     super.initState();
   }
 
@@ -88,6 +90,7 @@ class _AddEmployeeState extends State<AddEmployee> {
       print('Date selected ${dtOfBirth.text.toString()}');
       setState(() {
         dtOfBirth.text = DateFormat('dd-MM-yyyy').format(picked).toString();
+        dob = DateFormat('yyyy-MM-dd').format(picked).toString();
       });
     }
   }
@@ -147,6 +150,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                       ),
                       child: TextField(
                         controller: empid,
+                        textCapitalization: TextCapitalization.characters,
                         decoration: InputDecoration(
                           isDense: true,
                           contentPadding: EdgeInsets.all(10),
@@ -173,7 +177,8 @@ class _AddEmployeeState extends State<AddEmployee> {
                         vertical: 10.0,
                       ),
                       child: TextField(
-                        controller: designation,
+                        controller: email,
+                        keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                           isDense: true,
                           contentPadding: EdgeInsets.all(10),
@@ -181,19 +186,89 @@ class _AddEmployeeState extends State<AddEmployee> {
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          hintText: 'Designation',
+                          hintText: 'Email Address',
                           prefixIcon: Column(
                             children: [
                               Image.asset(
-                                'assets/images/designation.png',
-                                color: Colors.grey[400],
-                                scale: 2.0,
+                                'assets/images/email.png',
+                                color: Colors.grey,
+                                scale: 1.3,
                               ),
                             ],
                           ),
                         ),
                       ),
                     ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(
+                    //     horizontal: 10.0,
+                    //     vertical: 10.0,
+                    //   ),
+                    //   child: TextField(
+                    //     controller: designation,
+                    //     decoration: InputDecoration(
+                    //       isDense: true,
+                    //       contentPadding: EdgeInsets.all(10),
+                    //       hintStyle: TextStyle(
+                    //         color: Colors.grey[600],
+                    //         fontSize: 18.0,
+                    //       ),
+                    //       hintText: 'Designation',
+                    //       prefixIcon: Column(
+                    //         children: [
+                    //           Image.asset(
+                    //             'assets/images/designation.png',
+                    //             color: Colors.grey[400],
+                    //             scale: 2.0,
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    Obx(() {
+                      if (adminC.isLoading.value) {
+                        return Column();
+                      } else {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10.0,
+                            vertical: 10.0,
+                          ),
+                          child: DropdownButtonFormField<dynamic>(
+                            hint: Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Text(
+                                'Select Designation',
+                                style: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 18.0,
+                                  // fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            isExpanded: true,
+                            // value: json.encode(aC.clientList.first.clientManpowerList),
+                            items: adminC.desList.map((item) {
+                              // print('item: ${item.client.id}');
+                              return DropdownMenuItem(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 10.0),
+                                  child: Text(
+                                    item['design'],
+                                  ),
+                                ),
+                                value: item['designId'],
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              designation.text = value;
+                              setState(() {});
+                            },
+                          ),
+                        );
+                      }
+                    }),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 10.0,
@@ -215,7 +290,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                             width: 15.0,
                           ),
                           Radio(
-                            value: 'male',
+                            value: 'M',
                             groupValue: gender,
                             onChanged: (sVal) {
                               // chkDate(sVal);
@@ -231,7 +306,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                             ),
                           ),
                           Radio(
-                            value: 'female',
+                            value: 'F',
                             groupValue: gender,
                             onChanged: (sVal) {
                               // chkDate(sVal);
@@ -391,37 +466,109 @@ class _AddEmployeeState extends State<AddEmployee> {
                           print(suggestion['name']);
                           clientName.text = suggestion['name'].toString().trimRight() + ' - ' + suggestion['id'];
                           sitePostedTo = suggestion['id'];
+                          adminC.getShift(suggestion['id']);
                         },
                         autoFlipDirection: true,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0,
-                        vertical: 10.0,
-                      ),
-                      child: TextField(
-                        controller: shift,
-                        decoration: InputDecoration(
-                          isDense: true,
-                          contentPadding: EdgeInsets.all(10),
-                          hintStyle: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: 18.0,
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(
+                    //     horizontal: 10.0,
+                    //     vertical: 10.0,
+                    //   ),
+                    //   child: TextField(
+                    //     controller: shift,
+                    //     decoration: InputDecoration(
+                    //       isDense: true,
+                    //       contentPadding: EdgeInsets.all(10),
+                    //       hintStyle: TextStyle(
+                    //         color: Colors.grey[600],
+                    //         fontSize: 18.0,
+                    //       ),
+                    //       hintText: 'Shift',
+                    //       prefixIcon: Column(
+                    //         children: [
+                    //           Image.asset(
+                    //             'assets/images/branch.png',
+                    //             color: Colors.grey[400],
+                    //             scale: 2.0,
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    Obx(() {
+                      if (adminC.isLoading.value) {
+                        return Column();
+                      } else if (adminC.shiftList.isNullOrBlank) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10.0,
+                            vertical: 10.0,
                           ),
-                          hintText: 'Shift',
-                          prefixIcon: Column(
-                            children: [
-                              Image.asset(
-                                'assets/images/branch.png',
-                                color: Colors.grey[400],
-                                scale: 2.0,
+                          child: TextField(
+                            readOnly: true,
+                            decoration: InputDecoration(
+                              isDense: true,
+                              contentPadding: EdgeInsets.all(10),
+                              hintStyle: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 18.0,
                               ),
-                            ],
+                              hintText: 'Select client to see available shift',
+                              prefixIcon: Column(
+                                children: [
+                                  Image.asset(
+                                    'assets/images/branch.png',
+                                    color: Colors.grey[400],
+                                    scale: 2.0,
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
+                        );
+                      } else {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10.0,
+                            vertical: 10.0,
+                          ),
+                          child: DropdownButtonFormField<dynamic>(
+                            hint: Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Text(
+                                'Select Shift',
+                                style: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 18.0,
+                                  // fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            isExpanded: true,
+                            // value: json.encode(aC.clientList.first.clientManpowerList),
+                            items: adminC.shiftList.map((item) {
+                              // print('item: ${item.client.id}');
+                              return DropdownMenuItem(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 10.0),
+                                  child: Text(
+                                    item['shift'],
+                                  ),
+                                ),
+                                value: item['shift'].toString(),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              shift.text = value;
+                              setState(() {});
+                            },
+                          ),
+                        );
+                      }
+                    }),
                   ],
                 ),
               ),
@@ -459,10 +606,22 @@ class _AddEmployeeState extends State<AddEmployee> {
                           onPressed: () {
                             print('Submit');
                             FocusScope.of(context).requestFocus(FocusNode());
-                            if (name.text.isNullOrBlank || empid.text.isNullOrBlank || designation.text.isNullOrBlank || gender == '' || dtOfBirth.text.isNullOrBlank || empPhone.text.isNullOrBlank || address.text.isNullOrBlank || shift.text.isNullOrBlank || sitePostedTo == null) {
+                            if (name.text.isNullOrBlank || empid.text.isNullOrBlank || designation.text.isNullOrBlank || gender == '' || dtOfBirth.text.isNullOrBlank || empPhone.text.isNullOrBlank || address.text.isNullOrBlank || shift.text.isNullOrBlank || sitePostedTo == null || email.text.isNullOrBlank) {
                               Get.snackbar(
                                 'Error',
                                 'Please fill all the fields',
+                                colorText: Colors.white,
+                                backgroundColor: Colors.black87,
+                                snackPosition: SnackPosition.BOTTOM,
+                                margin: EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                  vertical: 10.0,
+                                ),
+                              );
+                            } else if (!GetUtils.isEmail(email.text)) {
+                              Get.snackbar(
+                                'Error',
+                                'Please provide valid email',
                                 colorText: Colors.white,
                                 backgroundColor: Colors.black87,
                                 snackPosition: SnackPosition.BOTTOM,
@@ -483,6 +642,18 @@ class _AddEmployeeState extends State<AddEmployee> {
                                   vertical: 10.0,
                                 ),
                               );
+                            } else {
+                              print('name: ${name.text}');
+                              print('address: ${address.text}');
+                              print('email: ${email.text}');
+                              print('phone: ${empPhone.text}');
+                              print('empId: ${empid.text}');
+                              print('sitePostedTo: $sitePostedTo');
+                              print('gender: $gender');
+                              print('dob: $dob');
+                              print('design: ${designation.text}');
+                              print('shift: ${shift.text}');
+                              adminC.addEmployee(name.text, address.text, email.text, empPhone.text, empid.text.toUpperCase(), sitePostedTo, gender, dob, designation.text, shift.text);
                             }
                           },
                           child: Padding(

@@ -1525,4 +1525,76 @@ class RemoteServices {
       return null;
     }
   }
+
+  Future getDesignation() async {
+    var response = await client.post(
+      '$baseURL/company/get_designations',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future getShiftByClient(clientId) async {
+    var response = await client.post(
+      '$baseURL/transfer/client_shifts',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'clientId': clientId,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future addEmployee(name, address, email, phone, empid, sitePostedTo, gender, dob, design, shift) async {
+    var response = await client.post(
+      '$baseURL/trial/create_employee',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'companyId': box.get('companyid').toString(),
+          'inchargeId': box.get('empid').toString(),
+          'address': address,
+          'name': name,
+          'mail': email,
+          'phone': phone,
+          'empId': empid,
+          'sitePostedTo': sitePostedTo,
+          'gender': gender,
+          'design': design,
+          'shift': shift,
+          'dob': dob,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
 }
