@@ -91,7 +91,7 @@ class _DashboardPageState extends State<DashboardPage> {
             // On Leave
             // dont allow checkin
             Get.snackbar(
-              'Error',
+              'Message',
               'You cannot checkin when leave is approved',
               colorText: Colors.white,
               backgroundColor: Colors.black87,
@@ -106,7 +106,7 @@ class _DashboardPageState extends State<DashboardPage> {
             // On Week Off
             // dont allow checkin
             Get.snackbar(
-              'Error',
+              'Message',
               'You cannot checkin on week off days',
               colorText: Colors.white,
               backgroundColor: Colors.black87,
@@ -121,7 +121,7 @@ class _DashboardPageState extends State<DashboardPage> {
             // attendance given
             // dont allow checkin
             Get.snackbar(
-              'Error',
+              'Message',
               'Attendance already given by unit Incharge',
               colorText: Colors.white,
               backgroundColor: Colors.black87,
@@ -136,7 +136,7 @@ class _DashboardPageState extends State<DashboardPage> {
         } else {
           if (curDate == chkDate) {
             Get.snackbar(
-              'Error',
+              'Message',
               'You already checked in for today',
               colorText: Colors.white,
               backgroundColor: Colors.black87,

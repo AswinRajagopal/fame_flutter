@@ -93,7 +93,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
       if (from != null && to != null) {
         if (from.difference(to).inDays > 1 && (stVal == 'F' || stVal == 'S')) {
           Get.snackbar(
-            'Error',
+            'Message',
             'You can not apply for more then 1 day for Half Day leave',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -142,7 +142,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
       if (from != null && to != null) {
         if (to.difference(from).inDays > 1 && (stVal == 'F' || stVal == 'S')) {
           Get.snackbar(
-            'Error',
+            'Message',
             'You can not apply for more then 1 day for Half Day leave',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -160,7 +160,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
         }
       } else {
         Get.snackbar(
-          'Error',
+          'Message',
           'Please select from date first',
           colorText: Colors.white,
           backgroundColor: Colors.black87,
@@ -188,7 +188,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
       if (sVal == 'F' || sVal == 'S') {
         if (to.difference(from).inDays > 1) {
           Get.snackbar(
-            'Error',
+            'Message',
             'You can not apply for more then 1 day for Half Day leave',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -210,7 +210,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
       }
     } else {
       Get.snackbar(
-        'Error',
+        'Message',
         'Please select both dates first',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -306,7 +306,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                             onTap: () {
                               if (fromDt.text.isEmpty) {
                                 Get.snackbar(
-                                  'Error',
+                                  'Message',
                                   'Please select from date',
                                   colorText: Colors.white,
                                   backgroundColor: Colors.black87,
@@ -507,7 +507,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                                 FocusScope.of(context).requestFocus(FocusNode());
                                 if (sfromDt == null || sfromDt == '' || stoDt == null || stoDt == '' || reason.text == null || reason.text == '' || leaveType == '') {
                                   Get.snackbar(
-                                    'Error',
+                                    'Message',
                                     'Please fill all data',
                                     colorText: Colors.white,
                                     backgroundColor: Colors.black87,

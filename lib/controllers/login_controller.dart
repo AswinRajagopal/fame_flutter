@@ -41,7 +41,7 @@ class LoginController extends GetxController {
           await Get.offAll(DashboardPage());
         } else {
           Get.snackbar(
-            'Error',
+            'Message',
             'Username and password are incorrect',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -57,7 +57,7 @@ class LoginController extends GetxController {
       print(e);
       await pr.hide();
       Get.snackbar(
-        'Error',
+        'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,

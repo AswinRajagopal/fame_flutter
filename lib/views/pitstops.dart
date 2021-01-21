@@ -153,7 +153,7 @@ class _PitstopsState extends State<Pitstops> {
                                   print(widget.status);
                                   if (widget.status == '0') {
                                     Get.snackbar(
-                                      'Error',
+                                      'Message',
                                       'Route Plan is not approved by admin yet',
                                       colorText: Colors.white,
                                       backgroundColor: Colors.black87,

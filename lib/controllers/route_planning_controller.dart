@@ -49,7 +49,7 @@ class RoutePlanningController extends GetxController {
           // print('clientsList: $clientList');
         } else {
           Get.snackbar(
-            'Error',
+            'Message',
             'Client not found',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -66,7 +66,7 @@ class RoutePlanningController extends GetxController {
       isLoading(false);
       await pr.hide();
       Get.snackbar(
-        'Error',
+        'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -108,7 +108,7 @@ class RoutePlanningController extends GetxController {
           });
         } else {
           Get.snackbar(
-            'Error',
+            'Message',
             'Route plan not created',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -124,7 +124,7 @@ class RoutePlanningController extends GetxController {
       print(e);
       await pr.hide();
       Get.snackbar(
-        'Error',
+        'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,

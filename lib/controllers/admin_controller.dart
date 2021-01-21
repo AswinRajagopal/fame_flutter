@@ -41,7 +41,7 @@ class AdminController extends GetxController {
           Timer(Duration(seconds: 2), Get.back);
         } else {
           Get.snackbar(
-            'Error',
+            'Message',
             'Shift not created',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -57,7 +57,7 @@ class AdminController extends GetxController {
       print(e);
       await pr.hide();
       Get.snackbar(
-        'Error',
+        'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -93,7 +93,7 @@ class AdminController extends GetxController {
           Timer(Duration(seconds: 2), Get.back);
         } else {
           Get.snackbar(
-            'Error',
+            'Message',
             'Client not created',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -109,7 +109,7 @@ class AdminController extends GetxController {
       print(e);
       await pr.hide();
       Get.snackbar(
-        'Error',
+        'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -139,7 +139,7 @@ class AdminController extends GetxController {
           // print('clientsList: $clientList');
         } else {
           // Get.snackbar(
-          //   'Error',
+          //   'Message',
           //   'Client not found',
           //   colorText: Colors.white,
           //   backgroundColor: Colors.black87,
@@ -156,7 +156,7 @@ class AdminController extends GetxController {
       isLoading(false);
       await pr.hide();
       Get.snackbar(
-        'Error',
+        'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -191,7 +191,7 @@ class AdminController extends GetxController {
       isLoading(false);
       await pr.hide();
       Get.snackbar(
-        'Error',
+        'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -230,7 +230,7 @@ class AdminController extends GetxController {
       isLoading(false);
       await pr.hide();
       Get.snackbar(
-        'Error',
+        'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -266,7 +266,7 @@ class AdminController extends GetxController {
           Timer(Duration(seconds: 2), Get.back);
         } else {
           Get.snackbar(
-            'Error',
+            'Message',
             'Employee not created',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -282,7 +282,7 @@ class AdminController extends GetxController {
       print(e);
       await pr.hide();
       Get.snackbar(
-        'Error',
+        'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,

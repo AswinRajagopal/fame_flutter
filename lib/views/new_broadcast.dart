@@ -209,7 +209,7 @@ class _BroadcastState extends State<Broadcast> {
                             FocusScope.of(context).requestFocus(FocusNode());
                             if (empId == null || message.text == null || message.text == '') {
                               Get.snackbar(
-                                'Error',
+                                'Message',
                                 'Please fill all fields',
                                 colorText: Colors.white,
                                 backgroundColor: Colors.black87,

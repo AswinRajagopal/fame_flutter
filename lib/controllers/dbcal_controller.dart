@@ -124,7 +124,7 @@ class DBCalController extends GetxController {
           }
         } else {
           Get.snackbar(
-            'Error',
+            'Message',
             'Something went wrong! Please try again later',
             colorText: Colors.white,
 backgroundColor: Colors.black87,
@@ -141,7 +141,7 @@ backgroundColor: Colors.black87,
       isEventLoading(false);
       // isCalLoading(false);
       Get.snackbar(
-        'Error',
+        'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
 backgroundColor: Colors.black87,

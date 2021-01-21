@@ -260,7 +260,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                       FocusScope.of(context).requestFocus(FocusNode());
                       if (password.text == null || confirmpassword.text == '') {
                         Get.snackbar(
-                          'Error',
+                          'Message',
                           'Please provide password and confirm password',
                           colorText: Colors.white,
                           backgroundColor: Colors.black87,
@@ -272,7 +272,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                         );
                       } else if (password.text != confirmpassword.text) {
                         Get.snackbar(
-                          'Error',
+                          'Message',
                           'Password are not matching',
                           colorText: Colors.white,
                           backgroundColor: Colors.black87,

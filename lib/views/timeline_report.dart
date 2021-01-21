@@ -182,7 +182,7 @@ class _TimelineReportState extends State<TimelineReport> {
                           FocusScope.of(context).requestFocus(FocusNode());
                           if (empId == null || sDate == null || sDate == '') {
                             Get.snackbar(
-                              'Error',
+                              'Message',
                               'Please select employee and date',
                               colorText: Colors.white,
                               backgroundColor: Colors.black87,

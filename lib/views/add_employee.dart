@@ -608,7 +608,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                             FocusScope.of(context).requestFocus(FocusNode());
                             if (name.text.isNullOrBlank || empid.text.isNullOrBlank || designation.text.isNullOrBlank || gender == '' || dtOfBirth.text.isNullOrBlank || empPhone.text.isNullOrBlank || address.text.isNullOrBlank || shift.text.isNullOrBlank || sitePostedTo == null || email.text.isNullOrBlank) {
                               Get.snackbar(
-                                'Error',
+                                'Message',
                                 'Please fill all the fields',
                                 colorText: Colors.white,
                                 backgroundColor: Colors.black87,
@@ -620,7 +620,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                               );
                             } else if (!GetUtils.isEmail(email.text)) {
                               Get.snackbar(
-                                'Error',
+                                'Message',
                                 'Please provide valid email',
                                 colorText: Colors.white,
                                 backgroundColor: Colors.black87,
@@ -632,7 +632,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                               );
                             } else if (empPhone.text != '' && empPhone.text.length != 10) {
                               Get.snackbar(
-                                'Error',
+                                'Message',
                                 'Please provide valid 10 digit mobile',
                                 colorText: Colors.white,
                                 backgroundColor: Colors.black87,

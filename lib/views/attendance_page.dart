@@ -467,7 +467,7 @@ class _AttendancePageState extends State<AttendancePage> {
                                     print('shift: ${aC.shiftTime}');
                                     if (aC.clientId == null || aC.shiftTime == null || aC.shiftTime == '') {
                                       Get.snackbar(
-                                        'Error',
+                                        'Message',
                                         'Please select client and shift timing',
                                         colorText: Colors.white,
                                         backgroundColor: Colors.black87,

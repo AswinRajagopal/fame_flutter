@@ -53,7 +53,7 @@ class ApplyLeaveController extends GetxController {
           print('leaveTypeList: $leaveTypeList');
         } else {
           Get.snackbar(
-            'Error',
+            'Message',
             'Leave type not found',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -70,7 +70,7 @@ class ApplyLeaveController extends GetxController {
       isLoading(false);
       await pr.hide();
       Get.snackbar(
-        'Error',
+        'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -113,7 +113,7 @@ class ApplyLeaveController extends GetxController {
           });
         } else {
           Get.snackbar(
-            'Error',
+            'Message',
             'Leave does not applied',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -129,7 +129,7 @@ class ApplyLeaveController extends GetxController {
       print(e);
       await pr.hide();
       Get.snackbar(
-        'Error',
+        'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,

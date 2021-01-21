@@ -381,7 +381,7 @@ class _SignupPageState extends State<SignupPage> {
                       FocusScope.of(context).requestFocus(FocusNode());
                       if (username.text == null || username.text == '' || empid.text == null || empid.text == '' || password.text == null || password.text == '' || fullname.text == null || fullname.text == '' || email.text == null || email.text == '' || mobile.text == null || mobile.text == '' || company.text == null || company.text == '' || empNo.text.isNullOrBlank) {
                         Get.snackbar(
-                          'Error',
+                          'Message',
                           'Please provide all detail',
                           colorText: Colors.white,
                           backgroundColor: Colors.black87,
@@ -393,7 +393,7 @@ class _SignupPageState extends State<SignupPage> {
                         );
                       } else if (email.text != '' && !GetUtils.isEmail(email.text)) {
                         Get.snackbar(
-                          'Error',
+                          'Message',
                           'Please provide valid email',
                           colorText: Colors.white,
                           backgroundColor: Colors.black87,
@@ -405,7 +405,7 @@ class _SignupPageState extends State<SignupPage> {
                         );
                       } else if (mobile.text != '' && mobile.text.length != 10) {
                         Get.snackbar(
-                          'Error',
+                          'Message',
                           'Please provide valid 10 digit mobile',
                           colorText: Colors.white,
                           backgroundColor: Colors.black87,
@@ -553,7 +553,7 @@ class _SignupPageState extends State<SignupPage> {
                                               );
                                             } else {
                                               Get.snackbar(
-                                                'Error',
+                                                'Message',
                                                 'OTP not sent',
                                                 colorText: Colors.white,
                                                 backgroundColor: Colors.black87,
@@ -584,7 +584,7 @@ class _SignupPageState extends State<SignupPage> {
                                       onPressed: () async {
                                         if (otp.text == null || otp.text == '') {
                                           Get.snackbar(
-                                            'Error',
+                                            'Message',
                                             'Please enter otp',
                                             colorText: Colors.white,
                                             backgroundColor: Colors.black87,

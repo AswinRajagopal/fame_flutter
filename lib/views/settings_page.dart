@@ -222,7 +222,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           );
                         } else {
                           Get.snackbar(
-                            'Error',
+                            'Message',
                             'Feedback send failed',
                             colorText: Colors.white,
                             backgroundColor: Colors.black87,

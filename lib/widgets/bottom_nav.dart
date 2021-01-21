@@ -33,7 +33,7 @@ class BottomNav extends StatelessWidget {
             Get.to(MorePage());
           } else {
             Get.snackbar(
-              'Error',
+              'Message',
               'Only FO and admin can access this',
               colorText: Colors.white,
               backgroundColor: Colors.black87,

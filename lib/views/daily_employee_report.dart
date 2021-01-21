@@ -187,7 +187,7 @@ class _DailyEmployeeReportState extends State<DailyEmployeeReport> {
                       onTap: () {
                         if (fromDt.text.isEmpty) {
                           Get.snackbar(
-                            'Error',
+                            'Message',
                             'Please select from date',
                             colorText: Colors.white,
                             backgroundColor: Colors.black87,
@@ -294,7 +294,7 @@ class _DailyEmployeeReportState extends State<DailyEmployeeReport> {
                           FocusScope.of(context).requestFocus(FocusNode());
                           if (empId == null || sfromDate == null || stoDate == null) {
                             Get.snackbar(
-                              'Error',
+                              'Message',
                               'Please select employee, from date & to date',
                               colorText: Colors.white,
                               backgroundColor: Colors.black87,

@@ -100,7 +100,7 @@ class AttendanceController extends GetxController {
           // print('clientList: $clientList');
         } else {
           Get.snackbar(
-            'Error',
+            'Message',
             'Client not found',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -117,7 +117,7 @@ class AttendanceController extends GetxController {
       isLoading(false);
       await pr.hide();
       Get.snackbar(
-        'Error',
+        'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,

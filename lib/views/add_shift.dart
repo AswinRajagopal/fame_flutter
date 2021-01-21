@@ -170,7 +170,7 @@ class _AddShiftState extends State<AddShift> {
                         ),
                         onTap: () {
                           Get.snackbar(
-                            'Error',
+                            'Message',
                             'Click on start time to change the time',
                             colorText: Colors.white,
                             backgroundColor: Colors.black87,
@@ -224,7 +224,7 @@ class _AddShiftState extends State<AddShift> {
                             FocusScope.of(context).requestFocus(FocusNode());
                             if (shiftname.text.isNullOrBlank || starttime.text.isNullOrBlank || endtime.text.isNullOrBlank) {
                               Get.snackbar(
-                                'Error',
+                                'Message',
                                 'Please fill all fields',
                                 colorText: Colors.white,
                                 backgroundColor: Colors.black87,

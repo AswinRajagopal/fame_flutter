@@ -209,7 +209,7 @@ class _AddClientState extends State<AddClient> {
                             FocusScope.of(context).requestFocus(FocusNode());
                             if (name.text.isNullOrBlank || phone.text.isNullOrBlank || email.text.isNullOrBlank || unitIncharge.text.isNullOrBlank || address.text.isNullOrBlank || clientId.isNullOrBlank || latitude == null || longitude == null) {
                               Get.snackbar(
-                                'Error',
+                                'Message',
                                 'Please fill all fields',
                                 colorText: Colors.white,
                                 backgroundColor: Colors.black87,
@@ -221,7 +221,7 @@ class _AddClientState extends State<AddClient> {
                               );
                             } else if (!GetUtils.isLengthEqualTo(phone.text, 10)) {
                               Get.snackbar(
-                                'Error',
+                                'Message',
                                 'Please provide 10 digit phone number',
                                 colorText: Colors.white,
                                 backgroundColor: Colors.black87,
@@ -233,7 +233,7 @@ class _AddClientState extends State<AddClient> {
                               );
                             } else if (!GetUtils.isEmail(email.text)) {
                               Get.snackbar(
-                                'Error',
+                                'Message',
                                 'Please provide valid email',
                                 colorText: Colors.white,
                                 backgroundColor: Colors.black87,

@@ -55,7 +55,7 @@ class SignupController extends GetxController {
           return true;
         } else {
           Get.snackbar(
-            'Error',
+            'Message',
             'Account not created',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -72,7 +72,7 @@ class SignupController extends GetxController {
       print(e);
       await pr.hide();
       Get.snackbar(
-        'Error',
+        'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,

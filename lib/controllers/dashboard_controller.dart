@@ -153,7 +153,7 @@ class DashboardController extends GetxController {
               builder: (context) => WillPopScope(
                 onWillPop: () async => false,
                 child: AlertDialog(
-                  title: Text('Error'),
+                  title: Text('Error s'),
                   content: Text(
                     'Your account is blocked. Please contact your Company Admin',
                     style: TextStyle(
@@ -197,7 +197,7 @@ class DashboardController extends GetxController {
         } else {
           isDashboardLoading(false);
           Get.snackbar(
-            'Error',
+            'Message',
             'Something went wrong! Please try again later',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -213,7 +213,7 @@ class DashboardController extends GetxController {
       print(e);
       isDashboardLoading(false);
       Get.snackbar(
-        'Error',
+        'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,

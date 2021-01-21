@@ -95,7 +95,7 @@ class EmployeeNotationsController extends GetxController {
     } catch (e) {
       print(e);
       Get.snackbar(
-        'Error',
+        'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -168,7 +168,7 @@ class EmployeeNotationsController extends GetxController {
           }
         } else {
           // Get.snackbar(
-          //   'Error',
+          //   'Message',
           //   'Notations not found',
           //   colorText: Colors.white,
           //   backgroundColor: Colors.black87,
@@ -185,7 +185,7 @@ class EmployeeNotationsController extends GetxController {
       isLoading(false);
       await pr.hide();
       Get.snackbar(
-        'Error',
+        'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -232,7 +232,7 @@ class EmployeeNotationsController extends GetxController {
           return true;
         } else {
           Get.snackbar(
-            'Error',
+            'Message',
             extraName != null && extraName == 'Clear' ? 'Attendance not cleared' : 'Attendance not given',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -250,7 +250,7 @@ class EmployeeNotationsController extends GetxController {
       print(e);
       await pr.hide();
       Get.snackbar(
-        'Error',
+        'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,

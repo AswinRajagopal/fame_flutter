@@ -151,7 +151,7 @@ class _EmployeeReportState extends State<EmployeeReport> {
                           FocusScope.of(context).requestFocus(FocusNode());
                           if (clientId == null) {
                             Get.snackbar(
-                              'Error',
+                              'Message',
                               'Please select client',
                               colorText: Colors.white,
                               backgroundColor: Colors.black87,

@@ -39,7 +39,7 @@ class LeaveController extends GetxController {
           print('leaveList: $leaveList');
         } else {
           Get.snackbar(
-            'Error',
+            'Message',
             'Leave not found',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -56,7 +56,7 @@ class LeaveController extends GetxController {
       isLoading(false);
       await pr.hide();
       Get.snackbar(
-        'Error',
+        'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -84,7 +84,7 @@ class LeaveController extends GetxController {
           getLeaveList();
         } else {
           Get.snackbar(
-            'Error',
+            'Message',
             'Leave not updated',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -101,7 +101,7 @@ class LeaveController extends GetxController {
       isUpdating(false);
       await pr.hide();
       Get.snackbar(
-        'Error',
+        'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,

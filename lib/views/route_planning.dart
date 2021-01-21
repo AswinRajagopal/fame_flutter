@@ -570,7 +570,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                               FocusScope.of(context).requestFocus(FocusNode());
                               if (planName.text == null || planName.text == '' || empName.text == null || empName.text == '' || remarks.text == null || remarks.text == '' || sDate == null || sDate == '' || assignedTo == null) {
                                 Get.snackbar(
-                                  'Error',
+                                  'Message',
                                   'Please fill all data',
                                   colorText: Colors.white,
                                   backgroundColor: Colors.black87,
@@ -582,7 +582,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                 );
                               } else if (rpC.sC.isEmpty) {
                                 Get.snackbar(
-                                  'Error',
+                                  'Message',
                                   'Please select atleast one client',
                                   colorText: Colors.white,
                                   backgroundColor: Colors.black87,

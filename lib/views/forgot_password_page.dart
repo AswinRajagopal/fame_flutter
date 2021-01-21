@@ -165,7 +165,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       FocusScope.of(context).requestFocus(FocusNode());
                       if (email.text == null || email.text == '') {
                         Get.snackbar(
-                          'Error',
+                          'Message',
                           'Please provide email',
                           colorText: Colors.white,
                           backgroundColor: Colors.black87,
@@ -177,7 +177,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         );
                       } else if (email.text != '' && !GetUtils.isEmail(email.text)) {
                         Get.snackbar(
-                          'Error',
+                          'Message',
                           'Please provide valid email',
                           colorText: Colors.white,
                           backgroundColor: Colors.black87,
@@ -310,7 +310,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                               );
                                             } else {
                                               Get.snackbar(
-                                                'Error',
+                                                'Message',
                                                 'OTP not sent',
                                                 colorText: Colors.white,
                                                 backgroundColor: Colors.black87,
@@ -341,7 +341,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                       onPressed: () async {
                                         if (otp.text == null || otp.text == '') {
                                           Get.snackbar(
-                                            'Error',
+                                            'Message',
                                             'Please enter otp',
                                             colorText: Colors.white,
                                             backgroundColor: Colors.black87,

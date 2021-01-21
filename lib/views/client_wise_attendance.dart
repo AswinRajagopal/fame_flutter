@@ -375,7 +375,7 @@ class _ClientWiseAttendanceState extends State<ClientWiseAttendance> {
                             FocusScope.of(context).requestFocus(FocusNode());
                             if (clientId == null || sDate == null || shift == null) {
                               Get.snackbar(
-                                'Error',
+                                'Message',
                                 'Please select client, shift and date',
                                 colorText: Colors.white,
                                 backgroundColor: Colors.black87,

@@ -117,7 +117,7 @@ class _SOSState extends State<SOS> {
                           print(sC.sosNumber.text);
                           if (sC.sosNumber.isNullOrBlank) {
                             Get.snackbar(
-                              'Error',
+                              'Message',
                               'Please enter SOS number',
                               colorText: Colors.white,
                               backgroundColor: Colors.black87,
@@ -129,7 +129,7 @@ class _SOSState extends State<SOS> {
                             );
                           } else if (sC.sosNumber.text.length != 10) {
                             Get.snackbar(
-                              'Error',
+                              'Message',
                               'Please enter 10 digit SOS number',
                               colorText: Colors.white,
                               backgroundColor: Colors.black87,

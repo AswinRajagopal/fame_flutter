@@ -28,7 +28,7 @@ class SOSController extends GetxController {
         if (res['success']) {
         } else {
           Get.snackbar(
-            'Error',
+            'Message',
             'Something went wrong! Please try again later',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -45,7 +45,7 @@ class SOSController extends GetxController {
       isLoading(false);
       await pr.hide();
       Get.snackbar(
-        'Error',
+        'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -83,7 +83,7 @@ class SOSController extends GetxController {
           Timer(Duration(seconds: 2), Get.back);
         } else {
           Get.snackbar(
-            'Error',
+            'Message',
             'SOS number not updated',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -99,7 +99,7 @@ class SOSController extends GetxController {
       print(e);
       await pr.hide();
       Get.snackbar(
-        'Error',
+        'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,

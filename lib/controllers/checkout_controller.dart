@@ -70,7 +70,7 @@ class CheckoutController extends GetxController {
           var resDecode = jsonDecode(checkoutResponse.response);
           if (!resDecode['face_found']) {
             Get.snackbar(
-              'Error',
+              'Message',
               'Face not detected. Please take a picture again',
               colorText: Colors.white,
               backgroundColor: Colors.black87,
@@ -83,7 +83,7 @@ class CheckoutController extends GetxController {
             return false;
           } else if (resDecode['n_faces'] > 1) {
             Get.snackbar(
-              'Error',
+              'Message',
               'More then one face detected.',
               colorText: Colors.white,
               backgroundColor: Colors.black87,
@@ -96,7 +96,7 @@ class CheckoutController extends GetxController {
             return false;
           } else if (resDecode['0']['clientID'].toString().toLowerCase() != RemoteServices().box.get('empid').toString().toLowerCase()) {
             Get.snackbar(
-              'Error',
+              'Message',
               "Face doesn't match.",
               colorText: Colors.white,
               backgroundColor: Colors.black87,
@@ -123,7 +123,7 @@ class CheckoutController extends GetxController {
               return true;
             } else {
               Get.snackbar(
-                'Error',
+                'Message',
                 'Something went wrong! Please try again later',
                 colorText: Colors.white,
                 backgroundColor: Colors.black87,
@@ -138,7 +138,7 @@ class CheckoutController extends GetxController {
           }
         } else {
           Get.snackbar(
-            'Error',
+            'Message',
             'Something went wrong! Please try again later',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -155,7 +155,7 @@ class CheckoutController extends GetxController {
       print(e);
       await pr.hide();
       Get.snackbar(
-        'Error',
+        'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -183,7 +183,7 @@ class CheckoutController extends GetxController {
     } else {
       await pr.hide();
       Get.snackbar(
-        'Error',
+        'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,

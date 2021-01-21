@@ -379,7 +379,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                                         rpC.mapID.add(p.placeId);
                                       } else {
                                         Get.snackbar(
-                                          'Error',
+                                          'Message',
                                           'Already added',
                                           colorText: Colors.white,
                                           backgroundColor: Colors.black87,
@@ -635,7 +635,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                               FocusScope.of(context).requestFocus(FocusNode());
                               if (planName.text == null || planName.text == '' || empName.text == null || empName.text == '' || remarks.text == null || remarks.text == '' || sDate == null || sDate == '' || assignedTo == null) {
                                 Get.snackbar(
-                                  'Error',
+                                  'Message',
                                   'Please fill all data',
                                   colorText: Colors.white,
                                   backgroundColor: Colors.black87,
@@ -647,7 +647,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                                 );
                               } else if (rpC.sC.isEmpty) {
                                 Get.snackbar(
-                                  'Error',
+                                  'Message',
                                   'Please select atleast one address',
                                   colorText: Colors.white,
                                   backgroundColor: Colors.black87,

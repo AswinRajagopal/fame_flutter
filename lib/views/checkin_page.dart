@@ -113,7 +113,7 @@ class _CheckinPageState extends State<CheckinPage> {
     if (type == 1) {
       if (!controller.value.isInitialized) {
         Get.snackbar(
-          'Error',
+          'Message',
           'select a camera first.',
           colorText: Colors.white,
           backgroundColor: Colors.black87,
@@ -235,7 +235,7 @@ class _CheckinPageState extends State<CheckinPage> {
   void _showCameraException(CameraException e) {
     print(e.code + e.description);
     Get.snackbar(
-      'Error',
+      'Message',
       '${e.code}\n${e.description}',
       colorText: Colors.white,
       backgroundColor: Colors.black87,
@@ -261,7 +261,7 @@ class _CheckinPageState extends State<CheckinPage> {
       if (mounted) setState(() {});
       if (controller.value.hasError) {
         Get.snackbar(
-          'Error',
+          'Message',
           '${controller.value.errorDescription}',
           colorText: Colors.white,
           backgroundColor: Colors.black87,

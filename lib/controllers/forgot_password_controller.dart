@@ -62,7 +62,7 @@ class ForgotPasswordController extends GetxController {
           return true;
         } else {
           Get.snackbar(
-            'Error',
+            'Message',
             'Email address is not associated with any account',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -80,7 +80,7 @@ class ForgotPasswordController extends GetxController {
       print(e);
       await pr.hide();
       Get.snackbar(
-        'Error',
+        'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,

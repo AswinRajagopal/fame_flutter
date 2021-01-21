@@ -180,7 +180,7 @@ class _VisitPlanState extends State<VisitPlan> {
                           FocusScope.of(context).requestFocus(FocusNode());
                           if (empId == null || sDate == null || sDate == '') {
                             Get.snackbar(
-                              'Error',
+                              'Message',
                               'Please select employee and date',
                               colorText: Colors.white,
                               backgroundColor: Colors.black87,

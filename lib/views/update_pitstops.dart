@@ -107,7 +107,7 @@ class _UpdatePitstopsState extends State<UpdatePitstops> {
   void _showCameraException(CameraException e) {
     print(e.code + e.description);
     Get.snackbar(
-      'Error',
+      'Message',
       '${e.code}\n${e.description}',
       colorText: Colors.white,
       backgroundColor: Colors.black87,
@@ -133,7 +133,7 @@ class _UpdatePitstopsState extends State<UpdatePitstops> {
       if (mounted) setState(() {});
       if (controller.value.hasError) {
         Get.snackbar(
-          'Error',
+          'Message',
           '${controller.value.errorDescription}',
           colorText: Colors.white,
           backgroundColor: Colors.black87,
@@ -160,7 +160,7 @@ class _UpdatePitstopsState extends State<UpdatePitstops> {
   void takePicture() async {
     if (!controller.value.isInitialized) {
       Get.snackbar(
-        'Error',
+        'Message',
         'select a camera first.',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -282,7 +282,7 @@ class _UpdatePitstopsState extends State<UpdatePitstops> {
           } else {
             await psC.pr.hide();
             Get.snackbar(
-              'Error',
+              'Message',
               'Something went wrong! Please try again later',
               colorText: Colors.white,
               backgroundColor: Colors.black87,

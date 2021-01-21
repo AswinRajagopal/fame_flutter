@@ -91,7 +91,7 @@ class _FaceRegisterState extends State<FaceRegister> {
   void takePicture() async {
     if (!controller.value.isInitialized) {
       Get.snackbar(
-        'Error',
+        'Message',
         'select a camera first.',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -198,7 +198,7 @@ class _FaceRegisterState extends State<FaceRegister> {
   void _showCameraException(CameraException e) {
     print(e.code + e.description);
     Get.snackbar(
-      'Error',
+      'Message',
       '${e.code}\n${e.description}',
       colorText: Colors.white,
       backgroundColor: Colors.black87,
@@ -224,7 +224,7 @@ class _FaceRegisterState extends State<FaceRegister> {
       if (mounted) setState(() {});
       if (controller.value.hasError) {
         Get.snackbar(
-          'Error',
+          'Message',
           '${controller.value.errorDescription}',
           colorText: Colors.white,
           backgroundColor: Colors.black87,

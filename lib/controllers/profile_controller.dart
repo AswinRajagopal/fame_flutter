@@ -45,7 +45,7 @@ class ProfileController extends GetxController {
           }
         } else {
           Get.snackbar(
-            'Error',
+            'Message',
             'Something went wrong! Please try again later',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -64,7 +64,7 @@ class ProfileController extends GetxController {
       isLoading(false);
       await pr.hide();
       Get.snackbar(
-        'Error',
+        'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,

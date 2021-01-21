@@ -42,7 +42,7 @@ class TransferController extends GetxController {
           print('shiftRes: $shiftList');
         } else {
           Get.snackbar(
-            'Error',
+            'Message',
             'Shift not found',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -59,7 +59,7 @@ class TransferController extends GetxController {
       isLoading(false);
       await pr.hide();
       Get.snackbar(
-        'Error',
+        'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -100,7 +100,7 @@ class TransferController extends GetxController {
           });
         } else {
           Get.snackbar(
-            'Error',
+            'Message',
             'Transfer add failed',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -116,7 +116,7 @@ class TransferController extends GetxController {
       print(e);
       await pr.hide();
       Get.snackbar(
-        'Error',
+        'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -147,7 +147,7 @@ class TransferController extends GetxController {
           // print('leaveList: $leaveList');
         } else {
           Get.snackbar(
-            'Error',
+            'Message',
             'Transfer not found',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -164,7 +164,7 @@ class TransferController extends GetxController {
       isLoading(false);
       await pr.hide();
       Get.snackbar(
-        'Error',
+        'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -188,7 +188,7 @@ class TransferController extends GetxController {
           getTransferList();
         } else {
           Get.snackbar(
-            'Error',
+            'Message',
             'Transfer request not updated',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -204,7 +204,7 @@ class TransferController extends GetxController {
       print(e);
       await pr.hide();
       Get.snackbar(
-        'Error',
+        'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,

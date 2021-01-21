@@ -40,7 +40,7 @@ class OTPController extends GetxController {
           // return true;
         } else {
           Get.snackbar(
-            'Error',
+            'Message',
             'OTP is wrong',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -57,7 +57,7 @@ class OTPController extends GetxController {
       print(e);
       await pr.hide();
       Get.snackbar(
-        'Error',
+        'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -124,7 +124,7 @@ class OTPController extends GetxController {
           return true;
         } else {
           Get.snackbar(
-            'Error',
+            'Message',
             'OTP is wrong',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -142,7 +142,7 @@ class OTPController extends GetxController {
       print(e);
       await pr.hide();
       Get.snackbar(
-        'Error',
+        'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
