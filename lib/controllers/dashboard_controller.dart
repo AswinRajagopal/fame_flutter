@@ -153,7 +153,7 @@ class DashboardController extends GetxController {
               builder: (context) => WillPopScope(
                 onWillPop: () async => false,
                 child: AlertDialog(
-                  title: Text('Error s'),
+                  title: Text('Error'),
                   content: Text(
                     'Your account is blocked. Please contact your Company Admin',
                     style: TextStyle(
