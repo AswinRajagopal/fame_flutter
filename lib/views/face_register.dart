@@ -259,10 +259,11 @@ class _FaceRegisterState extends State<FaceRegister> {
     if (controller == null) return Container();
     final size = MediaQuery.of(context).size;
     // final deviceRatio = size.width / size.height;
+    final deviceRatio = (size.width / 2.2) / (size.height / 3.0);
     // print('deviceRatio: $deviceRatio');
-    // final xScale = controller.value.aspectRatio / deviceRatio;
+    final xScale = controller.value.aspectRatio / deviceRatio;
     // Modify the yScale if you are in Landscape
-    // final yScale = 1.0;
+    final yScale = 1.5;
     // print(size.height / 2.45);
     // print(size.width / 1.194);
     return Scaffold(
@@ -295,9 +296,17 @@ class _FaceRegisterState extends State<FaceRegister> {
                   child: Container(
                     height: size.height / 2.45,
                     width: size.width / 1.194,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.black,
+                    ),
                     child: AspectRatio(
-                      aspectRatio: 4.0 / 3.0,
-                      child: CameraPreview(controller),
+                      aspectRatio: deviceRatio,
+                      child: Transform(
+                        alignment: Alignment.center,
+                        transform: Matrix4.diagonal3Values(xScale, yScale, 1),
+                        child: CameraPreview(controller),
+                      ),
                     ),
                   ),
                 ),
