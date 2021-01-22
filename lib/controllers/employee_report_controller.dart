@@ -1,5 +1,7 @@
 import '../connection/locationpath.dart';
+
 import 'package:geocoding/geocoding.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 
 import '../utils/utils.dart';
@@ -343,7 +345,18 @@ class EmployeeReportController extends GetxController {
             pitsStops.add(pitstop);
           }
           for (var d = 0; d < pitsStops.length - 1; d++) {
-            totalDistance += Locationpath().calculateDistance(double.parse(pitsStops[d]['checkinLat']), double.parse(pitsStops[d]['checkinLng']), double.parse(pitsStops[d + 1]['checkinLat']), double.parse(pitsStops[d + 1]['checkinLng']));
+            // totalDistance += Locationpath().calculateDistance(double.parse(pitsStops[d]['checkinLat']), double.parse(pitsStops[d]['checkinLng']), double.parse(pitsStops[d + 1]['checkinLat']), double.parse(pitsStops[d + 1]['checkinLng']));
+            // totalDistance += Geolocator.distanceBetween(
+            //       double.parse(pitsStops[d]['checkinLat']),
+            //       double.parse(pitsStops[d]['checkinLng']),
+            //       double.parse(pitsStops[d + 1]['checkinLat']),
+            //       double.parse(pitsStops[d + 1]['checkinLng']),
+            //     ) /
+            //     1000;
+            totalDistance += await Locationpath().getDistance(
+              LatLng(double.parse(pitsStops[d]['checkinLat']), double.parse(pitsStops[d]['checkinLng'])),
+              LatLng(double.parse(pitsStops[d + 1]['checkinLat']), double.parse(pitsStops[d + 1]['checkinLng'])),
+            );
           }
           isLoadingTimeline(false);
           await pr.hide();

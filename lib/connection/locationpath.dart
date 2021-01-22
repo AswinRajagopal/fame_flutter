@@ -21,4 +21,19 @@ class Locationpath {
     var a = 0.5 - c((lat2 - lat1) * p) / 2 + c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
     return 12742 * asin(sqrt(a));
   }
+
+  Future getDistance(LatLng l1, LatLng l2) async {
+    var url = 'https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=${l1.latitude},${l1.longitude}&destinations=${l2.latitude},${l2.longitude}&key=$apiKey';
+    // print('LocationPath: $url');
+    var response = await http.get(url);
+    Map values = jsonDecode(response.body);
+    // var fullText = values['rows'][0]['elements'][0]['distance']['text'];
+    var distanceValue = values['rows'][0]['elements'][0]['distance']['value'];
+    // var distance = fullText.split(' ')[0];
+    // var distanceType = fullText.split(' ')[1];
+    // if (distanceType == 'm') {
+    //   distance = double.parse(distance) / 1000;
+    // }
+    return double.parse(distanceValue.toString()) / 1000;
+  }
 }

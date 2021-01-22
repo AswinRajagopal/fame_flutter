@@ -134,8 +134,8 @@ class _VisitPlanRouteState extends State<VisitPlanRoute> {
       // controller.setMapStyle(_mapStyle);
 
       epC.pitsStops.asMap().forEach((index, emp) async {
-        print('emp$index: $emp');
         if (emp['checkinLat'] != null || emp['checkinLat'] != '' || emp['checkinLng'] != null || emp['checkinLng'] != '') {
+          print('emp$index: $emp');
           _markers.add(
             Marker(
               markerId: MarkerId(
@@ -186,6 +186,7 @@ class _VisitPlanRouteState extends State<VisitPlanRoute> {
           }
         }
       });
+      // print('total _markers: ${_markers.length}');
     });
     Timer(Duration(seconds: 1), () {
       // controller.showMarkerInfoWindow(MarkerId(epC.locations.first['empId']));
