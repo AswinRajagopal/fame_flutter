@@ -176,7 +176,7 @@ class _AttendancePageState extends State<AttendancePage> {
                       ),
                       isExpanded: true,
                       // value: json.encode(aC.clientList.first.clientManpowerList),
-                      value: aC.selectedVal,
+                      // value: aC.selectedVal,
                       items: aC.clientList.map((item) {
                         // print('item: ${item.client.id}');
                         var sC = item.client.name + ' - ' + item.client.id.toString();
@@ -240,9 +240,9 @@ class _AttendancePageState extends State<AttendancePage> {
                             aC.timings.add(addTiming);
                           }
                         }
-                        var timing = aC.timings.first;
-                        var shiftTimeCtrl = timing['shiftStartTime'] + ' - ' + timing['shiftEndTime'];
-                        aC.shiftTime = timing['shift'] + '#' + shiftTimeCtrl;
+                        // var timing = aC.timings.first;
+                        // var shiftTimeCtrl = timing['shiftStartTime'] + ' - ' + timing['shiftEndTime'];
+                        // aC.shiftTime = timing['shift'] + '#' + shiftTimeCtrl;
                       },
                     ),
                   ),
