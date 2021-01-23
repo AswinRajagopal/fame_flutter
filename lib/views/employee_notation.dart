@@ -518,7 +518,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         SizedBox(
-                                          width: 270.0,
+                                          width: 310.0,
                                           child: Text(
                                             emp['name'].toString().trimRight() + ' ' + emp['empId'],
                                             style: TextStyle(
@@ -526,16 +526,18 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                               fontWeight: FontWeight.bold,
                                             ),
                                             overflow: TextOverflow.ellipsis,
+                                            maxLines: 2,
                                           ),
                                         ),
                                         SizedBox(
-                                          width: 270.0,
+                                          width: 310.0,
                                           child: Text(
                                             enC.designation[int.parse(emp['designation'].toString())],
                                             style: TextStyle(
                                               fontSize: 16.0,
                                             ),
                                             overflow: TextOverflow.ellipsis,
+                                            maxLines: 2,
                                           ),
                                         ),
                                         Visibility(
