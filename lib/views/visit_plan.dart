@@ -83,7 +83,7 @@ class _VisitPlanState extends State<VisitPlan> {
                       fontSize: 18.0,
                       // fontWeight: FontWeight.bold,
                     ),
-                    hintText: 'Employee name',
+                    hintText: 'Employee Name',
                   ),
                 ),
                 suggestionsCallback: (pattern) async {

@@ -476,7 +476,11 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                     ],
                   );
                 }
-                return SingleChildScrollView(
+                return Scrollbar(
+                  radius: Radius.circular(
+                    10.0,
+                  ),
+                  thickness: 5.0,
                   child: Obx(() {
                     return ListView.builder(
                       physics: ScrollPhysics(),

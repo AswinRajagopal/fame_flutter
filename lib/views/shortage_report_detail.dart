@@ -297,117 +297,126 @@ class _ShortageReportDetailState extends State<ShortageReportDetail> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Icon(
-                                    Icons.calendar_today,
-                                    color: Colors.grey,
+                                  Wrap(
+                                    children: [
+                                      Icon(
+                                        Icons.calendar_today,
+                                        color: Colors.grey,
+                                      ),
+                                      SizedBox(
+                                        width: 5.0,
+                                      ),
+                                      Text(
+                                        // '24 Dec 2020',
+                                        DateFormat('dd').format(DateTime.parse(widget.date)).toString() + ' ' + DateFormat.MMM().format(DateTime.parse(widget.date)).toString() + ' ' + DateFormat.y().format(DateTime.parse(widget.date)).toString(),
+                                        style: TextStyle(
+                                          fontSize: 16.0,
+                                          color: Colors.grey[700],
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  SizedBox(
-                                    width: 5.0,
-                                  ),
-                                  Text(
-                                    // '24 Dec 2020',
-                                    DateFormat('dd').format(DateTime.parse(widget.date)).toString() + ' ' + DateFormat.MMM().format(DateTime.parse(widget.date)).toString() + ' ' + DateFormat.y().format(DateTime.parse(widget.date)).toString(),
-                                    style: TextStyle(
-                                      fontSize: 16.0,
-                                      color: Colors.grey[700],
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                  Wrap(
+                                    children: [
+                                      Visibility(
+                                        visible: showGraph,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          children: [
+                                            Container(
+                                              height: 12.0,
+                                              width: 12.0,
+                                              decoration: BoxDecoration(
+                                                color: Colors.greenAccent,
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(
+                                                    50.0,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 5.0,
+                                            ),
+                                            Text(
+                                              'Present',
+                                            ),
+                                            SizedBox(
+                                              width: 5.0,
+                                            ),
+                                            Container(
+                                              height: 12.0,
+                                              width: 12.0,
+                                              decoration: BoxDecoration(
+                                                color: Colors.pink[300],
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(
+                                                    50.0,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 5.0,
+                                            ),
+                                            Text(
+                                              'Leave',
+                                            ),
+                                            SizedBox(
+                                              width: 5.0,
+                                            ),
+                                            Container(
+                                              height: 12.0,
+                                              width: 12.0,
+                                              decoration: BoxDecoration(
+                                                color: Colors.cyanAccent,
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(
+                                                    50.0,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 5.0,
+                                            ),
+                                            Text(
+                                              'Late',
+                                            ),
+                                            SizedBox(
+                                              width: 5.0,
+                                            ),
+                                            Container(
+                                              height: 12.0,
+                                              width: 12.0,
+                                              decoration: BoxDecoration(
+                                                color: Colors.indigo,
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(
+                                                    50.0,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 5.0,
+                                            ),
+                                            Text(
+                                              'Overtime',
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
-                              SizedBox(
-                                height: 5.0,
-                              ),
-                              Visibility(
-                                visible: showGraph,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Container(
-                                      height: 12.0,
-                                      width: 12.0,
-                                      decoration: BoxDecoration(
-                                        color: Colors.greenAccent,
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(
-                                            50.0,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 5.0,
-                                    ),
-                                    Text(
-                                      'Present',
-                                    ),
-                                    SizedBox(
-                                      width: 5.0,
-                                    ),
-                                    Container(
-                                      height: 12.0,
-                                      width: 12.0,
-                                      decoration: BoxDecoration(
-                                        color: Colors.pink[300],
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(
-                                            50.0,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 5.0,
-                                    ),
-                                    Text(
-                                      'Leave',
-                                    ),
-                                    SizedBox(
-                                      width: 5.0,
-                                    ),
-                                    Container(
-                                      height: 12.0,
-                                      width: 12.0,
-                                      decoration: BoxDecoration(
-                                        color: Colors.cyanAccent,
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(
-                                            50.0,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 5.0,
-                                    ),
-                                    Text(
-                                      'Late',
-                                    ),
-                                    SizedBox(
-                                      width: 5.0,
-                                    ),
-                                    Container(
-                                      height: 12.0,
-                                      width: 12.0,
-                                      decoration: BoxDecoration(
-                                        color: Colors.indigo,
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(
-                                            50.0,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 5.0,
-                                    ),
-                                    Text(
-                                      'Overtime',
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              // SizedBox(
+                              //   height: 5.0,
+                              // ),
                               Center(
                                 child: !showGraph
                                     ? Text(

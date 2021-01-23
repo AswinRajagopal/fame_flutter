@@ -24,6 +24,7 @@ class _ShortageReportState extends State<ShortageReport> {
   var clientId;
   var shift;
   var selectedDate;
+  var checkList = [];
 
   @override
   void initState() {
@@ -173,8 +174,9 @@ class _ShortageReportState extends State<ShortageReport> {
                     // print('value: $manpower');
                     clientId = manpower.first['clientId'];
                     epC.timings.clear();
-                    epC.shiftTime = '';
-                    epC.shift.clear();
+                    checkList.clear();
+                    // epC.shiftTime = '';
+                    // epC.shift.clear();
                     shift = null;
                     for (var j = 0; j < manpower.length; j++) {
                       // print('manpower: ${manpower[j]}');
@@ -215,9 +217,10 @@ class _ShortageReportState extends State<ShortageReport> {
                         'shiftStartTime': sSTime,
                         'shiftEndTime': sETime,
                       };
-                      print(epC.timings.contains(addTiming));
-                      if (!epC.timings.contains(addTiming)) {
+                      // print(epC.timings.contains(addTiming));
+                      if (!checkList.contains(manpower[j]['shift'])) {
                         epC.timings.add(addTiming);
+                        checkList.add(manpower[j]['shift']);
                       }
                     }
                   },
@@ -279,63 +282,66 @@ class _ShortageReportState extends State<ShortageReport> {
                       // print(aC.timings);
                       var timing = epC.timings[index];
                       var shiftTime = timing['shiftStartTime'] + ' - ' + timing['shiftEndTime'];
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              // print(shiftTime);
-                              epC.shift.clear();
-                              epC.shiftTime = shiftTime;
-                              if (epC.shift.contains(shiftTime)) {
-                                epC.shift.remove(shiftTime);
-                              } else {
-                                epC.shift.add(shiftTime);
-                                shift = timing['shift'];
-                              }
-                              setState(() {});
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(
-                                vertical: 5.0,
-                              ),
-                              decoration: epC.shift.contains(shiftTime)
-                                  ? BoxDecoration(
-                                      color: HexColor('ccf8d8'),
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(
-                                          5.0,
-                                        ),
-                                      ),
-                                      border: Border.all(
+                      return Padding(
+                        padding: const EdgeInsets.only(left: 20.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                // print(shiftTime);
+                                epC.shift.clear();
+                                epC.shiftTime = shiftTime;
+                                if (epC.shift.contains(shiftTime)) {
+                                  epC.shift.remove(shiftTime);
+                                } else {
+                                  epC.shift.add(shiftTime);
+                                  shift = timing['shift'];
+                                }
+                                setState(() {});
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(
+                                  vertical: 5.0,
+                                ),
+                                decoration: epC.shift.contains(shiftTime)
+                                    ? BoxDecoration(
                                         color: HexColor('ccf8d8'),
-                                      ),
-                                    )
-                                  : BoxDecoration(
-                                      color: Colors.grey[100],
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(
-                                          5.0,
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(
+                                            5.0,
+                                          ),
+                                        ),
+                                        border: Border.all(
+                                          color: HexColor('ccf8d8'),
+                                        ),
+                                      )
+                                    : BoxDecoration(
+                                        color: Colors.grey[100],
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(
+                                            5.0,
+                                          ),
+                                        ),
+                                        border: Border.all(
+                                          color: Colors.grey,
                                         ),
                                       ),
-                                      border: Border.all(
-                                        color: Colors.grey,
-                                      ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    shiftTime,
+                                    style: TextStyle(
+                                      color: epC.shift.contains(shiftTime) ? HexColor('3f7f33') : Colors.grey[700],
+                                      fontSize: 15.0,
+                                      fontWeight: epC.shift.contains(shiftTime) ? FontWeight.w900 : FontWeight.w400,
                                     ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  shiftTime,
-                                  style: TextStyle(
-                                    color: epC.shift.contains(shiftTime) ? HexColor('3f7f33') : Colors.grey[700],
-                                    fontSize: 15.0,
-                                    fontWeight: epC.shift.contains(shiftTime) ? FontWeight.w900 : FontWeight.w400,
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       );
                     },
                   ),

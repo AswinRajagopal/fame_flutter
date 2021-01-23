@@ -147,9 +147,9 @@ class _DailyEmployeeReportState extends State<DailyEmployeeReport> {
                         hintStyle: TextStyle(
                           color: Colors.grey[600],
                           fontSize: 18.0,
-           // fontWeight: FontWeight.bold,
+                          // fontWeight: FontWeight.bold,
                         ),
-                        hintText: 'From date',
+                        hintText: 'From Date',
                         suffixIcon: Icon(
                           Icons.calendar_today,
                           size: 25.0,
@@ -174,9 +174,9 @@ class _DailyEmployeeReportState extends State<DailyEmployeeReport> {
                         hintStyle: TextStyle(
                           color: Colors.grey[600],
                           fontSize: 18.0,
-           // fontWeight: FontWeight.bold,
+                          // fontWeight: FontWeight.bold,
                         ),
-                        hintText: 'To date',
+                        hintText: 'To Date',
                         suffixIcon: Icon(
                           Icons.calendar_today,
                           size: 25.0,
@@ -225,7 +225,7 @@ class _DailyEmployeeReportState extends State<DailyEmployeeReport> {
                       fontSize: 18.0,
                       // fontWeight: FontWeight.bold,
                     ),
-                    hintText: 'Employee name',
+                    hintText: 'Employee Name',
                   ),
                 ),
                 suggestionsCallback: (pattern) async {

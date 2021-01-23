@@ -101,11 +101,13 @@ class _TransferListState extends State<TransferList> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      'No transfer found',
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        // fontWeight: FontWeight.bold,
+                    Center(
+                      child: Text(
+                        'No transfer found',
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          // fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],

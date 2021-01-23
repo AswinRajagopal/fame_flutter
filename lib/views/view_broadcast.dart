@@ -86,11 +86,13 @@ class _ViewBroadcastState extends State<ViewBroadcast> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        'No message found',
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          // fontWeight: FontWeight.bold,
+                      Center(
+                        child: Text(
+                          'No message found',
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            // fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],

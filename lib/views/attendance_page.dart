@@ -26,6 +26,7 @@ class _AttendancePageState extends State<AttendancePage> {
   var stVal = 'all';
   // var clientId;
   var passDate;
+  var checkList = [];
 
   @override
   void initState() {
@@ -195,7 +196,8 @@ class _AttendancePageState extends State<AttendancePage> {
                         // print('value: $manpower');
                         aC.clientId = manpower.first['clientId'];
                         aC.timings.clear();
-                        aC.shiftTime = '';
+                        checkList.clear();
+                        // aC.shiftTime = '';
                         for (var j = 0; j < manpower.length; j++) {
                           // print('manpower: ${manpower[j]}');
                           manpower[j]['shiftStartTime'] = manpower[j]['shiftStartTime'].split(':').first.length == 1 ? '0' + manpower[j]['shiftStartTime'] : manpower[j]['shiftStartTime'];
@@ -235,9 +237,9 @@ class _AttendancePageState extends State<AttendancePage> {
                             'shiftStartTime': sSTime,
                             'shiftEndTime': sETime,
                           };
-                          print(aC.timings.contains(addTiming));
-                          if (!aC.timings.contains(addTiming)) {
+                          if (!checkList.contains(manpower[j]['shift'])) {
                             aC.timings.add(addTiming);
+                            checkList.add(manpower[j]['shift']);
                           }
                         }
                         // var timing = aC.timings.first;
