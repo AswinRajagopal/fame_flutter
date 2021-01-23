@@ -177,6 +177,45 @@ class _DashboardPageState extends State<DashboardPage> {
     }
   }
 
+  // ignore: missing_return
+  bool conditionForMsg(dbRes, type) {
+    var curDate = DateFormat('yyyy-MM-dd').format(DateTime.now()).toString();
+    var chkDate = DateFormat('yyyy-MM-dd').format(DateTime.parse(dbRes['dailyAttendance']['checkInDateTime'])).toString();
+    if (dbRes['dailyAttendance'] != null) {
+      if (dbRes['dailyAttendance']['checkInDateTime'] != null && dbRes['dailyAttendance']['checkOutDateTime'] == null) {
+        //allow checkout
+        //on duty
+        if (type == 'chkout') {
+          return true;
+        }
+        return false;
+      } else if (dbRes['dailyAttendance']['checkInDateTime'] != null && dbRes['dailyAttendance']['checkOutDateTime'] != null) {
+        if (dbRes['empdetails']['shift'] == dbRes['dailyAttendance']['shift'] && dbRes['empdetails']['sitePostedTo'].toString().toLowerCase() == dbRes['dailyAttendance']['clientId'].toString().toLowerCase() && curDate == chkDate) {
+          if (dbRes['dailyAttendance']['attendanceAlias'] == 'L') {
+            // On Leave
+            // dont allow checkin
+            return false;
+          } else if (dbRes['dailyAttendance']['attendanceAlias'] == 'WO') {
+            // On Week Off
+            // dont allow checkin
+            return false;
+          } else {
+            // attendance given
+            // dont allow checkin
+            return false;
+          }
+        } else {
+          if (curDate == chkDate) {
+            return false;
+          }
+          return true;
+        }
+      }
+    } else {
+      return true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // print('width: ${MediaQuery.of(context).size.width}');
@@ -450,26 +489,29 @@ class _DashboardPageState extends State<DashboardPage> {
                                           ),
                                         ],
                                       ),
-                                      RaisedButton(
-                                        onPressed: () {
-                                          print(RemoteServices().box.get('faceApi'));
-                                          Get.to(CheckinPage(RemoteServices().box.get('faceApi')));
-                                        },
-                                        child: Text(
-                                          'Check In',
-                                          style: TextStyle(
-                                            fontSize: 16.0,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
+                                      Visibility(
+                                        visible: RemoteServices().box.get('role') == '3' ? false : true,
+                                        child: RaisedButton(
+                                          onPressed: () {
+                                            print(RemoteServices().box.get('faceApi'));
+                                            Get.to(CheckinPage(RemoteServices().box.get('faceApi')));
+                                          },
+                                          child: Text(
+                                            'Check In',
+                                            style: TextStyle(
+                                              fontSize: 16.0,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                        color: AppUtils().greenColor,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            25.0,
-                                          ),
-                                          side: BorderSide(
-                                            color: AppUtils().greenColor,
+                                          color: AppUtils().greenColor,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              25.0,
+                                            ),
+                                            side: BorderSide(
+                                              color: AppUtils().greenColor,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -583,33 +625,36 @@ class _DashboardPageState extends State<DashboardPage> {
                                                     ),
                                                   ],
                                                 ),
-                                                RaisedButton(
-                                                  onPressed: () {
-                                                    //Check Condition
-                                                    var chk = checkCondition(
-                                                      dbC.response,
-                                                      'chkout',
-                                                    );
-                                                    if (chk) {
-                                                      Get.to(CheckoutPage(RemoteServices().box.get('faceApi')));
-                                                      // Get.to(CheckoutPage(0));
-                                                    }
-                                                  },
-                                                  child: Text(
-                                                    'Check Out',
-                                                    style: TextStyle(
-                                                      fontSize: 18.0,
-                                                      color: Colors.white,
-                                                      fontWeight: FontWeight.bold,
+                                                Visibility(
+                                                  visible: RemoteServices().box.get('role') == '3' ? false : true,
+                                                  child: RaisedButton(
+                                                    onPressed: () {
+                                                      //Check Condition
+                                                      var chk = checkCondition(
+                                                        dbC.response,
+                                                        'chkout',
+                                                      );
+                                                      if (chk) {
+                                                        Get.to(CheckoutPage(RemoteServices().box.get('faceApi')));
+                                                        // Get.to(CheckoutPage(0));
+                                                      }
+                                                    },
+                                                    child: Text(
+                                                      'Check Out',
+                                                      style: TextStyle(
+                                                        fontSize: 18.0,
+                                                        color: Colors.white,
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
                                                     ),
-                                                  ),
-                                                  color: AppUtils().orangeColor,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(
-                                                      25.0,
-                                                    ),
-                                                    side: BorderSide(
-                                                      color: AppUtils().orangeColor,
+                                                    color: AppUtils().orangeColor,
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(
+                                                        25.0,
+                                                      ),
+                                                      side: BorderSide(
+                                                        color: AppUtils().orangeColor,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
@@ -625,136 +670,159 @@ class _DashboardPageState extends State<DashboardPage> {
                                           10.0,
                                           25.0,
                                         ),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        child: Column(
                                           children: [
-                                            Column(
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  'You are posted in',
-                                                  style: TextStyle(
-                                                    fontSize: 15.0,
+                                            Visibility(
+                                              visible: !conditionForMsg(dbC.response, 'chkin'),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.end,
+                                                children: [
+                                                  Text(
+                                                    'Attendance already given',
+                                                    style: TextStyle(
+                                                      fontSize: 16.0,
+                                                      color: AppUtils().orangeColor,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
                                                   ),
-                                                ),
-                                                SizedBox(
-                                                  height: 5.0,
-                                                ),
-                                                Obx(() {
-                                                  if (dbC.isDashboardLoading.value) {
-                                                    return Text(
-                                                      '...',
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 20.0,
-                                                        fontWeight: FontWeight.bold,
-                                                      ),
-                                                    );
-                                                  } else {
-                                                    // print('Length: ${dbC.response['clientData']['name'].length}');
-                                                    var clientName = dbC.response['clientData']['name'] ?? 'N/A';
-                                                    var areaName = dbC.response['empdetails']['area'] ?? 'N/A';
-                                                    return Row(
-                                                      children: [
-                                                        SizedBox(
-                                                          width: 240.0,
-                                                          child: Text(
-                                                            '$clientName at $areaName',
-                                                            style: TextStyle(
-                                                              fontSize: 15.0,
-                                                              fontWeight: FontWeight.bold,
-                                                            ),
-                                                            overflow: TextOverflow.ellipsis,
-                                                          ),
-                                                        ),
-                                                        // Text(
-                                                        //   ' in ',
-                                                        //   style: TextStyle(
-                                                        //     fontSize: 15.0,
-                                                        //   ),
-                                                        // ),
-                                                        // SizedBox(
-                                                        //   width: 40.0,
-                                                        //   child: Text(
-                                                        //     // dbC.response['empdetails']['area'] ?? 'N/A',
-                                                        //     'asdasd asdasd asdasdasd',
-                                                        //     style: TextStyle(
-                                                        //       fontSize: 15.0,
-                                                        //       fontWeight: FontWeight.bold,
-                                                        //     ),
-                                                        //     overflow: TextOverflow.ellipsis,
-                                                        //   ),
-                                                        // ),
-                                                      ],
-                                                    );
-                                                  }
-                                                }),
-                                                SizedBox(
-                                                  height: 5.0,
-                                                ),
-                                                Row(
+                                                ],
+                                              ),
+                                            ),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Column(
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      'Duty Timings : ',
+                                                      'You are posted in',
                                                       style: TextStyle(
                                                         fontSize: 15.0,
                                                       ),
                                                     ),
-                                                    Text(
-                                                      convertTimeWithParse(dbC.response['empdetails']['shiftStartTime']),
-                                                      style: TextStyle(
-                                                        fontSize: 15.0,
-                                                        fontWeight: FontWeight.bold,
-                                                      ),
+                                                    SizedBox(
+                                                      height: 5.0,
                                                     ),
-                                                    Text(
-                                                      ' to ',
-                                                      style: TextStyle(
-                                                        fontSize: 15.0,
-                                                      ),
+                                                    Obx(() {
+                                                      if (dbC.isDashboardLoading.value) {
+                                                        return Text(
+                                                          '...',
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 20.0,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                        );
+                                                      } else {
+                                                        // print('Length: ${dbC.response['clientData']['name'].length}');
+                                                        var clientName = dbC.response['clientData']['name'] ?? 'N/A';
+                                                        var areaName = dbC.response['empdetails']['area'] ?? 'N/A';
+                                                        return Row(
+                                                          children: [
+                                                            SizedBox(
+                                                              width: 240.0,
+                                                              child: Text(
+                                                                '$clientName at $areaName',
+                                                                style: TextStyle(
+                                                                  fontSize: 15.0,
+                                                                  fontWeight: FontWeight.bold,
+                                                                ),
+                                                                overflow: TextOverflow.ellipsis,
+                                                              ),
+                                                            ),
+                                                            // Text(
+                                                            //   ' in ',
+                                                            //   style: TextStyle(
+                                                            //     fontSize: 15.0,
+                                                            //   ),
+                                                            // ),
+                                                            // SizedBox(
+                                                            //   width: 40.0,
+                                                            //   child: Text(
+                                                            //     // dbC.response['empdetails']['area'] ?? 'N/A',
+                                                            //     'asdasd asdasd asdasdasd',
+                                                            //     style: TextStyle(
+                                                            //       fontSize: 15.0,
+                                                            //       fontWeight: FontWeight.bold,
+                                                            //     ),
+                                                            //     overflow: TextOverflow.ellipsis,
+                                                            //   ),
+                                                            // ),
+                                                          ],
+                                                        );
+                                                      }
+                                                    }),
+                                                    SizedBox(
+                                                      height: 5.0,
                                                     ),
-                                                    Text(
-                                                      convertTimeWithParse(dbC.response['empdetails']['shiftEndTime']),
-                                                      style: TextStyle(
-                                                        fontSize: 15.0,
-                                                        fontWeight: FontWeight.bold,
-                                                      ),
+                                                    Row(
+                                                      children: [
+                                                        Text(
+                                                          'Duty Timings : ',
+                                                          style: TextStyle(
+                                                            fontSize: 15.0,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          convertTimeWithParse(dbC.response['empdetails']['shiftStartTime']),
+                                                          style: TextStyle(
+                                                            fontSize: 15.0,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          ' to ',
+                                                          style: TextStyle(
+                                                            fontSize: 15.0,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          convertTimeWithParse(dbC.response['empdetails']['shiftEndTime']),
+                                                          style: TextStyle(
+                                                            fontSize: 15.0,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ],
                                                 ),
+                                                Visibility(
+                                                  visible: RemoteServices().box.get('role') == '3' ? false : true,
+                                                  child: RaisedButton(
+                                                    onPressed: () {
+                                                      //Check Condition
+                                                      var chk = checkCondition(
+                                                        dbC.response,
+                                                        'chkin',
+                                                      );
+                                                      if (chk) {
+                                                        print(RemoteServices().box.get('faceApi'));
+                                                        Get.to(CheckinPage(RemoteServices().box.get('faceApi')));
+                                                        // Get.to(CheckinPage(0));
+                                                      }
+                                                    },
+                                                    child: Text(
+                                                      'Check In',
+                                                      style: TextStyle(
+                                                        fontSize: 16.0,
+                                                        color: Colors.white,
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    color: AppUtils().greenColor,
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(
+                                                        25.0,
+                                                      ),
+                                                      side: BorderSide(
+                                                        color: AppUtils().greenColor,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
                                               ],
-                                            ),
-                                            RaisedButton(
-                                              onPressed: () {
-                                                //Check Condition
-                                                var chk = checkCondition(
-                                                  dbC.response,
-                                                  'chkin',
-                                                );
-                                                if (chk) {
-                                                  print(RemoteServices().box.get('faceApi'));
-                                                  Get.to(CheckinPage(RemoteServices().box.get('faceApi')));
-                                                  // Get.to(CheckinPage(0));
-                                                }
-                                              },
-                                              child: Text(
-                                                'Check In',
-                                                style: TextStyle(
-                                                  fontSize: 16.0,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                              color: AppUtils().greenColor,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(
-                                                  25.0,
-                                                ),
-                                                side: BorderSide(
-                                                  color: AppUtils().greenColor,
-                                                ),
-                                              ),
                                             ),
                                           ],
                                         ),

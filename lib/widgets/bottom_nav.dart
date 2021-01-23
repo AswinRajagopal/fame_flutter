@@ -99,7 +99,7 @@ class BottomNav extends StatelessWidget {
           icon: Padding(
             padding: const EdgeInsets.only(bottom: 5.0),
             child: Image.asset(
-              'assets/images/settings.png',
+              'assets/images/report.png',
               height: 30.0,
             ),
           ),
