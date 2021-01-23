@@ -42,7 +42,7 @@ class TransferController extends GetxController {
           print('shiftRes: $shiftList');
         } else {
           Get.snackbar(
-            'Message',
+            null,
             'Shift not found',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -51,6 +51,11 @@ class TransferController extends GetxController {
               horizontal: 8.0,
               vertical: 10.0,
             ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
           );
         }
       }
@@ -59,7 +64,7 @@ class TransferController extends GetxController {
       isLoading(false);
       await pr.hide();
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -68,6 +73,11 @@ class TransferController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
     }
   }
@@ -81,17 +91,22 @@ class TransferController extends GetxController {
         print('transferRes valid: ${transferRes['success']}');
         if (transferRes['success']) {
           Get.snackbar(
-            'Success',
+            null,
             'Transfer addedd successfully',
             colorText: Colors.white,
             backgroundColor: AppUtils().greenColor,
             snackPosition: SnackPosition.BOTTOM,
-            duration: Duration(
-              seconds: 2,
-            ),
             margin: EdgeInsets.symmetric(
               horizontal: 8.0,
               vertical: 10.0,
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
+            duration: Duration(
+              seconds: 2,
             ),
           );
           Timer(Duration(seconds: 2), () {
@@ -100,7 +115,7 @@ class TransferController extends GetxController {
           });
         } else {
           Get.snackbar(
-            'Message',
+            null,
             'Transfer add failed',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -109,6 +124,11 @@ class TransferController extends GetxController {
               horizontal: 8.0,
               vertical: 10.0,
             ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
           );
         }
       }
@@ -116,7 +136,7 @@ class TransferController extends GetxController {
       print(e);
       await pr.hide();
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -125,6 +145,11 @@ class TransferController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
     }
   }
@@ -147,7 +172,7 @@ class TransferController extends GetxController {
           // print('leaveList: $leaveList');
         } else {
           Get.snackbar(
-            'Message',
+            null,
             'Transfer not found',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -156,6 +181,11 @@ class TransferController extends GetxController {
               horizontal: 8.0,
               vertical: 10.0,
             ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
           );
         }
       }
@@ -164,7 +194,7 @@ class TransferController extends GetxController {
       isLoading(false);
       await pr.hide();
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -173,6 +203,11 @@ class TransferController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
     }
   }
@@ -186,23 +221,28 @@ class TransferController extends GetxController {
         print('appRejRes: $appRejRes');
         if (appRejRes['success']) {
           Get.snackbar(
-            'Success',
+            null,
             'Transfer request updated',
             colorText: Colors.white,
             backgroundColor: AppUtils().greenColor,
             snackPosition: SnackPosition.BOTTOM,
-            duration: Duration(
-              seconds: 2,
-            ),
             margin: EdgeInsets.symmetric(
               horizontal: 8.0,
               vertical: 10.0,
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
+            duration: Duration(
+              seconds: 2,
             ),
           );
           getTransferList();
         } else {
           Get.snackbar(
-            'Message',
+            null,
             'Transfer request not updated',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -211,6 +251,11 @@ class TransferController extends GetxController {
               horizontal: 8.0,
               vertical: 10.0,
             ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
           );
         }
       }
@@ -218,7 +263,7 @@ class TransferController extends GetxController {
       print(e);
       await pr.hide();
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -227,6 +272,11 @@ class TransferController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
     }
   }

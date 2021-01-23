@@ -260,7 +260,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                       FocusScope.of(context).requestFocus(FocusNode());
                       if (password.text == null || confirmpassword.text == '') {
                         Get.snackbar(
-                          'Message',
+                          null,
                           'Please provide password and confirm password',
                           colorText: Colors.white,
                           backgroundColor: Colors.black87,
@@ -269,10 +269,15 @@ class _ResetPasswordState extends State<ResetPassword> {
                             horizontal: 8.0,
                             vertical: 10.0,
                           ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12.0,
+                            vertical: 18.0,
+                          ),
+                          borderRadius: 5.0,
                         );
                       } else if (password.text != confirmpassword.text) {
                         Get.snackbar(
-                          'Message',
+                          null,
                           'Password are not matching',
                           colorText: Colors.white,
                           backgroundColor: Colors.black87,
@@ -281,6 +286,11 @@ class _ResetPasswordState extends State<ResetPassword> {
                             horizontal: 8.0,
                             vertical: 10.0,
                           ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12.0,
+                            vertical: 18.0,
+                          ),
+                          borderRadius: 5.0,
                         );
                       } else {
                         rpC.verifyOTP(widget.email, password.text);

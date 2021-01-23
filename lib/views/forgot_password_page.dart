@@ -165,7 +165,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       FocusScope.of(context).requestFocus(FocusNode());
                       if (email.text == null || email.text == '') {
                         Get.snackbar(
-                          'Message',
+                          null,
                           'Please provide email',
                           colorText: Colors.white,
                           backgroundColor: Colors.black87,
@@ -174,10 +174,15 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                             horizontal: 8.0,
                             vertical: 10.0,
                           ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12.0,
+                            vertical: 18.0,
+                          ),
+                          borderRadius: 5.0,
                         );
                       } else if (email.text != '' && !GetUtils.isEmail(email.text)) {
                         Get.snackbar(
-                          'Message',
+                          null,
                           'Please provide valid email',
                           colorText: Colors.white,
                           backgroundColor: Colors.black87,
@@ -186,6 +191,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                             horizontal: 8.0,
                             vertical: 10.0,
                           ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12.0,
+                            vertical: 18.0,
+                          ),
+                          borderRadius: 5.0,
                         );
                       } else {
                         var forgotpwd = await fpController.forgotPassword(
@@ -298,7 +308,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                             );
                                             if (resend) {
                                               Get.snackbar(
-                                                'Success',
+                                                null,
                                                 'OTP sent',
                                                 colorText: Colors.white,
                                                 backgroundColor: AppUtils().greenColor,
@@ -307,10 +317,15 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                                   horizontal: 8.0,
                                                   vertical: 10.0,
                                                 ),
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: 12.0,
+                                                  vertical: 18.0,
+                                                ),
+                                                borderRadius: 5.0,
                                               );
                                             } else {
                                               Get.snackbar(
-                                                'Message',
+                                                null,
                                                 'OTP not sent',
                                                 colorText: Colors.white,
                                                 backgroundColor: Colors.black87,
@@ -319,6 +334,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                                   horizontal: 8.0,
                                                   vertical: 10.0,
                                                 ),
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: 12.0,
+                                                  vertical: 18.0,
+                                                ),
+                                                borderRadius: 5.0,
                                               );
                                             }
                                           },
@@ -341,7 +361,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                       onPressed: () async {
                                         if (otp.text == null || otp.text == '') {
                                           Get.snackbar(
-                                            'Message',
+                                            null,
                                             'Please enter otp',
                                             colorText: Colors.white,
                                             backgroundColor: Colors.black87,
@@ -350,6 +370,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                               horizontal: 8.0,
                                               vertical: 10.0,
                                             ),
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 12.0,
+                                              vertical: 18.0,
+                                            ),
+                                            borderRadius: 5.0,
                                           );
                                         } else {
                                           var otpVerify = await otpController.verifyForgotOTP(

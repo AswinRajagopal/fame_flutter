@@ -53,7 +53,7 @@ class ApplyLeaveController extends GetxController {
           print('leaveTypeList: $leaveTypeList');
         } else {
           Get.snackbar(
-            'Message',
+            null,
             'Leave type not found',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -62,6 +62,11 @@ class ApplyLeaveController extends GetxController {
               horizontal: 8.0,
               vertical: 10.0,
             ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
           );
         }
       }
@@ -70,7 +75,7 @@ class ApplyLeaveController extends GetxController {
       isLoading(false);
       await pr.hide();
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -79,6 +84,11 @@ class ApplyLeaveController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
     }
   }
@@ -98,7 +108,7 @@ class ApplyLeaveController extends GetxController {
         print('appLeaveRes valid: ${appLeaveRes.success}');
         if (appLeaveRes.success) {
           Get.snackbar(
-            'Success',
+            null,
             'Leave applied',
             colorText: Colors.white,
             backgroundColor: AppUtils().greenColor,
@@ -107,13 +117,18 @@ class ApplyLeaveController extends GetxController {
               horizontal: 8.0,
               vertical: 10.0,
             ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
           );
           Timer(Duration(seconds: 2), () {
             Get.offAll(LeavePage());
           });
         } else {
           Get.snackbar(
-            'Message',
+            null,
             'Leave does not applied',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -122,6 +137,11 @@ class ApplyLeaveController extends GetxController {
               horizontal: 8.0,
               vertical: 10.0,
             ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
           );
         }
       }
@@ -129,7 +149,7 @@ class ApplyLeaveController extends GetxController {
       print(e);
       await pr.hide();
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -138,6 +158,11 @@ class ApplyLeaveController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
     }
   }

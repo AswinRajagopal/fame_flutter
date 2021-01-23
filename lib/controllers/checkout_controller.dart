@@ -70,7 +70,7 @@ class CheckoutController extends GetxController {
           var resDecode = jsonDecode(checkoutResponse.response);
           if (!resDecode['face_found']) {
             Get.snackbar(
-              'Message',
+              null,
               'Face not detected. Please take a picture again',
               colorText: Colors.white,
               backgroundColor: Colors.black87,
@@ -79,11 +79,16 @@ class CheckoutController extends GetxController {
                 horizontal: 8.0,
                 vertical: 10.0,
               ),
+              padding: EdgeInsets.symmetric(
+                horizontal: 12.0,
+                vertical: 18.0,
+              ),
+              borderRadius: 5.0,
             );
             return false;
           } else if (resDecode['n_faces'] > 1) {
             Get.snackbar(
-              'Message',
+              null,
               'More then one face detected.',
               colorText: Colors.white,
               backgroundColor: Colors.black87,
@@ -92,11 +97,16 @@ class CheckoutController extends GetxController {
                 horizontal: 8.0,
                 vertical: 10.0,
               ),
+              padding: EdgeInsets.symmetric(
+                horizontal: 12.0,
+                vertical: 18.0,
+              ),
+              borderRadius: 5.0,
             );
             return false;
           } else if (resDecode['0']['clientID'].toString().toLowerCase() != RemoteServices().box.get('empid').toString().toLowerCase()) {
             Get.snackbar(
-              'Message',
+              null,
               "Face doesn't match.",
               colorText: Colors.white,
               backgroundColor: Colors.black87,
@@ -105,6 +115,11 @@ class CheckoutController extends GetxController {
                 horizontal: 8.0,
                 vertical: 10.0,
               ),
+              padding: EdgeInsets.symmetric(
+                horizontal: 12.0,
+                vertical: 18.0,
+              ),
+              borderRadius: 5.0,
             );
             return false;
           } else {
@@ -123,7 +138,7 @@ class CheckoutController extends GetxController {
               return true;
             } else {
               Get.snackbar(
-                'Message',
+                null,
                 'Something went wrong! Please try again later',
                 colorText: Colors.white,
                 backgroundColor: Colors.black87,
@@ -132,13 +147,18 @@ class CheckoutController extends GetxController {
                   horizontal: 8.0,
                   vertical: 10.0,
                 ),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 12.0,
+                  vertical: 18.0,
+                ),
+                borderRadius: 5.0,
               );
               return false;
             }
           }
         } else {
           Get.snackbar(
-            'Message',
+            null,
             'Something went wrong! Please try again later',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -147,6 +167,11 @@ class CheckoutController extends GetxController {
               horizontal: 8.0,
               vertical: 10.0,
             ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
           );
           return false;
         }
@@ -155,7 +180,7 @@ class CheckoutController extends GetxController {
       print(e);
       await pr.hide();
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -164,6 +189,11 @@ class CheckoutController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
       return false;
     }
@@ -183,7 +213,7 @@ class CheckoutController extends GetxController {
     } else {
       await pr.hide();
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -192,6 +222,11 @@ class CheckoutController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
       return false;
     }

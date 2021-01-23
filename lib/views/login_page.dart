@@ -322,7 +322,7 @@ class _LoginPageState extends State<LoginPage> {
                       FocusScope.of(context).requestFocus(FocusNode());
                       if (username.text == null || username.text == '' || empid.text == null || empid.text == '' || password.text == null || password.text == '') {
                         Get.snackbar(
-                          'Message',
+                          null,
                           'Please provide all detail',
                           colorText: Colors.white,
                           backgroundColor: Colors.black87,
@@ -331,6 +331,11 @@ class _LoginPageState extends State<LoginPage> {
                             horizontal: 8.0,
                             vertical: 10.0,
                           ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12.0,
+                            vertical: 18.0,
+                          ),
+                          borderRadius: 5.0,
                         );
                       } else {
                         // Call Login Controller's Function

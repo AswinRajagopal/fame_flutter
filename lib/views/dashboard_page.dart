@@ -92,7 +92,7 @@ class _DashboardPageState extends State<DashboardPage> {
             // On Leave
             // dont allow checkin
             Get.snackbar(
-              'Message',
+              null,
               'You cannot checkin when leave is approved',
               colorText: Colors.white,
               backgroundColor: Colors.black87,
@@ -101,13 +101,18 @@ class _DashboardPageState extends State<DashboardPage> {
                 horizontal: 8.0,
                 vertical: 10.0,
               ),
+              padding: EdgeInsets.symmetric(
+                horizontal: 12.0,
+                vertical: 18.0,
+              ),
+              borderRadius: 5.0,
             );
             return false;
           } else if (dbRes['dailyAttendance']['attendanceAlias'] == 'WO') {
             // On Week Off
             // dont allow checkin
             Get.snackbar(
-              'Message',
+              null,
               'You cannot checkin on week off days',
               colorText: Colors.white,
               backgroundColor: Colors.black87,
@@ -116,13 +121,18 @@ class _DashboardPageState extends State<DashboardPage> {
                 horizontal: 8.0,
                 vertical: 10.0,
               ),
+              padding: EdgeInsets.symmetric(
+                horizontal: 12.0,
+                vertical: 18.0,
+              ),
+              borderRadius: 5.0,
             );
             return false;
           } else {
             // attendance given
             // dont allow checkin
             Get.snackbar(
-              'Message',
+              null,
               'Attendance already given by unit Incharge',
               colorText: Colors.white,
               backgroundColor: Colors.black87,
@@ -131,13 +141,18 @@ class _DashboardPageState extends State<DashboardPage> {
                 horizontal: 8.0,
                 vertical: 10.0,
               ),
+              padding: EdgeInsets.symmetric(
+                horizontal: 12.0,
+                vertical: 18.0,
+              ),
+              borderRadius: 5.0,
             );
             return false;
           }
         } else {
           if (curDate == chkDate) {
             Get.snackbar(
-              'Message',
+              null,
               'You already checked in for today',
               colorText: Colors.white,
               backgroundColor: Colors.black87,
@@ -146,6 +161,11 @@ class _DashboardPageState extends State<DashboardPage> {
                 horizontal: 8.0,
                 vertical: 10.0,
               ),
+              padding: EdgeInsets.symmetric(
+                horizontal: 12.0,
+                vertical: 18.0,
+              ),
+              borderRadius: 5.0,
             );
             return false;
           }

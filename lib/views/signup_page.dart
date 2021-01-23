@@ -381,7 +381,7 @@ class _SignupPageState extends State<SignupPage> {
                       FocusScope.of(context).requestFocus(FocusNode());
                       if (username.text == null || username.text == '' || empid.text == null || empid.text == '' || password.text == null || password.text == '' || fullname.text == null || fullname.text == '' || email.text == null || email.text == '' || mobile.text == null || mobile.text == '' || company.text == null || company.text == '' || empNo.text.isNullOrBlank) {
                         Get.snackbar(
-                          'Message',
+                          null,
                           'Please provide all detail',
                           colorText: Colors.white,
                           backgroundColor: Colors.black87,
@@ -390,10 +390,15 @@ class _SignupPageState extends State<SignupPage> {
                             horizontal: 8.0,
                             vertical: 10.0,
                           ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12.0,
+                            vertical: 18.0,
+                          ),
+                          borderRadius: 5.0,
                         );
                       } else if (email.text != '' && !GetUtils.isEmail(email.text)) {
                         Get.snackbar(
-                          'Message',
+                          null,
                           'Please provide valid email',
                           colorText: Colors.white,
                           backgroundColor: Colors.black87,
@@ -402,10 +407,15 @@ class _SignupPageState extends State<SignupPage> {
                             horizontal: 8.0,
                             vertical: 10.0,
                           ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12.0,
+                            vertical: 18.0,
+                          ),
+                          borderRadius: 5.0,
                         );
                       } else if (mobile.text != '' && mobile.text.length != 10) {
                         Get.snackbar(
-                          'Message',
+                          null,
                           'Please provide valid 10 digit mobile',
                           colorText: Colors.white,
                           backgroundColor: Colors.black87,
@@ -414,6 +424,11 @@ class _SignupPageState extends State<SignupPage> {
                             horizontal: 8.0,
                             vertical: 10.0,
                           ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12.0,
+                            vertical: 18.0,
+                          ),
+                          borderRadius: 5.0,
                         );
                       } else {
                         // Call Signup Controller's Function
@@ -541,7 +556,7 @@ class _SignupPageState extends State<SignupPage> {
                                             );
                                             if (resend) {
                                               Get.snackbar(
-                                                'Success',
+                                                null,
                                                 'OTP sent',
                                                 colorText: Colors.white,
                                                 backgroundColor: AppUtils().greenColor,
@@ -550,10 +565,15 @@ class _SignupPageState extends State<SignupPage> {
                                                   horizontal: 8.0,
                                                   vertical: 10.0,
                                                 ),
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: 12.0,
+                                                  vertical: 18.0,
+                                                ),
+                                                borderRadius: 5.0,
                                               );
                                             } else {
                                               Get.snackbar(
-                                                'Message',
+                                                null,
                                                 'OTP not sent',
                                                 colorText: Colors.white,
                                                 backgroundColor: Colors.black87,
@@ -562,6 +582,11 @@ class _SignupPageState extends State<SignupPage> {
                                                   horizontal: 8.0,
                                                   vertical: 10.0,
                                                 ),
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: 12.0,
+                                                  vertical: 18.0,
+                                                ),
+                                                borderRadius: 5.0,
                                               );
                                             }
                                           },
@@ -584,7 +609,7 @@ class _SignupPageState extends State<SignupPage> {
                                       onPressed: () async {
                                         if (otp.text == null || otp.text == '') {
                                           Get.snackbar(
-                                            'Message',
+                                            null,
                                             'Please enter otp',
                                             colorText: Colors.white,
                                             backgroundColor: Colors.black87,
@@ -593,6 +618,11 @@ class _SignupPageState extends State<SignupPage> {
                                               horizontal: 8.0,
                                               vertical: 10.0,
                                             ),
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 12.0,
+                                              vertical: 18.0,
+                                            ),
+                                            borderRadius: 5.0,
                                           );
                                         } else {
                                           otpController.verifyOTP(

@@ -113,7 +113,7 @@ class _CheckinPageState extends State<CheckinPage> {
     if (type == 1) {
       if (!controller.value.isInitialized) {
         Get.snackbar(
-          'Message',
+          null,
           'select a camera first.',
           colorText: Colors.white,
           backgroundColor: Colors.black87,
@@ -122,6 +122,11 @@ class _CheckinPageState extends State<CheckinPage> {
             horizontal: 8.0,
             vertical: 10.0,
           ),
+          padding: EdgeInsets.symmetric(
+            horizontal: 12.0,
+            vertical: 18.0,
+          ),
+          borderRadius: 5.0,
         );
         return null;
       }
@@ -235,7 +240,7 @@ class _CheckinPageState extends State<CheckinPage> {
   void _showCameraException(CameraException e) {
     print(e.code + e.description);
     Get.snackbar(
-      'Message',
+      null,
       '${e.code}\n${e.description}',
       colorText: Colors.white,
       backgroundColor: Colors.black87,
@@ -244,6 +249,11 @@ class _CheckinPageState extends State<CheckinPage> {
         horizontal: 8.0,
         vertical: 10.0,
       ),
+      padding: EdgeInsets.symmetric(
+        horizontal: 12.0,
+        vertical: 18.0,
+      ),
+      borderRadius: 5.0,
     );
   }
 
@@ -261,7 +271,7 @@ class _CheckinPageState extends State<CheckinPage> {
       if (mounted) setState(() {});
       if (controller.value.hasError) {
         Get.snackbar(
-          'Message',
+          null,
           '${controller.value.errorDescription}',
           colorText: Colors.white,
           backgroundColor: Colors.black87,
@@ -270,6 +280,11 @@ class _CheckinPageState extends State<CheckinPage> {
             horizontal: 8.0,
             vertical: 10.0,
           ),
+          padding: EdgeInsets.symmetric(
+            horizontal: 12.0,
+            vertical: 18.0,
+          ),
+          borderRadius: 5.0,
         );
       }
     });
@@ -351,7 +366,7 @@ class _CheckinPageState extends State<CheckinPage> {
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18.0,
-           // fontWeight: FontWeight.bold,
+                            // fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],

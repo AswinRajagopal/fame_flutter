@@ -382,7 +382,7 @@ class _ShortageReportState extends State<ShortageReport> {
                             FocusScope.of(context).requestFocus(FocusNode());
                             if (clientId == null || selectedDate == null || shift == null) {
                               Get.snackbar(
-                                'Message',
+                                null,
                                 'Please select client, shift and date',
                                 colorText: Colors.white,
                                 backgroundColor: Colors.black87,
@@ -391,6 +391,11 @@ class _ShortageReportState extends State<ShortageReport> {
                                   horizontal: 8.0,
                                   vertical: 10.0,
                                 ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 12.0,
+                                  vertical: 18.0,
+                                ),
+                                borderRadius: 5.0,
                               );
                             } else {
                               print('clientId: $clientId');

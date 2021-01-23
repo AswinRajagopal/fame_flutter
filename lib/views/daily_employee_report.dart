@@ -187,7 +187,7 @@ class _DailyEmployeeReportState extends State<DailyEmployeeReport> {
                       onTap: () {
                         if (fromDt.text.isEmpty) {
                           Get.snackbar(
-                            'Message',
+                            null,
                             'Please select from date',
                             colorText: Colors.white,
                             backgroundColor: Colors.black87,
@@ -196,6 +196,11 @@ class _DailyEmployeeReportState extends State<DailyEmployeeReport> {
                               horizontal: 8.0,
                               vertical: 10.0,
                             ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 12.0,
+                              vertical: 18.0,
+                            ),
+                            borderRadius: 5.0,
                           );
                         } else {
                           toDate(context);
@@ -294,7 +299,7 @@ class _DailyEmployeeReportState extends State<DailyEmployeeReport> {
                           FocusScope.of(context).requestFocus(FocusNode());
                           if (empId == null || sfromDate == null || stoDate == null) {
                             Get.snackbar(
-                              'Message',
+                              null,
                               'Please select employee, from date & to date',
                               colorText: Colors.white,
                               backgroundColor: Colors.black87,
@@ -303,6 +308,11 @@ class _DailyEmployeeReportState extends State<DailyEmployeeReport> {
                                 horizontal: 8.0,
                                 vertical: 10.0,
                               ),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 12.0,
+                                vertical: 18.0,
+                              ),
+                              borderRadius: 5.0,
                             );
                           } else {
                             print('empId: $empId');

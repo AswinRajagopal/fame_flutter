@@ -170,7 +170,7 @@ class _AddShiftState extends State<AddShift> {
                         ),
                         onTap: () {
                           Get.snackbar(
-                            'Message',
+                            null,
                             'Click on start time to change the time',
                             colorText: Colors.white,
                             backgroundColor: Colors.black87,
@@ -179,6 +179,11 @@ class _AddShiftState extends State<AddShift> {
                               horizontal: 8.0,
                               vertical: 10.0,
                             ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 12.0,
+                              vertical: 18.0,
+                            ),
+                            borderRadius: 5.0,
                           );
                         },
                       ),
@@ -224,7 +229,7 @@ class _AddShiftState extends State<AddShift> {
                             FocusScope.of(context).requestFocus(FocusNode());
                             if (shiftname.text.isNullOrBlank || starttime.text.isNullOrBlank || endtime.text.isNullOrBlank) {
                               Get.snackbar(
-                                'Message',
+                                null,
                                 'Please fill all fields',
                                 colorText: Colors.white,
                                 backgroundColor: Colors.black87,
@@ -233,6 +238,11 @@ class _AddShiftState extends State<AddShift> {
                                   horizontal: 8.0,
                                   vertical: 10.0,
                                 ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 12.0,
+                                  vertical: 18.0,
+                                ),
+                                borderRadius: 5.0,
                               );
                             } else {
                               print('shift name: ${shiftname.text}');
@@ -303,7 +313,7 @@ class MyTextField extends StatelessWidget {
           hintStyle: TextStyle(
             color: Colors.grey[600],
             fontSize: 18.0,
-           // fontWeight: FontWeight.bold,
+            // fontWeight: FontWeight.bold,
           ),
           hintText: hintText,
         ),

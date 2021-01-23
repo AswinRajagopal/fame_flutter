@@ -49,7 +49,7 @@ class RoutePlanningController extends GetxController {
           // print('clientsList: $clientList');
         } else {
           Get.snackbar(
-            'Message',
+            null,
             'Client not found',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -58,6 +58,11 @@ class RoutePlanningController extends GetxController {
               horizontal: 8.0,
               vertical: 10.0,
             ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
           );
         }
       }
@@ -66,7 +71,7 @@ class RoutePlanningController extends GetxController {
       isLoading(false);
       await pr.hide();
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -75,6 +80,11 @@ class RoutePlanningController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
     }
   }
@@ -93,7 +103,7 @@ class RoutePlanningController extends GetxController {
         print('saveRplanRes valid: ${saveRplanRes.success}');
         if (saveRplanRes.success) {
           Get.snackbar(
-            'Success',
+            null,
             'Route plan created',
             colorText: Colors.white,
             backgroundColor: AppUtils().greenColor,
@@ -102,13 +112,18 @@ class RoutePlanningController extends GetxController {
               horizontal: 8.0,
               vertical: 10.0,
             ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
           );
           Timer(Duration(seconds: 2), () {
             Get.offAll(DashboardPage());
           });
         } else {
           Get.snackbar(
-            'Message',
+            null,
             'Route plan not created',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -117,6 +132,11 @@ class RoutePlanningController extends GetxController {
               horizontal: 8.0,
               vertical: 10.0,
             ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
           );
         }
       }
@@ -124,7 +144,7 @@ class RoutePlanningController extends GetxController {
       print(e);
       await pr.hide();
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -133,6 +153,11 @@ class RoutePlanningController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
     }
   }

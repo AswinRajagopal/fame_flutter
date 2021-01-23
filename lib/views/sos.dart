@@ -117,7 +117,7 @@ class _SOSState extends State<SOS> {
                           print(sC.sosNumber.text);
                           if (sC.sosNumber.isNullOrBlank) {
                             Get.snackbar(
-                              'Message',
+                              null,
                               'Please enter SOS number',
                               colorText: Colors.white,
                               backgroundColor: Colors.black87,
@@ -126,10 +126,15 @@ class _SOSState extends State<SOS> {
                                 horizontal: 8.0,
                                 vertical: 10.0,
                               ),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 12.0,
+                                vertical: 18.0,
+                              ),
+                              borderRadius: 5.0,
                             );
                           } else if (sC.sosNumber.text.length != 10) {
                             Get.snackbar(
-                              'Message',
+                              null,
                               'Please enter 10 digit SOS number',
                               colorText: Colors.white,
                               backgroundColor: Colors.black87,
@@ -138,6 +143,11 @@ class _SOSState extends State<SOS> {
                                 horizontal: 8.0,
                                 vertical: 10.0,
                               ),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 12.0,
+                                vertical: 18.0,
+                              ),
+                              borderRadius: 5.0,
                             );
                           } else {
                             sC.updateSOS(sC.sosNumber.text);
@@ -198,7 +208,7 @@ class MyTextField extends StatelessWidget {
           hintStyle: TextStyle(
             color: Colors.grey[600],
             fontSize: 18.0,
-           // fontWeight: FontWeight.bold,
+            // fontWeight: FontWeight.bold,
           ),
           hintText: hintText,
         ),

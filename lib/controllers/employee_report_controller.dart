@@ -60,7 +60,7 @@ class EmployeeReportController extends GetxController {
           // print('clientList: $clientList');
         } else {
           Get.snackbar(
-            'Message',
+            null,
             'Client not found',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -69,6 +69,11 @@ class EmployeeReportController extends GetxController {
               horizontal: 8.0,
               vertical: 10.0,
             ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
           );
         }
       }
@@ -77,7 +82,7 @@ class EmployeeReportController extends GetxController {
       isLoading(false);
       await pr.hide();
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -86,6 +91,11 @@ class EmployeeReportController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
     }
   }
@@ -107,7 +117,7 @@ class EmployeeReportController extends GetxController {
           // print('clientsList: $clientList');
         } else {
           // Get.snackbar(
-          //   'Message',
+          //   null,
           //   'Client not found',
           //   colorText: Colors.white,
           //   backgroundColor: Colors.black87,
@@ -124,7 +134,7 @@ class EmployeeReportController extends GetxController {
       isLoading(false);
       await pr.hide();
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -133,6 +143,11 @@ class EmployeeReportController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
     }
   }
@@ -156,7 +171,7 @@ class EmployeeReportController extends GetxController {
           }
         } else {
           // Get.snackbar(
-          //   'Message',
+          //   null,
           //   'Report not found',
           //   colorText: Colors.white,
           //   backgroundColor: Colors.black87,
@@ -173,7 +188,7 @@ class EmployeeReportController extends GetxController {
       isLoadingEmpReport(false);
       await pr.hide();
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -182,6 +197,11 @@ class EmployeeReportController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
     }
   }
@@ -197,7 +217,7 @@ class EmployeeReportController extends GetxController {
         if (getEmpDetailRes['success']) {
         } else {
           Get.snackbar(
-            'Message',
+            null,
             'Employee not found',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -206,6 +226,11 @@ class EmployeeReportController extends GetxController {
               horizontal: 8.0,
               vertical: 10.0,
             ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
           );
         }
       }
@@ -214,7 +239,7 @@ class EmployeeReportController extends GetxController {
       isLoadingEmpDetail(false);
       await pr.hide();
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -223,6 +248,11 @@ class EmployeeReportController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
     }
   }
@@ -284,7 +314,7 @@ class EmployeeReportController extends GetxController {
           isLoadingTimeline(false);
           await pr.hide();
           // Get.snackbar(
-          //   'Message',
+          //   null,
           //   'Timeline report not found',
           //   colorText: Colors.white,
           //   backgroundColor: Colors.black87,
@@ -301,7 +331,7 @@ class EmployeeReportController extends GetxController {
       isLoadingTimeline(false);
       await pr.hide();
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -310,6 +340,11 @@ class EmployeeReportController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
     }
   }
@@ -364,7 +399,7 @@ class EmployeeReportController extends GetxController {
           isLoadingTimeline(false);
           await pr.hide();
           // Get.snackbar(
-          //   'Message',
+          //   null,
           //   'Timeline report not found',
           //   colorText: Colors.white,
           //   backgroundColor: Colors.black87,
@@ -381,7 +416,7 @@ class EmployeeReportController extends GetxController {
       isLoadingTimeline(false);
       await pr.hide();
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -390,6 +425,11 @@ class EmployeeReportController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
     }
   }
@@ -417,7 +457,7 @@ class EmployeeReportController extends GetxController {
           isLoadingLocation(false);
           await pr.hide();
           // Get.snackbar(
-          //   'Message',
+          //   null,
           //   'Location report not found',
           //   colorText: Colors.white,
           //   backgroundColor: Colors.black87,
@@ -434,7 +474,7 @@ class EmployeeReportController extends GetxController {
       isLoadingLocation(false);
       await pr.hide();
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -443,6 +483,11 @@ class EmployeeReportController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
     }
   }
@@ -483,7 +528,7 @@ class EmployeeReportController extends GetxController {
           isLoadingDaily(false);
           await pr.hide();
           // Get.snackbar(
-          //   'Message',
+          //   null,
           //   'Daily employee report not found',
           //   colorText: Colors.white,
           //   backgroundColor: Colors.black87,
@@ -500,7 +545,7 @@ class EmployeeReportController extends GetxController {
       isLoadingDaily(false);
       await pr.hide();
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -509,6 +554,11 @@ class EmployeeReportController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
     }
   }
@@ -552,7 +602,7 @@ class EmployeeReportController extends GetxController {
           isLoadingAtt(false);
           await pr.hide();
           // Get.snackbar(
-          //   'Message',
+          //   null,
           //   'Client report not found',
           //   colorText: Colors.white,
           //   backgroundColor: Colors.black87,
@@ -569,7 +619,7 @@ class EmployeeReportController extends GetxController {
       isLoadingAtt(false);
       await pr.hide();
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -578,6 +628,11 @@ class EmployeeReportController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
     }
   }
@@ -598,7 +653,7 @@ class EmployeeReportController extends GetxController {
       isLoadingShortage(false);
       await pr.hide();
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -607,6 +662,11 @@ class EmployeeReportController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
     }
   }

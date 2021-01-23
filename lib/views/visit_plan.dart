@@ -21,7 +21,7 @@ class _VisitPlanState extends State<VisitPlan> {
   var sDate;
 
   @override
-  void initState() { 
+  void initState() {
     super.initState();
     date.text = DateFormat('dd-MM-yyyy').format(curDate).toString();
     sDate = DateFormat('yyyy-MM-dd').format(curDate).toString();
@@ -180,7 +180,7 @@ class _VisitPlanState extends State<VisitPlan> {
                           FocusScope.of(context).requestFocus(FocusNode());
                           if (empId == null || sDate == null || sDate == '') {
                             Get.snackbar(
-                              'Message',
+                              null,
                               'Please select employee and date',
                               colorText: Colors.white,
                               backgroundColor: Colors.black87,
@@ -189,6 +189,11 @@ class _VisitPlanState extends State<VisitPlan> {
                                 horizontal: 8.0,
                                 vertical: 10.0,
                               ),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 12.0,
+                                vertical: 18.0,
+                              ),
+                              borderRadius: 5.0,
                             );
                           } else {
                             print('empId: $empId');

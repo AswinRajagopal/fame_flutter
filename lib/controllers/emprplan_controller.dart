@@ -46,7 +46,7 @@ class EmprplanController extends GetxController {
         if (empRes.success) {
         } else {
           // Get.snackbar(
-          //   'Message',
+          //   null,
           //   'Something went wrong! Please try again later',
           //   colorText: Colors.white,
           //   backgroundColor: Colors.black87,
@@ -65,7 +65,7 @@ class EmprplanController extends GetxController {
         await pr.hide();
       }
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -74,6 +74,11 @@ class EmprplanController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
     } finally {
       // isLoading(false);

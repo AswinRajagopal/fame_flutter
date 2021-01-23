@@ -166,7 +166,7 @@ class _BroadcastState extends State<Broadcast> {
                       );
                     }),
                     MyTextField(
-                      'Message',
+                      null,
                       message,
                     ),
                   ],
@@ -209,7 +209,7 @@ class _BroadcastState extends State<Broadcast> {
                             FocusScope.of(context).requestFocus(FocusNode());
                             if (empId == null || message.text == null || message.text == '') {
                               Get.snackbar(
-                                'Message',
+                                null,
                                 'Please fill all fields',
                                 colorText: Colors.white,
                                 backgroundColor: Colors.black87,
@@ -218,6 +218,11 @@ class _BroadcastState extends State<Broadcast> {
                                   horizontal: 8.0,
                                   vertical: 10.0,
                                 ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 12.0,
+                                  vertical: 18.0,
+                                ),
+                                borderRadius: 5.0,
                               );
                             } else {
                               print(empId);

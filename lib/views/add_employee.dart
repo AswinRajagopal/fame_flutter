@@ -608,7 +608,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                             FocusScope.of(context).requestFocus(FocusNode());
                             if (name.text.isNullOrBlank || empid.text.isNullOrBlank || designation.text.isNullOrBlank || gender == '' || dtOfBirth.text.isNullOrBlank || empPhone.text.isNullOrBlank || address.text.isNullOrBlank || shift.text.isNullOrBlank || sitePostedTo == null || email.text.isNullOrBlank) {
                               Get.snackbar(
-                                'Message',
+                                null,
                                 'Please fill all the fields',
                                 colorText: Colors.white,
                                 backgroundColor: Colors.black87,
@@ -617,10 +617,15 @@ class _AddEmployeeState extends State<AddEmployee> {
                                   horizontal: 8.0,
                                   vertical: 10.0,
                                 ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 12.0,
+                                  vertical: 18.0,
+                                ),
+                                borderRadius: 5.0,
                               );
                             } else if (!GetUtils.isEmail(email.text)) {
                               Get.snackbar(
-                                'Message',
+                                null,
                                 'Please provide valid email',
                                 colorText: Colors.white,
                                 backgroundColor: Colors.black87,
@@ -629,10 +634,15 @@ class _AddEmployeeState extends State<AddEmployee> {
                                   horizontal: 8.0,
                                   vertical: 10.0,
                                 ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 12.0,
+                                  vertical: 18.0,
+                                ),
+                                borderRadius: 5.0,
                               );
                             } else if (empPhone.text != '' && empPhone.text.length != 10) {
                               Get.snackbar(
-                                'Message',
+                                null,
                                 'Please provide valid 10 digit mobile',
                                 colorText: Colors.white,
                                 backgroundColor: Colors.black87,
@@ -641,6 +651,11 @@ class _AddEmployeeState extends State<AddEmployee> {
                                   horizontal: 8.0,
                                   vertical: 10.0,
                                 ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 12.0,
+                                  vertical: 18.0,
+                                ),
+                                borderRadius: 5.0,
                               );
                             } else {
                               print('name: ${name.text}');

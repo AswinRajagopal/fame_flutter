@@ -408,7 +408,7 @@ class _TransferPageState extends State<TransferPage> {
                             FocusScope.of(context).requestFocus(FocusNode());
                             if (employeeId == null || fromPeriod == null || toPeriod == null || currentUnit.text == null || clientShift.text == null || toUnit == null) {
                               Get.snackbar(
-                                'Message',
+                                null,
                                 'Please fill all fields',
                                 colorText: Colors.white,
                                 backgroundColor: Colors.black87,
@@ -417,6 +417,11 @@ class _TransferPageState extends State<TransferPage> {
                                   horizontal: 8.0,
                                   vertical: 10.0,
                                 ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 12.0,
+                                  vertical: 18.0,
+                                ),
+                                borderRadius: 5.0,
                               );
                             } else {
                               print('empId: $employeeId');

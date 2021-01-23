@@ -91,7 +91,7 @@ class _FaceRegisterState extends State<FaceRegister> {
   void takePicture() async {
     if (!controller.value.isInitialized) {
       Get.snackbar(
-        'Message',
+        null,
         'select a camera first.',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -100,6 +100,11 @@ class _FaceRegisterState extends State<FaceRegister> {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
       return null;
     }
@@ -198,7 +203,7 @@ class _FaceRegisterState extends State<FaceRegister> {
   void _showCameraException(CameraException e) {
     print(e.code + e.description);
     Get.snackbar(
-      'Message',
+      null,
       '${e.code}\n${e.description}',
       colorText: Colors.white,
       backgroundColor: Colors.black87,
@@ -207,6 +212,11 @@ class _FaceRegisterState extends State<FaceRegister> {
         horizontal: 8.0,
         vertical: 10.0,
       ),
+      padding: EdgeInsets.symmetric(
+        horizontal: 12.0,
+        vertical: 18.0,
+      ),
+      borderRadius: 5.0,
     );
   }
 
@@ -224,7 +234,7 @@ class _FaceRegisterState extends State<FaceRegister> {
       if (mounted) setState(() {});
       if (controller.value.hasError) {
         Get.snackbar(
-          'Message',
+          null,
           '${controller.value.errorDescription}',
           colorText: Colors.white,
           backgroundColor: Colors.black87,
@@ -233,6 +243,11 @@ class _FaceRegisterState extends State<FaceRegister> {
             horizontal: 8.0,
             vertical: 10.0,
           ),
+          padding: EdgeInsets.symmetric(
+            horizontal: 12.0,
+            vertical: 18.0,
+          ),
+          borderRadius: 5.0,
         );
       }
     });

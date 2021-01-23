@@ -206,22 +206,27 @@ class _SettingsPageState extends State<SettingsPage> {
                             feedback.clear();
                           });
                           Get.snackbar(
-                            'Success',
+                            null,
                             'Feedback submitted successfully',
                             colorText: Colors.white,
                             backgroundColor: AppUtils().greenColor,
                             snackPosition: SnackPosition.BOTTOM,
-                            duration: Duration(
-                              seconds: 2,
-                            ),
                             margin: EdgeInsets.symmetric(
                               horizontal: 8.0,
                               vertical: 10.0,
                             ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 12.0,
+                              vertical: 18.0,
+                            ),
+                            borderRadius: 5.0,
+                            duration: Duration(
+                              seconds: 2,
+                            ),
                           );
                         } else {
                           Get.snackbar(
-                            'Message',
+                            null,
                             'Feedback send failed',
                             colorText: Colors.white,
                             backgroundColor: Colors.black87,
@@ -230,6 +235,11 @@ class _SettingsPageState extends State<SettingsPage> {
                               horizontal: 8.0,
                               vertical: 10.0,
                             ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 12.0,
+                              vertical: 18.0,
+                            ),
+                            borderRadius: 5.0,
                           );
                         }
                       }

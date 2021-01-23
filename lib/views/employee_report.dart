@@ -151,15 +151,20 @@ class _EmployeeReportState extends State<EmployeeReport> {
                           FocusScope.of(context).requestFocus(FocusNode());
                           if (clientId == null) {
                             Get.snackbar(
-                              'Message',
+                              null,
                               'Please select client',
                               colorText: Colors.white,
                               backgroundColor: Colors.black87,
                               snackPosition: SnackPosition.BOTTOM,
-                              margin: EdgeInsets.symmetric(
-                                horizontal: 8.0,
-                                vertical: 10.0,
-                              ),
+                                margin: EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                  vertical: 10.0,
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 12.0,
+                                  vertical: 18.0,
+                                ),
+                                borderRadius: 5.0,
                             );
                           } else {
                             Get.to(EmpReportDetail(clientId));

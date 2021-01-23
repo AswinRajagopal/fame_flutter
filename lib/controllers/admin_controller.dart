@@ -27,7 +27,7 @@ class AdminController extends GetxController {
         // print('res valid: $res');
         if (resAddShift['success']) {
           Get.snackbar(
-            'Success',
+            null,
             'Shift created successfully',
             colorText: Colors.white,
             duration: Duration(seconds: 2),
@@ -37,11 +37,16 @@ class AdminController extends GetxController {
               horizontal: 8.0,
               vertical: 10.0,
             ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
           );
           Timer(Duration(seconds: 2), Get.back);
         } else {
           Get.snackbar(
-            'Message',
+            null,
             'Shift not created',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -50,6 +55,11 @@ class AdminController extends GetxController {
               horizontal: 8.0,
               vertical: 10.0,
             ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
           );
         }
       }
@@ -57,7 +67,7 @@ class AdminController extends GetxController {
       print(e);
       await pr.hide();
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -66,6 +76,11 @@ class AdminController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
     }
   }
@@ -79,7 +94,7 @@ class AdminController extends GetxController {
         // print('res valid: $res');
         if (resAddClient['success']) {
           Get.snackbar(
-            'Success',
+            null,
             'Client created successfully',
             colorText: Colors.white,
             duration: Duration(seconds: 2),
@@ -89,11 +104,16 @@ class AdminController extends GetxController {
               horizontal: 8.0,
               vertical: 10.0,
             ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
           );
           Timer(Duration(seconds: 2), Get.back);
         } else {
           Get.snackbar(
-            'Message',
+            null,
             'Client not created',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -102,6 +122,11 @@ class AdminController extends GetxController {
               horizontal: 8.0,
               vertical: 10.0,
             ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
           );
         }
       }
@@ -109,7 +134,7 @@ class AdminController extends GetxController {
       print(e);
       await pr.hide();
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -118,6 +143,11 @@ class AdminController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
     }
   }
@@ -139,7 +169,7 @@ class AdminController extends GetxController {
           // print('clientsList: $clientList');
         } else {
           // Get.snackbar(
-          //   'Message',
+          //   null,
           //   'Client not found',
           //   colorText: Colors.white,
           //   backgroundColor: Colors.black87,
@@ -156,7 +186,7 @@ class AdminController extends GetxController {
       isLoading(false);
       await pr.hide();
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -165,6 +195,11 @@ class AdminController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
     }
   }
@@ -191,7 +226,7 @@ class AdminController extends GetxController {
       isLoading(false);
       await pr.hide();
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -200,6 +235,11 @@ class AdminController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
     }
   }
@@ -230,7 +270,7 @@ class AdminController extends GetxController {
       isLoading(false);
       await pr.hide();
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -239,6 +279,11 @@ class AdminController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
     }
   }
@@ -252,7 +297,7 @@ class AdminController extends GetxController {
         // print('res valid: $res');
         if (resAddEmployee['success']) {
           Get.snackbar(
-            'Success',
+            null,
             'Employee created successfully',
             colorText: Colors.white,
             duration: Duration(seconds: 2),
@@ -262,11 +307,16 @@ class AdminController extends GetxController {
               horizontal: 8.0,
               vertical: 10.0,
             ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
           );
           Timer(Duration(seconds: 2), Get.back);
         } else {
           Get.snackbar(
-            'Message',
+            null,
             'Employee not created',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -275,6 +325,11 @@ class AdminController extends GetxController {
               horizontal: 8.0,
               vertical: 10.0,
             ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
           );
         }
       }
@@ -282,7 +337,7 @@ class AdminController extends GetxController {
       print(e);
       await pr.hide();
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -291,6 +346,11 @@ class AdminController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
     }
   }

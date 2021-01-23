@@ -571,7 +571,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                               FocusScope.of(context).requestFocus(FocusNode());
                               if (planName.text == null || planName.text == '' || empName.text == null || empName.text == '' || remarks.text == null || remarks.text == '' || sDate == null || sDate == '' || assignedTo == null) {
                                 Get.snackbar(
-                                  'Message',
+                                  null,
                                   'Please fill all data',
                                   colorText: Colors.white,
                                   backgroundColor: Colors.black87,
@@ -580,10 +580,15 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                     horizontal: 8.0,
                                     vertical: 10.0,
                                   ),
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 12.0,
+                                    vertical: 18.0,
+                                  ),
+                                  borderRadius: 5.0,
                                 );
                               } else if (rpC.sC.isEmpty) {
                                 Get.snackbar(
-                                  'Message',
+                                  null,
                                   'Please select atleast one client',
                                   colorText: Colors.white,
                                   backgroundColor: Colors.black87,
@@ -592,6 +597,11 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                     horizontal: 8.0,
                                     vertical: 10.0,
                                   ),
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 12.0,
+                                    vertical: 18.0,
+                                  ),
+                                  borderRadius: 5.0,
                                 );
                                 // print('fromDate: ${fromDt.text}');
                                 // print('toDate: ${toDt.text}');

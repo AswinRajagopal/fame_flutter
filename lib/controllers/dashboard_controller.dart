@@ -197,7 +197,7 @@ class DashboardController extends GetxController {
         } else {
           isDashboardLoading(false);
           Get.snackbar(
-            'Message',
+            null,
             'Something went wrong! Please try again later',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -206,6 +206,11 @@ class DashboardController extends GetxController {
               horizontal: 8.0,
               vertical: 10.0,
             ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
           );
         }
       }
@@ -213,7 +218,7 @@ class DashboardController extends GetxController {
       print(e);
       isDashboardLoading(false);
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -222,6 +227,11 @@ class DashboardController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
     }
   }

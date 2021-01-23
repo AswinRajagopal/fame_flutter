@@ -33,7 +33,7 @@ class BottomNav extends StatelessWidget {
             Get.to(MorePage());
           } else {
             Get.snackbar(
-              'Message',
+              null,
               'Only FO and admin can access this',
               colorText: Colors.white,
               backgroundColor: Colors.black87,
@@ -42,6 +42,11 @@ class BottomNav extends StatelessWidget {
                 horizontal: 8.0,
                 vertical: 10.0,
               ),
+              padding: EdgeInsets.symmetric(
+                horizontal: 12.0,
+                vertical: 18.0,
+              ),
+              borderRadius: 5.0,
             );
           }
         } else if (index == 4) {

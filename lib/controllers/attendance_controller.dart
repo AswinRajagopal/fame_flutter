@@ -96,7 +96,7 @@ class AttendanceController extends GetxController {
           // print('clientList: $clientList');
         } else {
           Get.snackbar(
-            'Message',
+            null,
             'Client not found',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -105,6 +105,11 @@ class AttendanceController extends GetxController {
               horizontal: 8.0,
               vertical: 10.0,
             ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
           );
         }
       }
@@ -113,7 +118,7 @@ class AttendanceController extends GetxController {
       isLoading(false);
       await pr.hide();
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -122,6 +127,11 @@ class AttendanceController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
     }
   }

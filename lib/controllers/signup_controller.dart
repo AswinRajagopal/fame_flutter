@@ -39,7 +39,7 @@ class SignupController extends GetxController {
         if (signupResponse.success) {
           // storeDetail(signupResponse);
           Get.snackbar(
-            'Success',
+            null,
             'Account created, please verify mobile by otp',
             colorText: Colors.white,
             backgroundColor: AppUtils().greenColor,
@@ -48,6 +48,11 @@ class SignupController extends GetxController {
               horizontal: 8.0,
               vertical: 10.0,
             ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
           );
           // Timer(Duration(seconds: 4), () {
           //   Get.offAll(LoginPage());
@@ -55,7 +60,7 @@ class SignupController extends GetxController {
           return true;
         } else {
           Get.snackbar(
-            'Message',
+            null,
             'Account not created',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -64,6 +69,11 @@ class SignupController extends GetxController {
               horizontal: 8.0,
               vertical: 10.0,
             ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
           );
           return false;
         }
@@ -72,7 +82,7 @@ class SignupController extends GetxController {
       print(e);
       await pr.hide();
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -81,6 +91,11 @@ class SignupController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
       return false;
     } finally {

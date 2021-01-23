@@ -49,7 +49,7 @@ class ForgotPasswordController extends GetxController {
         print('fpResponse valid: ${fpResponse.success}');
         if (fpResponse.success) {
           Get.snackbar(
-            'Success',
+            null,
             'Please check your email for OTP',
             colorText: Colors.white,
             backgroundColor: AppUtils().greenColor,
@@ -58,11 +58,16 @@ class ForgotPasswordController extends GetxController {
               horizontal: 8.0,
               vertical: 10.0,
             ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
           );
           return true;
         } else {
           Get.snackbar(
-            'Message',
+            null,
             'Email address is not associated with any account',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -71,6 +76,11 @@ class ForgotPasswordController extends GetxController {
               horizontal: 8.0,
               vertical: 10.0,
             ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
           );
           return false;
         }
@@ -80,7 +90,7 @@ class ForgotPasswordController extends GetxController {
       print(e);
       await pr.hide();
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -89,6 +99,11 @@ class ForgotPasswordController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
       return false;
     }

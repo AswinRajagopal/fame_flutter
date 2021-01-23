@@ -209,7 +209,7 @@ class _AddClientState extends State<AddClient> {
                             FocusScope.of(context).requestFocus(FocusNode());
                             if (name.text.isNullOrBlank || phone.text.isNullOrBlank || email.text.isNullOrBlank || unitIncharge.text.isNullOrBlank || address.text.isNullOrBlank || clientId.isNullOrBlank || latitude == null || longitude == null) {
                               Get.snackbar(
-                                'Message',
+                                null,
                                 'Please fill all fields',
                                 colorText: Colors.white,
                                 backgroundColor: Colors.black87,
@@ -218,10 +218,15 @@ class _AddClientState extends State<AddClient> {
                                   horizontal: 8.0,
                                   vertical: 10.0,
                                 ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 12.0,
+                                  vertical: 18.0,
+                                ),
+                                borderRadius: 5.0,
                               );
                             } else if (!GetUtils.isLengthEqualTo(phone.text, 10)) {
                               Get.snackbar(
-                                'Message',
+                                null,
                                 'Please provide 10 digit phone number',
                                 colorText: Colors.white,
                                 backgroundColor: Colors.black87,
@@ -230,10 +235,15 @@ class _AddClientState extends State<AddClient> {
                                   horizontal: 8.0,
                                   vertical: 10.0,
                                 ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 12.0,
+                                  vertical: 18.0,
+                                ),
+                                borderRadius: 5.0,
                               );
                             } else if (!GetUtils.isEmail(email.text)) {
                               Get.snackbar(
-                                'Message',
+                                null,
                                 'Please provide valid email',
                                 colorText: Colors.white,
                                 backgroundColor: Colors.black87,
@@ -242,6 +252,11 @@ class _AddClientState extends State<AddClient> {
                                   horizontal: 8.0,
                                   vertical: 10.0,
                                 ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 12.0,
+                                  vertical: 18.0,
+                                ),
+                                borderRadius: 5.0,
                               );
                             } else {
                               print('name: ${name.text}');

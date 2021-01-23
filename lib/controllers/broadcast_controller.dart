@@ -29,7 +29,7 @@ class BroadcastController extends GetxController {
           }
         } else {
           Get.snackbar(
-            'Message',
+            null,
             'Something went wrong! Please try again later',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -38,6 +38,11 @@ class BroadcastController extends GetxController {
               horizontal: 8.0,
               vertical: 10.0,
             ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
           );
         }
       }
@@ -46,7 +51,7 @@ class BroadcastController extends GetxController {
       isLoading(false);
       await pr.hide();
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -55,6 +60,11 @@ class BroadcastController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
     }
   }
@@ -76,7 +86,7 @@ class BroadcastController extends GetxController {
           // print('clientsList: $clientList');
         } else {
           Get.snackbar(
-            'Message',
+            null,
             'Client not found',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -85,6 +95,11 @@ class BroadcastController extends GetxController {
               horizontal: 8.0,
               vertical: 10.0,
             ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
           );
         }
       }
@@ -93,7 +108,7 @@ class BroadcastController extends GetxController {
       isLoading(false);
       await pr.hide();
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -102,6 +117,11 @@ class BroadcastController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
     }
   }
@@ -115,23 +135,28 @@ class BroadcastController extends GetxController {
         print('broadcastRes valid: ${broadcastRes['success']}');
         if (broadcastRes['success']) {
           Get.snackbar(
-            'Success',
+            null,
             'Broadcast sent successfully',
             colorText: Colors.white,
             backgroundColor: AppUtils().greenColor,
             snackPosition: SnackPosition.BOTTOM,
-            duration: Duration(
-              seconds: 2,
-            ),
             margin: EdgeInsets.symmetric(
               horizontal: 8.0,
               vertical: 10.0,
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
+            duration: Duration(
+              seconds: 2,
             ),
           );
           Timer(Duration(seconds: 2), Get.back);
         } else {
           Get.snackbar(
-            'Message',
+            null,
             'Broadcast send failed',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -140,6 +165,11 @@ class BroadcastController extends GetxController {
               horizontal: 8.0,
               vertical: 10.0,
             ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
           );
         }
       }
@@ -147,7 +177,7 @@ class BroadcastController extends GetxController {
       print(e);
       await pr.hide();
       Get.snackbar(
-        'Message',
+        null,
         'Something went wrong! Please try again later',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -156,6 +186,11 @@ class BroadcastController extends GetxController {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
     }
   }

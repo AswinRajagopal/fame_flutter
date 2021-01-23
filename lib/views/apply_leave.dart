@@ -93,7 +93,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
       if (from != null && to != null) {
         if (from.difference(to).inDays > 1 && (stVal == 'F' || stVal == 'S')) {
           Get.snackbar(
-            'Message',
+            null,
             'You can not apply for more then 1 day for Half Day leave',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -102,6 +102,11 @@ class _ApplyLeaveState extends State<ApplyLeave> {
               horizontal: 8.0,
               vertical: 10.0,
             ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
           );
         } else {
           if (stVal == 'F' || stVal == 'S') {
@@ -142,7 +147,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
       if (from != null && to != null) {
         if (to.difference(from).inDays > 1 && (stVal == 'F' || stVal == 'S')) {
           Get.snackbar(
-            'Message',
+            null,
             'You can not apply for more then 1 day for Half Day leave',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -151,6 +156,11 @@ class _ApplyLeaveState extends State<ApplyLeave> {
               horizontal: 8.0,
               vertical: 10.0,
             ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
           );
         } else {
           setState(() {
@@ -160,7 +170,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
         }
       } else {
         Get.snackbar(
-          'Message',
+          null,
           'Please select from date first',
           colorText: Colors.white,
           backgroundColor: Colors.black87,
@@ -169,6 +179,11 @@ class _ApplyLeaveState extends State<ApplyLeave> {
             horizontal: 8.0,
             vertical: 10.0,
           ),
+          padding: EdgeInsets.symmetric(
+            horizontal: 12.0,
+            vertical: 18.0,
+          ),
+          borderRadius: 5.0,
         );
       }
     }
@@ -188,7 +203,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
       if (sVal == 'F' || sVal == 'S') {
         if (to.difference(from).inDays > 1) {
           Get.snackbar(
-            'Message',
+            null,
             'You can not apply for more then 1 day for Half Day leave',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
@@ -197,6 +212,11 @@ class _ApplyLeaveState extends State<ApplyLeave> {
               horizontal: 8.0,
               vertical: 10.0,
             ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
           );
         } else {
           setState(() {
@@ -210,7 +230,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
       }
     } else {
       Get.snackbar(
-        'Message',
+        null,
         'Please select both dates first',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
@@ -219,6 +239,11 @@ class _ApplyLeaveState extends State<ApplyLeave> {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
       );
     }
   }
@@ -306,7 +331,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                             onTap: () {
                               if (fromDt.text.isEmpty) {
                                 Get.snackbar(
-                                  'Message',
+                                  null,
                                   'Please select from date',
                                   colorText: Colors.white,
                                   backgroundColor: Colors.black87,
@@ -315,6 +340,11 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                                     horizontal: 8.0,
                                     vertical: 10.0,
                                   ),
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 12.0,
+                                    vertical: 18.0,
+                                  ),
+                                  borderRadius: 5.0,
                                 );
                               } else {
                                 toDate(context);
@@ -507,7 +537,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                                 FocusScope.of(context).requestFocus(FocusNode());
                                 if (sfromDt == null || sfromDt == '' || stoDt == null || stoDt == '' || reason.text == null || reason.text == '' || leaveType == '') {
                                   Get.snackbar(
-                                    'Message',
+                                    null,
                                     'Please fill all data',
                                     colorText: Colors.white,
                                     backgroundColor: Colors.black87,
@@ -516,6 +546,11 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                                       horizontal: 8.0,
                                       vertical: 10.0,
                                     ),
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 12.0,
+                                      vertical: 18.0,
+                                    ),
+                                    borderRadius: 5.0,
                                   );
                                 } else {
                                   // print('fromDate: ${fromDt.text}');
