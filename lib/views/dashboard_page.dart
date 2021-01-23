@@ -673,7 +673,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                         child: Column(
                                           children: [
                                             Visibility(
-                                              visible: !conditionForMsg(dbC.response, 'chkin'),
+                                              visible: !conditionForMsg(dbC.response, 'chkin') && RemoteServices().box.get('role') != '3',
                                               child: Row(
                                                 mainAxisAlignment: MainAxisAlignment.end,
                                                 children: [
