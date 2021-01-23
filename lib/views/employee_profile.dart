@@ -193,7 +193,7 @@ class _EmployeeProfileState extends State<EmployeeProfile> {
                                 height: 10.0,
                               ),
                               ProfileDetailRow(
-                                'assets/images/icon_myteam.png',
+                                'assets/images/icon_acc.png',
                                 epC.getEmpDetailRes['loginDetails'] != null ? epC.getEmpDetailRes['loginDetails']['userName'] : 'N/A',
                                 scale: 1.4,
                               ),
