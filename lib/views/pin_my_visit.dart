@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import '../utils/utils.dart';
-import 'routeplan_list.dart';
 import '../connection/remote_services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -287,7 +286,8 @@ class _PinMyVisitState extends State<PinMyVisit> {
           if (pinVisit != null && pinVisit['success'] == true) {
             await mpC.pr.hide();
             // await Get.offAll(Pitstops(pit['routePlanId'], widget.company, widget.goBackTo));
-            await Get.offAll(RouteplanList());
+            // await Get.offAll(RouteplanList());
+            await Get.back();
           } else {
             await mpC.pr.hide();
             Get.snackbar(
@@ -378,7 +378,7 @@ class _PinMyVisitState extends State<PinMyVisit> {
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18.0,
-           // fontWeight: FontWeight.bold,
+                            // fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],

@@ -2,6 +2,7 @@ import 'notification.dart';
 
 import 'attendance_page.dart';
 
+import 'pin_my_visit.dart';
 import 'route_planning.dart';
 
 import 'checkout_page.dart';
@@ -1001,29 +1002,64 @@ class _DashboardPageState extends State<DashboardPage> {
                                   ),
                                 ),
                                 Spacer(),
-                                GestureDetector(
-                                  onTap: () {
-                                    // Get.offAll(RoutePlanning());
-                                    Get.to(RoutePlanning());
-                                  },
-                                  child: Text(
-                                    'Create New Route Plan',
-                                    style: TextStyle(
-                                      fontSize: 15.0,
-                                      color: Colors.grey,
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        // Get.offAll(RoutePlanning());
+                                        Get.to(RoutePlanning());
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            'Create New Route Plan',
+                                            style: TextStyle(
+                                              fontSize: 15.0,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                          Icon(
+                                            Icons.chevron_right,
+                                            size: 25.0,
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        // Get.offAll(RoutePlanning());
+                                        Get.to(PinMyVisit());
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            'Pin My Visit',
+                                            style: TextStyle(
+                                              fontSize: 15.0,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                          Icon(
+                                            Icons.chevron_right,
+                                            size: 25.0,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                GestureDetector(
-                                  onTap: () {
-                                    // Get.offAll(RoutePlanning());
-                                    Get.to(RoutePlanning());
-                                  },
-                                  child: Icon(
-                                    Icons.chevron_right,
-                                    size: 35.0,
-                                  ),
-                                ),
+                                // GestureDetector(
+                                //   onTap: () {
+                                //     // Get.offAll(RoutePlanning());
+                                //     Get.to(RoutePlanning());
+                                //   },
+                                //   child: Icon(
+                                //     Icons.chevron_right,
+                                //     size: 35.0,
+                                //   ),
+                                // ),
                               ],
                             ),
                           ],
