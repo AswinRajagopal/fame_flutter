@@ -1036,7 +1036,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                           Text(
                                             'Create New Route Plan',
                                             style: TextStyle(
-                                              fontSize: 15.0,
+                                              fontSize: 17.0,
                                               color: Colors.grey,
                                             ),
                                           ),
@@ -1057,7 +1057,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                           Text(
                                             'Pin My Visit',
                                             style: TextStyle(
-                                              fontSize: 15.0,
+                                              fontSize: 17.0,
                                               color: Colors.grey,
                                             ),
                                           ),
