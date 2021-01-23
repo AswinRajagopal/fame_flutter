@@ -1,3 +1,5 @@
+import '../connection/remote_services.dart';
+
 import '../widgets/leave_list_widget.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
@@ -79,21 +81,24 @@ class _LeavePageState extends State<LeavePage> {
           },
         ),
       ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            onPressed: () {
-              Get.offAll(ApplyLeave());
-            },
-            child: Icon(
-              Icons.add,
-              size: 32.0,
+      floatingActionButton: Visibility(
+        visible: RemoteServices().box.get('role') == '3' ? false : true,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            FloatingActionButton(
+              onPressed: () {
+                Get.offAll(ApplyLeave());
+              },
+              child: Icon(
+                Icons.add,
+                size: 32.0,
+              ),
+              backgroundColor: Theme.of(context).primaryColor,
             ),
-            backgroundColor: Theme.of(context).primaryColor,
-          ),
-        ],
+          ],
+        ),
       ),
       body: WillPopScope(
         onWillPop: backButtonPressed,
