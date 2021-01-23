@@ -1,4 +1,3 @@
-import '../connection/remote_services.dart';
 import 'package:get/get.dart';
 
 import '../controllers/dbcal_controller.dart';
@@ -124,29 +123,63 @@ class _HomeCalendarState extends State<HomeCalendar> with TickerProviderStateMix
           );
         },
         dayBuilder: (context, date, events) {
-          return GestureDetector(
+          return InkWell(
             onTap: () {
+              var showDate = '${date.year}-${date.month <= 9 ? '0' + date.month.toString() : date.month}-${date.day <= 9 ? '0' + date.day.toString() : date.day}';
               if (calC.calendarType == 'myRos') {
                 if (events != null) {
+                  print(events);
                   var eveSplit = events.first.split(',');
                   var eveLength = events.first.split(',').length;
-                  var showDate = '${date.year}-${date.month <= 9 ? '0' + date.month.toString() : date.month}-${date.day <= 9 ? '0' + date.day.toString() : date.day}';
-                  if (eveLength > 1) {
-                    Get.defaultDialog(
-                      title: 'Roster on $showDate',
-                      content: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            '${RemoteServices().box.get('empid')} : ${eveSplit[0]}',
-                          ),
-                          Text(
-                            '${RemoteServices().box.get('empid')} : ${eveSplit[1]}',
-                          ),
-                        ],
-                      ),
-                    );
+                  var clSplit = eveSplit.last.split('#');
+                  var client1;
+                  var client2;
+                  if (clSplit.length > 1) {
+                    client1 = clSplit[0];
+                    client2 = clSplit[1];
+                  } else {
+                    client1 = eveSplit.last;
                   }
+                  // if (eveLength > 1) {
+                  Get.defaultDialog(
+                    title: 'Roster on $showDate',
+                    content: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          '$client1 : ${eveSplit[0]}',
+                        ),
+                        eveLength > 1 && (eveSplit[1] != null && client2 != null)
+                            ? Text(
+                                '$client2 : ${eveSplit[1]}',
+                              )
+                            : SizedBox(),
+                      ],
+                    ),
+                    radius: 5.0,
+                  );
+                  // }
+                }
+              } else {
+                print('My Calendar');
+                print(events);
+                var calEvent = events.first.split('*');
+                if (calEvent.length > 1) {
+                  Get.defaultDialog(
+                    title: 'Employee Detail on $showDate',
+                    content: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Checked In @ ${calEvent[1].split(',')[0]}',
+                        ),
+                        Text(
+                          'Checked Out @ ${calEvent[1].split(',')[1]}',
+                        ),
+                      ],
+                    ),
+                    radius: 5.0,
+                  );
                 }
               }
             },
@@ -185,13 +218,14 @@ class _HomeCalendarState extends State<HomeCalendar> with TickerProviderStateMix
 
   Widget _buildEventsMarker(DateTime date, List events) {
     var showEvent;
-    if (events.first.split(',').length > 1) {
+    if (events.first.split(',').length > 1 && !events.first.toString().contains('*')) {
       var eventSplit = events.first.split(',');
       showEvent = eventSplit[0];
       // print(events[0]);
       // print('length: ${events.first.split(',').length}');
     } else {
-      showEvent = events.first;
+      showEvent = events.first.split('*').first;
+      // print('showEvent: $showEvent');
     }
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),

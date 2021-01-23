@@ -541,6 +541,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                                                 print('remarks');
                                                 Get.defaultDialog(
                                                   title: 'Remarks',
+                                                  radius: 5.0,
                                                   content: TextField(
                                                     controller: cRemark,
                                                     decoration: InputDecoration(

@@ -560,6 +560,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                   'You want to clear the attendance?',
                                                 ),
                                                 barrierDismissible: false,
+                                                radius: 5.0,
                                                 onConfirm: () async {
                                                   Get.back();
                                                   var attRes = await enC.giveAttendance(

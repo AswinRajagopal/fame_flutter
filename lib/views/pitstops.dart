@@ -166,6 +166,7 @@ class _PitstopsState extends State<Pitstops> {
                                   } else {
                                     Get.defaultDialog(
                                       title: 'Navigate or Complete?',
+                                      radius: 5.0,
                                       content: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                                         crossAxisAlignment: CrossAxisAlignment.center,

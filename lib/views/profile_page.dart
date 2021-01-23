@@ -94,16 +94,16 @@ class _ProfilePageState extends State<ProfilePage> {
                     FlatButton(
                       onPressed: () {
                         Get.back();
-                      },
-                      child: Text('NO'),
-                    ),
-                    FlatButton(
-                      onPressed: () {
-                        Get.back();
                         pC.pr.show();
                         RemoteServices().logout();
                       },
                       child: Text('YES'),
+                    ),
+                    FlatButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      child: Text('NO'),
                     ),
                   ],
                 ),

@@ -158,6 +158,7 @@ class _SettingsPageState extends State<SettingsPage> {
               onTap: () async {
                 await Get.defaultDialog(
                   title: 'Feedback',
+                  radius: 5.0,
                   content: TextField(
                     controller: feedback,
                     // autofocus: true,
@@ -171,10 +172,9 @@ class _SettingsPageState extends State<SettingsPage> {
                       hintStyle: TextStyle(
                         color: Colors.grey[600],
                         fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
                       ),
-                      // hintText: 'Feedback',
-                      labelText: 'Feedback',
+                      hintText: 'Please share your valuable feedback',
+                      // labelText: 'Feedback',
                       border: OutlineInputBorder(
                         borderRadius: const BorderRadius.all(
                           Radius.circular(5.0),
@@ -187,7 +187,6 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                     ),
                   ),
-                  radius: 5.0,
                   barrierDismissible: false,
                   confirmTextColor: Colors.white,
                   textConfirm: 'Submit',

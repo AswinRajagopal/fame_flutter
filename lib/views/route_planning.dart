@@ -473,6 +473,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                                 print('remarks');
                                                 Get.defaultDialog(
                                                   title: 'Remarks for ${client['id'].toString()}',
+                                                  radius: 5.0,
                                                   content: TextField(
                                                     controller: cRemark,
                                                     decoration: InputDecoration(

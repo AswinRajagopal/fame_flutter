@@ -209,6 +209,7 @@ class _PinMyVisitState extends State<PinMyVisit> {
     if (res != null && res) {
       await Get.defaultDialog(
         title: 'Attach Image or Remarks',
+        radius: 5.0,
         content: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

@@ -1,5 +1,6 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../connection/remote_services.dart';
 import 'package:get/get.dart';
@@ -26,6 +27,10 @@ class DBCalController extends GetxController {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  String convertTimeWithoutParse(time) {
+    return DateFormat('h:mm').format(DateTime.parse(time)).toString() + DateFormat('a').format(DateTime.parse(time)).toString().toLowerCase();
   }
 
   void getCalendar({month, chDt}) async {
@@ -61,7 +66,14 @@ class DBCalController extends GetxController {
                   [yyyy, mm, dd],
                 ),
               );
-              var event = calRes['attendanceList'][i]['attendanceAlias'];
+
+              var event;
+              event = calRes['attendanceList'][i]['attendanceAlias'];
+              if (calRes['attendanceList'][i]['checkInDateTime'] != null && calRes['attendanceList'][i]['checkOutDateTime'] != null && calRes['attendanceList'][i]['attendanceAlias'] != null && calRes['attendanceList'][i]['checkInLatitude'] != '0E-8') {
+                var chkIn = convertTimeWithoutParse(calRes['attendanceList'][i]['checkInDateTime']);
+                var chkOut = convertTimeWithoutParse(calRes['attendanceList'][i]['checkOutDateTime']);
+                event = calRes['attendanceList'][i]['attendanceAlias'] + '*' + chkIn + ',' + chkOut;
+              }
 
               if (event != null && event != '') {
                 // print('Key');
@@ -74,8 +86,13 @@ class DBCalController extends GetxController {
               var empRoster = calRes['empRosterList'];
               var rosterLength = calRes['empRosterList'].length;
               var roster = [];
+              var clID1 = '';
               roster.add(empRoster[0]);
               // for (var i = 0; i < roster.first.length; i++) {
+              var clID0 = roster[0]['clientId'];
+              if (rosterLength > 1) {
+                clID1 = empRoster[1]['clientId'];
+              }
               roster[0].remove('modified_On');
               roster[0].remove('modified_By');
               roster[0].remove('clientId');
@@ -104,14 +121,14 @@ class DBCalController extends GetxController {
                 var event;
                 if (rosterLength > 1) {
                   if (empRoster[0]['day$i'] == null) {
-                    event = empRoster[1]['day$i'];
+                    event = empRoster[1]['day$i'] != null ? empRoster[1]['day$i'] + ',' + clID1 : null;
                   } else if (empRoster[1]['day$i'] == null) {
-                    event = empRoster[0]['day$i'];
+                    event = empRoster[0]['day$i'] != null ? empRoster[0]['day$i'] + ',' + clID0 : null;
                   } else {
-                    event = empRoster[0]['day$i'] + ',' + empRoster[1]['day$i'];
+                    event = empRoster[0]['day$i'] + ',' + empRoster[1]['day$i'] + ',' + clID0 + '#' + clID1;
                   }
                 } else {
-                  event = empRoster[0]['day$i'];
+                  event = empRoster[0]['day$i'] != null ? empRoster[0]['day$i'] + ',' + clID0 : null;
                 }
 
                 if (event != null && event != '') {
@@ -127,7 +144,7 @@ class DBCalController extends GetxController {
             'Message',
             'Something went wrong! Please try again later',
             colorText: Colors.white,
-backgroundColor: Colors.black87,
+            backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,
             margin: EdgeInsets.symmetric(
               horizontal: 8.0,
@@ -144,7 +161,7 @@ backgroundColor: Colors.black87,
         'Message',
         'Something went wrong! Please try again later',
         colorText: Colors.white,
-backgroundColor: Colors.black87,
+        backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.symmetric(
           horizontal: 8.0,

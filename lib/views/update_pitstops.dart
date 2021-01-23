@@ -200,6 +200,7 @@ class _UpdatePitstopsState extends State<UpdatePitstops> {
     if (res) {
       await Get.defaultDialog(
         title: 'Attach Image or Remarks',
+        radius: 5.0,
         content: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
