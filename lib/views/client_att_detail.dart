@@ -294,9 +294,13 @@ class _ClientAttDetailState extends State<ClientAttDetail> {
                     ],
                   );
                 }
-                return SingleChildScrollView(
-                  child: Obx(() {
-                    return ListView.builder(
+                return Obx(() {
+                  return Scrollbar(
+                    radius: Radius.circular(
+                      10.0,
+                    ),
+                    thickness: 5.0,
+                    child: ListView.builder(
                       physics: ScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: epC.searchList.isNotEmpty ? epC.searchList.length : epC.clientReport.length,
@@ -379,9 +383,9 @@ class _ClientAttDetailState extends State<ClientAttDetail> {
                           ),
                         );
                       },
-                    );
-                  }),
-                );
+                    ),
+                  );
+                });
               }),
             ),
           ],

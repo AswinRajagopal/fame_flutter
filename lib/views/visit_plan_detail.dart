@@ -83,7 +83,7 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
               Get.to(VisitPlanRoute(widget.empId, widget.date));
             },
             child: Icon(
-              Icons.location_history,
+              Icons.location_on,
               size: 32.0,
             ),
             backgroundColor: Theme.of(context).primaryColor,
@@ -120,105 +120,111 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
               ),
             );
           }
-          return Column(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 15.0,
-                    vertical: 0.0,
-                  ),
-                  child: Timeline.tileBuilder(
-                    theme: TimelineThemeData(
-                      direction: Axis.vertical,
-                      nodePosition: 0.01,
+          return Scrollbar(
+            radius: Radius.circular(
+              10.0,
+            ),
+            thickness: 5.0,
+            child: Column(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 15.0,
+                      vertical: 0.0,
                     ),
-                    builder: TimelineTileBuilder.connected(
-                      itemCount: epC.pitsStops.length,
-                      connectorBuilder: (context, index, type) {
-                        return DashedLineConnector(
-                          dash: 6.0,
-                          gap: 3.0,
-                          color: Theme.of(context).primaryColor,
-                        );
-                      },
-                      indicatorBuilder: (context, index) {
-                        return OutlinedDotIndicator(
-                          size: 25.0,
-                          backgroundColor: Colors.white,
-                          color: Theme.of(context).primaryColor,
-                          borderWidth: 7.0,
-                        );
-                      },
-                      indicatorPositionBuilder: (context, index) {
-                        return index == 0 ? 0.30 : 0.08;
-                      },
-                      contentsBuilder: (context, index) {
-                        var pitstop = epC.pitsStops[index];
-                        return TimelineTile(
-                          nodeAlign: TimelineNodeAlign.basic,
-                          // mainAxisExtent: 200.0,
-                          direction: Axis.vertical,
-                          nodePosition: 0.01,
-                          contents: Card(
-                            elevation: 5.0,
-                            margin: EdgeInsets.only(
-                              left: 10.0,
-                              bottom: index == epC.pitsStops.length - 1 ? 50.0 : 20.0,
-                              top: index == 0 ? 50.0 : 0.0,
-                              right: 10.0,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10.0),
+                    child: Timeline.tileBuilder(
+                      theme: TimelineThemeData(
+                        direction: Axis.vertical,
+                        nodePosition: 0.01,
+                      ),
+                      builder: TimelineTileBuilder.connected(
+                        itemCount: epC.pitsStops.length,
+                        connectorBuilder: (context, index, type) {
+                          return DashedLineConnector(
+                            dash: 6.0,
+                            gap: 3.0,
+                            color: Theme.of(context).primaryColor,
+                          );
+                        },
+                        indicatorBuilder: (context, index) {
+                          return OutlinedDotIndicator(
+                            size: 25.0,
+                            backgroundColor: Colors.white,
+                            color: Theme.of(context).primaryColor,
+                            borderWidth: 7.0,
+                          );
+                        },
+                        indicatorPositionBuilder: (context, index) {
+                          return index == 0 ? 0.30 : 0.08;
+                        },
+                        contentsBuilder: (context, index) {
+                          var pitstop = epC.pitsStops[index];
+                          return TimelineTile(
+                            nodeAlign: TimelineNodeAlign.basic,
+                            // mainAxisExtent: 200.0,
+                            direction: Axis.vertical,
+                            nodePosition: 0.01,
+                            contents: Card(
+                              elevation: 5.0,
+                              margin: EdgeInsets.only(
+                                left: 10.0,
+                                bottom: index == epC.pitsStops.length - 1 ? 50.0 : 20.0,
+                                top: index == 0 ? 50.0 : 0.0,
+                                right: 10.0,
                               ),
-                            ),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
+                              shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(
-                                  Radius.circular(
-                                    15.0,
+                                  Radius.circular(10.0),
+                                ),
+                              ),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(
+                                      15.0,
+                                    ),
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 15.0,
+                                    horizontal: 15.0,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        pitstop['address'],
+                                        style: TextStyle(
+                                          fontSize: 17.0,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 10.0,
+                                      ),
+                                      Text(
+                                        pitstop['datetime'],
+                                        style: TextStyle(
+                                          fontSize: 17.0,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 15.0,
-                                  horizontal: 15.0,
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      pitstop['address'],
-                                      style: TextStyle(
-                                        fontSize: 17.0,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 10.0,
-                                    ),
-                                    Text(
-                                      pitstop['datetime'],
-                                      style: TextStyle(
-                                        fontSize: 17.0,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
                             ),
-                          ),
-                          node: TimelineNode(),
-                        );
-                      },
+                            node: TimelineNode(),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         }),
       ),

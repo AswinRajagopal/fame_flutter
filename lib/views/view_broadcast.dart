@@ -70,46 +70,45 @@ class _ViewBroadcastState extends State<ViewBroadcast> {
         ),
       ),
       body: SafeArea(
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            SizedBox(
-              height: 10.0,
-            ),
-            Obx(() {
-              if (bC.isLoading.value) {
-                return Column();
-              } else {
-                if (bC.broadcastList.isEmpty || bC.broadcastList.isNull) {
-                  return Container(
-                    height: MediaQuery.of(context).size.height / 1.2,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          'No message found',
-                          style: TextStyle(
-                            fontSize: 18.0,
-           // fontWeight: FontWeight.bold,
-                          ),
+        child: Scrollbar(
+          radius: Radius.circular(
+            10.0,
+          ),
+          thickness: 5.0,
+          child: Obx(() {
+            if (bC.isLoading.value) {
+              return Column();
+            } else {
+              if (bC.broadcastList.isEmpty || bC.broadcastList.isNull) {
+                return Container(
+                  height: MediaQuery.of(context).size.height / 1.2,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'No message found',
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          // fontWeight: FontWeight.bold,
                         ),
-                      ],
-                    ),
-                  );
-                }
-                return ListView.builder(
-                  shrinkWrap: true,
-                  physics: ScrollPhysics(),
-                  itemCount: bC.broadcastList.length,
-                  itemBuilder: (context, index) {
-                    var broadcast = bC.broadcastList[index];
-                    return BroadcastListWidget(broadcast);
-                  },
+                      ),
+                    ],
+                  ),
                 );
               }
-            }),
-          ],
+              return ListView.builder(
+                shrinkWrap: true,
+                primary: true,
+                physics: ScrollPhysics(),
+                itemCount: bC.broadcastList.length,
+                itemBuilder: (context, index) {
+                  var broadcast = bC.broadcastList[index];
+                  return BroadcastListWidget(broadcast);
+                },
+              );
+            }
+          }),
         ),
       ),
     );

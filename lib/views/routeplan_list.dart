@@ -134,55 +134,62 @@ class _RouteplanListState extends State<RouteplanList> {
       ),
       body: WillPopScope(
         onWillPop: backButtonPressed,
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            SizedBox(
-              height: 10.0,
-            ),
-            Obx(() {
-              if (epC.isEmpLoading.value) {
-                return Column();
-              } else {
-                if (epC.empRes.routePlanList.isEmpty || epC.empRes.routePlanList == null) {
-                  return Container(
-                    height: MediaQuery.of(context).size.height / 1.2,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          'No route plan found',
-                          style: TextStyle(
-                            fontSize: 18.0,
-           // fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
+        // child: ListView(
+        //   shrinkWrap: true,
+        //   children: [
+        //     // SizedBox(
+        //     //   height: 10.0,
+        //     // ),
+
+        //     SizedBox(
+        //       height: 10.0,
+        //     ),
+        //   ],
+        // ),
+        child: Obx(() {
+          if (epC.isEmpLoading.value) {
+            return Column();
+          } else {
+            if (epC.empRes.routePlanList.isEmpty || epC.empRes.routePlanList == null) {
+              return Container(
+                height: MediaQuery.of(context).size.height / 1.2,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'No route plan found',
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        // fontWeight: FontWeight.bold,
+                      ),
                     ),
+                  ],
+                ),
+              );
+            }
+            return Scrollbar(
+              radius: Radius.circular(
+                10.0,
+              ),
+              thickness: 5.0,
+              child: ListView.builder(
+                shrinkWrap: true,
+                physics: ScrollPhysics(),
+                itemCount: epC.empRes.routePlanList.length,
+                itemBuilder: (context, index) {
+                  var route = epC.empRes.routePlanList[index];
+                  // print(route);
+                  return RouteplanWidget(
+                    route,
+                    index,
+                    epC.empRes.routePlanList.length,
                   );
-                }
-                return ListView.builder(
-                  shrinkWrap: true,
-                  physics: ScrollPhysics(),
-                  itemCount: epC.empRes.routePlanList.length,
-                  itemBuilder: (context, index) {
-                    var route = epC.empRes.routePlanList[index];
-                    // print(route);
-                    return RouteplanWidget(
-                      route,
-                      index,
-                      epC.empRes.routePlanList.length,
-                    );
-                  },
-                );
-              }
-            }),
-            SizedBox(
-              height: 10.0,
-            ),
-          ],
-        ),
+                },
+              ),
+            );
+          }
+        }),
       ),
     );
   }

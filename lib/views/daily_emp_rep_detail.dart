@@ -285,9 +285,13 @@ class _DailyEmpRepDetailState extends State<DailyEmpRepDetail> {
                     ],
                   );
                 }
-                return SingleChildScrollView(
-                  child: Obx(() {
-                    return ListView.builder(
+                return Obx(() {
+                  return Scrollbar(
+                    radius: Radius.circular(
+                      10.0,
+                    ),
+                    thickness: 5.0,
+                    child: ListView.builder(
                       physics: ScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: epC.searchList.isNotEmpty ? epC.searchList.length : epC.dailySearch.length,
@@ -364,9 +368,9 @@ class _DailyEmpRepDetailState extends State<DailyEmpRepDetail> {
                           ),
                         );
                       },
-                    );
-                  }),
-                );
+                    ),
+                  );
+                });
               }),
             ),
           ],

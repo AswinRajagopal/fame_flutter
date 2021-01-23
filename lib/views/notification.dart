@@ -70,46 +70,44 @@ class _NotificationPageState extends State<NotificationPage> {
         ),
       ),
       body: SafeArea(
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            SizedBox(
-              height: 10.0,
-            ),
-            Obx(() {
-              if (nC.isLoading.value) {
-                return Column();
-              } else {
-                if (nC.notificationList.isEmpty || nC.notificationList.isNull) {
-                  return Container(
-                    height: MediaQuery.of(context).size.height / 1.2,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          'No notification found',
-                          style: TextStyle(
-                            fontSize: 18.0,
-           // fontWeight: FontWeight.bold,
-                          ),
+        child: Scrollbar(
+          radius: Radius.circular(
+            10.0,
+          ),
+          thickness: 5.0,
+          child: Obx(() {
+            if (nC.isLoading.value) {
+              return Column();
+            } else {
+              if (nC.notificationList.isEmpty || nC.notificationList.isNull) {
+                return Container(
+                  height: MediaQuery.of(context).size.height / 1.2,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'No notification found',
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          // fontWeight: FontWeight.bold,
                         ),
-                      ],
-                    ),
-                  );
-                }
-                return ListView.builder(
-                  shrinkWrap: true,
-                  physics: ScrollPhysics(),
-                  itemCount: nC.notificationList.length,
-                  itemBuilder: (context, index) {
-                    var notification = nC.notificationList[index];
-                    return NotificationListWidget(notification);
-                  },
+                      ),
+                    ],
+                  ),
                 );
               }
-            }),
-          ],
+              return ListView.builder(
+                shrinkWrap: true,
+                physics: ScrollPhysics(),
+                itemCount: nC.notificationList.length,
+                itemBuilder: (context, index) {
+                  var notification = nC.notificationList[index];
+                  return NotificationListWidget(notification);
+                },
+              );
+            }
+          }),
         ),
       ),
     );

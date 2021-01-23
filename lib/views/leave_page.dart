@@ -102,54 +102,49 @@ class _LeavePageState extends State<LeavePage> {
       ),
       body: WillPopScope(
         onWillPop: backButtonPressed,
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            SizedBox(
-              height: 10.0,
-            ),
-            Obx(() {
-              if (lC.isLoading.value) {
-                return Column();
-              } else {
-                if (lC.leaveList.isEmpty || lC.leaveList.isNull) {
-                  return Container(
-                    height: MediaQuery.of(context).size.height / 1.2,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          'No leave found',
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            // fontWeight: FontWeight.bold,
-                          ),
+        child: Scrollbar(
+          radius: Radius.circular(
+            10.0,
+          ),
+          thickness: 5.0,
+          child: Obx(() {
+            if (lC.isLoading.value) {
+              return Column();
+            } else {
+              if (lC.leaveList.isEmpty || lC.leaveList.isNull) {
+                return Container(
+                  height: MediaQuery.of(context).size.height / 1.2,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'No leave found',
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          // fontWeight: FontWeight.bold,
                         ),
-                      ],
-                    ),
-                  );
-                }
-                return ListView.builder(
-                  shrinkWrap: true,
-                  physics: ScrollPhysics(),
-                  itemCount: lC.leaveList.length,
-                  itemBuilder: (context, index) {
-                    var leave = lC.leaveList[index];
-                    return LeaveListWidget(
-                      leave,
-                      index,
-                      lC.leaveList.length,
-                      lC,
-                    );
-                  },
+                      ),
+                    ],
+                  ),
                 );
               }
-            }),
-            SizedBox(
-              height: 10.0,
-            ),
-          ],
+              return ListView.builder(
+                shrinkWrap: true,
+                physics: ScrollPhysics(),
+                itemCount: lC.leaveList.length,
+                itemBuilder: (context, index) {
+                  var leave = lC.leaveList[index];
+                  return LeaveListWidget(
+                    leave,
+                    index,
+                    lC.leaveList.length,
+                    lC,
+                  );
+                },
+              );
+            }
+          }),
         ),
       ),
     );

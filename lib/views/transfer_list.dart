@@ -85,54 +85,49 @@ class _TransferListState extends State<TransferList> {
           ),
         ],
       ),
-      body: ListView(
-        shrinkWrap: true,
-        children: [
-          SizedBox(
-            height: 10.0,
-          ),
-          Obx(() {
-            if (tC.isLoading.value) {
-              return Column();
-            } else {
-              if (tC.transferList.isEmpty || tC.transferList.isNull) {
-                return Container(
-                  height: MediaQuery.of(context).size.height / 1.2,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        'No transfer found',
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          // fontWeight: FontWeight.bold,
-                        ),
+      body: Scrollbar(
+        radius: Radius.circular(
+          10.0,
+        ),
+        thickness: 5.0,
+        child: Obx(() {
+          if (tC.isLoading.value) {
+            return Column();
+          } else {
+            if (tC.transferList.isEmpty || tC.transferList.isNull) {
+              return Container(
+                height: MediaQuery.of(context).size.height / 1.2,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'No transfer found',
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        // fontWeight: FontWeight.bold,
                       ),
-                    ],
-                  ),
-                );
-              }
-              return ListView.builder(
-                shrinkWrap: true,
-                physics: ScrollPhysics(),
-                itemCount: tC.transferList.length,
-                itemBuilder: (context, index) {
-                  var transfer = tC.transferList[index];
-                  return TransferListWidget(
-                    transfer,
-                    index,
-                    tC.transferList.length,
-                    tC,
-                  );
-                },
+                    ),
+                  ],
+                ),
               );
             }
-          }),
-          SizedBox(
-            height: 35.0,
-          ),
-        ],
+            return ListView.builder(
+              shrinkWrap: true,
+              physics: ScrollPhysics(),
+              itemCount: tC.transferList.length,
+              itemBuilder: (context, index) {
+                var transfer = tC.transferList[index];
+                return TransferListWidget(
+                  transfer,
+                  index,
+                  tC.transferList.length,
+                  tC,
+                );
+              },
+            );
+          }
+        }),
       ),
     );
   }
