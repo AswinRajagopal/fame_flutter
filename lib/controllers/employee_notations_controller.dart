@@ -33,6 +33,7 @@ class EmployeeNotationsController extends GetxController {
   var p = 0.obs;
   var wo = 0.obs;
   var l = 0.obs;
+  var a = 0.obs;
   final List searchList = [].obs;
   var oB = AppUtils.NAME;
   var showType = 'att'; //apprej
@@ -87,6 +88,8 @@ class EmployeeNotationsController extends GetxController {
               wo.value++;
             } else if (emp['attendanceAlias'] == 'L') {
               l.value++;
+            } else if (emp['attendanceAlias'] == 'A') {
+              a.value++;
             }
             searchList.add(emp);
           }
@@ -158,6 +161,8 @@ class EmployeeNotationsController extends GetxController {
               wo.value++;
             } else if (emp['attendanceAlias'] == 'L') {
               l.value++;
+            } else if (emp['attendanceAlias'] == 'A') {
+              a.value++;
             }
           }
           for (var i = 0; i < res['designationsList'].length; i++) {

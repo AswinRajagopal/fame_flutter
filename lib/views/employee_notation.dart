@@ -53,7 +53,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '#' + widget.clientId,
+          '#' + widget.clientId + ' ' + widget.date.split('-')[2] + '-' + widget.date.split('-')[1] + '-' + widget.date.split('-')[0],
         ),
         Text(
           widget.time,
@@ -129,7 +129,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '#' + widget.clientId,
+            '#' + widget.clientId + ' ' + widget.date.split('-')[2] + '-' + widget.date.split('-')[1] + '-' + widget.date.split('-')[0],
           ),
           Text(
             widget.time,
@@ -317,6 +317,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                 enC.l.value = 0;
                                 enC.p.value = 0;
                                 enC.wo.value = 0;
+                                enC.a.value = 0;
                                 setState(() {});
                               },
                         child: CustomContainer(
@@ -342,6 +343,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                 enC.l.value = 0;
                                 enC.p.value = 0;
                                 enC.wo.value = 0;
+                                enC.a.value = 0;
                                 setState(() {});
                               },
                         child: CustomContainer(
@@ -366,6 +368,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                 enC.l.value = 0;
                                 enC.p.value = 0;
                                 enC.wo.value = 0;
+                                enC.a.value = 0;
                                 setState(() {});
                               },
                         child: CustomContainer(
@@ -425,6 +428,20 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                           ),
                           Text(
                             'L : ${enC.l.value.toString()}',
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          VerticalDivider(
+                            thickness: 1,
+                            color: Colors.grey[400],
+                            indent: 8.0,
+                            endIndent: 8.0,
+                          ),
+                          Text(
+                            'A : ${enC.a.value.toString()}',
                             style: TextStyle(
                               fontSize: 20.0,
                               color: Theme.of(context).primaryColor,
@@ -559,6 +576,8 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                       enC.wo.value--;
                                                     } else if (emp['attendanceAlias'] == 'L') {
                                                       enC.l.value--;
+                                                    } else if (emp['attendanceAlias'] == 'A') {
+                                                      enC.a.value--;
                                                     }
                                                     emp['attendanceAlias'] = '';
                                                     emp['overTime'] = null;
@@ -952,6 +971,8 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                               enC.wo.value--;
                                                             } else if (emp['attendanceAlias'] == 'L') {
                                                               enC.l.value--;
+                                                            } else if (emp['attendanceAlias'] == 'A') {
+                                                              enC.a.value--;
                                                             }
                                                           }
                                                           emp['lt'] = null;
@@ -962,6 +983,8 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                             enC.wo.value++;
                                                           } else if (val == 'L') {
                                                             enC.l.value++;
+                                                          } else if (val == 'A') {
+                                                            enC.a.value++;
                                                           }
                                                           setState(() {});
                                                         }
@@ -1027,6 +1050,8 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                               enC.wo.value--;
                                                             } else if (emp['attendanceAlias'] == 'L') {
                                                               enC.l.value--;
+                                                            } else if (emp['attendanceAlias'] == 'A') {
+                                                              enC.a.value--;
                                                             }
                                                           }
                                                           emp['attendanceAlias'] = val;
@@ -1037,6 +1062,8 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                             enC.wo.value++;
                                                           } else if (val == 'L') {
                                                             enC.l.value++;
+                                                          } else if (val == 'A') {
+                                                            enC.a.value++;
                                                           }
                                                           setState(() {});
                                                         }
@@ -1068,6 +1095,8 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                       enC.wo.value++;
                                                     } else if (val == 'L') {
                                                       enC.l.value++;
+                                                    } else if (val == 'A') {
+                                                      enC.a.value++;
                                                     }
                                                     setState(() {});
                                                   }
