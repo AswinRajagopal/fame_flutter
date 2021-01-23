@@ -222,7 +222,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                     physics: ScrollPhysics(),
                     children: [
                       MyTextField(
-                        'Enter plan name',
+                        'Enter Plan Name',
                         planName,
                       ),
                       // MyTextField(
@@ -245,7 +245,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                                 fontSize: 18.0,
                                 // fontWeight: FontWeight.bold,
                               ),
-                              hintText: 'Enter employee name',
+                              hintText: 'Enter Employee Name',
                             ),
                           ),
                           suggestionsCallback: (pattern) async {
@@ -280,7 +280,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                         ),
                       ),
                       MyTextField(
-                        'Enter remarks',
+                        'Enter Remarks',
                         remarks,
                       ),
                       Padding(
@@ -298,7 +298,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                               fontSize: 18.0,
                               // fontWeight: FontWeight.bold,
                             ),
-                            hintText: 'Select date',
+                            hintText: 'Select Date',
                             suffixIcon: Image.asset(
                               'assets/images/icon_calender.png',
                               scale: 1.5,
@@ -329,7 +329,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                                     horizontal: 10.0,
                                   ),
                                   child: Text(
-                                    'Enter address',
+                                    'Enter Address',
                                     style: TextStyle(
                                       color: Colors.grey[600],
                                       fontSize: 18.0,
@@ -377,6 +377,8 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                                       if (!rpC.mapID.contains(p.placeId)) {
                                         rpC.mapCL.add(map);
                                         rpC.mapID.add(p.placeId);
+                                        rpC.sC.add(map);
+                                        setState(() {});
                                       } else {
                                         Get.snackbar(
                                           'Message',
@@ -493,7 +495,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                                                 onTap: () {
                                                   // print(client);
                                                   // print(rpC.sC.contains(client));
-                                                  // print(rpC.sC);
+                                                  // print(address);
                                                   if (rpC.sC.contains(address)) {
                                                     rpC.sC.remove(address);
                                                   } else {
@@ -523,7 +525,7 @@ class _RoutePlanningMapState extends State<RoutePlanningMap> {
                                               width: 10.0,
                                             ),
                                             SizedBox(
-                                              width: 220.0,
+                                              width: 320.0,
                                               child: Text(
                                                 address['address'].toString(),
                                                 overflow: TextOverflow.ellipsis,

@@ -229,7 +229,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                     physics: ScrollPhysics(),
                     children: [
                       MyTextField(
-                        'Enter plan name',
+                        'Enter Plan Name',
                         planName,
                       ),
                       // MyTextField(
@@ -252,7 +252,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                 fontSize: 18.0,
                                 // fontWeight: FontWeight.bold,
                               ),
-                              hintText: 'Enter employee name',
+                              hintText: 'Enter Employee Name',
                             ),
                           ),
                           suggestionsCallback: (pattern) async {
@@ -287,7 +287,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                         ),
                       ),
                       MyTextField(
-                        'Enter remarks',
+                        'Enter Remarks',
                         remarks,
                       ),
                       Padding(
@@ -305,7 +305,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                               fontSize: 18.0,
                               // fontWeight: FontWeight.bold,
                             ),
-                            hintText: 'Select date',
+                            hintText: 'Select Date',
                             suffixIcon: Image.asset(
                               'assets/images/icon_calender.png',
                               scale: 1.5,
@@ -334,7 +334,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                 horizontal: 10.0,
                               ),
                               child: Text(
-                                'Select client',
+                                'Select Client',
                                 style: TextStyle(
                                   color: Colors.grey[600],
                                   fontSize: 18.0,
