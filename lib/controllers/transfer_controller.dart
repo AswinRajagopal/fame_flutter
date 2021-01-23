@@ -185,6 +185,20 @@ class TransferController extends GetxController {
         await pr.hide();
         print('appRejRes: $appRejRes');
         if (appRejRes['success']) {
+          Get.snackbar(
+            'Success',
+            'Transfer request updated',
+            colorText: Colors.white,
+            backgroundColor: AppUtils().greenColor,
+            snackPosition: SnackPosition.BOTTOM,
+            duration: Duration(
+              seconds: 2,
+            ),
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+          );
           getTransferList();
         } else {
           Get.snackbar(

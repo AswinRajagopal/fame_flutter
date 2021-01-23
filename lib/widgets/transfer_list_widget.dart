@@ -16,6 +16,8 @@ class TransferListWidget extends StatelessWidget {
   final double rowAfterSize = 3.0;
   final double titleSize = 16.0;
   final double textSize = 16.0;
+  final double sBox = 120.0;
+  final double sBoxSpace = 10.0;
 
   String convertDate(date) {
     return DateFormat('dd').format(date).toString() + '-' + DateFormat('MM').format(date).toString() + '-' + DateFormat.y().format(date).toString();
@@ -47,16 +49,19 @@ class TransferListWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
-                  'Emp ID',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: titleSize,
+                SizedBox(
+                  width: sBox,
+                  child: Text(
+                    'Emp ID',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: titleSize,
+                    ),
+                    maxLines: 1,
                   ),
-                  maxLines: 1,
                 ),
                 SizedBox(
-                  width: 73.0,
+                  width: sBoxSpace,
                 ),
                 Text(
                   ':',
@@ -83,15 +88,18 @@ class TransferListWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
-                  'Name',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: titleSize,
+                SizedBox(
+                  width: sBox,
+                  child: Text(
+                    'Name',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: titleSize,
+                    ),
                   ),
                 ),
                 SizedBox(
-                  width: 83.0,
+                  width: sBoxSpace,
                 ),
                 Text(
                   ':',
@@ -118,15 +126,18 @@ class TransferListWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
-                  'Current Unit',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: titleSize,
+                SizedBox(
+                  width: sBox,
+                  child: Text(
+                    'Current Unit',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: titleSize,
+                    ),
                   ),
                 ),
                 SizedBox(
-                  width: 35.0,
+                  width: sBoxSpace,
                 ),
                 Text(
                   ':',
@@ -154,15 +165,18 @@ class TransferListWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
-                  'Required Unit',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: titleSize,
+                SizedBox(
+                  width: sBox,
+                  child: Text(
+                    'Required Unit',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: titleSize,
+                    ),
                   ),
                 ),
                 SizedBox(
-                  width: 24.0,
+                  width: sBoxSpace,
                 ),
                 Text(
                   ':',
@@ -188,15 +202,18 @@ class TransferListWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
-                  'Required on',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: titleSize,
+                SizedBox(
+                  width: sBox,
+                  child: Text(
+                    'Required on',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: titleSize,
+                    ),
                   ),
                 ),
                 SizedBox(
-                  width: 36.0,
+                  width: sBoxSpace,
                 ),
                 Text(
                   ':',
@@ -222,15 +239,18 @@ class TransferListWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
-                  'Requested By',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: titleSize,
+                SizedBox(
+                  width: sBox,
+                  child: Text(
+                    'Requested By',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: titleSize,
+                    ),
                   ),
                 ),
                 SizedBox(
-                  width: 22.0,
+                  width: sBoxSpace,
                 ),
                 Text(
                   ':',
@@ -259,15 +279,18 @@ class TransferListWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
-                  'Date',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: titleSize,
+                SizedBox(
+                  width: sBox,
+                  child: Text(
+                    'Date',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: titleSize,
+                    ),
                   ),
                 ),
                 SizedBox(
-                  width: 94.0,
+                  width: sBoxSpace,
                 ),
                 Text(
                   ':',

@@ -106,7 +106,7 @@ class _TransferListState extends State<TransferList> {
                         'No transfer found',
                         style: TextStyle(
                           fontSize: 18.0,
-           // fontWeight: FontWeight.bold,
+                          // fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
