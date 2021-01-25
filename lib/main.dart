@@ -5,7 +5,7 @@ import 'package:in_app_update/in_app_update.dart';
 import 'views/dashboard_page.dart';
 
 import 'connection/remote_services.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 
 import 'views/welcome_page.dart';
 
@@ -70,11 +70,13 @@ class PocketFaME extends StatelessWidget {
       // ignore: unnecessary_lambdas
     }).catchError((e) => _showError(e));
 
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        statusBarColor: Colors.black,
-      ),
-    );
+    // SystemChrome.setSystemUIOverlayStyle(
+    //   SystemUiOverlayStyle(
+    //     statusBarColor: Colors.black,
+    //   ),
+    // );
+
+    FlutterStatusbarcolor.setStatusBarColor(Colors.black);
 
     return GetMaterialApp(
       title: 'FaME',
