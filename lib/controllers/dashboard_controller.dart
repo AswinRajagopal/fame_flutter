@@ -174,7 +174,7 @@ class DashboardController extends GetxController {
           } else {
             isDashboardLoading(false);
             var dA = response['dailyAttendance'];
-            if (response['empdetails']['gpsTracking'] != null && response['empdetails']['gpsTracking'] == true) {
+            if (response['empdetails']['gpsTracking'] != null && response['empdetails']['gpsTracking'] == true && RemoteServices().box.get('role') != '3') {
               if (dA != null && (dA['checkInDateTime'] != null && dA['checkInDateTime'] != '') && (dA['checkOutDateTime'] == null || dA['checkOutDateTime'] == '')) {
                 print('tracking');
                 RemoteServices().saveLocationLog();
