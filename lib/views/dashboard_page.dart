@@ -996,6 +996,12 @@ class _DashboardPageState extends State<DashboardPage> {
                                                 75.0,
                                                 dbC.response['psCount']['absent'] / dbC.response['psCount']['shifts'],
                                               ),
+                                              CustomProgressIndicator(
+                                                dbC.response['psCount']['wo'].toString(),
+                                                'Week Off',
+                                                75.0,
+                                                dbC.response['psCount']['wo'] / dbC.response['psCount']['shifts'],
+                                              ),
                                             ],
                                           ),
                                           SizedBox(
