@@ -799,7 +799,7 @@ class RemoteServices {
   }
 
   Future getNotationsBySearch(date, clientId, empName) async {
-    var dt = date.toString().split('-')[2] + '-' + date.toString().split('-')[1] + '-' + date.toString().split('-')[0];
+    // var dt = date.toString().split('-')[2] + '-' + date.toString().split('-')[1] + '-' + date.toString().split('-')[0];
     var response = await client.post(
       '$baseURL/attendance/get_att_suggest',
       headers: header,
@@ -807,7 +807,7 @@ class RemoteServices {
         <String, dynamic>{
           'empId': box.get('empid').toString(),
           'companyId': box.get('companyid').toString(),
-          'date': dt,
+          'date': date,
           'clientId': clientId,
           'empName': empName,
         },
