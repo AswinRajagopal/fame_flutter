@@ -18,6 +18,7 @@ class BottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var roleId = RemoteServices().box.get('role');
+    print(roleId);
     // final currentIndex = 0;
 
     return BottomNavigationBar(
@@ -29,26 +30,27 @@ class BottomNav extends StatelessWidget {
           Get.to(ProfilePage());
         } else if (index == 2) {
         } else if (index == 3) {
-          if (roleId == '2' || roleId == '3') {
-            Get.to(MorePage());
-          } else {
-            Get.snackbar(
-              null,
-              'Only FO and admin can access this',
-              colorText: Colors.white,
-              backgroundColor: Colors.black87,
-              snackPosition: SnackPosition.BOTTOM,
-              margin: EdgeInsets.symmetric(
-                horizontal: 8.0,
-                vertical: 10.0,
-              ),
-              padding: EdgeInsets.symmetric(
-                horizontal: 12.0,
-                vertical: 18.0,
-              ),
-              borderRadius: 5.0,
-            );
-          }
+          Get.to(MorePage());
+          // if (roleId == '2' || roleId == '3') {
+          //   Get.to(MorePage());
+          // } else {
+          //   Get.snackbar(
+          //     null,
+          //     'Only FO and admin can access this',
+          //     colorText: Colors.white,
+          //     backgroundColor: Colors.black87,
+          //     snackPosition: SnackPosition.BOTTOM,
+          //     margin: EdgeInsets.symmetric(
+          //       horizontal: 8.0,
+          //       vertical: 10.0,
+          //     ),
+          //     padding: EdgeInsets.symmetric(
+          //       horizontal: 12.0,
+          //       vertical: 18.0,
+          //     ),
+          //     borderRadius: 5.0,
+          //   );
+          // }
         } else if (index == 4) {
           Get.to(SettingsPage());
         }

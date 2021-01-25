@@ -38,18 +38,28 @@ class MorePage extends StatelessWidget {
             SizedBox(
               height: 20.0,
             ),
-            // GestureDetector(
-            //   onTap: () {
-            //     Get.to(TransferList());
-            //   },
-            //   child: ListContainer(
-            //     'assets/images/icon_transfer.png',
-            //     'Transfer',
-            //   ),
-            // ),
             GestureDetector(
               onTap: () {
-                Get.to(ShortageReport());
+                if (roleId == '2' || roleId == '3') {
+                  Get.to(ShortageReport());
+                } else {
+                  Get.snackbar(
+                    null,
+                    'Only FO and admin can access this',
+                    colorText: Colors.white,
+                    backgroundColor: Colors.black87,
+                    snackPosition: SnackPosition.BOTTOM,
+                    margin: EdgeInsets.symmetric(
+                      horizontal: 8.0,
+                      vertical: 10.0,
+                    ),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12.0,
+                      vertical: 18.0,
+                    ),
+                    borderRadius: 5.0,
+                  );
+                }
               },
               child: ListContainer(
                 'assets/images/shortage_report.png',
@@ -58,7 +68,26 @@ class MorePage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                Get.to(ClientWiseAttendance());
+                if (roleId == '2' || roleId == '3') {
+                  Get.to(ClientWiseAttendance());
+                } else {
+                  Get.snackbar(
+                    null,
+                    'Only FO and admin can access this',
+                    colorText: Colors.white,
+                    backgroundColor: Colors.black87,
+                    snackPosition: SnackPosition.BOTTOM,
+                    margin: EdgeInsets.symmetric(
+                      horizontal: 8.0,
+                      vertical: 10.0,
+                    ),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12.0,
+                      vertical: 18.0,
+                    ),
+                    borderRadius: 5.0,
+                  );
+                }
               },
               child: ListContainer(
                 'assets/images/client_wise_att.png',
@@ -67,7 +96,26 @@ class MorePage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                Get.to(DailyEmployeeReport());
+                if (roleId == '2' || roleId == '3') {
+                  Get.to(DailyEmployeeReport());
+                } else {
+                  Get.snackbar(
+                    null,
+                    'Only FO and admin can access this',
+                    colorText: Colors.white,
+                    backgroundColor: Colors.black87,
+                    snackPosition: SnackPosition.BOTTOM,
+                    margin: EdgeInsets.symmetric(
+                      horizontal: 8.0,
+                      vertical: 10.0,
+                    ),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12.0,
+                      vertical: 18.0,
+                    ),
+                    borderRadius: 5.0,
+                  );
+                }
               },
               child: ListContainer(
                 'assets/images/day_wise_attendance.png',
@@ -76,7 +124,26 @@ class MorePage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                Get.to(EmployeeReport());
+                if (roleId == '2' || roleId == '3') {
+                  Get.to(EmployeeReport());
+                } else {
+                  Get.snackbar(
+                    null,
+                    'Only FO and admin can access this',
+                    colorText: Colors.white,
+                    backgroundColor: Colors.black87,
+                    snackPosition: SnackPosition.BOTTOM,
+                    margin: EdgeInsets.symmetric(
+                      horizontal: 8.0,
+                      vertical: 10.0,
+                    ),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12.0,
+                      vertical: 18.0,
+                    ),
+                    borderRadius: 5.0,
+                  );
+                }
               },
               child: ListContainer(
                 'assets/images/employee_report.png',
@@ -85,7 +152,26 @@ class MorePage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                Get.to(TimelineReport());
+                if (roleId == '2' || roleId == '3') {
+                  Get.to(TimelineReport());
+                } else {
+                  Get.snackbar(
+                    null,
+                    'Only FO and admin can access this',
+                    colorText: Colors.white,
+                    backgroundColor: Colors.black87,
+                    snackPosition: SnackPosition.BOTTOM,
+                    margin: EdgeInsets.symmetric(
+                      horizontal: 8.0,
+                      vertical: 10.0,
+                    ),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12.0,
+                      vertical: 18.0,
+                    ),
+                    borderRadius: 5.0,
+                  );
+                }
               },
               child: ListContainer(
                 'assets/images/timeline_report.png',
@@ -94,7 +180,26 @@ class MorePage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                Get.to(LocationReportDetail());
+                if (roleId == '2' || roleId == '3') {
+                  Get.to(LocationReportDetail());
+                } else {
+                  Get.snackbar(
+                    null,
+                    'Only FO and admin can access this',
+                    colorText: Colors.white,
+                    backgroundColor: Colors.black87,
+                    snackPosition: SnackPosition.BOTTOM,
+                    margin: EdgeInsets.symmetric(
+                      horizontal: 8.0,
+                      vertical: 10.0,
+                    ),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12.0,
+                      vertical: 18.0,
+                    ),
+                    borderRadius: 5.0,
+                  );
+                }
               },
               child: ListContainer(
                 'assets/images/current_location.png',
@@ -103,25 +208,19 @@ class MorePage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                Get.to(VisitPlan());
+                if (roleId == '2' || roleId == '3') {
+                  Get.to(VisitPlan());
+                } else {
+                  Get.to(
+                    VisitPlan(user: 'emp'),
+                  );
+                }
               },
               child: ListContainer(
                 'assets/images/my_visit_plan.png',
                 'My Visit Report',
               ),
             ),
-            // GestureDetector(
-            //   onTap: () {
-            //     Get.to(OnboardingPage());
-            //   },
-            //   child: Visibility(
-            //     visible: roleId == '3' ? true : false,
-            //     child: ListContainer(
-            //       'assets/images/onboarding.png',
-            //       'Onboarding',
-            //     ),
-            //   ),
-            // ),
             SizedBox(
               height: 20.0,
             ),

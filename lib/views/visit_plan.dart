@@ -9,6 +9,9 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class VisitPlan extends StatefulWidget {
+  final String user;
+  VisitPlan({this.user});
+
   @override
   _VisitPlanState createState() => _VisitPlanState();
 }
@@ -25,6 +28,9 @@ class _VisitPlanState extends State<VisitPlan> {
     super.initState();
     date.text = DateFormat('dd-MM-yyyy').format(curDate).toString();
     sDate = DateFormat('yyyy-MM-dd').format(curDate).toString();
+    if (widget.user != null) {
+      empId = RemoteServices().box.get('empid');
+    }
   }
 
   @override
@@ -67,54 +73,57 @@ class _VisitPlanState extends State<VisitPlan> {
       body: SafeArea(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10.0,
-                vertical: 10.0,
-              ),
-              child: TypeAheadField(
-                textFieldConfiguration: TextFieldConfiguration(
-                  controller: empName,
-                  decoration: InputDecoration(
-                    isDense: true,
-                    contentPadding: EdgeInsets.all(10),
-                    hintStyle: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 18.0,
-                      // fontWeight: FontWeight.bold,
-                    ),
-                    hintText: 'Employee Name',
-                  ),
+            Visibility(
+              visible: widget.user != null ? false : true,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10.0,
+                  vertical: 10.0,
                 ),
-                suggestionsCallback: (pattern) async {
-                  // print(pattern);
-                  if (pattern.isNotEmpty) {
-                    return await RemoteServices().getEmployees(pattern);
-                  } else {
-                    empId = null;
-                  }
-                  return null;
-                },
-                hideOnEmpty: true,
-                noItemsFoundBuilder: (context) {
-                  return Text('No employee found');
-                },
-                itemBuilder: (context, suggestion) {
-                  return ListTile(
-                    title: Text(
-                      suggestion['name'],
+                child: TypeAheadField(
+                  textFieldConfiguration: TextFieldConfiguration(
+                    controller: empName,
+                    decoration: InputDecoration(
+                      isDense: true,
+                      contentPadding: EdgeInsets.all(10),
+                      hintStyle: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 18.0,
+                        // fontWeight: FontWeight.bold,
+                      ),
+                      hintText: 'Employee Name',
                     ),
-                    subtitle: Text(
-                      suggestion['empId'],
-                    ),
-                  );
-                },
-                onSuggestionSelected: (suggestion) {
-                  print(suggestion);
-                  print(suggestion['name']);
-                  empName.text = suggestion['name'].toString().trimRight() + ' - ' + suggestion['empId'];
-                  empId = suggestion['empId'];
-                },
+                  ),
+                  suggestionsCallback: (pattern) async {
+                    // print(pattern);
+                    if (pattern.isNotEmpty) {
+                      return await RemoteServices().getEmployees(pattern);
+                    } else {
+                      empId = null;
+                    }
+                    return null;
+                  },
+                  hideOnEmpty: true,
+                  noItemsFoundBuilder: (context) {
+                    return Text('No employee found');
+                  },
+                  itemBuilder: (context, suggestion) {
+                    return ListTile(
+                      title: Text(
+                        suggestion['name'],
+                      ),
+                      subtitle: Text(
+                        suggestion['empId'],
+                      ),
+                    );
+                  },
+                  onSuggestionSelected: (suggestion) {
+                    print(suggestion);
+                    print(suggestion['name']);
+                    empName.text = suggestion['name'].toString().trimRight() + ' - ' + suggestion['empId'];
+                    empId = suggestion['empId'];
+                  },
+                ),
               ),
             ),
             Padding(
