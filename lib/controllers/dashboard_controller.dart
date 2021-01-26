@@ -184,7 +184,7 @@ class DashboardController extends GetxController {
               }
             }
 
-            if (jsonDecode(RemoteServices().box.get('appFeature'))['checkoutDial'] != null && jsonDecode(RemoteServices().box.get('appFeature'))['checkoutDial']) {
+            if (jsonDecode(RemoteServices().box.get('appFeature'))['checkoutDial'] != null && jsonDecode(RemoteServices().box.get('appFeature'))['checkoutDial'] && RemoteServices().box.get('role') != '3') {
               if (dA != null && (dA['checkInDateTime'] != null && dA['checkInDateTime'] != '') && (dA['checkOutDateTime'] == null || dA['checkOutDateTime'] == '')) {
                 // checked in
                 await scheduleNotification('setupcheckout', response['empdetails']['shiftEndTime'], jsonDecode(RemoteServices().box.get('appFeature'))['checkoutDialTime'] ?? 30);
