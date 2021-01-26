@@ -57,7 +57,7 @@ class RouteplanWidget extends StatelessWidget {
                   SizedBox(
                     width: sBox,
                     child: Text(
-                      'Plan name',
+                      'Plan Name',
                       style: TextStyle(
                         //fontWeight: FontWeight.bold,
                         fontSize: titleSize,
@@ -96,7 +96,7 @@ class RouteplanWidget extends StatelessWidget {
                   SizedBox(
                     width: sBox,
                     child: Text(
-                      'Created by',
+                      'Created By',
                       style: TextStyle(
                         //fontWeight: FontWeight.bold,
                         fontSize: titleSize,
@@ -211,7 +211,7 @@ class RouteplanWidget extends StatelessWidget {
                   SizedBox(
                     width: sBox,
                     child: Text(
-                      'Created on',
+                      'Created On',
                       style: TextStyle(
                         //fontWeight: FontWeight.bold,
                         fontSize: titleSize,

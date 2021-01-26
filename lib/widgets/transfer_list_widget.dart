@@ -205,7 +205,7 @@ class TransferListWidget extends StatelessWidget {
                 SizedBox(
                   width: sBox,
                   child: Text(
-                    'Required on',
+                    'Required On',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: titleSize,

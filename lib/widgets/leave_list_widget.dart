@@ -203,7 +203,7 @@ class LeaveListWidget extends StatelessWidget {
                 SizedBox(
                   width: sBox,
                   child: Text(
-                    'Requested on',
+                    'Requested On',
                     style: TextStyle(
                       // fontWeight: FontWeight.bold,
                       fontSize: titleSize,

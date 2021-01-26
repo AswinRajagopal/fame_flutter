@@ -9,13 +9,20 @@ import 'package:progress_dialog/progress_dialog.dart';
 
 class AdminController extends GetxController {
   var isLoading = true.obs;
+  var isLoadingData = true.obs;
   ProgressDialog pr;
   var resAddShift;
   var resAddClient;
   var resAddEmployee;
+  var getDataRes;
   final List clientList = [].obs;
   final List desList = [].obs;
   final List shiftList = [].obs;
+  final List departmentsList = [].obs;
+  final List bloodGroupsList = [].obs;
+  final List designationsList = [].obs;
+  final List bankNamesList = [].obs;
+  final List branchList = [].obs;
   final List checkList = [];
 
   void addShift(shiftName, startTime, endTime) async {
@@ -350,6 +357,63 @@ class AdminController extends GetxController {
           horizontal: 12.0,
           vertical: 18.0,
         ),
+        borderRadius: 5.0,
+      );
+    }
+  }
+
+  void getData() async {
+    try {
+      isLoadingData(true);
+      await pr.show();
+      getDataRes = await RemoteServices().getData();
+      var getClientRes = await RemoteServices().getClients();
+
+      if (getClientRes != null) {
+        // print('getClientRes valid: $getClientRes');
+        if (getClientRes['success']) {
+          for (var i = 0; i < getClientRes['clientsList'].length; i++) {
+            clientList.add(getClientRes['clientsList'][i]);
+          }
+          // print('clientsList: $clientList');
+        }
+      }
+      if (getDataRes != null) {
+        getClient();
+        // print('getClientRes valid: $getClientRes');
+        if (getDataRes['success']) {
+          // print('getDataRes: $getDataRes');
+          if (getDataRes['bloodGroups'] != null) {
+            bloodGroupsList.addAll(getDataRes['bloodGroups']);
+          }
+          if (getDataRes['departmentsList'] != null) {
+            departmentsList.addAll(getDataRes['departmentsList']);
+          }
+          if (getDataRes['designationsList'] != null) {
+            designationsList.addAll(getDataRes['designationsList']);
+          }
+          if (getDataRes['bankNamesList'] != null) {
+            bankNamesList.addAll(getDataRes['bankNamesList']);
+          }
+          if (getDataRes['branchList'] != null) {
+            branchList.addAll(getDataRes['branchList']);
+          }
+        }
+      }
+      isLoadingData(false);
+      await pr.hide();
+    } catch (e) {
+      print(e);
+      isLoadingData(false);
+      await pr.hide();
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+        padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
         borderRadius: 5.0,
       );
     }

@@ -800,6 +800,17 @@ class RemoteServices {
 
   Future getNotationsBySearch(date, clientId, empName) async {
     // var dt = date.toString().split('-')[2] + '-' + date.toString().split('-')[1] + '-' + date.toString().split('-')[0];
+    print(
+      jsonEncode(
+        <String, dynamic>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'date': date,
+          'clientId': clientId,
+          'empName': empName,
+        },
+      ),
+    );
     var response = await client.post(
       '$baseURL/attendance/get_att_suggest',
       headers: header,
@@ -1614,6 +1625,26 @@ class RemoteServices {
     if (response.statusCode == 200) {
       var jsonString = response.body;
       return json.decode(jsonString)['routePlanList'];
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future getData() async {
+    var response = await client.post(
+      '$baseURL/company/get_recdata',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
     } else {
       //show error message
       return null;
