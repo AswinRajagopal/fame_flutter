@@ -1597,4 +1597,26 @@ class RemoteServices {
       return null;
     }
   }
+
+  Future getRPlanSugg(rplanName) async {
+    // print('empName: $empName');
+    var response = await client.post(
+      '$baseURL/location/get_rplan_sugg',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'rplanName': rplanName,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString)['routePlanList'];
+    } else {
+      //show error message
+      return null;
+    }
+  }
 }

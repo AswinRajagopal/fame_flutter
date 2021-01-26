@@ -89,13 +89,14 @@ class DBCalController extends GetxController {
               var clID1 = '';
               roster.add(empRoster[0]);
               // for (var i = 0; i < roster.first.length; i++) {
-              var clID0 = roster[0]['clientId'];
+              var clID0 = roster[0]['name'] + ' (' + roster[0]['clientId'] + ')';
               if (rosterLength > 1) {
-                clID1 = empRoster[1]['clientId'];
+                clID1 = roster[0]['name'] + ' (' + empRoster[1]['clientId'] + ')';
               }
               roster[0].remove('modified_On');
               roster[0].remove('modified_By');
               roster[0].remove('clientId');
+              roster[0].remove('name');
               roster[0].remove('empId');
               roster[0].remove('created_On');
               roster[0].remove('intId');

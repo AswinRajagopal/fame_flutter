@@ -228,14 +228,64 @@ class _RoutePlanningState extends State<RoutePlanning> {
                     primary: true,
                     physics: ScrollPhysics(),
                     children: [
-                      MyTextField(
-                        'Enter Plan Name',
-                        planName,
-                      ),
                       // MyTextField(
-                      //   'Enter employee name',
-                      //   empName,
+                      //   'Enter Plan Name',
+                      //   planName,
                       // ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10.0,
+                          vertical: 10.0,
+                        ),
+                        child: TypeAheadField(
+                          textFieldConfiguration: TextFieldConfiguration(
+                            controller: planName,
+                            decoration: InputDecoration(
+                              isDense: true,
+                              contentPadding: EdgeInsets.all(10),
+                              hintStyle: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 18.0,
+                              ),
+                              hintText: 'Enter Plan Name',
+                            ),
+                          ),
+                          suggestionsCallback: (pattern) async {
+                            // print(pattern);
+                            if (pattern.isNotEmpty) {
+                              return await RemoteServices().getRPlanSugg(pattern);
+                            } else {
+                              // sitePostedTo = null;
+                              // planName.clear();
+                            }
+                            return null;
+                          },
+                          hideOnEmpty: true,
+                          noItemsFoundBuilder: (context) {
+                            return Text('No route plan found');
+                          },
+                          itemBuilder: (context, suggestion) {
+                            return ListTile(
+                              title: Text(
+                                suggestion['planName'],
+                              ),
+                              // subtitle: Text(
+                              //   suggestion['id'],
+                              // ),
+                            );
+                          },
+                          onSuggestionSelected: (suggestion) {
+                            print(suggestion);
+                            planName.text = suggestion['planName'];
+                            empName.text = suggestion['assignedTo'];
+                            assignedTo = suggestion['assignedTo'];
+                            remarks.text = suggestion['adminRemarks'];
+                            date.text = DateFormat('dd-MM-yyyy').format(DateTime.parse(suggestion['planStartDate'])).toString();
+                            sDate = DateFormat('yyyy-MM-dd').format(DateTime.parse(suggestion['planStartDate'])).toString();
+                            // setState(() {});
+                          },
+                        ),
+                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 10.0,
@@ -633,6 +683,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                   pitstops.add(addData);
                                 }
                                 print(pitstops);
+                                print(planName.text);
                                 rpC.saveRPlan(
                                   assignedTo,
                                   planName.text,
