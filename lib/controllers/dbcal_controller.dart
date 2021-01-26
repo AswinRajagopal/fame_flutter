@@ -89,9 +89,9 @@ class DBCalController extends GetxController {
               var clID1 = '';
               roster.add(empRoster[0]);
               // for (var i = 0; i < roster.first.length; i++) {
-              var clID0 = roster[0]['name'] + ' (' + roster[0]['clientId'] + ')';
+              var clID0 = roster[0]['name'].toString().trimRight() + ' (' + roster[0]['clientId'] + ')';
               if (rosterLength > 1) {
-                clID1 = roster[0]['name'] + ' (' + empRoster[1]['clientId'] + ')';
+                clID1 = roster[1]['name'].toString().trimRight() + ' (' + empRoster[1]['clientId'] + ')';
               }
               roster[0].remove('modified_On');
               roster[0].remove('modified_By');
