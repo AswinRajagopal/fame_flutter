@@ -237,7 +237,7 @@ class _LoginPageState extends State<LoginPage> {
                                 color: Colors.grey,
                                 fontSize: 18.0,
                               ),
-                              hintText: 'password',
+                              hintText: 'Password',
                               prefixIcon: Image.asset(
                                 'assets/images/password.png',
                                 scale: 1.5,
