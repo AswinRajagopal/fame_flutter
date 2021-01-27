@@ -23,6 +23,9 @@ class AdminController extends GetxController {
   final List designationsList = [].obs;
   final List bankNamesList = [].obs;
   final List branchList = [].obs;
+  final List statesList = [].obs;
+  final List citiesList = [].obs;
+  final List percitiesList = [].obs;
   final List checkList = [];
 
   void addShift(shiftName, startTime, endTime) async {
@@ -368,6 +371,7 @@ class AdminController extends GetxController {
       await pr.show();
       getDataRes = await RemoteServices().getData();
       var getClientRes = await RemoteServices().getClients();
+      var stateRes = await RemoteServices().getStates();
 
       if (getClientRes != null) {
         // print('getClientRes valid: $getClientRes');
@@ -376,6 +380,11 @@ class AdminController extends GetxController {
             clientList.add(getClientRes['clientsList'][i]);
           }
           // print('clientsList: $clientList');
+        }
+      }
+      if (stateRes != null) {
+        if (stateRes['statesList'] != null) {
+          statesList.addAll(stateRes['statesList']);
         }
       }
       if (getDataRes != null) {
@@ -405,6 +414,37 @@ class AdminController extends GetxController {
     } catch (e) {
       print(e);
       isLoadingData(false);
+      await pr.hide();
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+        padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+        borderRadius: 5.0,
+      );
+    }
+  }
+
+  void getCities(stateId, listType) async {
+    try {
+      await pr.show();
+      var citiesRes = await RemoteServices().getCities(stateId);
+
+      if (citiesRes != null) {
+        if (citiesRes['citiesList'] != null) {
+          if (listType == 'present') {
+            citiesList.addAll(citiesRes['citiesList']);
+          } else {
+            percitiesList.addAll(citiesRes['citiesList']);
+          }
+        }
+      }
+      await pr.hide();
+    } catch (e) {
+      print(e);
       await pr.hide();
       Get.snackbar(
         null,

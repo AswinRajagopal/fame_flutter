@@ -20,6 +20,12 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with SingleTickerProvid
   TextEditingController empPhone = TextEditingController();
   TextEditingController qualification = TextEditingController();
   TextEditingController reporting = TextEditingController();
+  TextEditingController presenthouseNo = TextEditingController();
+  TextEditingController presentStreet = TextEditingController();
+  TextEditingController presentColony = TextEditingController();
+  TextEditingController permanenthouseNo = TextEditingController();
+  TextEditingController permanentStreet = TextEditingController();
+  TextEditingController permanentColony = TextEditingController();
   TabController tabController;
   var gender = 'M';
   var mStatus = 'Married';
@@ -30,7 +36,12 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with SingleTickerProvid
   var sitePostedTo;
   var dob;
   var doj;
+  var presentState;
+  var presentCity;
+  var permanentState;
+  var permanentCity;
   var currentTabIndex = 0;
+  bool copyAdd = false;
 
   @override
   void initState() {
@@ -210,7 +221,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with SingleTickerProvid
             controller: tabController,
             physics: NeverScrollableScrollPhysics(),
             children: [
-              // STEP 1
+              // STEP 1 - Personal Info
               Obx(() {
                 if (adminC.isLoadingData.value) {
                   return Column();
@@ -505,7 +516,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with SingleTickerProvid
                                 isExpanded: true,
                                 // value: json.encode(aC.clientList.first.clientManpowerList),
                                 items: adminC.departmentsList.map((item) {
-                                  print('item: $item');
+                                  //print('item: $item');
                                   return DropdownMenuItem(
                                     child: Text(
                                       item['deptName'],
@@ -547,7 +558,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with SingleTickerProvid
                                 ),
                                 isExpanded: false,
                                 items: adminC.clientList.map((item) {
-                                  print('item: $item');
+                                  //print('item: $item');
                                   var sC = item['name'] + ' - ' + item['id'].toString();
                                   return DropdownMenuItem(
                                     child: Text(
@@ -590,7 +601,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with SingleTickerProvid
                                 ),
                                 isExpanded: false,
                                 items: adminC.bloodGroupsList.map((item) {
-                                  print('item: $item');
+                                  //print('item: $item');
                                   return DropdownMenuItem(
                                     child: Text(
                                       item['bloodGroupName'],
@@ -632,7 +643,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with SingleTickerProvid
                                 ),
                                 isExpanded: false,
                                 items: adminC.designationsList.map((item) {
-                                  print('item: $item');
+                                  //print('item: $item');
                                   return DropdownMenuItem(
                                     child: Text(
                                       item['design'],
@@ -820,7 +831,511 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with SingleTickerProvid
                 );
               }),
               Test('Tab 2 goes here'),
-              Test('Tab 3 goes here'),
+              // Test('Tab 3 goes here'),
+              // STEP 3 - Address Step
+              Obx(() {
+                if (adminC.isLoadingData.value) {
+                  return Column();
+                }
+                return SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        height: MediaQuery.of(context).size.height / 1.29,
+                        child: ListView(
+                          shrinkWrap: true,
+                          primary: true,
+                          physics: ScrollPhysics(),
+                          children: [
+                            SizedBox(
+                              height: 10.0,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                                vertical: 10.0,
+                              ),
+                              child: Text(
+                                'Present Address',
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                                vertical: 10.0,
+                              ),
+                              child: TextField(
+                                controller: presenthouseNo,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.all(10),
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 18.0,
+                                  ),
+                                  hintText: 'House No.',
+                                  prefixIcon: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                        'assets/images/home.png',
+                                        color: Colors.grey,
+                                        scale: 2.2,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                                vertical: 10.0,
+                              ),
+                              child: TextField(
+                                controller: presentStreet,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.all(10),
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 18.0,
+                                  ),
+                                  hintText: 'Street',
+                                  prefixIcon: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                        'assets/images/street.png',
+                                        color: Colors.grey,
+                                        scale: 2.2,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                                vertical: 10.0,
+                              ),
+                              child: TextField(
+                                controller: presentColony,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.all(10),
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 18.0,
+                                  ),
+                                  hintText: 'Colony',
+                                  prefixIcon: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                        'assets/images/colony.png',
+                                        color: Colors.grey,
+                                        scale: 2.2,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                                vertical: 10.0,
+                              ),
+                              child: DropdownButtonFormField<dynamic>(
+                                hint: Text(
+                                  'Select State',
+                                  style: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 18.0,
+                                    // fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                isExpanded: false,
+                                items: adminC.statesList.map((item) {
+                                  //print('item: $item');
+                                  return DropdownMenuItem(
+                                    child: Text(
+                                      item['state'],
+                                    ),
+                                    value: item['stateID'],
+                                  );
+                                }).toList(),
+                                decoration: InputDecoration(
+                                  prefixIcon: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                        'assets/images/state.png',
+                                        color: Colors.grey[400],
+                                        scale: 2.0,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                onChanged: (value) {
+                                  presentState = value;
+                                  adminC.getCities(int.parse(value), 'present');
+                                  // setState(() {});
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                                vertical: 10.0,
+                              ),
+                              child: DropdownButtonFormField<dynamic>(
+                                hint: Text(
+                                  'Select City',
+                                  style: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 18.0,
+                                    // fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                isExpanded: false,
+                                items: adminC.citiesList.map((item) {
+                                  //print('item: $item');
+                                  return DropdownMenuItem(
+                                    child: Text(
+                                      item['city'],
+                                    ),
+                                    value: item['cityID'],
+                                  );
+                                }).toList(),
+                                decoration: InputDecoration(
+                                  prefixIcon: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                        'assets/images/city.png',
+                                        color: Colors.grey[400],
+                                        scale: 2.0,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                onChanged: (value) {
+                                  presentCity = value;
+                                  // setState(() {});
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                                vertical: 10.0,
+                              ),
+                              child: Row(
+                                children: [
+                                  Checkbox(
+                                    value: copyAdd,
+                                    onChanged: (value) {
+                                      print(value);
+                                      if (presenthouseNo.text.isNullOrBlank || presentStreet.text.isNullOrBlank || presentColony.text.isNullOrBlank) {
+                                        Get.snackbar(
+                                          null,
+                                          'Please fill present address first',
+                                          colorText: Colors.white,
+                                          backgroundColor: Colors.black87,
+                                          snackPosition: SnackPosition.BOTTOM,
+                                          margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+                                          padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+                                          borderRadius: 5.0,
+                                        );
+                                      } else {
+                                        if (value) {
+                                          permanenthouseNo.text = presenthouseNo.text;
+                                          permanentStreet.text = presentStreet.text;
+                                          permanentColony.text = presentColony.text;
+                                        } else {
+                                          permanenthouseNo.clear();
+                                          permanentStreet.clear();
+                                          permanentColony.clear();
+                                        }
+                                        copyAdd = value;
+                                        setState(() {});
+                                      }
+                                    },
+                                  ),
+                                  Text(
+                                    'Copy to Permanent Address',
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 17.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                                vertical: 10.0,
+                              ),
+                              child: Text(
+                                'Permanent Address',
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                                vertical: 10.0,
+                              ),
+                              child: TextField(
+                                controller: permanenthouseNo,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.all(10),
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 18.0,
+                                  ),
+                                  hintText: 'House No.',
+                                  prefixIcon: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                        'assets/images/home.png',
+                                        color: Colors.grey,
+                                        scale: 2.2,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                                vertical: 10.0,
+                              ),
+                              child: TextField(
+                                controller: permanentStreet,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.all(10),
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 18.0,
+                                  ),
+                                  hintText: 'Street',
+                                  prefixIcon: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                        'assets/images/street.png',
+                                        color: Colors.grey,
+                                        scale: 2.2,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                                vertical: 10.0,
+                              ),
+                              child: TextField(
+                                controller: permanentColony,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.all(10),
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 18.0,
+                                  ),
+                                  hintText: 'Colony',
+                                  prefixIcon: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                        'assets/images/colony.png',
+                                        color: Colors.grey,
+                                        scale: 2.2,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                                vertical: 10.0,
+                              ),
+                              child: DropdownButtonFormField<dynamic>(
+                                hint: Text(
+                                  'Select State',
+                                  style: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 18.0,
+                                    // fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                isExpanded: false,
+                                items: adminC.statesList.map((item) {
+                                  //print('item: $item');
+                                  return DropdownMenuItem(
+                                    child: Text(
+                                      item['state'],
+                                    ),
+                                    value: item['stateID'],
+                                  );
+                                }).toList(),
+                                decoration: InputDecoration(
+                                  prefixIcon: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                        'assets/images/state.png',
+                                        color: Colors.grey[400],
+                                        scale: 2.0,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                onChanged: (value) {
+                                  permanentState = value;
+                                  adminC.getCities(int.parse(value), 'permanent');
+                                  // setState(() {});
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                                vertical: 10.0,
+                              ),
+                              child: DropdownButtonFormField<dynamic>(
+                                hint: Text(
+                                  'Select City',
+                                  style: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 18.0,
+                                    // fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                isExpanded: false,
+                                items: adminC.percitiesList.map((item) {
+                                  //print('item: $item');
+                                  return DropdownMenuItem(
+                                    child: Text(
+                                      item['city'],
+                                    ),
+                                    value: item['cityID'],
+                                  );
+                                }).toList(),
+                                decoration: InputDecoration(
+                                  prefixIcon: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                        'assets/images/city.png',
+                                        color: Colors.grey[400],
+                                        scale: 2.0,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                onChanged: (value) {
+                                  permanentCity = value;
+                                  // setState(() {});
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Flexible(
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Container(
+                            height: 70.0,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border(
+                                top: BorderSide(
+                                  color: Colors.grey[300],
+                                  width: 1,
+                                ),
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                                vertical: 10.0,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  FlatButton(
+                                    onPressed: () {
+                                      print('Back');
+                                      // Get.back();
+                                    },
+                                    child: Text(
+                                      'Back',
+                                      style: TextStyle(
+                                        color: Theme.of(context).primaryColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20.0,
+                                      ),
+                                    ),
+                                  ),
+                                  RaisedButton(
+                                    onPressed: () {
+                                      FocusScope.of(context).requestFocus(FocusNode());
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 12.0,
+                                        horizontal: 50.0,
+                                      ),
+                                      child: Text(
+                                        'Next',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20.0,
+                                        ),
+                                      ),
+                                    ),
+                                    color: Theme.of(context).primaryColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      side: BorderSide(
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }),
               Test('Tab 4 goes here'),
               Test('Tab 5 goes here'),
             ],

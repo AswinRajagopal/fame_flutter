@@ -1096,37 +1096,30 @@ class _DashboardPageState extends State<DashboardPage> {
                                   ),
                                 ),
                                 Spacer(),
-                                GestureDetector(
-                                  onTap: () {
-                                    Get.to(RoutePlanning());
-                                  },
-                                  child: Text(
-                                    'Create New Route Plan',
-                                    style: TextStyle(
-                                      fontSize: 17.0,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ),
-                                Text(
-                                  ' | ',
-                                  style: TextStyle(
-                                    fontSize: 16.0,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Get.to(PinMyVisit());
-                                  },
-                                  child: Text(
-                                    'Pin My Visit',
-                                    style: TextStyle(
-                                      fontSize: 17.0,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ),
+                                // GestureDetector(
+                                //   onTap: () {
+                                //     Get.to(RoutePlanning());
+                                //   },
+                                //   child: Text(
+                                //     'Create New Route Plan',
+                                //     style: TextStyle(
+                                //       fontSize: 17.0,
+                                //       color: Colors.grey,
+                                //     ),
+                                //   ),
+                                // ),
+                                // GestureDetector(
+                                //   onTap: () {
+                                //     Get.to(PinMyVisit());
+                                //   },
+                                //   child: Text(
+                                //     'Pin My Visit',
+                                //     style: TextStyle(
+                                //       fontSize: 17.0,
+                                //       color: Colors.grey,
+                                //     ),
+                                //   ),
+                                // ),
                                 // Column(
                                 //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 //   crossAxisAlignment: CrossAxisAlignment.end,
@@ -1237,6 +1230,76 @@ class _DashboardPageState extends State<DashboardPage> {
                           );
                         }
                       }),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0,
+                          vertical: 15.0,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                // Image.asset(
+                                //   'assets/images/dummy_location.png',
+                                //   height: 40.0,
+                                //   width: 40.0,
+                                // ),
+                                Icon(
+                                  Icons.map,
+                                  size: 25.0,
+                                  color: Colors.grey,
+                                ),
+                                SizedBox(
+                                  width: 6.0,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Get.to(RoutePlanning());
+                                  },
+                                  child: Text(
+                                    'Create New Route Plan',
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                                Spacer(),
+                                Icon(
+                                  Icons.pin_drop,
+                                  size: 25.0,
+                                  color: Colors.grey,
+                                ),
+                                SizedBox(
+                                  width: 6.0,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Get.to(PinMyVisit());
+                                  },
+                                  child: Text(
+                                    'Pin My Visit',
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      color: AppUtils().greyScaffoldBg,
+                      height: 20.0,
                     ),
                     // DotsIndicator(
                     //   dotsCount: erpC.empRes.routePlanList.length,

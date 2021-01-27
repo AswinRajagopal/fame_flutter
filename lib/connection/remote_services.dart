@@ -1650,4 +1650,45 @@ class RemoteServices {
       return null;
     }
   }
+
+  Future getStates() async {
+    var response = await client.post(
+      '$baseURL/company/get_states',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future getCities(stateId) async {
+    var response = await client.post(
+      '$baseURL/company/get_cities',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'companyId': box.get('companyid').toString(),
+          'stateId': stateId,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
 }
