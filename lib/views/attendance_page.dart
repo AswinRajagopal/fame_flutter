@@ -167,7 +167,7 @@ class _AttendancePageState extends State<AttendancePage> {
                       hint: Padding(
                         padding: const EdgeInsets.only(left: 8.0),
                         child: Text(
-                          'Select client',
+                          'Select Client',
                           style: TextStyle(
                             color: Colors.grey[600],
                             fontSize: 18.0,
@@ -372,7 +372,7 @@ class _AttendancePageState extends State<AttendancePage> {
                               child: Row(
                                 children: [
                                   Text(
-                                    'Select shift timings :',
+                                    'Select Shift Timings :',
                                     style: TextStyle(
                                       fontSize: 16.0,
                                       fontWeight: FontWeight.bold,
