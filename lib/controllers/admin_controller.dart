@@ -28,6 +28,10 @@ class AdminController extends GetxController {
   final List percitiesList = [].obs;
   final List checkList = [];
 
+  final shirtSizes = {'30', '32', '34', '36', '38', '40', '42', '44'};
+  final pantSizes = {'26', '28', '30', '32', '34', '36', '38', '40'};
+  final shoeSizes = {'6', '7', '8', '9', '10', '11'};
+
   void addShift(shiftName, startTime, endTime) async {
     try {
       await pr.show();

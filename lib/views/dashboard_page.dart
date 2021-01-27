@@ -1086,7 +1086,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                   width: 40.0,
                                 ),
                                 SizedBox(
-                                  width: 6.0,
+                                  width: 10.0,
                                 ),
                                 Text(
                                   'My Route Plan',

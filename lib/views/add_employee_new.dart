@@ -11,7 +11,7 @@ class AddEmployeeNew extends StatefulWidget {
   _AddEmployeeNewState createState() => _AddEmployeeNewState();
 }
 
-class _AddEmployeeNewState extends State<AddEmployeeNew> with SingleTickerProviderStateMixin {
+class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAliveClientMixin<AddEmployeeNew>, SingleTickerProviderStateMixin {
   final AdminController adminC = Get.put(AdminController());
   TextEditingController name = TextEditingController();
   TextEditingController dtOfBirth = TextEditingController();
@@ -26,6 +26,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with SingleTickerProvid
   TextEditingController permanenthouseNo = TextEditingController();
   TextEditingController permanentStreet = TextEditingController();
   TextEditingController permanentColony = TextEditingController();
+  TextEditingController accountNo = TextEditingController();
+  TextEditingController ifsc = TextEditingController();
   TabController tabController;
   var gender = 'M';
   var mStatus = 'Married';
@@ -37,9 +39,13 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with SingleTickerProvid
   var dob;
   var doj;
   var presentState;
+  var bank;
   var presentCity;
   var permanentState;
   var permanentCity;
+  var shirtSize;
+  var pantSize;
+  var shoeSize;
   var currentTabIndex = 0;
   bool copyAdd = false;
 
@@ -132,7 +138,11 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with SingleTickerProvid
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return DefaultTabController(
       length: 5,
       child: Scaffold(
@@ -830,8 +840,342 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with SingleTickerProvid
                   ),
                 );
               }),
-              Test('Tab 2 goes here'),
-              // Test('Tab 3 goes here'),
+              // STEP 2 - Bank & Uniform
+              Obx(() {
+                if (adminC.isLoadingData.value) {
+                  return Column();
+                }
+                return SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        height: MediaQuery.of(context).size.height / 1.29,
+                        child: ListView(
+                          shrinkWrap: true,
+                          primary: true,
+                          physics: ScrollPhysics(),
+                          children: [
+                            SizedBox(
+                              height: 10.0,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                                vertical: 10.0,
+                              ),
+                              child: Text(
+                                'Bank Details',
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                                vertical: 10.0,
+                              ),
+                              child: DropdownButtonFormField<dynamic>(
+                                hint: Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                    'Select Bank',
+                                    style: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontSize: 18.0,
+                                      // fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                isExpanded: false,
+                                items: adminC.bankNamesList.map((item) {
+                                  //print('item: $item');
+                                  return DropdownMenuItem(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 10.0),
+                                      child: Text(
+                                        item['bankname'],
+                                      ),
+                                    ),
+                                    value: item['bankId'],
+                                  );
+                                }).toList(),
+                                // decoration: InputDecoration(
+                                //   prefixIcon: Column(
+                                //     mainAxisAlignment: MainAxisAlignment.center,
+                                //     children: [
+                                //       Image.asset(
+                                //         'assets/images/state.png',
+                                //         color: Colors.grey[400],
+                                //         scale: 2.0,
+                                //       ),
+                                //     ],
+                                //   ),
+                                // ),
+                                onChanged: (value) {
+                                  FocusScope.of(context).requestFocus(FocusNode());
+                                  bank = value;
+                                  setState(() {});
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                                vertical: 10.0,
+                              ),
+                              child: TextField(
+                                controller: accountNo,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.all(10),
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 18.0,
+                                  ),
+                                  hintText: 'Account No.',
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                                vertical: 10.0,
+                              ),
+                              child: TextField(
+                                controller: ifsc,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.all(10),
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 18.0,
+                                  ),
+                                  hintText: 'IFSC',
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                                vertical: 10.0,
+                              ),
+                              child: Text(
+                                'Uniform Details',
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                                vertical: 10.0,
+                              ),
+                              child: DropdownButtonFormField<dynamic>(
+                                hint: Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                    'Select Shirt Size',
+                                    style: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontSize: 18.0,
+                                      // fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                isExpanded: false,
+                                items: adminC.shirtSizes.map((item) {
+                                  //print('item: $item');
+                                  return DropdownMenuItem(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 10.0),
+                                      child: Text(
+                                        item,
+                                      ),
+                                    ),
+                                    value: item,
+                                  );
+                                }).toList(),
+                                // decoration: InputDecoration(
+                                //   prefixIcon: Column(
+                                //     mainAxisAlignment: MainAxisAlignment.center,
+                                //     children: [
+                                //       Image.asset(
+                                //         'assets/images/state.png',
+                                //         color: Colors.grey[400],
+                                //         scale: 2.0,
+                                //       ),
+                                //     ],
+                                //   ),
+                                // ),
+                                onChanged: (value) {
+                                  FocusScope.of(context).requestFocus(FocusNode());
+                                  shirtSize = value;
+                                  // setState(() {});
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                                vertical: 10.0,
+                              ),
+                              child: DropdownButtonFormField<dynamic>(
+                                hint: Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                    'Select Pant Size',
+                                    style: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontSize: 18.0,
+                                      // fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                isExpanded: false,
+                                items: adminC.pantSizes.map((item) {
+                                  //print('item: $item');
+                                  return DropdownMenuItem(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 10.0),
+                                      child: Text(
+                                        item,
+                                      ),
+                                    ),
+                                    value: item,
+                                  );
+                                }).toList(),
+                                // decoration: InputDecoration(
+                                //   prefixIcon: Column(
+                                //     mainAxisAlignment: MainAxisAlignment.center,
+                                //     children: [
+                                //       Image.asset(
+                                //         'assets/images/state.png',
+                                //         color: Colors.grey[400],
+                                //         scale: 2.0,
+                                //       ),
+                                //     ],
+                                //   ),
+                                // ),
+                                onChanged: (value) {
+                                  FocusScope.of(context).requestFocus(FocusNode());
+                                  pantSize = value;
+                                  // setState(() {});
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                                vertical: 10.0,
+                              ),
+                              child: DropdownButtonFormField<dynamic>(
+                                hint: Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                    'Select Shoe Size',
+                                    style: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontSize: 18.0,
+                                      // fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                isExpanded: false,
+                                items: adminC.shoeSizes.map((item) {
+                                  //print('item: $item');
+                                  return DropdownMenuItem(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 10.0),
+                                      child: Text(
+                                        item,
+                                      ),
+                                    ),
+                                    value: item,
+                                  );
+                                }).toList(),
+                                // decoration: InputDecoration(
+                                //   prefixIcon: Column(
+                                //     mainAxisAlignment: MainAxisAlignment.center,
+                                //     children: [
+                                //       Image.asset(
+                                //         'assets/images/state.png',
+                                //         color: Colors.grey[400],
+                                //         scale: 2.0,
+                                //       ),
+                                //     ],
+                                //   ),
+                                // ),
+                                onChanged: (value) {
+                                  FocusScope.of(context).requestFocus(FocusNode());
+                                  shoeSize = value;
+                                  // setState(() {});
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Flexible(
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Container(
+                            height: 70.0,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border(
+                                top: BorderSide(
+                                  color: Colors.grey[300],
+                                  width: 1,
+                                ),
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                                vertical: 10.0,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  RaisedButton(
+                                    onPressed: () {
+                                      FocusScope.of(context).requestFocus(FocusNode());
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 12.0,
+                                        horizontal: 100.0,
+                                      ),
+                                      child: Text(
+                                        'Next',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20.0,
+                                        ),
+                                      ),
+                                    ),
+                                    color: Theme.of(context).primaryColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      side: BorderSide(
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }),
               // STEP 3 - Address Step
               Obx(() {
                 if (adminC.isLoadingData.value) {
