@@ -58,18 +58,19 @@ class DBCalController extends GetxController {
         // isCalLoading(false);
         if (calRes['success']) {
           // print(calRes.attendanceList);
+          // var chkdate = [];
           if (calendarType == 'myCal') {
             for (var i = 0; i < calRes['attendanceList'].length; i++) {
-              var eventDt = DateTime.parse(
-                formatDate(
-                  DateTime.parse(calRes['attendanceList'][i]['checkInDateTime']),
-                  [yyyy, mm, dd],
-                ),
-              );
+              var eventDt = DateTime.parse(formatDate(DateTime.parse(calRes['attendanceList'][i]['checkInDateTime']), [yyyy, mm, dd]));
+              // if (!chkdate.contains(eventDt)) {
+              //   chkdate.add(eventDt);
+              // } else {
+              //   //
+              // }
 
               var event;
               event = calRes['attendanceList'][i]['attendanceAlias'];
-              if (calRes['attendanceList'][i]['checkInDateTime'] != null && calRes['attendanceList'][i]['checkOutDateTime'] != null && calRes['attendanceList'][i]['attendanceAlias'] != null && calRes['attendanceList'][i]['checkInLatitude'] != '0E-8') {
+              if (calRes['attendanceList'][i]['checkInDateTime'] != null && calRes['attendanceList'][i]['checkOutDateTime'] != null && calRes['attendanceList'][i]['attendanceAlias'] != null) {
                 var chkIn = convertTimeWithoutParse(calRes['attendanceList'][i]['checkInDateTime']);
                 var chkOut = convertTimeWithoutParse(calRes['attendanceList'][i]['checkOutDateTime']);
                 event = calRes['attendanceList'][i]['attendanceAlias'] + '*' + chkIn + ',' + chkOut;

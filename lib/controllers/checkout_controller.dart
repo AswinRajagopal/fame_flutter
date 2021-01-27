@@ -68,7 +68,25 @@ class CheckoutController extends GetxController {
         print('checkoutResponse valid: ${checkoutResponse.success}');
         if (checkoutResponse.success) {
           var resDecode = jsonDecode(checkoutResponse.response);
-          if (!resDecode['face_found']) {
+          if (resDecode['msg'] == 'Please register before using.') {
+            Get.snackbar(
+              null,
+              resDecode['msg'],
+              colorText: Colors.white,
+              backgroundColor: Colors.black87,
+              snackPosition: SnackPosition.BOTTOM,
+              margin: EdgeInsets.symmetric(
+                horizontal: 8.0,
+                vertical: 10.0,
+              ),
+              padding: EdgeInsets.symmetric(
+                horizontal: 12.0,
+                vertical: 18.0,
+              ),
+              borderRadius: 5.0,
+            );
+            return false;
+          } else if (!resDecode['face_found']) {
             Get.snackbar(
               null,
               'Face not detected. Please take a picture again',

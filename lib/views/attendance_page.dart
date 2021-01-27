@@ -197,7 +197,7 @@ class _AttendancePageState extends State<AttendancePage> {
                         aC.clientId = manpower.first['clientId'];
                         aC.timings.clear();
                         checkList.clear();
-                        // aC.shiftTime = '';
+                        aC.shiftTime = '';
                         for (var j = 0; j < manpower.length; j++) {
                           // print('manpower: ${manpower[j]}');
                           manpower[j]['shiftStartTime'] = manpower[j]['shiftStartTime'].split(':').first.length == 1 ? '0' + manpower[j]['shiftStartTime'] : manpower[j]['shiftStartTime'];

@@ -133,6 +133,7 @@ class _CheckinPageState extends State<CheckinPage> {
       final extDir = await getApplicationDocumentsDirectory();
       final dirPath = '${extDir.path}/Pictures/flutter_test';
       await Directory(dirPath).create(recursive: true);
+      // final filePath = '$dirPath/image${DateTime.now().microsecondsSinceEpoch}.jpg';
       final filePath = '$dirPath/image.jpg';
       var dir = Directory(filePath);
       try {

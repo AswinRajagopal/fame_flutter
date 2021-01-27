@@ -75,7 +75,26 @@ class CheckinController extends GetxController {
         print('checkinResponse valid: ${checkinResponse.success}');
         if (checkinResponse.success) {
           var resDecode = jsonDecode(checkinResponse.response);
-          if (!resDecode['face_found']) {
+          print('checkinResponse: $resDecode');
+          if (resDecode['msg'] == 'Please register before using.') {
+            Get.snackbar(
+              null,
+              resDecode['msg'],
+              colorText: Colors.white,
+              backgroundColor: Colors.black87,
+              snackPosition: SnackPosition.BOTTOM,
+              margin: EdgeInsets.symmetric(
+                horizontal: 8.0,
+                vertical: 10.0,
+              ),
+              padding: EdgeInsets.symmetric(
+                horizontal: 12.0,
+                vertical: 18.0,
+              ),
+              borderRadius: 5.0,
+            );
+            return false;
+          } else if (!resDecode['face_found']) {
             Get.snackbar(
               null,
               'Face not detected. Please take a picture again',

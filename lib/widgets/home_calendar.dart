@@ -40,6 +40,69 @@ class _HomeCalendarState extends State<HomeCalendar> with TickerProviderStateMix
     super.dispose();
   }
 
+  void showPopup(date, events) {
+    print('On Date: $date');
+    var showDate = '${date.year}-${date.month <= 9 ? '0' + date.month.toString() : date.month}-${date.day <= 9 ? '0' + date.day.toString() : date.day}';
+    if (calC.calendarType == 'myRos') {
+      if (events != null) {
+        print(events);
+        var eveSplit = events.first.split(',');
+        var eveLength = events.first.split(',').length;
+        var clSplit = eveSplit.last.split('#');
+        var client1;
+        var client2;
+        if (clSplit.length > 1) {
+          client1 = clSplit[0];
+          client2 = clSplit[1];
+        } else {
+          client1 = eveSplit.last;
+        }
+        // if (eveLength > 1) {
+        var dtFormat = showDate.toString().split('-')[2] + '-' + showDate.toString().split('-')[1] + '-' + showDate.toString().split('-')[0];
+        Get.defaultDialog(
+          title: 'Roster on $dtFormat',
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                '$client1 : ${eveSplit[0]}',
+              ),
+              eveLength > 1 && (eveSplit[1] != null && client2 != null)
+                  ? Text(
+                      '$client2 : ${eveSplit[1]}',
+                    )
+                  : SizedBox(),
+            ],
+          ),
+          radius: 5.0,
+        );
+        // }
+      }
+    } else {
+      var dtFormat = showDate.toString().split('-')[2] + '-' + showDate.toString().split('-')[1] + '-' + showDate.toString().split('-')[0];
+      print('My Calendar');
+      print(events);
+      var calEvent = events.first.split('*');
+      if (calEvent.length > 1) {
+        Get.defaultDialog(
+          title: 'Employee Detail on $dtFormat',
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                'Checked In @ ${calEvent[1].split(',')[0]}',
+              ),
+              Text(
+                'Checked Out @ ${calEvent[1].split(',')[1]}',
+              ),
+            ],
+          ),
+          radius: 5.0,
+        );
+      }
+    }
+  }
+
   void _onVisibleDaysChanged(
     DateTime first,
     DateTime last,
@@ -110,15 +173,20 @@ class _HomeCalendarState extends State<HomeCalendar> with TickerProviderStateMix
         ),
       ),
       builders: CalendarBuilders(
-        selectedDayBuilder: (context, date, _) {
+        selectedDayBuilder: (context, date, events) {
           return Container(
             margin: const EdgeInsets.only(top: 4.0),
             padding: const EdgeInsets.only(top: 15.0, left: 28.0),
             width: 100,
             height: 300,
-            child: Text(
-              '${date.day}',
-              style: TextStyle().copyWith(fontSize: 16.0),
+            child: GestureDetector(
+              onTap: () {
+                showPopup(date, events);
+              },
+              child: Text(
+                '${date.day}',
+                style: TextStyle().copyWith(fontSize: 16.0),
+              ),
             ),
           );
         },
@@ -131,66 +199,7 @@ class _HomeCalendarState extends State<HomeCalendar> with TickerProviderStateMix
             height: 300,
             child: GestureDetector(
               onTap: () {
-                // print('On Date');
-                var showDate = '${date.year}-${date.month <= 9 ? '0' + date.month.toString() : date.month}-${date.day <= 9 ? '0' + date.day.toString() : date.day}';
-                if (calC.calendarType == 'myRos') {
-                  if (events != null) {
-                    print(events);
-                    var eveSplit = events.first.split(',');
-                    var eveLength = events.first.split(',').length;
-                    var clSplit = eveSplit.last.split('#');
-                    var client1;
-                    var client2;
-                    if (clSplit.length > 1) {
-                      client1 = clSplit[0];
-                      client2 = clSplit[1];
-                    } else {
-                      client1 = eveSplit.last;
-                    }
-                    // if (eveLength > 1) {
-                    var dtFormat = showDate.toString().split('-')[2] + '-' + showDate.toString().split('-')[1] + '-' + showDate.toString().split('-')[0];
-                    Get.defaultDialog(
-                      title: 'Roster on $dtFormat',
-                      content: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            '$client1 : ${eveSplit[0]}',
-                          ),
-                          eveLength > 1 && (eveSplit[1] != null && client2 != null)
-                              ? Text(
-                                  '$client2 : ${eveSplit[1]}',
-                                )
-                              : SizedBox(),
-                        ],
-                      ),
-                      radius: 5.0,
-                    );
-                    // }
-                  }
-                } else {
-                  var dtFormat = showDate.toString().split('-')[2] + '-' + showDate.toString().split('-')[1] + '-' + showDate.toString().split('-')[0];
-                  print('My Calendar');
-                  print(events);
-                  var calEvent = events.first.split('*');
-                  if (calEvent.length > 1) {
-                    Get.defaultDialog(
-                      title: 'Employee Detail on $dtFormat',
-                      content: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Checked In @ ${calEvent[1].split(',')[0]}',
-                          ),
-                          Text(
-                            'Checked Out @ ${calEvent[1].split(',')[1]}',
-                          ),
-                        ],
-                      ),
-                      radius: 5.0,
-                    );
-                  }
-                }
+                showPopup(date, events);
               },
               child: Text(
                 '${date.day}',
