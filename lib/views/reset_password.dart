@@ -89,7 +89,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Create new password',
+                            'Create New Password',
                             style: TextStyle(
                               color: Colors.yellowAccent,
                               fontSize: 22.0,
@@ -165,7 +165,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                                 color: Colors.grey,
                                 fontSize: 18.0,
                               ),
-                              hintText: 'Enter new password',
+                              hintText: 'Enter New Password',
                               prefixIcon: Image.asset(
                                 'assets/images/password.png',
                                 scale: 1.5,
@@ -215,7 +215,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                                 color: Colors.grey,
                                 fontSize: 18.0,
                               ),
-                              hintText: 'Confirm password',
+                              hintText: 'Confirm Password',
                               prefixIcon: Image.asset(
                                 'assets/images/password.png',
                                 scale: 1.5,

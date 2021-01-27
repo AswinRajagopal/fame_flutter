@@ -124,7 +124,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         ),
                       ),
                       CommonTextField(
-                        'Enter your email address',
+                        'Enter Your Email Address',
                         'assets/images/email.png',
                         'email',
                         email,

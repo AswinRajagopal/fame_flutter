@@ -94,7 +94,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
         if (from.difference(to).inDays > 1 && (stVal == 'F' || stVal == 'S')) {
           Get.snackbar(
             null,
-            'You can not apply for more then 1 day for Half Day leave',
+            'You cannot apply for more then 1 day for Half Day leave',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,
@@ -148,7 +148,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
         if (to.difference(from).inDays > 1 && (stVal == 'F' || stVal == 'S')) {
           Get.snackbar(
             null,
-            'You can not apply for more then 1 day for Half Day leave',
+            'You cannot apply for more then 1 day for Half Day leave',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,
@@ -204,7 +204,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
         if (to.difference(from).inDays > 1) {
           Get.snackbar(
             null,
-            'You can not apply for more then 1 day for Half Day leave',
+            'You cannot apply for more then 1 day for Half Day leave',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,
@@ -293,7 +293,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                                 fontSize: 18.0,
                                 // fontWeight: FontWeight.bold,
                               ),
-                              hintText: 'From date',
+                              hintText: 'From Date',
                               suffixIcon: Icon(
                                 Icons.calendar_today,
                                 size: 25.0,
@@ -320,7 +320,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                                 fontSize: 18.0,
                                 // fontWeight: FontWeight.bold,
                               ),
-                              hintText: 'To date',
+                              hintText: 'To Date',
                               suffixIcon: Icon(
                                 Icons.calendar_today,
                                 size: 25.0,
@@ -367,7 +367,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                       hint: Padding(
                         padding: const EdgeInsets.only(left: 8.0),
                         child: Text(
-                          'Select leave type',
+                          'Select Leave Type',
                           style: TextStyle(
                             color: Colors.grey[600],
                             fontSize: 18.0,
@@ -428,7 +428,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                             },
                           ),
                           Text(
-                            'Whole day',
+                            'Whole Day',
                             style: TextStyle(
                               color: Colors.grey[600],
                               fontSize: 16.0,
@@ -447,7 +447,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                             },
                           ),
                           Text(
-                            'First half',
+                            'First Half',
                             style: TextStyle(
                               color: Colors.grey[600],
                               fontSize: 16.0,
@@ -466,7 +466,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                             },
                           ),
                           Text(
-                            'Second half',
+                            'Second Half',
                             style: TextStyle(
                               color: Colors.grey[600],
                               fontSize: 16.0,
