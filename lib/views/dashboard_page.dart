@@ -1072,7 +1072,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       color: Colors.white,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0,
+                          horizontal: 20.0,
                           vertical: 15.0,
                         ),
                         child: Column(
@@ -1091,94 +1091,10 @@ class _DashboardPageState extends State<DashboardPage> {
                                 Text(
                                   'My Route Plan',
                                   style: TextStyle(
-                                    fontSize: 17.0,
+                                    fontSize: 18.0,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                Spacer(),
-                                // GestureDetector(
-                                //   onTap: () {
-                                //     Get.to(RoutePlanning());
-                                //   },
-                                //   child: Text(
-                                //     'Create New Route Plan',
-                                //     style: TextStyle(
-                                //       fontSize: 17.0,
-                                //       color: Colors.grey,
-                                //     ),
-                                //   ),
-                                // ),
-                                // GestureDetector(
-                                //   onTap: () {
-                                //     Get.to(PinMyVisit());
-                                //   },
-                                //   child: Text(
-                                //     'Pin My Visit',
-                                //     style: TextStyle(
-                                //       fontSize: 17.0,
-                                //       color: Colors.grey,
-                                //     ),
-                                //   ),
-                                // ),
-                                // Column(
-                                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                //   crossAxisAlignment: CrossAxisAlignment.end,
-                                //   children: [
-                                //     GestureDetector(
-                                //       onTap: () {
-                                //         // Get.offAll(RoutePlanning());
-                                //         Get.to(RoutePlanning());
-                                //       },
-                                //       child: Row(
-                                //         children: [
-                                //           Text(
-                                //             'Create New Route Plan',
-                                //             style: TextStyle(
-                                //               fontSize: 17.0,
-                                //               color: Colors.grey,
-                                //             ),
-                                //           ),
-                                //           Icon(
-                                //             Icons.chevron_right,
-                                //             size: 25.0,
-                                //           ),
-                                //         ],
-                                //       ),
-                                //     ),
-                                //     GestureDetector(
-                                //       onTap: () {
-                                //         // Get.offAll(RoutePlanning());
-                                //         Get.to(PinMyVisit());
-                                //       },
-                                //       child: Row(
-                                //         children: [
-                                //           Text(
-                                //             'Pin My Visit',
-                                //             style: TextStyle(
-                                //               fontSize: 17.0,
-                                //               color: Colors.grey,
-                                //             ),
-                                //           ),
-                                //           Icon(
-                                //             Icons.chevron_right,
-                                //             size: 25.0,
-                                //           ),
-                                //         ],
-                                //       ),
-                                //     ),
-                                //   ],
-                                // ),
-
-                                // GestureDetector(
-                                //   onTap: () {
-                                //     // Get.offAll(RoutePlanning());
-                                //     Get.to(RoutePlanning());
-                                //   },
-                                //   child: Icon(
-                                //     Icons.chevron_right,
-                                //     size: 35.0,
-                                //   ),
-                                // ),
                               ],
                             ),
                           ],

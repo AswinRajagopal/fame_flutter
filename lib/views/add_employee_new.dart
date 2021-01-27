@@ -962,6 +962,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with SingleTickerProvid
                                   ),
                                 ),
                                 isExpanded: false,
+                                value: presentState,
                                 items: adminC.statesList.map((item) {
                                   //print('item: $item');
                                   return DropdownMenuItem(
@@ -984,9 +985,10 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with SingleTickerProvid
                                   ),
                                 ),
                                 onChanged: (value) {
+                                  FocusScope.of(context).requestFocus(FocusNode());
                                   presentState = value;
+                                  setState(() {});
                                   adminC.getCities(int.parse(value), 'present');
-                                  // setState(() {});
                                 },
                               ),
                             ),
@@ -1005,6 +1007,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with SingleTickerProvid
                                   ),
                                 ),
                                 isExpanded: false,
+                                value: presentCity,
                                 items: adminC.citiesList.map((item) {
                                   //print('item: $item');
                                   return DropdownMenuItem(
@@ -1027,8 +1030,9 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with SingleTickerProvid
                                   ),
                                 ),
                                 onChanged: (value) {
+                                  FocusScope.of(context).requestFocus(FocusNode());
                                   presentCity = value;
-                                  // setState(() {});
+                                  setState(() {});
                                 },
                               ),
                             ),
@@ -1043,7 +1047,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with SingleTickerProvid
                                     value: copyAdd,
                                     onChanged: (value) {
                                       print(value);
-                                      if (presenthouseNo.text.isNullOrBlank || presentStreet.text.isNullOrBlank || presentColony.text.isNullOrBlank) {
+                                      if (presenthouseNo.text.isNullOrBlank || presentStreet.text.isNullOrBlank || presentColony.text.isNullOrBlank || presentState == null || presentCity == null) {
                                         Get.snackbar(
                                           null,
                                           'Please fill present address first',
@@ -1059,10 +1063,16 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with SingleTickerProvid
                                           permanenthouseNo.text = presenthouseNo.text;
                                           permanentStreet.text = presentStreet.text;
                                           permanentColony.text = presentColony.text;
+                                          permanentState = presentState;
+                                          permanentCity = presentCity;
+                                          adminC.percitiesList.addAll(adminC.citiesList);
                                         } else {
                                           permanenthouseNo.clear();
                                           permanentStreet.clear();
                                           permanentColony.clear();
+                                          permanentState = null;
+                                          permanentCity = null;
+                                          adminC.percitiesList.clear();
                                         }
                                         copyAdd = value;
                                         setState(() {});
@@ -1191,6 +1201,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with SingleTickerProvid
                                   ),
                                 ),
                                 isExpanded: false,
+                                value: permanentState,
                                 items: adminC.statesList.map((item) {
                                   //print('item: $item');
                                   return DropdownMenuItem(
@@ -1213,9 +1224,10 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with SingleTickerProvid
                                   ),
                                 ),
                                 onChanged: (value) {
+                                  FocusScope.of(context).requestFocus(FocusNode());
                                   permanentState = value;
+                                  setState(() {});
                                   adminC.getCities(int.parse(value), 'permanent');
-                                  // setState(() {});
                                 },
                               ),
                             ),
@@ -1234,6 +1246,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with SingleTickerProvid
                                   ),
                                 ),
                                 isExpanded: false,
+                                value: permanentCity,
                                 items: adminC.percitiesList.map((item) {
                                   //print('item: $item');
                                   return DropdownMenuItem(
@@ -1256,8 +1269,9 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with SingleTickerProvid
                                   ),
                                 ),
                                 onChanged: (value) {
+                                  FocusScope.of(context).requestFocus(FocusNode());
                                   permanentCity = value;
-                                  // setState(() {});
+                                  setState(() {});
                                 },
                               ),
                             ),
@@ -1284,22 +1298,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with SingleTickerProvid
                                 vertical: 10.0,
                               ),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  FlatButton(
-                                    onPressed: () {
-                                      print('Back');
-                                      // Get.back();
-                                    },
-                                    child: Text(
-                                      'Back',
-                                      style: TextStyle(
-                                        color: Theme.of(context).primaryColor,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20.0,
-                                      ),
-                                    ),
-                                  ),
                                   RaisedButton(
                                     onPressed: () {
                                       FocusScope.of(context).requestFocus(FocusNode());
@@ -1307,7 +1307,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with SingleTickerProvid
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
                                         vertical: 12.0,
-                                        horizontal: 50.0,
+                                        horizontal: 100.0,
                                       ),
                                       child: Text(
                                         'Next',
