@@ -35,6 +35,9 @@ class LeaveListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // print(RemoteServices().box.get('empid'));
+    // print(leave['empId']);
+    print(RemoteServices().box.get('empid') != leave['empId']);
     return Container(
       color: Colors.white,
       margin: EdgeInsets.symmetric(vertical: 10.0),
@@ -349,7 +352,7 @@ class LeaveListWidget extends StatelessWidget {
                 ),
               ],
             ),
-            leave['status'] == '0' || leave['status'] == 'Pending' && (RemoteServices().box.get('role') == '2' || RemoteServices().box.get('role') == '3')
+            (leave['status'] == '0' || leave['status'] == 'Pending') && (RemoteServices().box.get('role') == '2' || RemoteServices().box.get('role') == '3') && (RemoteServices().box.get('empid') != leave['empId'])
                 ? Column(
                     children: [
                       SizedBox(
