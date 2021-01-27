@@ -148,8 +148,9 @@ class _HomeCalendarState extends State<HomeCalendar> with TickerProviderStateMix
                       client1 = eveSplit.last;
                     }
                     // if (eveLength > 1) {
+                    var dtFormat = showDate.toString().split('-')[2] + '-' + showDate.toString().split('-')[1] + '-' + showDate.toString().split('-')[0];
                     Get.defaultDialog(
-                      title: 'Roster on $showDate',
+                      title: 'Roster on $dtFormat',
                       content: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -168,12 +169,13 @@ class _HomeCalendarState extends State<HomeCalendar> with TickerProviderStateMix
                     // }
                   }
                 } else {
+                  var dtFormat = showDate.toString().split('-')[2] + '-' + showDate.toString().split('-')[1] + '-' + showDate.toString().split('-')[0];
                   print('My Calendar');
                   print(events);
                   var calEvent = events.first.split('*');
                   if (calEvent.length > 1) {
                     Get.defaultDialog(
-                      title: 'Employee Detail on $showDate',
+                      title: 'Employee Detail on $dtFormat',
                       content: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
