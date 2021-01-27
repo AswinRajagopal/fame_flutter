@@ -30,7 +30,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
   TextEditingController ifsc = TextEditingController();
   TabController tabController;
   var gender = 'M';
-  var mStatus = 'Married';
+  var mStatus = 'UnMarried';
   var department;
   var client;
   var blood;
@@ -98,9 +98,13 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
   Future<Null> getDate(BuildContext context) async {
     final picked = await showDatePicker(
       context: context,
-      initialDate: DateTime.parse(
-        curDate.toString(),
-      ),
+      initialDate: dob != null
+          ? DateTime.parse(
+              dob.toString(),
+            )
+          : DateTime.parse(
+              curDate.toString(),
+            ),
       firstDate: DateTime.now().add(Duration(days: -36500)),
       lastDate: DateTime.now(),
     );
@@ -117,9 +121,13 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
   Future<Null> getJoiningDate(BuildContext context) async {
     final picked = await showDatePicker(
       context: context,
-      initialDate: DateTime.parse(
-        curDate.toString(),
-      ),
+      initialDate: doj != null
+          ? DateTime.parse(
+              doj.toString(),
+            )
+          : DateTime.parse(
+              curDate.toString(),
+            ),
       firstDate: DateTime.now().add(Duration(days: -60)),
       lastDate: DateTime.now().add(Duration(days: 120)),
     );
@@ -524,7 +532,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   ),
                                 ),
                                 isExpanded: true,
-                                // value: json.encode(aC.clientList.first.clientManpowerList),
+                                value: department,
                                 items: adminC.departmentsList.map((item) {
                                   //print('item: $item');
                                   return DropdownMenuItem(
@@ -567,6 +575,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   ),
                                 ),
                                 isExpanded: false,
+                                value: client,
                                 items: adminC.clientList.map((item) {
                                   //print('item: $item');
                                   var sC = item['name'] + ' - ' + item['id'].toString();
@@ -610,6 +619,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   ),
                                 ),
                                 isExpanded: false,
+                                value: blood,
                                 items: adminC.bloodGroupsList.map((item) {
                                   //print('item: $item');
                                   return DropdownMenuItem(
@@ -652,6 +662,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   ),
                                 ),
                                 isExpanded: false,
+                                value: designation,
                                 items: adminC.designationsList.map((item) {
                                   //print('item: $item');
                                   return DropdownMenuItem(
@@ -807,6 +818,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   RaisedButton(
                                     onPressed: () {
                                       FocusScope.of(context).requestFocus(FocusNode());
+                                      tabController.animateTo(1);
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
@@ -889,6 +901,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   ),
                                 ),
                                 isExpanded: false,
+                                value: bank,
                                 items: adminC.bankNamesList.map((item) {
                                   //print('item: $item');
                                   return DropdownMenuItem(
@@ -986,6 +999,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   ),
                                 ),
                                 isExpanded: false,
+                                value: shirtSize,
                                 items: adminC.shirtSizes.map((item) {
                                   //print('item: $item');
                                   return DropdownMenuItem(
@@ -1035,6 +1049,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   ),
                                 ),
                                 isExpanded: false,
+                                value: pantSize,
                                 items: adminC.pantSizes.map((item) {
                                   //print('item: $item');
                                   return DropdownMenuItem(
@@ -1084,6 +1099,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   ),
                                 ),
                                 isExpanded: false,
+                                value: shoeSize,
                                 items: adminC.shoeSizes.map((item) {
                                   //print('item: $item');
                                   return DropdownMenuItem(
@@ -1143,6 +1159,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   RaisedButton(
                                     onPressed: () {
                                       FocusScope.of(context).requestFocus(FocusNode());
+                                      tabController.animateTo(2);
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
@@ -1647,6 +1664,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   RaisedButton(
                                     onPressed: () {
                                       FocusScope.of(context).requestFocus(FocusNode());
+                                      tabController.animateTo(3);
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
