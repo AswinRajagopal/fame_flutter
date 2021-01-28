@@ -1,9 +1,13 @@
 import 'dart:io';
 
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as path;
+
 import '../utils/utils.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:checkdigit/checkdigit.dart';
 
 import '../controllers/admin_controller.dart';
 import 'package:flutter/material.dart';
@@ -236,7 +240,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
           borderRadius: 5.0,
         );
         return false;
-      } else if (empPhone.text.length != 10)  {
+      } else if (empPhone.text.length != 10) {
         Get.snackbar(
           null,
           'Please provide 10 digit phone number',
@@ -250,7 +254,100 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
         return false;
       } else {
         return true;
-
+      }
+    } else if (step == 1) {
+      if (bank == null || accountNo.isNullOrBlank || ifsc.isNullOrBlank || shirtSize == null || pantSize == null || shoeSize == null) {
+        Get.snackbar(
+          null,
+          'Please fill all data',
+          colorText: Colors.white,
+          backgroundColor: Colors.black87,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+          padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+          borderRadius: 5.0,
+        );
+        return false;
+      } else {
+        return true;
+      }
+    } else if (step == 2) {
+      if (presenthouseNo.isNullOrBlank || presentStreet.isNullOrBlank || presentColony.isNullOrBlank || presentState == null || presentCity == null || permanenthouseNo.isNullOrBlank || permanentStreet.isNullOrBlank || permanentColony.isNullOrBlank || permanentState == null || permanentCity == null) {
+        Get.snackbar(
+          null,
+          'Please fill all data',
+          colorText: Colors.white,
+          backgroundColor: Colors.black87,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+          padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+          borderRadius: 5.0,
+        );
+        return false;
+      } else {
+        return true;
+      }
+    } else if (step == 3) {
+      if (fatherName.isNullOrBlank || dobFather.isNullOrBlank || ageFather.isNullOrBlank || aadharNumberFather.isNullOrBlank || relFather == null || familyName.isNullOrBlank || dobFamily.isNullOrBlank || ageFamily.isNullOrBlank || aadharNumberFamily.isNullOrBlank || relFamily == null) {
+        Get.snackbar(
+          null,
+          'Please fill all data',
+          colorText: Colors.white,
+          backgroundColor: Colors.black87,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+          padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+          borderRadius: 5.0,
+        );
+        return false;
+      } else if (!verhoeff.validate(aadharNumberFather.text) || !verhoeff.validate(aadharNumberFamily.text)) {
+        Get.snackbar(
+          null,
+          'Please add valid aadhar number',
+          colorText: Colors.white,
+          backgroundColor: Colors.black87,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+          padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+          borderRadius: 5.0,
+        );
+        return false;
+      } else {
+        return true;
+      }
+    } else if (step == 4) {
+      //     File aadhar1;
+      // File aadhar2;
+      // File proof11;
+      // File proof12;
+      // File proof21;
+      // File proof22;
+      if (proofAadharNumber.isNullOrBlank || proofAadharNumberConfirm.isNullOrBlank || proofNumber2.isNullOrBlank || proofNumber3.isNullOrBlank || aadhar1 == null || aadhar2 == null || proof11 == null || proof12 == null || proof21 == null || proof22 == null || idProof1 == null || idProof2 == null) {
+        Get.snackbar(
+          null,
+          'Please fill all data',
+          colorText: Colors.white,
+          backgroundColor: Colors.black87,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+          padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+          borderRadius: 5.0,
+        );
+        return false;
+      } else if (!verhoeff.validate(aadharNumberFather.text) || !verhoeff.validate(aadharNumberFamily.text)) {
+        Get.snackbar(
+          null,
+          'Please add valid aadhar number',
+          colorText: Colors.white,
+          backgroundColor: Colors.black87,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+          padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+          borderRadius: 5.0,
+        );
+        return false;
+      } else {
+        return true;
       }
     }
     return false;
@@ -294,6 +391,9 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                   GestureDetector(
                     onTap: () {
                       tabController.animateTo(0);
+                      setState(() {
+                        currentTabIndex = 0;
+                      });
                     },
                     child: Tab(
                       text: 'Personal Info',
@@ -302,7 +402,13 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                   GestureDetector(
                     onTap: () {
                       print('currentTabIndex: $currentTabIndex');
-                      if (currentTabIndex < 1 && validateStep(currentTabIndex)) {
+                      print('goto: 1');
+                      if (currentTabIndex > 1) {
+                        tabController.animateTo(1);
+                        setState(() {
+                          currentTabIndex = 1;
+                        });
+                      } else if (validateStep(currentTabIndex)) {
                         tabController.animateTo(1);
                         setState(() {
                           currentTabIndex = 1;
@@ -316,7 +422,13 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                   GestureDetector(
                     onTap: () {
                       print('currentTabIndex: $currentTabIndex');
-                      if (currentTabIndex < 2 && validateStep(currentTabIndex)) {
+                      print('goto: 2');
+                      if (currentTabIndex > 2) {
+                        tabController.animateTo(2);
+                        setState(() {
+                          currentTabIndex = 2;
+                        });
+                      } else if (validateStep(currentTabIndex)) {
                         tabController.animateTo(2);
                         setState(() {
                           currentTabIndex = 2;
@@ -330,7 +442,13 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                   GestureDetector(
                     onTap: () {
                       print('currentTabIndex: $currentTabIndex');
-                      if (currentTabIndex < 3 && validateStep(currentTabIndex)) {
+                      print('goto: 3');
+                      if (currentTabIndex > 3) {
+                        tabController.animateTo(3);
+                        setState(() {
+                          currentTabIndex = 3;
+                        });
+                      } else if (validateStep(currentTabIndex)) {
                         tabController.animateTo(3);
                         setState(() {
                           currentTabIndex = 3;
@@ -344,7 +462,13 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                   GestureDetector(
                     onTap: () {
                       print('currentTabIndex: $currentTabIndex');
-                      if (currentTabIndex < 4 && validateStep(currentTabIndex)) {
+                      print('goto: 4');
+                      if (currentTabIndex > 4) {
+                        tabController.animateTo(4);
+                        setState(() {
+                          currentTabIndex = 4;
+                        });
+                      } else if (validateStep(currentTabIndex)) {
                         tabController.animateTo(4);
                         setState(() {
                           currentTabIndex = 4;
@@ -1073,6 +1197,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                               ),
                               child: TextField(
                                 controller: accountNo,
+                                keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                   isDense: true,
                                   contentPadding: EdgeInsets.all(10),
@@ -1292,7 +1417,9 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   RaisedButton(
                                     onPressed: () {
                                       FocusScope.of(context).requestFocus(FocusNode());
-                                      tabController.animateTo(2);
+                                      if (validateStep(1)) {
+                                        tabController.animateTo(2);
+                                      }
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
@@ -1797,7 +1924,9 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   RaisedButton(
                                     onPressed: () {
                                       FocusScope.of(context).requestFocus(FocusNode());
-                                      tabController.animateTo(3);
+                                      if (validateStep(2)) {
+                                        tabController.animateTo(3);
+                                      }
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
@@ -2282,7 +2411,9 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                 RaisedButton(
                                   onPressed: () {
                                     FocusScope.of(context).requestFocus(FocusNode());
-                                    tabController.animateTo(4);
+                                    if (validateStep(3)) {
+                                      tabController.animateTo(4);
+                                    }
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
@@ -2370,8 +2501,15 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     ),
                                     readOnly: true,
                                     keyboardType: null,
-                                    onTap: () {
-                                      // fromDate(context);
+                                    onTap: () async {
+                                      var pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+                                      if (pickedFile != null) {
+                                        aadhar1 = File(pickedFile.path);
+                                        proof1.text = path.basename(pickedFile.path);
+                                        setState(() {});
+                                      } else {
+                                        print('No image selected.');
+                                      }
                                     },
                                   ),
                                 ),
@@ -2398,7 +2536,16 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     ),
                                     readOnly: true,
                                     keyboardType: null,
-                                    onTap: () {},
+                                    onTap: () async {
+                                      var pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+                                      if (pickedFile != null) {
+                                        aadhar2 = File(pickedFile.path);
+                                        proof2.text = path.basename(pickedFile.path);
+                                        setState(() {});
+                                      } else {
+                                        print('No image selected.');
+                                      }
+                                    },
                                   ),
                                 ),
                               ],
@@ -2784,6 +2931,9 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                 RaisedButton(
                                   onPressed: () {
                                     FocusScope.of(context).requestFocus(FocusNode());
+                                    if (validateStep(4)) {
+                                      print('done');
+                                    }
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(

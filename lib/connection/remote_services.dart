@@ -1478,7 +1478,7 @@ class RemoteServices {
           print('Unknown');
         } else {
           // var currDate = DateTime.now();
-          var currDate = DateFormat('yyyy-MM-dd hh:mm:ss').format(DateTime.now()).toString();
+          var currDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()).toString();
           var _battery = Battery();
           var level = await _battery.batteryLevel;
           // print(position.latitude.toString());

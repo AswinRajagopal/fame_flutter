@@ -86,6 +86,7 @@ dependencies:
   # timezone: 
   # flutter_html: ^1.2.0
   flutter_statusbarcolor: ^0.2.3
+  checkdigit: ^0.2.0
 
 # flutter_icons:
 #   image_path: "assets/images/icon.png"
