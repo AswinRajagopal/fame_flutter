@@ -14,7 +14,8 @@ import 'package:get/get.dart';
 class VisitPlanRoute extends StatefulWidget {
   final String empId;
   final String date;
-  VisitPlanRoute(this.empId, this.date);
+  final String type;
+  VisitPlanRoute(this.empId, this.date, {this.type});
 
   @override
   _VisitPlanRouteState createState() => _VisitPlanRouteState();
@@ -65,7 +66,7 @@ class _VisitPlanRouteState extends State<VisitPlanRoute> {
       backgroundColor: Colors.white,
     );
     Future.delayed(Duration(milliseconds: 100), () {
-      epC.getVisitPlanRoute(widget.empId, widget.date, type: 'visit');
+      epC.getVisitPlanRoute(widget.empId, widget.date, type: widget.type ?? 'visit');
     });
     super.initState();
   }
@@ -133,7 +134,7 @@ class _VisitPlanRouteState extends State<VisitPlanRoute> {
       controller = controllerParam;
       // controller.setMapStyle(_mapStyle);
 
-      epC.pitsStops.asMap().forEach((index, emp) async {
+      epC.pitsStopsRoute.asMap().forEach((index, emp) async {
         if (emp['checkinLat'] != null || emp['checkinLat'] != '' || emp['checkinLng'] != null || emp['checkinLng'] != '') {
           print('emp$index: $emp');
           _markers.add(
@@ -147,7 +148,7 @@ class _VisitPlanRouteState extends State<VisitPlanRoute> {
                 double.parse(emp['checkinLng']),
               ),
               infoWindow: InfoWindow(
-                title: 'Pit Stop ID: ${emp['pitstopId'].toString()}',
+                title: widget.type != null && widget.type == 'timeline' ? 'Timeline ID: ${emp['pitstopId'].toString()}' : 'Pit Stop ID: ${emp['pitstopId'].toString()}',
                 snippet: emp['address'],
               ),
             ),
@@ -155,8 +156,8 @@ class _VisitPlanRouteState extends State<VisitPlanRoute> {
 
           if (index > 0) {
             _updatedMapPosition = LatLng(
-              double.parse(epC.pitsStops[index - 1]['checkinLat']),
-              double.parse(epC.pitsStops[index - 1]['checkinLng']),
+              double.parse(epC.pitsStopsRoute[index - 1]['checkinLat']),
+              double.parse(epC.pitsStopsRoute[index - 1]['checkinLng']),
             );
 
             String route = await _locationPath.getRouteCoordinates(
@@ -167,22 +168,24 @@ class _VisitPlanRouteState extends State<VisitPlanRoute> {
               ),
             );
 
-            _polyline.add(
-              Polyline(
-                polylineId: PolylineId(emp['pitstopId'].toString()),
-                visible: true,
-                //latlng is List<LatLng>
-                points: _convertToLatLng(
-                  _decodePoly(
-                    route,
+            if (route != 'notincluded') {
+              _polyline.add(
+                Polyline(
+                  polylineId: PolylineId(emp['pitstopId'].toString()),
+                  visible: true,
+                  //latlng is List<LatLng>
+                  points: _convertToLatLng(
+                    _decodePoly(
+                      route,
+                    ),
                   ),
+                  width: 5,
+                  color: Theme.of(context).primaryColor,
+                  endCap: Cap.roundCap,
+                  startCap: Cap.roundCap,
                 ),
-                width: 5,
-                color: Theme.of(context).primaryColor,
-                endCap: Cap.roundCap,
-                startCap: Cap.roundCap,
-              ),
-            );
+              );
+            }
           }
         }
       });
@@ -200,14 +203,14 @@ class _VisitPlanRouteState extends State<VisitPlanRoute> {
       backgroundColor: AppUtils().innerScaffoldBg,
       appBar: AppBar(
         title: Text(
-          'Visit Plan Tracking',
+          widget.type != null && widget.type == 'timeline' ? 'Timeline Tracking' : 'Visit Plan Tracking',
         ),
       ),
       body: SafeArea(
         child: Obx(() {
           if (epC.isLoadingTimeline.value) {
             return Column();
-          } else if (epC.pitsStops.isNullOrBlank) {
+          } else if (epC.pitsStopsRoute.isNullOrBlank) {
             return Container(
               height: MediaQuery.of(context).size.height / 1.2,
               child: Padding(
@@ -261,8 +264,8 @@ class _VisitPlanRouteState extends State<VisitPlanRoute> {
                         onMapCreated: _onMapCreated,
                         initialCameraPosition: CameraPosition(
                           target: LatLng(
-                            double.parse(epC.pitsStops.first['checkinLat']),
-                            double.parse(epC.pitsStops.first['checkinLng']),
+                            double.parse(epC.pitsStopsRoute.first['checkinLat']),
+                            double.parse(epC.pitsStopsRoute.first['checkinLng']),
                           ),
                           zoom: 13,
                         ),

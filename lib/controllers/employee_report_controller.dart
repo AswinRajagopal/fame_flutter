@@ -42,6 +42,7 @@ class EmployeeReportController extends GetxController {
   var shortageRes;
   var oB = AppUtils.NAME;
   final List pitsStops = [].obs;
+  final List pitsStopsRoute = [].obs;
   double totalDistance = 0;
 
   void getClientTimings() async {
@@ -351,7 +352,7 @@ class EmployeeReportController extends GetxController {
 
   void getVisitPlanRoute(empId, searchDate, {type}) async {
     isLoadingTimeline(true);
-    pitsStops.clear();
+    pitsStopsRoute.clear();
     totalDistance = 0;
     try {
       await pr.show();
@@ -360,41 +361,68 @@ class EmployeeReportController extends GetxController {
         if (getTimelineRes['success']) {
           // print('getTimelineRes: $getTimelineRes');
           // print('type: $type');
-          for (var i = 0; i < getTimelineRes['pitstopList'].length; i++) {
-            var pitstop = getTimelineRes['pitstopList'][i];
-            var date = pitstop['updatedOn'];
+          if (type != null && type == 'timeline') {
+            for (var i = 0; i < getTimelineRes['empTimelineList'].length; i++) {
+              var pitstop = getTimelineRes['empTimelineList'][i];
+              pitstop['pitstopId'] = pitstop['emptlnId'];
+              var date = pitstop['timeStamp'];
 
-            pitstop['datetime'] = DateFormat('dd').format(DateTime.parse(date)).toString() + '-' + DateFormat('MM').format(DateTime.parse(date)).toString() + '-' + DateFormat.y().format(DateTime.parse(date)).toString() + ', ' + DateFormat('hh:mm').format(DateTime.parse(date)).toString() + '' + DateFormat('a').format(DateTime.parse(date)).toString().toLowerCase();
-            if (pitstop['checkinLat'] == null || pitstop['checkinLat'] == '' || pitstop['checkinLng'] == null || pitstop['checkinLng'] == '') {
-              pitstop['address'] = 'N/A';
-            } else {
-              var placemark = await placemarkFromCoordinates(
-                double.parse(pitstop['checkinLat']),
-                double.parse(pitstop['checkinLng']),
-              );
-              var first = placemark.first;
-              // print(first);
-              var address = '${first.street}, ${first.thoroughfare}, ${first.subLocality}, ${first.locality}, ${first.administrativeArea}, ${first.postalCode}, ${first.country}';
-              pitstop['address'] = address;
+              pitstop['datetime'] = DateFormat('dd').format(DateTime.parse(date)).toString() + '-' + DateFormat('MM').format(DateTime.parse(date)).toString() + '-' + DateFormat.y().format(DateTime.parse(date)).toString() + ', ' + DateFormat('hh:mm').format(DateTime.parse(date)).toString() + '' + DateFormat('a').format(DateTime.parse(date)).toString().toLowerCase();
+              if (pitstop['lat'] == null || pitstop['lat'] == '' || pitstop['lng'] == null || pitstop['lng'] == '') {
+                pitstop['address'] = 'N/A';
+                pitstop['checkinLat'] = '';
+                pitstop['checkinLng'] = '';
+              } else {
+                pitstop['checkinLat'] = pitstop['lat'];
+                pitstop['checkinLng'] = pitstop['lng'];
+                var placemark = await placemarkFromCoordinates(
+                  double.parse(pitstop['lat']),
+                  double.parse(pitstop['lng']),
+                );
+                var first = placemark.first;
+                // print(first);
+                var address = '${first.street}, ${first.thoroughfare}, ${first.subLocality}, ${first.locality}, ${first.administrativeArea}, ${first.postalCode}, ${first.country}';
+                pitstop['address'] = address;
+              }
+              pitsStopsRoute.add(pitstop);
             }
-            pitsStops.add(pitstop);
+            for (var d = 0; d < pitsStopsRoute.length - 1; d++) {
+              totalDistance += await Locationpath().getDistance(
+                LatLng(double.parse(pitsStopsRoute[d]['lat']), double.parse(pitsStopsRoute[d]['lng'])),
+                LatLng(double.parse(pitsStopsRoute[d + 1]['lat']), double.parse(pitsStopsRoute[d + 1]['lng'])),
+              );
+            }
+            isLoadingTimeline(false);
+            await pr.hide();
+          } else {
+            for (var i = 0; i < getTimelineRes['pitstopList'].length; i++) {
+              var pitstop = getTimelineRes['pitstopList'][i];
+              var date = pitstop['updatedOn'];
+
+              pitstop['datetime'] = DateFormat('dd').format(DateTime.parse(date)).toString() + '-' + DateFormat('MM').format(DateTime.parse(date)).toString() + '-' + DateFormat.y().format(DateTime.parse(date)).toString() + ', ' + DateFormat('hh:mm').format(DateTime.parse(date)).toString() + '' + DateFormat('a').format(DateTime.parse(date)).toString().toLowerCase();
+              if (pitstop['checkinLat'] == null || pitstop['checkinLat'] == '' || pitstop['checkinLng'] == null || pitstop['checkinLng'] == '') {
+                pitstop['address'] = 'N/A';
+              } else {
+                var placemark = await placemarkFromCoordinates(
+                  double.parse(pitstop['checkinLat']),
+                  double.parse(pitstop['checkinLng']),
+                );
+                var first = placemark.first;
+                // print(first);
+                var address = '${first.street}, ${first.thoroughfare}, ${first.subLocality}, ${first.locality}, ${first.administrativeArea}, ${first.postalCode}, ${first.country}';
+                pitstop['address'] = address;
+              }
+              pitsStopsRoute.add(pitstop);
+            }
+            for (var d = 0; d < pitsStopsRoute.length - 1; d++) {
+              totalDistance += await Locationpath().getDistance(
+                LatLng(double.parse(pitsStopsRoute[d]['checkinLat']), double.parse(pitsStopsRoute[d]['checkinLng'])),
+                LatLng(double.parse(pitsStopsRoute[d + 1]['checkinLat']), double.parse(pitsStopsRoute[d + 1]['checkinLng'])),
+              );
+            }
+            isLoadingTimeline(false);
+            await pr.hide();
           }
-          for (var d = 0; d < pitsStops.length - 1; d++) {
-            // totalDistance += Locationpath().calculateDistance(double.parse(pitsStops[d]['checkinLat']), double.parse(pitsStops[d]['checkinLng']), double.parse(pitsStops[d + 1]['checkinLat']), double.parse(pitsStops[d + 1]['checkinLng']));
-            // totalDistance += Geolocator.distanceBetween(
-            //       double.parse(pitsStops[d]['checkinLat']),
-            //       double.parse(pitsStops[d]['checkinLng']),
-            //       double.parse(pitsStops[d + 1]['checkinLat']),
-            //       double.parse(pitsStops[d + 1]['checkinLng']),
-            //     ) /
-            //     1000;
-            totalDistance += await Locationpath().getDistance(
-              LatLng(double.parse(pitsStops[d]['checkinLat']), double.parse(pitsStops[d]['checkinLng'])),
-              LatLng(double.parse(pitsStops[d + 1]['checkinLat']), double.parse(pitsStops[d + 1]['checkinLng'])),
-            );
-          }
-          isLoadingTimeline(false);
-          await pr.hide();
         } else {
           isLoadingTimeline(false);
           await pr.hide();

@@ -6,6 +6,8 @@ import '../controllers/employee_report_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'visit_plan_route.dart';
+
 class TimelineReportDetail extends StatefulWidget {
   final String empId;
   final String date;
@@ -70,6 +72,26 @@ class _TimelineReportDetailState extends State<TimelineReportDetail> {
         title: Text(
           'Timeline',
         ),
+      ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: () {
+              Get.to(VisitPlanRoute(
+                widget.empId,
+                widget.date,
+                type: 'timeline',
+              ));
+            },
+            child: Icon(
+              Icons.location_on,
+              size: 32.0,
+            ),
+            backgroundColor: Theme.of(context).primaryColor,
+          ),
+        ],
       ),
       body: SafeArea(
         child: Obx(() {

@@ -8,11 +8,16 @@ var apiKey = AppUtils.GKEY;
 
 class Locationpath {
   Future getRouteCoordinates(LatLng l1, LatLng l2) async {
-    var url = 'https://maps.googleapis.com/maps/api/directions/json?origin=${l1.latitude},${l1.longitude}&destination=${l2.latitude},${l2.longitude}&key=$apiKey';
-    print('LocationPath: $url');
-    var response = await http.get(url);
-    Map values = jsonDecode(response.body);
-    return values['routes'][0]['overview_polyline']['points'];
+    var chkDistance = await getDistance(l1, l2);
+    if (chkDistance == 0) {
+      return 'notincluded';
+    } else {
+      var url = 'https://maps.googleapis.com/maps/api/directions/json?origin=${l1.latitude},${l1.longitude}&destination=${l2.latitude},${l2.longitude}&key=$apiKey';
+      // print('LocationPath: $url');
+      var response = await http.get(url);
+      Map values = jsonDecode(response.body);
+      return values['routes'][0]['overview_polyline']['points'];
+    }
   }
 
   double calculateDistance(lat1, lon1, lat2, lon2) {
@@ -34,6 +39,11 @@ class Locationpath {
     // if (distanceType == 'm') {
     //   distance = double.parse(distance) / 1000;
     // }
+    var dis = double.parse(distanceValue.toString());
+    // print('distance: $dis');
+    if (dis < 100) {
+      return 0;
+    }
     return double.parse(distanceValue.toString()) / 1000;
   }
 }
