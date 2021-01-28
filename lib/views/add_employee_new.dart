@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import '../utils/utils.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -28,6 +30,30 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
   TextEditingController permanentColony = TextEditingController();
   TextEditingController accountNo = TextEditingController();
   TextEditingController ifsc = TextEditingController();
+  TextEditingController fatherName = TextEditingController();
+  TextEditingController ageFather = TextEditingController();
+  TextEditingController aadharNumberFather = TextEditingController();
+  TextEditingController dobFather = TextEditingController();
+  TextEditingController familyName = TextEditingController();
+  TextEditingController ageFamily = TextEditingController();
+  TextEditingController aadharNumberFamily = TextEditingController();
+  TextEditingController dobFamily = TextEditingController();
+  TextEditingController proofAadharNumber = TextEditingController();
+  TextEditingController proofAadharNumberConfirm = TextEditingController();
+  TextEditingController proofNumber2 = TextEditingController();
+  TextEditingController proofNumber3 = TextEditingController();
+  TextEditingController proof1 = TextEditingController();
+  TextEditingController proof2 = TextEditingController();
+  TextEditingController proof3 = TextEditingController();
+  TextEditingController proof4 = TextEditingController();
+  TextEditingController proof5 = TextEditingController();
+  TextEditingController proof6 = TextEditingController();
+  File aadhar1;
+  File aadhar2;
+  File proof11;
+  File proof12;
+  File proof21;
+  File proof22;
   TabController tabController;
   var gender = 'M';
   var mStatus = 'UnMarried';
@@ -46,8 +72,16 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
   var shirtSize;
   var pantSize;
   var shoeSize;
+  var dobFatherVal;
+  var dobFamilyVal;
+  var idProof1;
+  var idProof2;
+  var relFather = 'Father';
+  var relFamily;
   var currentTabIndex = 0;
   bool copyAdd = false;
+  bool nominee1 = false;
+  bool nominee2 = false;
 
   @override
   void initState() {
@@ -118,6 +152,52 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
     }
   }
 
+  Future<Null> getFatherDate(BuildContext context) async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: dobFatherVal != null
+          ? DateTime.parse(
+              dobFatherVal.toString(),
+            )
+          : DateTime.parse(
+              curDate.toString(),
+            ),
+      firstDate: DateTime.now().add(Duration(days: -36500)),
+      lastDate: DateTime.now(),
+    );
+
+    if (picked != null) {
+      // print('Date selected ${dtOfBirth.text.toString()}');
+      setState(() {
+        dobFather.text = DateFormat('dd-MM-yyyy').format(picked).toString();
+        dobFatherVal = DateFormat('yyyy-MM-dd').format(picked).toString();
+      });
+    }
+  }
+
+  Future<Null> getFamilyDate(BuildContext context) async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: dobFamilyVal != null
+          ? DateTime.parse(
+              dobFamilyVal.toString(),
+            )
+          : DateTime.parse(
+              curDate.toString(),
+            ),
+      firstDate: DateTime.now().add(Duration(days: -36500)),
+      lastDate: DateTime.now(),
+    );
+
+    if (picked != null) {
+      // print('Date selected ${dtOfBirth.text.toString()}');
+      setState(() {
+        dobFamily.text = DateFormat('dd-MM-yyyy').format(picked).toString();
+        dobFamilyVal = DateFormat('yyyy-MM-dd').format(picked).toString();
+      });
+    }
+  }
+
   Future<Null> getJoiningDate(BuildContext context) async {
     final picked = await showDatePicker(
       context: context,
@@ -142,7 +222,38 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
   }
 
   bool validateStep(step) {
-    return true;
+    FocusScope.of(context).requestFocus(FocusNode());
+    if (step == 0) {
+      if (name.isNullOrBlank || dtOfBirth.isNullOrBlank || language.isNullOrBlank || empPhone.isNullOrBlank || dtOfJoin.isNullOrBlank || department == null || client == null || blood == null || designation == null || qualification == null || reporting == null) {
+        Get.snackbar(
+          null,
+          'Please fill all data',
+          colorText: Colors.white,
+          backgroundColor: Colors.black87,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+          padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+          borderRadius: 5.0,
+        );
+        return false;
+      } else if (empPhone.text.length != 10)  {
+        Get.snackbar(
+          null,
+          'Please provide 10 digit phone number',
+          colorText: Colors.white,
+          backgroundColor: Colors.black87,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+          padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+          borderRadius: 5.0,
+        );
+        return false;
+      } else {
+        return true;
+
+      }
+    }
+    return false;
   }
 
   @override
@@ -164,13 +275,13 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
             child: ColoredBox(
               color: Colors.white,
               child: TabBar(
-                onTap: (gotoIndex) {
-                  print('currentTabIndex: $currentTabIndex');
-                  print('gotoIndex: $gotoIndex');
-                  setState(() {
-                    currentTabIndex = gotoIndex;
-                  });
-                },
+                // onTap: (gotoIndex) {
+                //   print('currentTabIndex: $currentTabIndex');
+                //   print('gotoIndex: $gotoIndex');
+                //   setState(() {
+                //     currentTabIndex = gotoIndex;
+                //   });
+                // },
                 isScrollable: true,
                 indicatorColor: Colors.grey,
                 unselectedLabelColor: Theme.of(context).primaryColor,
@@ -182,7 +293,6 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                 tabs: [
                   GestureDetector(
                     onTap: () {
-                      // print('clicked');
                       tabController.animateTo(0);
                     },
                     child: Tab(
@@ -191,10 +301,12 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                   ),
                   GestureDetector(
                     onTap: () {
-                      // print('clicked');
-                      var checkValidation = validateStep(currentTabIndex);
-                      if (checkValidation) {
+                      print('currentTabIndex: $currentTabIndex');
+                      if (currentTabIndex < 1 && validateStep(currentTabIndex)) {
                         tabController.animateTo(1);
+                        setState(() {
+                          currentTabIndex = 1;
+                        });
                       }
                     },
                     child: Tab(
@@ -203,8 +315,13 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                   ),
                   GestureDetector(
                     onTap: () {
-                      // print('clicked');
-                      tabController.animateTo(2);
+                      print('currentTabIndex: $currentTabIndex');
+                      if (currentTabIndex < 2 && validateStep(currentTabIndex)) {
+                        tabController.animateTo(2);
+                        setState(() {
+                          currentTabIndex = 2;
+                        });
+                      }
                     },
                     child: Tab(
                       text: 'Address',
@@ -212,8 +329,13 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                   ),
                   GestureDetector(
                     onTap: () {
-                      // print('clicked');
-                      tabController.animateTo(3);
+                      print('currentTabIndex: $currentTabIndex');
+                      if (currentTabIndex < 3 && validateStep(currentTabIndex)) {
+                        tabController.animateTo(3);
+                        setState(() {
+                          currentTabIndex = 3;
+                        });
+                      }
                     },
                     child: Tab(
                       text: 'Family Detail',
@@ -221,8 +343,13 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                   ),
                   GestureDetector(
                     onTap: () {
-                      // print('clicked');
-                      tabController.animateTo(4);
+                      print('currentTabIndex: $currentTabIndex');
+                      if (currentTabIndex < 4 && validateStep(currentTabIndex)) {
+                        tabController.animateTo(4);
+                        setState(() {
+                          currentTabIndex = 4;
+                        });
+                      }
                     },
                     child: Tab(
                       text: 'Photos',
@@ -555,6 +682,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   ),
                                 ),
                                 onChanged: (value) {
+                                  FocusScope.of(context).requestFocus(FocusNode());
                                   department = value;
                                   // setState(() {});
                                 },
@@ -599,6 +727,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   ),
                                 ),
                                 onChanged: (value) {
+                                  FocusScope.of(context).requestFocus(FocusNode());
                                   client = value;
                                   // setState(() {});
                                 },
@@ -642,6 +771,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   ),
                                 ),
                                 onChanged: (value) {
+                                  FocusScope.of(context).requestFocus(FocusNode());
                                   blood = value;
                                   // setState(() {});
                                 },
@@ -685,6 +815,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   ),
                                 ),
                                 onChanged: (value) {
+                                  FocusScope.of(context).requestFocus(FocusNode());
                                   designation = value;
                                   // setState(() {});
                                 },
@@ -818,7 +949,9 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   RaisedButton(
                                     onPressed: () {
                                       FocusScope.of(context).requestFocus(FocusNode());
-                                      tabController.animateTo(1);
+                                      if (validateStep(0)) {
+                                        tabController.animateTo(1);
+                                      }
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
@@ -1698,24 +1831,995 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                   ),
                 );
               }),
-              Test('Tab 4 goes here'),
-              Test('Tab 5 goes here'),
+              // STEP 4 - Family Detail
+              SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height / 1.29,
+                      child: ListView(
+                        shrinkWrap: true,
+                        primary: true,
+                        physics: ScrollPhysics(),
+                        children: [
+                          SizedBox(
+                            height: 10.0,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 10.0,
+                            ),
+                            child: Text(
+                              'S. No. 1',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 10.0,
+                            ),
+                            child: TextField(
+                              controller: fatherName,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding: EdgeInsets.all(10),
+                                hintStyle: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 18.0,
+                                ),
+                                hintText: 'Father Name',
+                                prefixIcon: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/user.png',
+                                      color: Colors.grey,
+                                      scale: 2.2,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 10.0,
+                            ),
+                            child: TextField(
+                              controller: dobFather,
+                              readOnly: true,
+                              keyboardType: null,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding: EdgeInsets.all(10),
+                                hintStyle: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 18.0,
+                                ),
+                                hintText: 'Date of Birth',
+                                prefixIcon: Image.asset(
+                                  'assets/images/icon_calender.png',
+                                  color: Colors.grey,
+                                  scale: 1.2,
+                                ),
+                              ),
+                              onTap: () {
+                                getFatherDate(context);
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 10.0,
+                            ),
+                            child: TextField(
+                              controller: ageFather,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding: EdgeInsets.all(10),
+                                hintStyle: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 18.0,
+                                ),
+                                hintText: 'Age',
+                                prefixIcon: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/age.png',
+                                      color: Colors.grey,
+                                      scale: 2.2,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 10.0,
+                            ),
+                            child: TextField(
+                              controller: aadharNumberFather,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding: EdgeInsets.all(10),
+                                hintStyle: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 18.0,
+                                ),
+                                hintText: 'Aadhar Number',
+                                prefixIcon: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/aadhar.png',
+                                      color: Colors.grey,
+                                      scale: 2.2,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 10.0,
+                            ),
+                            child: DropdownButtonFormField<dynamic>(
+                              hint: Text(
+                                'Select Relation',
+                                style: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 18.0,
+                                  // fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              isExpanded: false,
+                              value: relFather,
+                              items: adminC.relationShip.map((item) {
+                                //print('item: $item');
+                                return DropdownMenuItem(
+                                  child: Text(
+                                    item,
+                                  ),
+                                  value: item,
+                                );
+                              }).toList(),
+                              decoration: InputDecoration(
+                                prefixIcon: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/relation.png',
+                                      color: Colors.grey[400],
+                                      scale: 2.0,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              onChanged: (value) {
+                                FocusScope.of(context).requestFocus(FocusNode());
+                                relFather = value;
+                                setState(() {});
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 10.0,
+                            ),
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Image.asset(
+                                    'assets/images/nominee.png',
+                                    color: Colors.grey[400],
+                                    scale: 2.2,
+                                  ),
+                                ),
+                                Checkbox(
+                                  value: nominee1,
+                                  onChanged: (value) {
+                                    print(value);
+                                    nominee1 = value;
+                                    setState(() {});
+                                  },
+                                ),
+                                Text(
+                                  'Nominee',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 17.0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 10.0,
+                            ),
+                            child: Text(
+                              'S. No. 2',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 10.0,
+                            ),
+                            child: TextField(
+                              controller: familyName,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding: EdgeInsets.all(10),
+                                hintStyle: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 18.0,
+                                ),
+                                hintText: 'Name',
+                                prefixIcon: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/user.png',
+                                      color: Colors.grey,
+                                      scale: 2.2,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 10.0,
+                            ),
+                            child: TextField(
+                              controller: dobFamily,
+                              readOnly: true,
+                              keyboardType: null,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding: EdgeInsets.all(10),
+                                hintStyle: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 18.0,
+                                ),
+                                hintText: 'Date of Birth',
+                                prefixIcon: Image.asset(
+                                  'assets/images/icon_calender.png',
+                                  color: Colors.grey,
+                                  scale: 1.2,
+                                ),
+                              ),
+                              onTap: () {
+                                getFamilyDate(context);
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 10.0,
+                            ),
+                            child: TextField(
+                              controller: ageFamily,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding: EdgeInsets.all(10),
+                                hintStyle: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 18.0,
+                                ),
+                                hintText: 'Age',
+                                prefixIcon: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/age.png',
+                                      color: Colors.grey,
+                                      scale: 2.2,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 10.0,
+                            ),
+                            child: TextField(
+                              controller: aadharNumberFamily,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding: EdgeInsets.all(10),
+                                hintStyle: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 18.0,
+                                ),
+                                hintText: 'Aadhar Number',
+                                prefixIcon: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/aadhar.png',
+                                      color: Colors.grey,
+                                      scale: 2.2,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 10.0,
+                            ),
+                            child: DropdownButtonFormField<dynamic>(
+                              hint: Text(
+                                'Select Relation',
+                                style: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 18.0,
+                                  // fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              isExpanded: false,
+                              value: relFamily,
+                              items: adminC.relationShip.map((item) {
+                                //print('item: $item');
+                                return DropdownMenuItem(
+                                  child: Text(
+                                    item,
+                                  ),
+                                  value: item,
+                                );
+                              }).toList(),
+                              decoration: InputDecoration(
+                                prefixIcon: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/relation.png',
+                                      color: Colors.grey[400],
+                                      scale: 2.0,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              onChanged: (value) {
+                                FocusScope.of(context).requestFocus(FocusNode());
+                                relFamily = value;
+                                setState(() {});
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 10.0,
+                            ),
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Image.asset(
+                                    'assets/images/nominee.png',
+                                    color: Colors.grey[400],
+                                    scale: 2.2,
+                                  ),
+                                ),
+                                Checkbox(
+                                  value: nominee2,
+                                  onChanged: (value) {
+                                    print(value);
+                                    nominee2 = value;
+                                    setState(() {});
+                                  },
+                                ),
+                                Text(
+                                  'Nominee',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 17.0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Flexible(
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          height: 70.0,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border(
+                              top: BorderSide(
+                                color: Colors.grey[300],
+                                width: 1,
+                              ),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 10.0,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                RaisedButton(
+                                  onPressed: () {
+                                    FocusScope.of(context).requestFocus(FocusNode());
+                                    tabController.animateTo(4);
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 12.0,
+                                      horizontal: 100.0,
+                                    ),
+                                    child: Text(
+                                      'Next',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20.0,
+                                      ),
+                                    ),
+                                  ),
+                                  color: Theme.of(context).primaryColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    side: BorderSide(
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // STEP 5 - Photos
+              SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height / 1.29,
+                      child: ListView(
+                        shrinkWrap: true,
+                        primary: true,
+                        physics: ScrollPhysics(),
+                        children: [
+                          SizedBox(
+                            height: 10.0,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 10.0,
+                            ),
+                            child: Text(
+                              'ID Proof 1',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 10.0,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Flexible(
+                                  child: TextField(
+                                    controller: proof1,
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(10),
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey[600],
+                                        fontSize: 18.0,
+                                        // fontWeight: FontWeight.bold,
+                                      ),
+                                      hintText: 'Upload ID Proof',
+                                      suffixIcon: Image.asset(
+                                        'assets/images/uplode_proof.png',
+                                        // color: Colors.grey,
+                                        scale: 2.2,
+                                      ),
+                                    ),
+                                    readOnly: true,
+                                    keyboardType: null,
+                                    onTap: () {
+                                      // fromDate(context);
+                                    },
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 20.0,
+                                ),
+                                Flexible(
+                                  child: TextField(
+                                    controller: proof2,
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(10),
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey[600],
+                                        fontSize: 18.0,
+                                        // fontWeight: FontWeight.bold,
+                                      ),
+                                      hintText: 'Upload ID Proof',
+                                      suffixIcon: Image.asset(
+                                        'assets/images/uplode_proof.png',
+                                        // color: Colors.grey,
+                                        scale: 2.2,
+                                      ),
+                                    ),
+                                    readOnly: true,
+                                    keyboardType: null,
+                                    onTap: () {},
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 10.0,
+                            ),
+                            child: TextField(
+                              controller: proofAadharNumber,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding: EdgeInsets.all(10),
+                                hintStyle: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 18.0,
+                                ),
+                                hintText: 'Aadhar Number',
+                                prefixIcon: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/aadhar.png',
+                                      color: Colors.grey,
+                                      scale: 2.2,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 10.0,
+                            ),
+                            child: TextField(
+                              controller: proofAadharNumberConfirm,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding: EdgeInsets.all(10),
+                                hintStyle: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 18.0,
+                                ),
+                                hintText: 'Re-enter Aadhar Number',
+                                prefixIcon: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/aadhar.png',
+                                      color: Colors.grey,
+                                      scale: 2.2,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 10.0,
+                            ),
+                            child: Text(
+                              'ID Proof 2',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 10.0,
+                            ),
+                            child: DropdownButtonFormField<dynamic>(
+                              hint: Text(
+                                'Select ID Proof',
+                                style: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 18.0,
+                                  // fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              isExpanded: false,
+                              value: idProof1,
+                              items: adminC.proofList.map((item) {
+                                //print('item: $item');
+                                return DropdownMenuItem(
+                                  child: Text(
+                                    item,
+                                  ),
+                                  value: item,
+                                );
+                              }).toList(),
+                              decoration: InputDecoration(
+                                prefixIcon: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/aadhar.png',
+                                      color: Colors.grey,
+                                      scale: 2.2,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              onChanged: (value) {
+                                FocusScope.of(context).requestFocus(FocusNode());
+                                idProof1 = value;
+                                setState(() {});
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 10.0,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Flexible(
+                                  child: TextField(
+                                    controller: proof3,
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(10),
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey[600],
+                                        fontSize: 18.0,
+                                        // fontWeight: FontWeight.bold,
+                                      ),
+                                      hintText: 'Upload ID Proof',
+                                      suffixIcon: Image.asset(
+                                        'assets/images/uplode_proof.png',
+                                        // color: Colors.grey,
+                                        scale: 2.2,
+                                      ),
+                                    ),
+                                    readOnly: true,
+                                    keyboardType: null,
+                                    onTap: () {
+                                      // fromDate(context);
+                                    },
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 20.0,
+                                ),
+                                Flexible(
+                                  child: TextField(
+                                    controller: proof4,
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(10),
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey[600],
+                                        fontSize: 18.0,
+                                        // fontWeight: FontWeight.bold,
+                                      ),
+                                      hintText: 'Upload ID Proof',
+                                      suffixIcon: Image.asset(
+                                        'assets/images/uplode_proof.png',
+                                        // color: Colors.grey,
+                                        scale: 2.2,
+                                      ),
+                                    ),
+                                    readOnly: true,
+                                    keyboardType: null,
+                                    onTap: () {},
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 10.0,
+                            ),
+                            child: TextField(
+                              controller: proofNumber2,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding: EdgeInsets.all(10),
+                                hintStyle: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 18.0,
+                                ),
+                                hintText: 'Enter Selected ID Proof Number',
+                                prefixIcon: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/aadhar.png',
+                                      color: Colors.grey,
+                                      scale: 2.2,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 10.0,
+                            ),
+                            child: Text(
+                              'ID Proof 3',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 10.0,
+                            ),
+                            child: DropdownButtonFormField<dynamic>(
+                              hint: Text(
+                                'Select ID Proof',
+                                style: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 18.0,
+                                  // fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              isExpanded: false,
+                              value: idProof2,
+                              items: adminC.proofList.map((item) {
+                                //print('item: $item');
+                                return DropdownMenuItem(
+                                  child: Text(
+                                    item,
+                                  ),
+                                  value: item,
+                                );
+                              }).toList(),
+                              decoration: InputDecoration(
+                                prefixIcon: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/aadhar.png',
+                                      color: Colors.grey,
+                                      scale: 2.2,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              onChanged: (value) {
+                                FocusScope.of(context).requestFocus(FocusNode());
+                                idProof2 = value;
+                                setState(() {});
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 10.0,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Flexible(
+                                  child: TextField(
+                                    controller: proof5,
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(10),
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey[600],
+                                        fontSize: 18.0,
+                                        // fontWeight: FontWeight.bold,
+                                      ),
+                                      hintText: 'Upload ID Proof',
+                                      suffixIcon: Image.asset(
+                                        'assets/images/uplode_proof.png',
+                                        // color: Colors.grey,
+                                        scale: 2.2,
+                                      ),
+                                    ),
+                                    readOnly: true,
+                                    keyboardType: null,
+                                    onTap: () {
+                                      // fromDate(context);
+                                    },
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 20.0,
+                                ),
+                                Flexible(
+                                  child: TextField(
+                                    controller: proof6,
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(10),
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey[600],
+                                        fontSize: 18.0,
+                                        // fontWeight: FontWeight.bold,
+                                      ),
+                                      hintText: 'Upload ID Proof',
+                                      suffixIcon: Image.asset(
+                                        'assets/images/uplode_proof.png',
+                                        // color: Colors.grey,
+                                        scale: 2.2,
+                                      ),
+                                    ),
+                                    readOnly: true,
+                                    keyboardType: null,
+                                    onTap: () {},
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 10.0,
+                            ),
+                            child: TextField(
+                              controller: proofNumber3,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding: EdgeInsets.all(10),
+                                hintStyle: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 18.0,
+                                ),
+                                hintText: 'Enter Selected ID Proof Number',
+                                prefixIcon: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/aadhar.png',
+                                      color: Colors.grey,
+                                      scale: 2.2,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Flexible(
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          height: 70.0,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border(
+                              top: BorderSide(
+                                color: Colors.grey[300],
+                                width: 1,
+                              ),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 10.0,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                RaisedButton(
+                                  onPressed: () {
+                                    FocusScope.of(context).requestFocus(FocusNode());
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 12.0,
+                                      horizontal: 50.0,
+                                    ),
+                                    child: Text(
+                                      'Send For Approval',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20.0,
+                                      ),
+                                    ),
+                                  ),
+                                  color: Theme.of(context).primaryColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    side: BorderSide(
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
       ),
-    );
-  }
-}
-
-class Test extends StatelessWidget {
-  final String title;
-  Test(this.title);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(title),
     );
   }
 }
