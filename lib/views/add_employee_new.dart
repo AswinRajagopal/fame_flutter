@@ -60,7 +60,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
   File proof22;
   TabController tabController;
   var gender = 'M';
-  var mStatus = 'UnMarried';
+  var mStatus = 'S';
   var department;
   var client;
   var blood;
@@ -612,7 +612,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                       Row(
                                         children: [
                                           Radio(
-                                            value: 'UnMarried',
+                                            value: 'S',
                                             groupValue: mStatus,
                                             onChanged: (sVal) {
                                               setState(() {
@@ -631,7 +631,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                       Row(
                                         children: [
                                           Radio(
-                                            value: 'Married',
+                                            value: 'M',
                                             groupValue: mStatus,
                                             onChanged: (sVal) {
                                               setState(() {
@@ -650,7 +650,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                       Row(
                                         children: [
                                           Radio(
-                                            value: 'Divorcee',
+                                            value: 'D',
                                             groupValue: mStatus,
                                             onChanged: (sVal) {
                                               setState(() {
@@ -673,7 +673,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                       Row(
                                         children: [
                                           Radio(
-                                            value: 'Widow',
+                                            value: 'W',
                                             groupValue: mStatus,
                                             onChanged: (sVal) {
                                               setState(() {
