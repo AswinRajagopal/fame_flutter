@@ -1439,7 +1439,7 @@ class RemoteServices {
     int timeInterval = jsonDecode(RemoteServices().box.get('appFeature'))['trackingInterval'] ?? 15;
 
     if (lat != null && lng != null) {
-      var currDate = DateFormat('yyyy-MM-dd hh:mm:ss').format(DateTime.now()).toString();
+      var currDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()).toString();
       var _battery = Battery();
       var level = await _battery.batteryLevel;
       print(lat.toString());
