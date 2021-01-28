@@ -2515,6 +2515,9 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                         setState(() {});
                                       } else {
                                         print('No image selected.');
+                                        aadhar1 = null;
+                                        proof1.clear();
+                                        setState(() {});
                                       }
                                     },
                                   ),
@@ -2550,6 +2553,9 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                         setState(() {});
                                       } else {
                                         print('No image selected.');
+                                        aadhar2 = null;
+                                        proof2.clear();
+                                        setState(() {});
                                       }
                                     },
                                   ),
@@ -2707,6 +2713,9 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                         setState(() {});
                                       } else {
                                         print('No image selected.');
+                                        proof11 = null;
+                                        proof3.clear();
+                                        setState(() {});
                                       }
                                     },
                                   ),
@@ -2742,6 +2751,9 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                         setState(() {});
                                       } else {
                                         print('No image selected.');
+                                        proof12 = null;
+                                        proof4.clear();
+                                        setState(() {});
                                       }
                                     },
                                   ),
@@ -2870,6 +2882,9 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                         setState(() {});
                                       } else {
                                         print('No image selected.');
+                                        proof21 = null;
+                                        proof5.clear();
+                                        setState(() {});
                                       }
                                     },
                                   ),
@@ -2905,6 +2920,9 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                         setState(() {});
                                       } else {
                                         print('No image selected.');
+                                        proof22 = null;
+                                        proof6.clear();
+                                        setState(() {});
                                       }
                                     },
                                   ),
