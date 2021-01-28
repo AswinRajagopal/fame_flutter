@@ -316,16 +316,10 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
         return true;
       }
     } else if (step == 4) {
-      //     File aadhar1;
-      // File aadhar2;
-      // File proof11;
-      // File proof12;
-      // File proof21;
-      // File proof22;
       if (proofAadharNumber.isNullOrBlank || proofAadharNumberConfirm.isNullOrBlank || proofNumber2.isNullOrBlank || proofNumber3.isNullOrBlank || aadhar1 == null || aadhar2 == null || proof11 == null || proof12 == null || proof21 == null || proof22 == null || idProof1 == null || idProof2 == null) {
         Get.snackbar(
           null,
-          'Please fill all data',
+          'Please fill all data and select proof images',
           colorText: Colors.white,
           backgroundColor: Colors.black87,
           snackPosition: SnackPosition.BOTTOM,
@@ -334,7 +328,19 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
           borderRadius: 5.0,
         );
         return false;
-      } else if (!verhoeff.validate(aadharNumberFather.text) || !verhoeff.validate(aadharNumberFamily.text)) {
+      } else if (proofAadharNumber.text != proofAadharNumberConfirm.text) {
+        Get.snackbar(
+          null,
+          'Aadhar number and confirm aadhar number are not matching',
+          colorText: Colors.white,
+          backgroundColor: Colors.black87,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+          padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+          borderRadius: 5.0,
+        );
+        return false;
+      } else if (!verhoeff.validate(proofAadharNumber.text)) {
         Get.snackbar(
           null,
           'Please add valid aadhar number',
@@ -2693,8 +2699,15 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     ),
                                     readOnly: true,
                                     keyboardType: null,
-                                    onTap: () {
-                                      // fromDate(context);
+                                    onTap: () async {
+                                      var pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+                                      if (pickedFile != null) {
+                                        proof11 = File(pickedFile.path);
+                                        proof3.text = path.basename(pickedFile.path);
+                                        setState(() {});
+                                      } else {
+                                        print('No image selected.');
+                                      }
                                     },
                                   ),
                                 ),
@@ -2721,7 +2734,16 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     ),
                                     readOnly: true,
                                     keyboardType: null,
-                                    onTap: () {},
+                                    onTap: () async {
+                                      var pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+                                      if (pickedFile != null) {
+                                        proof12 = File(pickedFile.path);
+                                        proof4.text = path.basename(pickedFile.path);
+                                        setState(() {});
+                                      } else {
+                                        print('No image selected.');
+                                      }
+                                    },
                                   ),
                                 ),
                               ],
@@ -2734,7 +2756,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                             ),
                             child: TextField(
                               controller: proofNumber2,
-                              keyboardType: TextInputType.number,
+                              // keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                 isDense: true,
                                 contentPadding: EdgeInsets.all(10),
@@ -2840,8 +2862,15 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     ),
                                     readOnly: true,
                                     keyboardType: null,
-                                    onTap: () {
-                                      // fromDate(context);
+                                    onTap: () async {
+                                      var pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+                                      if (pickedFile != null) {
+                                        proof21 = File(pickedFile.path);
+                                        proof5.text = path.basename(pickedFile.path);
+                                        setState(() {});
+                                      } else {
+                                        print('No image selected.');
+                                      }
                                     },
                                   ),
                                 ),
@@ -2868,7 +2897,16 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     ),
                                     readOnly: true,
                                     keyboardType: null,
-                                    onTap: () {},
+                                    onTap: () async {
+                                      var pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+                                      if (pickedFile != null) {
+                                        proof22 = File(pickedFile.path);
+                                        proof6.text = path.basename(pickedFile.path);
+                                        setState(() {});
+                                      } else {
+                                        print('No image selected.');
+                                      }
+                                    },
                                   ),
                                 ),
                               ],
@@ -2881,7 +2919,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                             ),
                             child: TextField(
                               controller: proofNumber3,
-                              keyboardType: TextInputType.number,
+                              // keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                 isDense: true,
                                 contentPadding: EdgeInsets.all(10),
