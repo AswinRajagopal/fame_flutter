@@ -75,16 +75,16 @@ class DBActivityTile extends StatelessWidget {
               SizedBox(
                 height: 15.0,
               ),
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: Text(
-                  convertDate(empAct['createdOn'].toString()),
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
+              // Align(
+              //   alignment: Alignment.bottomLeft,
+              //   child: Text(
+              //     convertDate(empAct['createdOn'].toString()),
+              //     style: TextStyle(
+              //       fontSize: 16.0,
+              //       color: Colors.white,
+              //     ),
+              //   ),
+              // ),
               // Align(
               //   alignment: Alignment.centerRight,
               //   child: Container(
