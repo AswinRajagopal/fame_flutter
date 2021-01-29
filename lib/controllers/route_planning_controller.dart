@@ -17,6 +17,7 @@ class RoutePlanningController extends GetxController {
   final List mapCL = [].obs;
   final List mapID = [].obs;
   List sC = [].obs;
+  var res;
 
   @override
   void onInit() {
@@ -157,6 +158,55 @@ class RoutePlanningController extends GetxController {
           horizontal: 12.0,
           vertical: 18.0,
         ),
+        borderRadius: 5.0,
+      );
+    }
+  }
+
+  void getPitstops(planId, companyId) async {
+    try {
+      isLoading(true);
+      await pr.show();
+      res = await RemoteServices().getPitstops(planId, companyId);
+      if (res != null) {
+        if (res['success']) {
+          for (var i = 0; i < res['pitstopList'].length; i++) {
+            var pitstop = res['pitstopList'][i];
+            var pitstopID = pitstop['clientId'];
+            for (var j = 0; j < clientList.length; j++) {
+              if (clientList[j]['id'] == pitstopID) {
+                sC.add(clientList[j]);
+              }
+            }
+          }
+          // print(pitsStops);
+          isLoading(false);
+          await pr.hide();
+        } else {
+          Get.snackbar(
+            null,
+            'Something went wrong! Please try again later',
+            colorText: Colors.white,
+            backgroundColor: Colors.black87,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+            padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+            borderRadius: 5.0,
+          );
+        }
+      }
+    } catch (e) {
+      print(e);
+      isLoading(false);
+      await pr.hide();
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+        padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
         borderRadius: 5.0,
       );
     }

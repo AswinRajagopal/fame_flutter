@@ -282,6 +282,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                             remarks.text = suggestion['adminRemarks'];
                             date.text = DateFormat('dd-MM-yyyy').format(DateTime.parse(suggestion['planStartDate'])).toString();
                             sDate = DateFormat('yyyy-MM-dd').format(DateTime.parse(suggestion['planStartDate'])).toString();
+                            rpC.getPitstops(suggestion['routePlanId'], suggestion['companyId']);
                             // setState(() {});
                           },
                         ),
@@ -466,7 +467,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                               ),
                                               child: GestureDetector(
                                                 onTap: () {
-                                                  // print(client);
+                                                  print(client);
                                                   // print(rpC.sC.contains(client));
                                                   // print(rpC.sC);
                                                   if (rpC.sC.contains(client)) {
