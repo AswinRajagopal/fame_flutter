@@ -1509,7 +1509,9 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     RaisedButton(
                                       onPressed: () {
                                         FocusScope.of(context).requestFocus(FocusNode());
-                                        if (validateStep(1)) {
+                                        if (!validateStep(0)) {
+                                          tabController.animateTo(0);
+                                        } else if (validateStep(1)) {
                                           tabController.animateTo(2);
                                         }
                                       },
@@ -2016,7 +2018,11 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     RaisedButton(
                                       onPressed: () {
                                         FocusScope.of(context).requestFocus(FocusNode());
-                                        if (validateStep(2)) {
+                                        if (!validateStep(0)) {
+                                          tabController.animateTo(0);
+                                        } else if (!validateStep(1)) {
+                                          tabController.animateTo(1);
+                                        } else if (validateStep(2)) {
                                           tabController.animateTo(3);
                                         }
                                       },
@@ -2503,7 +2509,13 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   RaisedButton(
                                     onPressed: () {
                                       FocusScope.of(context).requestFocus(FocusNode());
-                                      if (validateStep(3)) {
+                                      if (!validateStep(0)) {
+                                        tabController.animateTo(0);
+                                      } else if (!validateStep(1)) {
+                                        tabController.animateTo(1);
+                                      } else if (!validateStep(2)) {
+                                        tabController.animateTo(3);
+                                      } else if (validateStep(3)) {
                                         tabController.animateTo(4);
                                       }
                                     },
@@ -3117,7 +3129,15 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   RaisedButton(
                                     onPressed: () async {
                                       FocusScope.of(context).requestFocus(FocusNode());
-                                      if (validateStep(4)) {
+                                      if (!validateStep(0)) {
+                                        tabController.animateTo(0);
+                                      } else if (!validateStep(1)) {
+                                        tabController.animateTo(1);
+                                      } else if (!validateStep(2)) {
+                                        tabController.animateTo(2);
+                                      } else if (!validateStep(3)) {
+                                        tabController.animateTo(3);
+                                      } else if (validateStep(4)) {
                                         print('done');
                                         var empdetails = {
                                           'empFName': name.text,
