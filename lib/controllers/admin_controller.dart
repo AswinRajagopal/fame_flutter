@@ -464,4 +464,111 @@ class AdminController extends GetxController {
       );
     }
   }
+
+  Future addEmployeeNew(empdetails) async {
+    await pr.show();
+    try {
+      var addNewEmp = await RemoteServices().newEmpRec(empdetails);
+
+      if (addNewEmp != null) {
+        // print('addNewEmp: $addNewEmp');
+        if (addNewEmp['success']) {
+          return addNewEmp['empId'];
+        } else {
+          showError();
+        }
+      } else {
+        showError();
+      }
+      // await pr.hide();
+    } catch (e) {
+      print(e);
+      await pr.hide();
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+        padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+        borderRadius: 5.0,
+      );
+    }
+  }
+
+  void addEmployeeData(empRelationshipList, proofDetails, aadharFront, aadharBack, passbookFront, passbookBack, proof3Front, proof3Back) async {
+    try {
+      var addNewEmpRel = await RemoteServices().newRecRel(empRelationshipList);
+
+      if (addNewEmpRel != null) {
+        // print('addNewEmp: $addNewEmp');
+        if (addNewEmpRel['success']) {
+          var addNewEmpProof = await RemoteServices().newRecProof(proofDetails);
+          if (addNewEmpProof != null) {
+            if (addNewEmpProof['success']) {
+              var uploadNewEmpProof = await RemoteServices().newRecUploadProof(aadharFront, aadharBack, passbookFront, passbookBack, proof3Front, proof3Back);
+              if (uploadNewEmpProof != null) {
+                if (uploadNewEmpProof['success']) {
+                  await pr.hide();
+                  Get.snackbar(
+                    null,
+                    'New employee added successfully',
+                    colorText: Colors.white,
+                    duration: Duration(seconds: 2),
+                    backgroundColor: AppUtils().greenColor,
+                    snackPosition: SnackPosition.BOTTOM,
+                    margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+                    padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+                    borderRadius: 5.0,
+                  );
+                  Timer(Duration(seconds: 2), Get.back);
+                } else {
+                  showError();
+                }
+              } else {
+                showError();
+              }
+            } else {
+              showError();
+            }
+          } else {
+            showError();
+          }
+        } else {
+          showError();
+        }
+      } else {
+        showError();
+      }
+      // await pr.hide();
+    } catch (e) {
+      print(e);
+      await pr.hide();
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+        padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+        borderRadius: 5.0,
+      );
+    }
+  }
+
+  void showError() async {
+    await pr.hide();
+    Get.snackbar(
+      null,
+      'Something went wrong! Please try again later',
+      colorText: Colors.white,
+      backgroundColor: Colors.black87,
+      snackPosition: SnackPosition.BOTTOM,
+      margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+      padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+      borderRadius: 5.0,
+    );
+  }
 }

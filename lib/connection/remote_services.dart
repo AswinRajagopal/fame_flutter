@@ -18,6 +18,7 @@ import '../models/face_register.dart';
 import '../models/db_calendar.dart';
 import '../models/emp_r_plan.dart';
 import '../models/dashboard.dart';
+import 'package:path/path.dart' as path;
 
 import '../models/checkin.dart';
 
@@ -1688,6 +1689,117 @@ class RemoteServices {
       return json.decode(jsonString);
     } else {
       //show error message
+      return null;
+    }
+  }
+
+  Future newEmpRec(empdetails) async {
+    var response = await client.post(
+      '$baseURL/company/new_emprec',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'companyId': box.get('companyid').toString(),
+          'empdetails': empdetails,
+        },
+      ),
+    );
+    // print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future newRecRel(empRelationshipList) async {
+    var response = await client.post(
+      '$baseURL/company/new_rec_rel',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'companyId': box.get('companyid').toString(),
+          'empRelationshipList': empRelationshipList,
+        },
+      ),
+    );
+
+    print(response.statusCode);
+    // developer.log('newRecRel: ${response.body.toString()}');
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future newRecProof(proofDetails) async {
+    var response = await client.post(
+      '$baseURL/company/new_rec_proof',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'companyId': box.get('companyid').toString(),
+          'proofDetails': proofDetails,
+        },
+      ),
+    );
+    print(response.statusCode);
+    // developer.log('newRecProof: ${response.body.toString()}');
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future newRecUploadProof(File aadharFront, File aadharBack, File passbookFront, File passbookBack, File proof3Front, File proof3Back) async {
+    var dio = mydio.Dio();
+
+    var formData = mydio.FormData.fromMap({
+      'companyId': box.get('companyid').toString(),
+      'aadharFront': await mydio.MultipartFile.fromFile(
+        aadharFront.path,
+        filename: path.basename(aadharFront.path).toString(),
+      ),
+      'aadharBack': await mydio.MultipartFile.fromFile(
+        aadharBack.path,
+        filename: path.basename(aadharBack.path).toString(),
+      ),
+      'passbookFront': await mydio.MultipartFile.fromFile(
+        passbookFront.path,
+        filename: path.basename(passbookFront.path).toString(),
+      ),
+      'passbookBack': await mydio.MultipartFile.fromFile(
+        passbookBack.path,
+        filename: path.basename(passbookBack.path).toString(),
+      ),
+      'proof3Front': await mydio.MultipartFile.fromFile(
+        proof3Front.path,
+        filename: path.basename(proof3Front.path).toString(),
+      ),
+      'proof3Back': await mydio.MultipartFile.fromFile(
+        proof3Back.path,
+        filename: path.basename(proof3Back.path).toString(),
+      ),
+    });
+    var response = await dio.post(
+      '$baseURL/company/upload_rec_proof',
+      data: formData,
+    );
+
+    // print(response.data);
+    if (response.statusCode == 200) {
+      var jsonString = response.data;
+      // developer.log('newRecUploadProof: ${response.data.toString()}');
+      return jsonString;
+    } else {
       return null;
     }
   }
