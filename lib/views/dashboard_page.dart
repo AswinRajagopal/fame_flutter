@@ -1030,7 +1030,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         if (dbC.isDashboardLoading.value) {
                           return LoadingWidget(
                             containerColor: Colors.grey[300],
-                            containerHeight: 200.0,
+                            containerHeight: 190.0,
                             loaderSize: 30.0,
                             loaderColor: Colors.black87,
                           );
