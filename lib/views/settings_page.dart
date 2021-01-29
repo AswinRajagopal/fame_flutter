@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'onboarding_page.dart';
 import 'transfer_list.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -112,7 +114,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 Get.to(OnboardingPage());
               },
               child: Visibility(
-                visible: roleId == '3' ? true : false,
+                visible: (roleId == '3' && jsonDecode(RemoteServices().box.get('appFeature'))['onboarding']) ? true : false,
                 child: ListContainer(
                   'assets/images/onboarding.png',
                   'Onboarding',
