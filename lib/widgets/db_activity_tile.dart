@@ -21,7 +21,7 @@ class DBActivityTile extends StatelessWidget {
         10.0,
       ),
       child: Container(
-        width: 330.0,
+        width: 350.0,
         decoration: BoxDecoration(
           color: Colors.teal[300],
           // color: HexColor('06c5d1'),
@@ -71,9 +71,6 @@ class DBActivityTile extends StatelessWidget {
                   fontSize: 16.0,
                   color: Colors.white,
                 ),
-              ),
-              SizedBox(
-                height: 15.0,
               ),
               // Align(
               //   alignment: Alignment.bottomLeft,

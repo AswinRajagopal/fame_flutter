@@ -1030,7 +1030,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         if (dbC.isDashboardLoading.value) {
                           return LoadingWidget(
                             containerColor: Colors.grey[300],
-                            containerHeight: 180.0,
+                            containerHeight: 200.0,
                             loaderSize: 30.0,
                             loaderColor: Colors.black87,
                           );
@@ -1038,7 +1038,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           return Visibility(
                             visible: dbC.response['empActivities'] == null || dbC.response['empActivities'].length == 0 ? false : true,
                             child: Container(
-                              height: 180.0,
+                              height: 190.0,
                               width: MediaQuery.of(context).size.width,
                               child: Padding(
                                 padding: const EdgeInsets.only(
