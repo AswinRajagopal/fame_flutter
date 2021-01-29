@@ -1474,6 +1474,7 @@ class RemoteServices {
         desiredAccuracy: LocationAccuracy.bestForNavigation,
         // distanceFilter: 10,
         intervalDuration: Duration(minutes: timeInterval),
+        forceAndroidLocationManager: true,
       ).listen((Position position) async {
         if (position == null) {
           print('Unknown');
