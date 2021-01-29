@@ -34,6 +34,7 @@ import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import '../models/login.dart';
 import 'package:battery/battery.dart';
+import 'package:connectivity/connectivity.dart';
 
 class RemoteServices {
   // static var baseURL = 'http://13.232.255.84:8090/v1/api';
@@ -1470,12 +1471,16 @@ class RemoteServices {
         print('error');
       }
     } else {
+      // print('herer it is');
+      var listOfData = [];
       getPositionSubscription = Geolocator.getPositionStream(
         desiredAccuracy: LocationAccuracy.bestForNavigation,
         // distanceFilter: 10,
         intervalDuration: Duration(minutes: timeInterval),
-        forceAndroidLocationManager: true,
+        // intervalDuration: Duration(seconds: 15),
+        // forceAndroidLocationManager: true,
       ).listen((Position position) async {
+        // print('herer it is position: $position');
         if (position == null) {
           print('Unknown');
         } else {
@@ -1485,6 +1490,57 @@ class RemoteServices {
           var level = await _battery.batteryLevel;
           // print(position.latitude.toString());
           // print(position.longitude.toString());
+          var connectivityResult = await Connectivity().checkConnectivity();
+          var offline_location = await box.get('offline_location');
+          // print('offline_location: $offline_location');
+          if (connectivityResult == ConnectivityResult.none) {
+            var dataToBeAdd = jsonEncode(
+              <String, dynamic>{
+                'empId': box.get('empid').toString(),
+                'companyId': box.get('companyid').toString(),
+                'empTimelineList': [
+                  {
+                    'lat': position.latitude.toString(),
+                    'lng': position.longitude.toString(),
+                    'battery': level.toString(),
+                    'timeStamp': currDate.toString(),
+                  },
+                ],
+              },
+            );
+            listOfData.add(dataToBeAdd);
+            if (offline_location != null && offline_location != '') {
+              var arr_offline_location = jsonDecode(offline_location);
+              arr_offline_location.add(dataToBeAdd);
+              await box.put(
+                'offline_location',
+                jsonEncode(arr_offline_location),
+              );
+            } else {
+              await box.put(
+                'offline_location',
+                jsonEncode(listOfData),
+              );
+            }
+          }
+          if (offline_location != null && offline_location != '') {
+            var list_offline_location = jsonDecode(offline_location);
+            // print('list_offline_location: $list_offline_location');
+            for (var i = 0; i < list_offline_location.length; i++) {
+              var responseOffline = await client.post(
+                '$baseURL/location/save_location_log',
+                headers: header,
+                body: list_offline_location[i],
+              );
+              var jsonString = responseOffline.body;
+              print('Offline Data: ${json.decode(jsonString)}');
+            }
+            await box.put(
+              'offline_location',
+              '',
+            );
+            listOfData.clear();
+          }
           var response = await client.post(
             '$baseURL/location/save_location_log',
             headers: header,
@@ -1512,6 +1568,7 @@ class RemoteServices {
         }
       });
       if (cancel != null) {
+        print('cancel location');
         await getPositionSubscription.cancel();
       }
     }
