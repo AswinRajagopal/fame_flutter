@@ -538,7 +538,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                                 if (sfromDt == null || sfromDt == '' || stoDt == null || stoDt == '' || reason.text == null || reason.text == '' || leaveType == '') {
                                   Get.snackbar(
                                     null,
-                                    'Please fill all data',
+                                    'Please provide all the details',
                                     colorText: Colors.white,
                                     backgroundColor: Colors.black87,
                                     snackPosition: SnackPosition.BOTTOM,

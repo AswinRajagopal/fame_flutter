@@ -382,7 +382,7 @@ class _SignupPageState extends State<SignupPage> {
                       if (username.text == null || username.text == '' || empid.text == null || empid.text == '' || password.text == null || password.text == '' || fullname.text == null || fullname.text == '' || email.text == null || email.text == '' || mobile.text == null || mobile.text == '' || company.text == null || company.text == '' || empNo.text.isNullOrBlank) {
                         Get.snackbar(
                           null,
-                          'Please provide all detail',
+                          'Please provide all the details',
                           colorText: Colors.white,
                           backgroundColor: Colors.black87,
                           snackPosition: SnackPosition.BOTTOM,

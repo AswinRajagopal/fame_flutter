@@ -233,7 +233,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
       if (name.isNullOrBlank || dtOfBirth.isNullOrBlank || language.isNullOrBlank || empPhone.isNullOrBlank || empUANNumber.isNullOrBlank || dtOfJoin.isNullOrBlank || department == null || client == null || blood == null || designation == null || qualification == null || reporting == null) {
         Get.snackbar(
           null,
-          'Please fill all data',
+          'Please provide all the details',
           colorText: Colors.white,
           backgroundColor: Colors.black87,
           snackPosition: SnackPosition.BOTTOM,
@@ -272,7 +272,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
       if (bank == null || accountNo.isNullOrBlank || ifsc.isNullOrBlank || shirtSize == null || pantSize == null || shoeSize == null) {
         Get.snackbar(
           null,
-          'Please fill all data',
+          'Please provide all the details',
           colorText: Colors.white,
           backgroundColor: Colors.black87,
           snackPosition: SnackPosition.BOTTOM,
@@ -288,7 +288,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
       if (presenthouseNo.isNullOrBlank || presentStreet.isNullOrBlank || presentColony.isNullOrBlank || presentState == null || presentCity == null || permanenthouseNo.isNullOrBlank || permanentStreet.isNullOrBlank || permanentColony.isNullOrBlank || permanentState == null || permanentCity == null) {
         Get.snackbar(
           null,
-          'Please fill all data',
+          'Please provide all the details',
           colorText: Colors.white,
           backgroundColor: Colors.black87,
           snackPosition: SnackPosition.BOTTOM,
@@ -304,7 +304,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
       if (fatherName.isNullOrBlank || dobFather.isNullOrBlank || ageFather.isNullOrBlank || aadharNumberFather.isNullOrBlank || relFather == null || familyName.isNullOrBlank || dobFamily.isNullOrBlank || ageFamily.isNullOrBlank || aadharNumberFamily.isNullOrBlank || relFamily == null) {
         Get.snackbar(
           null,
-          'Please fill all data',
+          'Please provide all the details',
           colorText: Colors.white,
           backgroundColor: Colors.black87,
           snackPosition: SnackPosition.BOTTOM,
@@ -332,7 +332,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
       if (proofAadharNumber.isNullOrBlank || proofAadharNumberConfirm.isNullOrBlank || proofNumber2.isNullOrBlank || proofNumber3.isNullOrBlank || aadhar1 == null || aadhar2 == null || proof11 == null || proof12 == null || proof21 == null || proof22 == null || idProof == null || idProof1 == null || idProof2 == null) {
         Get.snackbar(
           null,
-          'Please fill all data and select proof images',
+          'Please provide all the details and select proof images',
           colorText: Colors.white,
           backgroundColor: Colors.black87,
           snackPosition: SnackPosition.BOTTOM,

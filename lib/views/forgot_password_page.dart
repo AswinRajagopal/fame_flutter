@@ -166,7 +166,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       if (email.text == null || email.text == '') {
                         Get.snackbar(
                           null,
-                          'Please provide email',
+                          'Please enter your email address',
                           colorText: Colors.white,
                           backgroundColor: Colors.black87,
                           snackPosition: SnackPosition.BOTTOM,

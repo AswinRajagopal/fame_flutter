@@ -323,7 +323,7 @@ class _LoginPageState extends State<LoginPage> {
                       if (username.text == null || username.text == '' || empid.text == null || empid.text == '' || password.text == null || password.text == '') {
                         Get.snackbar(
                           null,
-                          'Please provide all detail',
+                          'Please provide all the details',
                           colorText: Colors.white,
                           backgroundColor: Colors.black87,
                           snackPosition: SnackPosition.BOTTOM,

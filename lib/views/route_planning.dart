@@ -623,7 +623,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                               if (planName.text == null || planName.text == '' || empName.text == null || empName.text == '' || remarks.text == null || remarks.text == '' || sDate == null || sDate == '' || assignedTo == null) {
                                 Get.snackbar(
                                   null,
-                                  'Please fill all data',
+                                  'Please provide all the details',
                                   colorText: Colors.white,
                                   backgroundColor: Colors.black87,
                                   snackPosition: SnackPosition.BOTTOM,
