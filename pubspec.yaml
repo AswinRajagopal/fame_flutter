@@ -88,6 +88,7 @@ dependencies:
   flutter_statusbarcolor: ^0.2.3
   checkdigit: ^0.2.0
   connectivity: ^2.0.2
+  # workmanager: ^0.2.3
 
 # flutter_icons:
 #   image_path: "assets/images/icon.png"

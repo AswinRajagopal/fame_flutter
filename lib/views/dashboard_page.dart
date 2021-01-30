@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:flutter/services.dart';
+
 import 'notification.dart';
 
 import 'attendance_page.dart';
@@ -51,6 +55,7 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   void initState() {
     super.initState();
+    callBg();
     Future.delayed(Duration(milliseconds: 100), () {
       dbC.init(context: context);
     });
@@ -59,6 +64,15 @@ class _DashboardPageState extends State<DashboardPage> {
     });
     calC.calendarType = 'myCal';
     Future.delayed(Duration(milliseconds: 100), calC.init);
+  }
+
+  void callBg() async {
+    print('callBg()');
+    if (Platform.isAndroid) {
+      var methodChannel = MethodChannel('in.androidfame.attendance');
+      var result = await methodChannel.invokeMethod('startService');
+      print('result: $result');
+    }
   }
 
   String convertTimeWithParse(time) {

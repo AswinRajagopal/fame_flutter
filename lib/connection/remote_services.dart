@@ -1440,6 +1440,11 @@ class RemoteServices {
   void saveLocationLog({lat, lng, cancel}) async {
     int timeInterval = jsonDecode(RemoteServices().box.get('appFeature'))['trackingInterval'] ?? 15;
 
+    // if (Platform.isAndroid) {
+    //   var methodChannel = MethodChannel('in.androidfame.attendance');
+    //   await methodChannel.invokeMethod('startService');
+    // }
+
     if (lat != null && lng != null) {
       var currDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()).toString();
       var _battery = Battery();
