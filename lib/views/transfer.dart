@@ -409,7 +409,7 @@ class _TransferPageState extends State<TransferPage> {
                             if (employeeId == null || fromPeriod == null || toPeriod == null || currentUnit.text == null || clientShift.text == null || toUnit == null) {
                               Get.snackbar(
                                 null,
-                                'Please fill all fields',
+                                'Please provide all the details',
                                 colorText: Colors.white,
                                 backgroundColor: Colors.black87,
                                 snackPosition: SnackPosition.BOTTOM,

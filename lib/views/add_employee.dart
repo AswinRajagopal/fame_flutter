@@ -609,7 +609,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                             if (name.text.isNullOrBlank || empid.text.isNullOrBlank || designation.text.isNullOrBlank || gender == '' || dtOfBirth.text.isNullOrBlank || empPhone.text.isNullOrBlank || address.text.isNullOrBlank || shift.text.isNullOrBlank || sitePostedTo == null || email.text.isNullOrBlank) {
                               Get.snackbar(
                                 null,
-                                'Please fill all the fields',
+                                'Please provide all the details',
                                 colorText: Colors.white,
                                 backgroundColor: Colors.black87,
                                 snackPosition: SnackPosition.BOTTOM,

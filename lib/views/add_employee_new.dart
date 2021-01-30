@@ -1765,7 +1765,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                         if (presenthouseNo.text.isNullOrBlank || presentStreet.text.isNullOrBlank || presentColony.text.isNullOrBlank || presentState == null || presentCity == null) {
                                           Get.snackbar(
                                             null,
-                                            'Please fill present address first',
+                                            'Please provide present address first',
                                             colorText: Colors.white,
                                             backgroundColor: Colors.black87,
                                             snackPosition: SnackPosition.BOTTOM,

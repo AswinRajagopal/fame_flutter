@@ -230,7 +230,7 @@ class _AddShiftState extends State<AddShift> {
                             if (shiftname.text.isNullOrBlank || starttime.text.isNullOrBlank || endtime.text.isNullOrBlank) {
                               Get.snackbar(
                                 null,
-                                'Please fill all fields',
+                                'Please provide all the details',
                                 colorText: Colors.white,
                                 backgroundColor: Colors.black87,
                                 snackPosition: SnackPosition.BOTTOM,

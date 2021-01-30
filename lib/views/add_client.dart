@@ -210,7 +210,7 @@ class _AddClientState extends State<AddClient> {
                             if (name.text.isNullOrBlank || phone.text.isNullOrBlank || email.text.isNullOrBlank || unitIncharge.text.isNullOrBlank || address.text.isNullOrBlank || clientId.isNullOrBlank || latitude == null || longitude == null) {
                               Get.snackbar(
                                 null,
-                                'Please fill all fields',
+                                'Please provide all the details',
                                 colorText: Colors.white,
                                 backgroundColor: Colors.black87,
                                 snackPosition: SnackPosition.BOTTOM,

@@ -210,7 +210,7 @@ class _BroadcastState extends State<Broadcast> {
                             if (empId == null || message.text == null || message.text == '') {
                               Get.snackbar(
                                 null,
-                                'Please fill all fields',
+                                'Please provide all the details',
                                 colorText: Colors.white,
                                 backgroundColor: Colors.black87,
                                 snackPosition: SnackPosition.BOTTOM,
