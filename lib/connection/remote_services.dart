@@ -3,8 +3,16 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'dart:developer' as developer;
+// import 'dart:isolate';
+// import 'dart:ui';
 
+// import 'package:background_locator/location_dto.dart';
+// import 'package:background_locator/settings/android_settings.dart' as android;
+// import 'package:background_locator/settings/android_settings.dart';
+// import 'package:background_locator/settings/ios_settings.dart' as ios;
+// import 'package:background_locator/settings/locator_settings.dart';
 import 'package:dio/dio.dart' as mydio;
+// import 'package:fame/connection/location_service_repository.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
@@ -35,6 +43,8 @@ import 'package:http/http.dart' as http;
 import '../models/login.dart';
 import 'package:battery/battery.dart';
 import 'package:connectivity/connectivity.dart';
+// import 'package:background_locator/background_locator.dart' as bgl;
+// import 'package:background_locator/settings/locator_settings.dart' as ls;
 
 class RemoteServices {
   // static var baseURL = 'http://13.232.255.84:8090/v1/api';
@@ -47,6 +57,7 @@ class RemoteServices {
   static var accessKey = 'diyos2020';
   final FirebaseMessaging _fbm = FirebaseMessaging();
   StreamSubscription getPositionSubscription;
+  var battery = Battery();
 
   Future<String> setFirebaseNotification() async {
     var pushCode = '';
@@ -1437,13 +1448,81 @@ class RemoteServices {
     }
   }
 
+  void saveLocationLogNew() async {
+    // var isolateName = 'LocatorIsolate';
+    // var port = ReceivePort();
+    // IsolateNameServer.registerPortWithName(port.sendPort, isolateName);
+    // port.listen((dynamic data) {
+    //   // do something with data
+    // });
+    // await initPlatformState();
+    // startLocationService();
+    // FlutterBackgroundLocation.getLocationUpdates((location) async {
+    //   var response = await client.get(
+    //     'http://192.168.29.239/flutter_test/api.php?callapi=1&process=addLocationTrack&lat=${location.latitude.toString()}&lng=${location.longitude.toString()}',
+    //     headers: header,
+    //   );
+    //   print(response.statusCode);
+    // });
+  }
+
+  // void startLocationService() {
+  //   var data = {'countInit': 1};
+  //   Geolocator.requestPermission();
+  //   bgl.BackgroundLocator.registerLocationUpdate(
+  //     callback,
+  //     // initCallback: LocationCallbackHandler.initCallback,
+  //     initDataCallback: data,
+  //     disposeCallback: disposeCallback,
+  //     autoStop: false,
+  //     iosSettings: ios.IOSSettings(
+  //       accuracy: ls.LocationAccuracy.NAVIGATION,
+  //       // distanceFilter: 0,
+  //     ),
+  //     androidSettings: android.AndroidSettings(
+  //       accuracy: ls.LocationAccuracy.NAVIGATION,
+  //       interval: 15,
+  //       client: android.LocationClient.google,
+  //       androidNotificationSettings: AndroidNotificationSettings(
+  //         notificationChannelName: 'Location tracking',
+  //         notificationTitle: 'FaME',
+  //         notificationMsg: 'Tracking location in background',
+  //         notificationBigMsg: 'Background location is on to keep the app up-tp-date with your location. This is required for main features to work properly when the app is not running.',
+  //         notificationIcon: 'ic_notification',
+  //         // notificationIconColor: Colors.grey,
+  //         // notificationTapCallback: LocationCallbackHandler.notificationCallback,
+  //       ),
+  //     ),
+  //   );
+  // }
+
+  // static Future<void> callback(LocationDto locationDto) async {
+  //   // var myLocationCallbackRepository = LocationServiceRepository();
+  //   // await myLocationCallbackRepository.callback(locationDto);
+  //   print('custom print: callback: ${await Battery().batteryLevel}');
+  //   var currDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()).toString();
+  //   // final level = await Battery().batteryLevel;
+  //   var level = 69;
+  //   var response = await http.Client().get(
+  //     'http://192.168.29.239/flutter_test/api.php?callapi=1&process=addLocationTrack&lat=${locationDto.latitude.toString()}&lng=${locationDto.longitude.toString()}&battery=${level.toString()}&dt=${currDate.toString()}',
+  //     headers: <String, String>{
+  //       'Content-Type': 'application/json; charset=UTF-8',
+  //     },
+  //   );
+  //   print(response.statusCode);
+  // }
+
+  // static Future<void> disposeCallback() async {
+  //   // var myLocationCallbackRepository = LocationServiceRepository();
+  //   // await myLocationCallbackRepository.dispose();
+  // }
+
+  // Future<void> initPlatformState() async {
+  //   await bgl.BackgroundLocator.initialize();
+  // }
+
   void saveLocationLog({lat, lng, cancel}) async {
     int timeInterval = jsonDecode(RemoteServices().box.get('appFeature'))['trackingInterval'] ?? 15;
-
-    // if (Platform.isAndroid) {
-    //   var methodChannel = MethodChannel('in.androidfame.attendance');
-    //   await methodChannel.invokeMethod('startService');
-    // }
 
     if (lat != null && lng != null) {
       var currDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()).toString();
@@ -1476,14 +1555,12 @@ class RemoteServices {
         print('error');
       }
     } else {
-      // print('herer it is');
+      print('herer it is');
       var listOfData = [];
       getPositionSubscription = Geolocator.getPositionStream(
         desiredAccuracy: LocationAccuracy.bestForNavigation,
-        // distanceFilter: 10,
         intervalDuration: Duration(minutes: timeInterval),
         // intervalDuration: Duration(seconds: 15),
-        // forceAndroidLocationManager: true,
       ).listen((Position position) async {
         // print('herer it is position: $position');
         if (position == null) {
@@ -1493,8 +1570,6 @@ class RemoteServices {
           var currDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()).toString();
           var _battery = Battery();
           var level = await _battery.batteryLevel;
-          // print(position.latitude.toString());
-          // print(position.longitude.toString());
           var connectivityResult = await Connectivity().checkConnectivity();
           var offline_location = await box.get('offline_location');
           // print('offline_location: $offline_location');

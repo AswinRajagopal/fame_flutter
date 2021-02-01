@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 
@@ -178,9 +180,19 @@ class DashboardController extends GetxController {
               if (dA != null && (dA['checkInDateTime'] != null && dA['checkInDateTime'] != '') && (dA['checkOutDateTime'] == null || dA['checkOutDateTime'] == '')) {
                 print('tracking');
                 RemoteServices().saveLocationLog();
+                if (Platform.isAndroid) {
+                  var methodChannel = MethodChannel('in.androidfame.attendance');
+                  var result = await methodChannel.invokeMethod('startService');
+                  print('result: $result');
+                }
               } else {
                 print('not tracking');
                 await RemoteServices().saveLocationLog(cancel: true);
+                // if (Platform.isAndroid) {
+                //   var methodChannel = MethodChannel('in.androidfame.attendance');
+                //   var result = await methodChannel.invokeMethod('startService');
+                //   print('result: $result');
+                // }
               }
             }
 

@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/services.dart';
+
 import '../connection/remote_services.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
@@ -153,6 +155,11 @@ class CheckoutController extends GetxController {
             // print(checkin);
             if (checkout != null && checkout['success']) {
               await RemoteServices().saveLocationLog(cancel: true);
+              if (Platform.isAndroid) {
+                var methodChannel = MethodChannel('in.androidfame.attendance');
+                var result = await methodChannel.invokeMethod('stopService');
+                print('result: $result');
+              }
               return true;
             } else {
               Get.snackbar(

@@ -63,13 +63,13 @@ public class MainActivity extends FlutterActivity {
 
   }
 
-  @Override
-  protected void onDestroy() {
-    super.onDestroy();
-    // stopService(forService);
-    startService();
-    // result.success("Service Started");
-  }
+  // @Override
+  // protected void onDestroy() {
+  // super.onDestroy();
+  // stopService(forService);
+  // startService();
+  // result.success("Service Started");
+  // }
 
   private void startService() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

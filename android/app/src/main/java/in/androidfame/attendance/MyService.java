@@ -13,18 +13,6 @@ public class MyService extends Service {
   @Override
   public void onCreate() {
     super.onCreate();
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-      NotificationCompat.Builder builder = new NotificationCompat.Builder(
-        this,
-        "messages"
-      )
-        .setContentText("FaME is running in Background")
-        .setContentTitle("FaME")
-        .setSmallIcon(R.drawable.ic_notification);
-
-      startForeground(101, builder.build());
-    }
   }
 
   @Nullable

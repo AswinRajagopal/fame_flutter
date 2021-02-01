@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
@@ -161,6 +162,11 @@ class CheckinController extends GetxController {
             // print(checkin);
             if (checkin != null && checkin['success']) {
               RemoteServices().saveLocationLog();
+              if (Platform.isAndroid) {
+                var methodChannel = MethodChannel('in.androidfame.attendance');
+                var result = await methodChannel.invokeMethod('startService');
+                print('result: $result');
+              }
               return true;
             } else {
               Get.snackbar(

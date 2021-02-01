@@ -1,6 +1,6 @@
-import 'dart:io';
+// import 'dart:io';
 
-import 'package:flutter/services.dart';
+// import 'package:flutter/services.dart';
 
 import 'notification.dart';
 
@@ -68,11 +68,12 @@ class _DashboardPageState extends State<DashboardPage> {
 
   void callBg() async {
     print('callBg()');
-    if (Platform.isAndroid) {
-      var methodChannel = MethodChannel('in.androidfame.attendance');
-      var result = await methodChannel.invokeMethod('startService');
-      print('result: $result');
-    }
+    // RemoteServices().saveLocationLogNew();
+    // if (Platform.isAndroid) {
+    //   var methodChannel = MethodChannel('in.androidfame.attendance');
+    //   var result = await methodChannel.invokeMethod('startService');
+    //   print('result: $result');
+    // }
   }
 
   String convertTimeWithParse(time) {
