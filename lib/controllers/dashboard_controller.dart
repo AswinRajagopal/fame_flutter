@@ -204,6 +204,8 @@ class DashboardController extends GetxController {
                 // checked out
                 await scheduleNotification('setupcheckin', response['empdetails']['shiftStartTime'], jsonDecode(RemoteServices().box.get('appFeature'))['checkinDialTime'] ?? 15);
               }
+            } else {
+              await cancelNotification();
             }
           }
         } else {
