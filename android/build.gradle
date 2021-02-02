@@ -11,6 +11,7 @@ buildscript {
         // Add the google services classpath
         classpath 'com.google.gms:google-services:4.3.2'
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.2.0'
+        // classpath 'com.google.firebase:firebase-crashlytics-gradle:17.3.1'
     }
 }
 
