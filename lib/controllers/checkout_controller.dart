@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import '../connection/location_update.dart';
 import 'package:flutter/services.dart';
 
 import '../connection/remote_services.dart';
@@ -159,6 +160,8 @@ class CheckoutController extends GetxController {
                 var methodChannel = MethodChannel('in.androidfame.attendance');
                 var result = await methodChannel.invokeMethod('stopService');
                 print('result: $result');
+              } else if (Platform.isIOS) {
+                await LocationUpdates.stopLocationUpdates(Get.context);
               }
               return true;
             } else {

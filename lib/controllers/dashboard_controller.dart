@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import '../connection/location_update.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
@@ -184,6 +185,8 @@ class DashboardController extends GetxController {
                   var methodChannel = MethodChannel('in.androidfame.attendance');
                   var result = await methodChannel.invokeMethod('startService');
                   print('result: $result');
+                } else if (Platform.isIOS) {
+                  await LocationUpdates.initiateLocationUpdates(Get.context);
                 }
               } else {
                 print('not tracking');
