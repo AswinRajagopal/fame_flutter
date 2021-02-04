@@ -183,6 +183,7 @@ class _RouteplanListState extends State<RouteplanList> {
                   var route = epC.empRes.routePlanList[index];
                   // print(route);
                   return RouteplanWidget(
+                    epC,
                     route,
                     index,
                     epC.empRes.routePlanList.length,

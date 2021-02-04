@@ -22,11 +22,11 @@ class EmprplanController extends GetxController {
     getEmprPlan(fromWhere: fromWhere);
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    isDisposed = true;
-  }
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  //   isDisposed = true;
+  // }
 
   void getEmprPlan({fromWhere}) async {
     print('getEmprPlan');
@@ -83,6 +83,46 @@ class EmprplanController extends GetxController {
     } finally {
       // isLoading(false);
       // await pr.hide();
+    }
+  }
+
+  void aprRejRoutePlan(index, id, status) async {
+    try {
+      await pr.show();
+      var appRejRes = await RemoteServices().aprRejRoutePlan(id, status);
+      if (appRejRes != null) {
+        await pr.hide();
+        // print('res valid: $res');
+        if (appRejRes['success']) {
+          print('here');
+          empRes.routePlanList.clear();
+          getEmprPlan();
+        } else {
+          Get.snackbar(
+            null,
+            'Route Plan not updated',
+            colorText: Colors.white,
+            backgroundColor: Colors.black87,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+            padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+            borderRadius: 5.0,
+          );
+        }
+      }
+    } catch (e) {
+      print(e);
+      await pr.hide();
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+        padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+        borderRadius: 5.0,
+      );
     }
   }
 }

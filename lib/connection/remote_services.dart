@@ -1941,4 +1941,28 @@ class RemoteServices {
       return null;
     }
   }
+
+  Future aprRejRoutePlan(id, status) async {
+    // print('empName: $empName');
+    var response = await client.post(
+      '$baseURL/location/update_rplan',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'approvedBy': box.get('empid').toString(),
+          'status': status,
+          'rplanId': id,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
 }
