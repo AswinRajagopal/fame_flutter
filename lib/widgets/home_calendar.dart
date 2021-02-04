@@ -82,7 +82,7 @@ class _HomeCalendarState extends State<HomeCalendar> with TickerProviderStateMix
       var dtFormat = showDate.toString().split('-')[2] + '-' + showDate.toString().split('-')[1] + '-' + showDate.toString().split('-')[0];
       print('My Calendar');
       print(events);
-      var calEvent = events.first.split('*');
+      var calEvent = events == null ? [] : events.first.split('*');
       if (calEvent.length > 1) {
         Get.defaultDialog(
           title: 'Employee Detail on $dtFormat',
