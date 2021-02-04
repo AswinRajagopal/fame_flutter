@@ -102,7 +102,11 @@ class DBEmprTile extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(
                 index == 0 ? 10.0 : 5.0,
                 10.0,
-                index == length ? 20.0 : 5.0,
+                index == length
+                    ? 20.0
+                    : index == (length - 1)
+                        ? 10.0
+                        : 5.0,
                 10.0,
               ),
               child: Container(
