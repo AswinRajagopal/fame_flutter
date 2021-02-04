@@ -2,6 +2,8 @@
 
 // import 'package:flutter/services.dart';
 
+import 'dart:convert';
+
 import 'notification.dart';
 
 import 'attendance_page.dart';
@@ -231,9 +233,12 @@ class _DashboardPageState extends State<DashboardPage> {
     }
   }
 
+  var appFeatures;
+
   @override
   Widget build(BuildContext context) {
     // print('width: ${MediaQuery.of(context).size.width}');
+    appFeatures = jsonDecode(RemoteServices().box.get('appFeature'));
     return Scaffold(
       backgroundColor: AppUtils().greyScaffoldBg,
       floatingActionButton: CustomFab('dashboard'),
@@ -1082,155 +1087,170 @@ class _DashboardPageState extends State<DashboardPage> {
                     SizedBox(
                       width: 20.0,
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      color: Colors.white,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0,
-                          vertical: 15.0,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Image.asset(
-                                  'assets/images/dummy_location.png',
-                                  height: 40.0,
-                                  width: 40.0,
-                                ),
-                                SizedBox(
-                                  width: 10.0,
-                                ),
-                                Text(
-                                  'My Route Plan',
-                                  style: TextStyle(
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.bold,
+                    Visibility(
+                      visible: appFeatures['gps'] ?? true,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        color: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20.0,
+                            vertical: 15.0,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Image.asset(
+                                    'assets/images/dummy_location.png',
+                                    height: 40.0,
+                                    width: 40.0,
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      color: AppUtils().greyScaffoldBg,
-                      height: 20.0,
-                    ),
-                    Container(
-                      color: AppUtils().greyScaffoldBg,
-                      child: Obx(() {
-                        if (erpC.isEmpLoading.value) {
-                          return LoadingWidget(
-                            containerColor: Colors.grey[300],
-                            containerHeight: 210.0,
-                            loaderSize: 30.0,
-                            loaderColor: Colors.black87,
-                          );
-                        } else {
-                          return Container(
-                            color: AppUtils().greyScaffoldBg,
-                            height: erpC.empRes.routePlanList == null || erpC.empRes.routePlanList.length == 0 ? 0.0 : 220.0,
-                            width: MediaQuery.of(context).size.width,
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                bottom: 20.0,
+                                  SizedBox(
+                                    width: 10.0,
+                                  ),
+                                  Text(
+                                    'My Route Plan',
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              child: erpC.empRes.routePlanList == null || erpC.empRes.routePlanList.length == 0
-                                  ? Container()
-                                  : ListView.builder(
-                                      scrollDirection: Axis.horizontal,
-                                      // itemCount: erpC.empRes.routePlanList.length,
-                                      itemCount: erpC.empRes.routePlanList.length > 4 ? 5 : erpC.empRes.routePlanList.length,
-                                      itemBuilder: (context, index) {
-                                        var length = erpC.empRes.routePlanList.length;
-                                        var empRoute = erpC.empRes.routePlanList[index];
-                                        // print('index: $index');
-                                        return DBEmprTile(
-                                          empRoute,
-                                          index,
-                                          // erpC.empRes.routePlanList.length,
-                                          length > 4 ? 4 : length,
-                                        );
-                                      },
-                                    ),
-                            ),
-                          );
-                        }
-                      }),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      color: Colors.white,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0,
-                          vertical: 15.0,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                // Image.asset(
-                                //   'assets/images/dummy_location.png',
-                                //   height: 40.0,
-                                //   width: 40.0,
-                                // ),
-                                Icon(
-                                  Icons.map,
-                                  size: 25.0,
-                                  color: Colors.grey,
-                                ),
-                                SizedBox(
-                                  width: 6.0,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Get.to(RoutePlanning());
-                                  },
-                                  child: Text(
-                                    'Create New Route Plan',
-                                    style: TextStyle(
-                                      fontSize: 18.0,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ),
-                                Spacer(),
-                                Icon(
-                                  Icons.pin_drop,
-                                  size: 25.0,
-                                  color: Colors.grey,
-                                ),
-                                SizedBox(
-                                  width: 6.0,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Get.to(PinMyVisit());
-                                  },
-                                  child: Text(
-                                    'Pin My Visit',
-                                    style: TextStyle(
-                                      fontSize: 18.0,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                    Container(
-                      color: AppUtils().greyScaffoldBg,
-                      height: 20.0,
+                    Visibility(
+                      visible: appFeatures['gps'] ?? true,
+                      child: Container(
+                        color: AppUtils().greyScaffoldBg,
+                        height: 20.0,
+                      ),
+                    ),
+                    Visibility(
+                      visible: appFeatures['gps'] ?? true,
+                      child: Container(
+                        color: AppUtils().greyScaffoldBg,
+                        child: Obx(() {
+                          if (erpC.isEmpLoading.value) {
+                            return LoadingWidget(
+                              containerColor: Colors.grey[300],
+                              containerHeight: 210.0,
+                              loaderSize: 30.0,
+                              loaderColor: Colors.black87,
+                            );
+                          } else {
+                            return Container(
+                              color: AppUtils().greyScaffoldBg,
+                              height: erpC.empRes.routePlanList == null || erpC.empRes.routePlanList.length == 0 ? 0.0 : 220.0,
+                              width: MediaQuery.of(context).size.width,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  bottom: 20.0,
+                                ),
+                                child: erpC.empRes.routePlanList == null || erpC.empRes.routePlanList.length == 0
+                                    ? Container()
+                                    : ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        // itemCount: erpC.empRes.routePlanList.length,
+                                        itemCount: erpC.empRes.routePlanList.length > 4 ? 5 : erpC.empRes.routePlanList.length,
+                                        itemBuilder: (context, index) {
+                                          var length = erpC.empRes.routePlanList.length;
+                                          var empRoute = erpC.empRes.routePlanList[index];
+                                          // print('index: $index');
+                                          return DBEmprTile(
+                                            empRoute,
+                                            index,
+                                            // erpC.empRes.routePlanList.length,
+                                            length > 4 ? 4 : length,
+                                          );
+                                        },
+                                      ),
+                              ),
+                            );
+                          }
+                        }),
+                      ),
+                    ),
+                    Visibility(
+                      visible: appFeatures['gps'] ?? true,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        color: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20.0,
+                            vertical: 15.0,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  // Image.asset(
+                                  //   'assets/images/dummy_location.png',
+                                  //   height: 40.0,
+                                  //   width: 40.0,
+                                  // ),
+                                  Icon(
+                                    Icons.map,
+                                    size: 25.0,
+                                    color: Colors.grey,
+                                  ),
+                                  SizedBox(
+                                    width: 6.0,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Get.to(RoutePlanning());
+                                    },
+                                    child: Text(
+                                      'Create New Route Plan',
+                                      style: TextStyle(
+                                        fontSize: 18.0,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  Icon(
+                                    Icons.pin_drop,
+                                    size: 25.0,
+                                    color: Colors.grey,
+                                  ),
+                                  SizedBox(
+                                    width: 6.0,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Get.to(PinMyVisit());
+                                    },
+                                    child: Text(
+                                      'Pin My Visit',
+                                      style: TextStyle(
+                                        fontSize: 18.0,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Visibility(
+                      visible: appFeatures['gps'] ?? true,
+                      child: Container(
+                        color: AppUtils().greyScaffoldBg,
+                        height: 20.0,
+                      ),
                     ),
                     // DotsIndicator(
                     //   dotsCount: erpC.empRes.routePlanList.length,
