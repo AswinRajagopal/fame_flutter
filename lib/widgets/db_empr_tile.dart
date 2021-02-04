@@ -19,7 +19,10 @@ class DBEmprTile extends StatelessWidget {
   final double sBox = 130.0;
   final double sBoxSpace = 10.0;
 
-  String getStatus(status) {
+  String getStatus(status, pendingCount) {
+    if (pendingCount == 0) {
+      return 'Completed';
+    }
     if (status == 0) {
       return 'Pending';
     } else if (status == 1) {
@@ -104,7 +107,7 @@ class DBEmprTile extends StatelessWidget {
                 10.0,
                 index == length
                     ? 20.0
-                    : index == (length - 1)
+                    : (index == (length - 1) && index < 3)
                         ? 10.0
                         : 5.0,
                 10.0,
@@ -271,7 +274,7 @@ class DBEmprTile extends StatelessWidget {
                           ),
                           Text(
                             // empRoute.status == 1 ? 'Approved' : 'Pending',
-                            getStatus(empRoute.status),
+                            getStatus(empRoute.status, empRoute.pendingCount),
                             style: TextStyle(
                               fontSize: textSize,
                               color: Colors.grey,

@@ -21,7 +21,10 @@ class RouteplanWidget extends StatelessWidget {
     return DateFormat('dd').format(route.createdOn).toString() + '-' + DateFormat('MM').format(route.createdOn).toString() + '-' + DateFormat.y().format(route.createdOn).toString() + ' @ ' + DateFormat('h:mm').format(route.createdOn).toString() + DateFormat('a').format(route.createdOn).toString().toLowerCase();
   }
 
-  String getStatus(status) {
+  String getStatus(status, pendingCount) {
+    if (pendingCount == 0) {
+      return 'Completed';
+    }
     if (status == 0) {
       return 'Pending';
     } else if (status == 1) {
@@ -194,7 +197,7 @@ class RouteplanWidget extends StatelessWidget {
                     width: secondWidth,
                   ),
                   Text(
-                    getStatus(route.status),
+                    getStatus(route.status, route.pendingCount),
                     style: TextStyle(
                       fontSize: textSize,
                       color: Colors.grey,
