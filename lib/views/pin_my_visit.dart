@@ -304,6 +304,7 @@ class _PinMyVisitState extends State<PinMyVisit> {
             // await Get.offAll(Pitstops(pit['routePlanId'], widget.company, widget.goBackTo));
             // await Get.offAll(RouteplanList());
             await Get.back();
+            await Get.back();
           } else {
             await mpC.pr.hide();
             Get.snackbar(
