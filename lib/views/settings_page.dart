@@ -104,9 +104,12 @@ class _SettingsPageState extends State<SettingsPage> {
               onTap: () {
                 Get.to(TransferList());
               },
-              child: ListContainer(
-                'assets/images/icon_transfer.png',
-                'Transfer',
+              child: Visibility(
+                visible: roleId == '3' ? true : false,
+                child: ListContainer(
+                  'assets/images/icon_transfer.png',
+                  'Transfer',
+                ),
               ),
             ),
             GestureDetector(
