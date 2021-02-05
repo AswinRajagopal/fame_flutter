@@ -105,7 +105,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 Get.to(TransferList());
               },
               child: Visibility(
-                visible: roleId == '3' ? true : false,
+                visible: roleId != '1' ? true : false,
                 child: ListContainer(
                   'assets/images/icon_transfer.png',
                   'Transfer',
