@@ -65,7 +65,7 @@ class PocketFaME extends StatelessWidget {
     InAppUpdate.checkForUpdate().then((info) {
       if (info != null && info.updateAvailable) {
         // ignore: unnecessary_lambdas
-        // InAppUpdate.performImmediateUpdate().catchError((e) => _showError(e));
+        InAppUpdate.performImmediateUpdate().catchError((e) => _showError(e));
       }
       // ignore: unnecessary_lambdas
     }).catchError((e) => _showError(e));
