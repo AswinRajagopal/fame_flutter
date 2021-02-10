@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import '../connection/location_update.dart';
 import 'package:flutter/services.dart';
 
 import '../connection/remote_services.dart';
@@ -155,13 +154,13 @@ class CheckoutController extends GetxController {
             );
             // print(checkin);
             if (checkout != null && checkout['success']) {
-              await RemoteServices().saveLocationLog(cancel: true);
+              // await RemoteServices().saveLocationLog(cancel: true);
               if (Platform.isAndroid) {
                 var methodChannel = MethodChannel('in.androidfame.attendance');
                 var result = await methodChannel.invokeMethod('stopService');
                 print('result: $result');
               } else if (Platform.isIOS) {
-                await LocationUpdates.stopLocationUpdates(Get.context);
+                // await LocationUpdates.stopLocationUpdates(Get.context);
               }
               return true;
             } else {

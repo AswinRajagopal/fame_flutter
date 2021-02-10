@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import '../connection/location_update.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
@@ -176,21 +175,26 @@ class DashboardController extends GetxController {
             );
           } else {
             isDashboardLoading(false);
+            if (Platform.isAndroid) {
+              var methodChannel = MethodChannel('in.androidfame.attendance');
+              var result = await methodChannel.invokeMethod('startService');
+              print('result: $result');
+            }
             var dA = response['dailyAttendance'];
             if (response['empdetails']['gpsTracking'] != null && response['empdetails']['gpsTracking'] == true && RemoteServices().box.get('role') != '3') {
               if (dA != null && (dA['checkInDateTime'] != null && dA['checkInDateTime'] != '') && (dA['checkOutDateTime'] == null || dA['checkOutDateTime'] == '')) {
                 print('tracking');
-                RemoteServices().saveLocationLog();
+                // RemoteServices().saveLocationLog();
                 if (Platform.isAndroid) {
-                  var methodChannel = MethodChannel('in.androidfame.attendance');
-                  var result = await methodChannel.invokeMethod('startService');
-                  print('result: $result');
+                  // var methodChannel = MethodChannel('in.androidfame.attendance');
+                  // var result = await methodChannel.invokeMethod('startService');
+                  // print('result: $result');
                 } else if (Platform.isIOS) {
-                  await LocationUpdates.initiateLocationUpdates(Get.context);
+                  // await LocationUpdates.initiateLocationUpdates(Get.context);
                 }
               } else {
                 print('not tracking');
-                await RemoteServices().saveLocationLog(cancel: true);
+                // await RemoteServices().saveLocationLog(cancel: true);
                 // if (Platform.isAndroid) {
                 //   var methodChannel = MethodChannel('in.androidfame.attendance');
                 //   var result = await methodChannel.invokeMethod('startService');

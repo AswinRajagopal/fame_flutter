@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import '../connection/location_update.dart';
 import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -162,13 +161,13 @@ class CheckinController extends GetxController {
             );
             // print(checkin);
             if (checkin != null && checkin['success']) {
-              RemoteServices().saveLocationLog();
+              // RemoteServices().saveLocationLog();
               if (Platform.isAndroid) {
                 var methodChannel = MethodChannel('in.androidfame.attendance');
                 var result = await methodChannel.invokeMethod('startService');
                 print('result: $result');
               } else if (Platform.isIOS) {
-                await LocationUpdates.initiateLocationUpdates(Get.context);
+                // await LocationUpdates.initiateLocationUpdates(Get.context);
               }
               return true;
             } else {

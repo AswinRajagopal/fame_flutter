@@ -9,8 +9,6 @@ import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugins.GeneratedPluginRegistrant;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainActivity extends FlutterActivity {
 
@@ -35,21 +33,14 @@ public class MainActivity extends FlutterActivity {
             MethodChannel.Result result
           ) {
             if (methodCall.method.equals("startService")) {
-              startService();
-              Timer timer = new Timer();
-              timer.schedule(
-                new TimerTask() {
-                  @Override
-                  public void run() {
-                    //what you want to do
-                  }
-                },
-                0,
-                10000
-              ); //wait 0 ms before doing the action and do it evry 1000ms (1second)
-
-              timer.cancel(); //stop the timer
+              // startService();
+              startService(new Intent(MainActivity.this, BackgroundService.class));
               result.success("Service Started");
+            }
+            if (methodCall.method.equals("stopService")) {
+              // startService();
+              stopService(new Intent(MainActivity.this, BackgroundService.class));
+              result.success("Service Stopped");
             }
           }
         }
