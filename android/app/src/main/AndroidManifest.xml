@@ -81,6 +81,8 @@
                   android:permission="android.permission.FOREGROUND_SERVICE"
                   android:exported="true"
                   android:foregroundServiceType = "location"/>
+
+        <service android:name=".service.BackgroundService" android:foregroundServiceType="location"/>
         
         <receiver android:name="rekab.app.background_locator.BootBroadcastReceiver"
                   android:enabled="true">
