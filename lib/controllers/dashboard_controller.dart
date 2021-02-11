@@ -175,20 +175,15 @@ class DashboardController extends GetxController {
             );
           } else {
             isDashboardLoading(false);
-            if (Platform.isAndroid) {
-              var methodChannel = MethodChannel('in.androidfame.attendance');
-              var result = await methodChannel.invokeMethod('startService');
-              print('result: $result');
-            }
             var dA = response['dailyAttendance'];
             if (response['empdetails']['gpsTracking'] != null && response['empdetails']['gpsTracking'] == true && RemoteServices().box.get('role') != '3') {
               if (dA != null && (dA['checkInDateTime'] != null && dA['checkInDateTime'] != '') && (dA['checkOutDateTime'] == null || dA['checkOutDateTime'] == '')) {
                 print('tracking');
                 // RemoteServices().saveLocationLog();
                 if (Platform.isAndroid) {
-                  // var methodChannel = MethodChannel('in.androidfame.attendance');
-                  // var result = await methodChannel.invokeMethod('startService');
-                  // print('result: $result');
+                  var methodChannel = MethodChannel('in.androidfame.attendance');
+                  var result = await methodChannel.invokeMethod('startService');
+                  print('result: $result');
                 } else if (Platform.isIOS) {
                   // await LocationUpdates.initiateLocationUpdates(Get.context);
                 }

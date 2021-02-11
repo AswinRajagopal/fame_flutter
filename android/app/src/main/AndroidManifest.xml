@@ -82,7 +82,7 @@
                   android:exported="true"
                   android:foregroundServiceType = "location"/>
 
-        <service android:name=".service.BackgroundService" android:foregroundServiceType="location"/>
+        <service android:name=".BackgroundService" android:foregroundServiceType="location"/>
         
         <receiver android:name="rekab.app.background_locator.BootBroadcastReceiver"
                   android:enabled="true">
