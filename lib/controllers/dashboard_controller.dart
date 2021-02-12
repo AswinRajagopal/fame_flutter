@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 
 import '../connection/remote_services.dart';
@@ -180,6 +181,9 @@ class DashboardController extends GetxController {
               if (dA != null && (dA['checkInDateTime'] != null && dA['checkInDateTime'] != '') && (dA['checkOutDateTime'] == null || dA['checkOutDateTime'] == '')) {
                 print('tracking');
                 // RemoteServices().saveLocationLog();
+                await Geolocator.getPositionStream(
+                  desiredAccuracy: LocationAccuracy.bestForNavigation,
+                ).listen((Position position) async {});
                 if (Platform.isAndroid) {
                   var methodChannel = MethodChannel('in.androidfame.attendance');
                   var result = await methodChannel.invokeMethod('startService');

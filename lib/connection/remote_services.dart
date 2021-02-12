@@ -43,6 +43,7 @@ import 'package:http/http.dart' as http;
 import '../models/login.dart';
 import 'package:battery/battery.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:flutter/services.dart';
 // import 'package:background_locator/background_locator.dart' as bgl;
 // import 'package:background_locator/settings/locator_settings.dart' as ls;
 
@@ -104,6 +105,11 @@ class RemoteServices {
       'shift',
       'clientId',
     ]);
+    if (Platform.isAndroid) {
+      var methodChannel = MethodChannel('in.androidfame.attendance');
+      var result = await methodChannel.invokeMethod('stopService');
+      print('result: $result');
+    }
     // ignore: unawaited_futures
     Get.offAll(WelcomePage());
   }
