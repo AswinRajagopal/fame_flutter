@@ -13,6 +13,7 @@ import io.flutter.plugins.GeneratedPluginRegistrant;
 public class MainActivity extends FlutterActivity {
 
   private Intent forService;
+  MySharedPreference sharedPreference;
 
   @Override
   public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
@@ -33,8 +34,18 @@ public class MainActivity extends FlutterActivity {
             MethodChannel.Result result
           ) {
             if (methodCall.method.equals("startService")) {
+              Intent intent = new Intent(MainActivity.this, BackgroundService.class);
+              sharedPreference.putPreferenceString
+                      (MySharedPreference.COMPANY_ID,methodCall.argument("companyId"));
+              sharedPreference.putPreferenceString
+                      (MySharedPreference.USER_ID,methodCall.argument("empId"));
+//              Bundle bundle = new Bundle();
+//              bundle.putString("empId", methodCall.argument("empId"));
+////              bundle.putString("trackingInterval", methodCall.argument("trackingInterval")+"");
+//              bundle.putString("companyId", methodCall.argument("companyId"));
+//              intent.putExtras(bundle);
               // startService();
-              startService(new Intent(MainActivity.this, BackgroundService.class));
+              startService(intent);
               result.success("Service Started");
             }
             if (methodCall.method.equals("stopService")) {
@@ -50,6 +61,7 @@ public class MainActivity extends FlutterActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    sharedPreference = new MySharedPreference(this);
     // GeneratedPluginRegistrant.registerWith(this);
 
   }

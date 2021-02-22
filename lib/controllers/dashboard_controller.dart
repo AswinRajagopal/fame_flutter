@@ -147,6 +147,13 @@ class DashboardController extends GetxController {
             await RemoteServices().box.put('clientId', response['clientData']['id']);
           }
           await RemoteServices().box.put('empName', response['empdetails']['name']);
+          if(response['empdetails']['reportView']!=null) {
+            await RemoteServices().box.put(
+                'reportView', response['empdetails']['reportView']);
+          }else{
+            await RemoteServices().box.put(
+                'reportView', true);
+          }
           await RemoteServices().box.put('faceApi', response['clientData']['faceApi']);
           if (response['empdetails']['empStatus'] != 1 && response['companyActive'] != true) {
             await showDialog(
@@ -175,11 +182,14 @@ class DashboardController extends GetxController {
             );
           } else {
             isDashboardLoading(false);
-            if (Platform.isAndroid) {
+            /*if (Platform.isAndroid) {
               var methodChannel = MethodChannel('in.androidfame.attendance');
-              var result = await methodChannel.invokeMethod('startService');
+              var result = await methodChannel.invokeMethod('startService',
+                  {"empId":RemoteServices().box.get('empid'),
+                    // "trackingInterval":RemoteServices().box.get('appFeature')['trackingInterval'],
+                    "companyId":RemoteServices().box.get('companyid')});
               print('result: $result');
-            }
+            }*/
             var dA = response['dailyAttendance'];
             if (response['empdetails']['gpsTracking'] != null && response['empdetails']['gpsTracking'] == true && RemoteServices().box.get('role') != '3') {
               if (dA != null && (dA['checkInDateTime'] != null && dA['checkInDateTime'] != '') && (dA['checkOutDateTime'] == null || dA['checkOutDateTime'] == '')) {

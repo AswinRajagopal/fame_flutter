@@ -57,6 +57,7 @@ public class BackgroundService extends Service {
     private final int LOCATION_DISTANCE = 0;
     FusedLocationProviderClient fusedLocationProviderClient;
     String battery_percent, current_date_time;
+    String companyId,empId;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -80,6 +81,11 @@ public class BackgroundService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+//        if(intent!=null) {
+//            empId = intent.getExtras().getString("empId");
+//            companyId = intent.getExtras().getString("companyId");
+//        }
+//        BackgroundService.LOCATION_INTERVAL = Integer.parseInt(intent.getExtras().getString("trackingInterval"));
         super.onStartCommand(intent, flags, startId);
         return START_STICKY;
     }
@@ -96,7 +102,7 @@ public class BackgroundService extends Service {
         myVolley = new MyVolley(getApplicationContext());
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getApplicationContext());
         sharedPreference = new MySharedPreference(getApplicationContext());
-        LOCATION_INTERVAL = sharedPreference.getPreferenceInt("trackingInterval");
+//        LOCATION_INTERVAL = sharedPreference.getPreferenceInt("trackingInterval");
         new LocationAsyncTask().execute();
 
     }
@@ -157,7 +163,7 @@ public class BackgroundService extends Service {
                 if (latitude != 0 && longitude != 0) {
                     insertintodb(latitude + "", longitude + "");
 
-                    if (isInternetConnected(getApplicationContext())) {
+//                    if (isInternetConnected(getApplicationContext())) {
 
                         getalllatlng();
 
@@ -166,7 +172,7 @@ public class BackgroundService extends Service {
 
                         current_update_location(sharedPreference.getPreferenceString(MySharedPreference.COMPANY_ID), sharedPreference.getPreferenceString(MySharedPreference.USER_ID), latlngarr.toString());
 //                    dellatlng();
-                    }
+//                    }
                 }
 
 
@@ -289,7 +295,7 @@ public class BackgroundService extends Service {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        myVolley.JsonRequest("http://52.66.61.207:8090/v1/api/location/save_location_log", loginRequest, new MyVolley.jsonCallback() {
+        myVolley.JsonRequest("http://65.1.68.191:8090/v1/api/location/save_location_log", loginRequest, new MyVolley.jsonCallback() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
                 try {

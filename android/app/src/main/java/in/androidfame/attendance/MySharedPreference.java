@@ -17,7 +17,7 @@ public class MySharedPreference {
     public static final String APP_FEATURES = "APP_FEATURES";
     public static final String COMPANY_ID = "COMPANY_ID";
     public static final String USER_NAME = "USER_NAME";
-    public static final String COMPANY_NAME = "USER_NAME";
+    public static final String COMPANY_NAME = "COMPANY_NAME";
     public static final String CHECKED_IN = "CHECKED_IN";
     public static final String CHECKED_IN_TIME = "CHECKED_IN_TIME";
     public static final String ROLE = "ROLE";
@@ -34,7 +34,7 @@ public class MySharedPreference {
 
     public static void clearPreference(Context context) {
         SharedPreferences sharedPref = context.getSharedPreferences(
-                "android_fame", Context.MODE_PRIVATE);
+                "android_fame_flut", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.clear().apply();
     }

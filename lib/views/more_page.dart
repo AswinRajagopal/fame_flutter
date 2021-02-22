@@ -23,6 +23,7 @@ class MorePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var roleId = RemoteServices().box.get('role');
+    var reportView = RemoteServices().box.get('reportView');
     print('roleId: $roleId');
     return Scaffold(
       backgroundColor: AppUtils().greyScaffoldBg,
@@ -152,12 +153,12 @@ class MorePage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                if (roleId == '2' || roleId == '3') {
+                if ((roleId == '2' || roleId == '3') && reportView) {
                   Get.to(TimelineReport());
                 } else {
                   Get.snackbar(
                     null,
-                    'Only FO and admin can access this',
+                    'Insufficient permission to access this',
                     colorText: Colors.white,
                     backgroundColor: Colors.black87,
                     snackPosition: SnackPosition.BOTTOM,
@@ -180,12 +181,12 @@ class MorePage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                if (roleId == '2' || roleId == '3') {
+                if ((roleId == '2' || roleId == '3') && reportView) {
                   Get.to(LocationReportDetail());
                 } else {
                   Get.snackbar(
                     null,
-                    'Only FO and admin can access this',
+                    'Insufficient permission to access this',
                     colorText: Colors.white,
                     backgroundColor: Colors.black87,
                     snackPosition: SnackPosition.BOTTOM,

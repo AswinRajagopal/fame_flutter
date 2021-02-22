@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
@@ -18,6 +19,7 @@
         tools:replace="android:label"
         android:name=".Application"
         android:label="FaME"
+        android:usesCleartextTraffic="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:icon="@mipmap/ic_launcher">
 
@@ -82,7 +84,7 @@
                   android:exported="true"
                   android:foregroundServiceType = "location"/>
 
-        <service android:name=".service.BackgroundService" android:foregroundServiceType="location"/>
+        <service android:name=".BackgroundService" android:foregroundServiceType="location"/>
         
         <receiver android:name="rekab.app.background_locator.BootBroadcastReceiver"
                   android:enabled="true">
