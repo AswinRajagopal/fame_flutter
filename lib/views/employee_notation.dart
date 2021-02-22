@@ -532,7 +532,8 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                         SizedBox(
                                           width: 310.0,
                                           child: Text(
-                                            enC.designation[int.parse(emp['designation'].toString())],
+                                            // enC.designation[int.parse(emp['designation'].toString())],
+                                            enC.designationSort[int.parse(emp['designation'].toString())]['design'],
                                             style: TextStyle(
                                               fontSize: 16.0,
                                             ),
