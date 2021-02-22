@@ -162,6 +162,9 @@ class CheckinController extends GetxController {
             // print(checkin);
             if (checkin != null && checkin['success']) {
               // RemoteServices().saveLocationLog();
+              await Geolocator.getPositionStream(
+                desiredAccuracy: LocationAccuracy.bestForNavigation,
+              ).listen((Position position) async {});
               if (Platform.isAndroid) {
                 var methodChannel = MethodChannel('in.androidfame.attendance');
                 var result = await methodChannel.invokeMethod('startService');

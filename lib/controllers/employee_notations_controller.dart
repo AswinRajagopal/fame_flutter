@@ -13,6 +13,7 @@ class EmployeeNotationsController extends GetxController {
   var resSearch;
   ProgressDialog pr;
   final List designation = [].obs;
+  final List designationSort = [].obs;
   final List aprrej = [
     {
       'value': 'Approve',
@@ -170,12 +171,17 @@ class EmployeeNotationsController extends GetxController {
               a.value++;
             }
           }
-          for (var i = 0; i < res['designationsList'].length; i++) {
-            designation.insert(
-              int.parse(res['designationsList'][i]['designId']),
-              res['designationsList'][i]['design'],
-            );
-          }
+          designationSort.addAll(res['designationsList']);
+          print('designationSort: $designationSort');
+          // designationSort.sort((a, b) => int.parse(a['designId']).compareTo(int.parse(b['designId'])));
+          // print('designationSort: $designationSort');
+          // for (var i = 0; i < designationSort.length; i++) {
+          //   designation.insert(
+          //     int.parse(designationSort[i]['designId']),
+          //     designationSort[i]['design'],
+          //   );
+          // }
+          // print('designation: $designation');
         } else {
           // Get.snackbar(
           //   null,
