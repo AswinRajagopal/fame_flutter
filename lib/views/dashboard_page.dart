@@ -1068,7 +1068,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                 ),
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
-                                  itemCount: dbC.response['empActivities'].length,
+                                  itemCount: dbC.response['empActivities'] == null ? 0 : dbC.response['empActivities'].length,
                                   itemBuilder: (BuildContext context, int index) {
                                     var empAct = dbC.response['empActivities'][index];
                                     return DBActivityTile(
