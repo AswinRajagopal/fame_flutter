@@ -850,16 +850,18 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                             ),
                                           )
                                         : Container(
-                                          width: MediaQuery.of(context).size.width,
-                                          child: ChipsChoice<String>.single(
+                                            width: MediaQuery.of(context).size.width,
+                                            child: ChipsChoice<String>.single(
                                               value: emp['attendanceAlias'],
                                               onChanged: (val) async {
                                                 // print(val);
                                                 // print(emp['attendanceAlias']);
                                                 // var ot = '';
                                                 // var lt = '';
+                                                print('jay');
+                                                print(val);
                                                 var attendanceRes;
-                                                if (val == 'OT' && emp['attendanceAlias'] == 'OT') {
+                                                if ((val == 'OT' && emp['attendanceAlias'] == 'OT')) {
                                                   otT.text = emp['overTime'];
                                                   await Get.defaultDialog(
                                                     title: 'OT hours',
@@ -925,7 +927,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                     },
                                                   );
                                                 }
-                                                if (emp['attendanceAlias'] == null || emp['attendanceAlias'] == '') {
+                                                if (emp['attendanceAlias'] == null || emp['attendanceAlias'] == '' || (emp['attendanceAlias'] == 'P' && val == 'OT')) {
                                                   var empRemarks = '';
                                                   if (emp['remarks'] != null) {
                                                     empRemarks = emp['remarks'];
@@ -1149,7 +1151,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                 ),
                                               ),
                                             ),
-                                        ),
+                                          ),
                               ],
                             ),
                           ),
