@@ -13,8 +13,8 @@ import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
 class CheckinPage extends StatefulWidget {
-  var faceApi;
-  CheckinPage(this.faceApi);
+  var faceApi,checkinLocation;
+  CheckinPage(this.faceApi,this.checkinLocation);
 
   @override
   _CheckinPageState createState() => _CheckinPageState();
@@ -34,11 +34,15 @@ class _CheckinPageState extends State<CheckinPage> {
   @override
   void initState() {
     super.initState();
+    if(widget.checkinLocation != null && !widget.checkinLocation) {
+      checkinController.currentAddress.value = 'Site';
+    }
     if (widget.faceApi == 1) {
       initCam();
-    } else {
-      checkinController.getCurrentLocation();
+    } else if(widget.checkinLocation == null || widget.checkinLocation) {
+        checkinController.getCurrentLocation();
     }
+
     checkinController.pr = ProgressDialog(
       context,
       type: ProgressDialogType.Normal,
@@ -90,7 +94,9 @@ class _CheckinPageState extends State<CheckinPage> {
       }
       setState(() {});
     });
-    checkinController.getCurrentLocation();
+    if(widget.checkinLocation==null || widget.checkinLocation) {
+      checkinController.getCurrentLocation();
+    }
   }
 
   void didChangeAppLifecycleState(AppLifecycleState state) {

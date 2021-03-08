@@ -119,7 +119,7 @@ class _ShortageReportDetailState extends State<ShortageReportDetail> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                '${(lt + ot + p).toString()}/${mP.toString()}',
+                                '${( ot + p).toString()}/${mP.toString()}',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 22.0,

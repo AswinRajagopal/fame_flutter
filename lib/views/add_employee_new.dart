@@ -329,7 +329,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
         return true;
       }
     } else if (step == 4) {
-      if (proofAadharNumber.isNullOrBlank || proofAadharNumberConfirm.isNullOrBlank || proofNumber2.isNullOrBlank || proofNumber3.isNullOrBlank || aadhar1 == null || aadhar2 == null || proof11 == null || proof12 == null || proof21 == null || proof22 == null || idProof == null || idProof1 == null || idProof2 == null) {
+      if (proofAadharNumber.isNullOrBlank || proofAadharNumberConfirm.isNullOrBlank || proofNumber2.isNullOrBlank || aadhar1 == null || aadhar2 == null || proof11 == null || proof12 == null || idProof == null || idProof1 == null) {
         Get.snackbar(
           null,
           'Please provide all the details and select proof images',

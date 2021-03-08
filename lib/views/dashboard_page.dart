@@ -510,11 +510,10 @@ class _DashboardPageState extends State<DashboardPage> {
                                         ],
                                       ),
                                       Visibility(
-                                        visible: RemoteServices().box.get('role') == '3' ? false : true,
                                         child: RaisedButton(
                                           onPressed: () {
                                             print(RemoteServices().box.get('faceApi'));
-                                            Get.to(CheckinPage(RemoteServices().box.get('faceApi')));
+                                            Get.to(CheckinPage(RemoteServices().box.get('faceApi'),appFeatures['checkinLocation']));
                                           },
                                           child: Text(
                                             'Check In',
@@ -646,7 +645,6 @@ class _DashboardPageState extends State<DashboardPage> {
                                                   ],
                                                 ),
                                                 Visibility(
-                                                  visible: RemoteServices().box.get('role') == '3' ? false : true,
                                                   child: RaisedButton(
                                                     onPressed: () {
                                                       //Check Condition
@@ -655,7 +653,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                         'chkout',
                                                       );
                                                       if (chk) {
-                                                        Get.to(CheckoutPage(RemoteServices().box.get('faceApi')));
+                                                        Get.to(CheckoutPage(RemoteServices().box.get('faceApi'),appFeatures['checkinLocation']));
                                                         // Get.to(CheckoutPage(0));
                                                       }
                                                     },
@@ -809,7 +807,6 @@ class _DashboardPageState extends State<DashboardPage> {
                                                   ],
                                                 ),
                                                 Visibility(
-                                                  visible: RemoteServices().box.get('role') == '3' ? false : true,
                                                   child: RaisedButton(
                                                     onPressed: () {
                                                       //Check Condition
@@ -819,7 +816,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                       );
                                                       if (chk) {
                                                         print(RemoteServices().box.get('faceApi'));
-                                                        Get.to(CheckinPage(RemoteServices().box.get('faceApi')));
+                                                        Get.to(CheckinPage(RemoteServices().box.get('faceApi'),appFeatures['checkinLocation']));
                                                         // Get.to(CheckinPage(0));
                                                       }
                                                     },

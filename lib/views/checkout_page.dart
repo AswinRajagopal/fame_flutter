@@ -15,8 +15,8 @@ import 'dashboard_page.dart';
 
 // ignore: must_be_immutable
 class CheckoutPage extends StatefulWidget {
-  var faceApi;
-  CheckoutPage(this.faceApi);
+  var faceApi,checkinLocation;
+  CheckoutPage(this.faceApi,this.checkinLocation);
 
   @override
   _CheckoutPageState createState() => _CheckoutPageState();
@@ -26,7 +26,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   final CheckoutController checkoutController = Get.put(CheckoutController());
   CameraController controller;
   List<CameraDescription> cameras;
-  var currentTime = DateFormat().add_jm().format(DateTime.now()).toString();
+  var currentTime = DateFormat.yMd().add_jm().format(DateTime.now()).toString();
   var size;
   var deviceRatio;
   var xScale;
@@ -34,9 +34,12 @@ class _CheckoutPageState extends State<CheckoutPage> {
   @override
   void initState() {
     super.initState();
+    if(widget.checkinLocation != null && !widget.checkinLocation) {
+      checkoutController.currentAddress.value = 'Site';
+    }
     if (widget.faceApi == 1) {
       initCam();
-    } else {
+    } else if(widget.checkinLocation == null || widget.checkinLocation) {
       checkoutController.getCurrentLocation();
     }
     checkoutController.pr = ProgressDialog(
@@ -90,7 +93,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
       }
       setState(() {});
     });
-    checkoutController.getCurrentLocation();
+    if(widget.checkinLocation==null || widget.checkinLocation) {
+      checkoutController.getCurrentLocation();
+    }
   }
 
   void didChangeAppLifecycleState(AppLifecycleState state) {

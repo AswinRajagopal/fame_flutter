@@ -41,6 +41,9 @@ class Login {
 }
 
 class AppFeature {
+  bool attendance;
+
+  bool autoApproval;
   AppFeature({
     this.attendance,
     this.autoApproval,
@@ -54,10 +57,8 @@ class AppFeature {
     this.trackingInterval,
     this.onboarding,
     this.attendanceDaysPermitted,
+    this.checkinLocation
   });
-
-  bool attendance;
-  bool autoApproval;
   String companyId;
   bool gps;
   bool issueTracking;
@@ -67,6 +68,7 @@ class AppFeature {
   int checkoutDialTime;
   int trackingInterval;
   bool onboarding;
+  bool checkinLocation;
   int attendanceDaysPermitted;
 
   factory AppFeature.fromJson(Map<String, dynamic> json) => AppFeature(
@@ -82,6 +84,7 @@ class AppFeature {
         trackingInterval: json['trackingInterval'],
         onboarding: json['onboarding'],
         attendanceDaysPermitted: json['attendanceDaysPermitted'],
+        checkinLocation: json['checkinLocation'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -96,6 +99,7 @@ class AppFeature {
         'checkoutDialTime': checkoutDialTime,
         'trackingInterval': trackingInterval,
         'onboarding': onboarding,
+        'checkinLocation': checkinLocation,
         'attendanceDaysPermitted': attendanceDaysPermitted,
       };
 }

@@ -53,7 +53,7 @@ public class BackgroundService extends Service {
     ArrayList<String> latlngarr = new ArrayList<>();
     DBAdapter db;
     LocationManager locationManager;
-    private static int LOCATION_INTERVAL = 5;
+    private static int LOCATION_INTERVAL = 15;
     private final int LOCATION_DISTANCE = 0;
     FusedLocationProviderClient fusedLocationProviderClient;
     String battery_percent, current_date_time;
@@ -295,7 +295,7 @@ public class BackgroundService extends Service {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        myVolley.JsonRequest("http://65.1.68.191:8090/v1/api/location/save_location_log", loginRequest, new MyVolley.jsonCallback() {
+        myVolley.JsonRequest("http://androidapp.diyosfame.com:8090/v1/api/location/save_location_log", loginRequest, new MyVolley.jsonCallback() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
                 try {

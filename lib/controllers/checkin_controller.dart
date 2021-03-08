@@ -15,7 +15,7 @@ import 'package:progress_dialog/progress_dialog.dart';
 class CheckinController extends GetxController {
   ProgressDialog pr;
   var checkinResponse;
-  var todayString = (DateFormat().add_jm().format(DateTime.now()).toString()).obs;
+  var todayString = (DateFormat.yMd().add_jm().format(DateTime.now()).toString()).obs;
   Position currentPosition;
   var currentAddress = 'Fetching your location...'.obs;
 
@@ -32,12 +32,12 @@ class CheckinController extends GetxController {
 
   void updateTime() {
     Timer.periodic(Duration(seconds: 1), (timer) {
-      todayString.value = DateFormat().add_jm().format(DateTime.now()).toString();
+      todayString.value = DateFormat.yMd().add_jm().format(DateTime.now()).toString();
     });
   }
 
   void getCurrentLocation() {
-    Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best).then((Position position) {
+    Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.medium).then((Position position) {
       currentPosition = position;
       // print(position.floor);
       // print(position.heading);
@@ -155,19 +155,23 @@ class CheckinController extends GetxController {
             // print(currentPosition.latitude);
             // print(currentPosition.longitude);
             var checkin = await RemoteServices().checkin(
-              currentPosition.latitude,
-              currentPosition.longitude,
+              (currentPosition !=null) ? currentPosition.latitude : '0.0',
+              (currentPosition !=null) ? currentPosition.longitude : '0.0',
               currentAddress.value,
             );
             // print(checkin);
-            if (checkin != null && checkin['success']) {
+            if (checkin != null && checkin['success'] &&
+                RemoteServices().box.get('gpsTracking') != null &&
+                RemoteServices().box.get('gpsTracking')) {
               // RemoteServices().saveLocationLog();
               await Geolocator.getPositionStream(
                 desiredAccuracy: LocationAccuracy.bestForNavigation,
               ).listen((Position position) async {});
               if (Platform.isAndroid) {
                 var methodChannel = MethodChannel('in.androidfame.attendance');
-                var result = await methodChannel.invokeMethod('startService');
+                var result = await methodChannel.invokeMethod('startService',
+                    {"empId":RemoteServices().box.get('empid'),
+                      "companyId":RemoteServices().box.get('companyid')});
                 print('result: $result');
               } else if (Platform.isIOS) {
                 // await LocationUpdates.initiateLocationUpdates(Get.context);
@@ -239,8 +243,8 @@ class CheckinController extends GetxController {
   Future<bool> justCheckin() async {
     await pr.show();
     var checkin = await RemoteServices().checkin(
-      currentPosition.latitude,
-      currentPosition.longitude,
+      (currentPosition !=null) ? currentPosition.latitude : '0.0',
+      (currentPosition !=null) ? currentPosition.longitude : '0.0',
       currentAddress.value,
     );
     // print(checkin);

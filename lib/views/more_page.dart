@@ -209,7 +209,7 @@ class MorePage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                if (roleId == '2' || roleId == '3') {
+                if ( roleId == '3') {
                   Get.to(VisitPlan());
                 } else {
                   Get.to(

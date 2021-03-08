@@ -15,7 +15,7 @@ import 'package:progress_dialog/progress_dialog.dart';
 class CheckoutController extends GetxController {
   ProgressDialog pr;
   var checkoutResponse;
-  var todayString = (DateFormat().add_jm().format(DateTime.now()).toString()).obs;
+  var todayString = (DateFormat.yMd().add_jm().format(DateTime.now()).toString()).obs;
   Position currentPosition;
   var currentAddress = 'Fetching your location...'.obs;
 
@@ -32,7 +32,7 @@ class CheckoutController extends GetxController {
 
   void updateTime() {
     Timer.periodic(Duration(seconds: 1), (timer) {
-      todayString.value = DateFormat().add_jm().format(DateTime.now()).toString();
+      todayString.value = DateFormat.yMd().add_jm().format(DateTime.now()).toString();
     });
   }
 
@@ -148,8 +148,8 @@ class CheckoutController extends GetxController {
             // print(currentPosition.latitude);
             // print(currentPosition.longitude);
             var checkout = await RemoteServices().checkout(
-              currentPosition.latitude,
-              currentPosition.longitude,
+              (currentPosition !=null) ? currentPosition.latitude : '0.0',
+              (currentPosition !=null) ? currentPosition.longitude : '0.0',
               currentAddress.value,
             );
             // print(checkin);
@@ -229,13 +229,15 @@ class CheckoutController extends GetxController {
   Future<bool> justCheckout() async {
     await pr.show();
     var checkout = await RemoteServices().checkout(
-      currentPosition.latitude,
-      currentPosition.longitude,
+      (currentPosition !=null) ? currentPosition.latitude : '0.0',
+      (currentPosition !=null) ? currentPosition.longitude : '0.0',
       currentAddress.value,
     );
     // print(checkin);
     if (checkout != null && checkout['success']) {
       await pr.hide();
+      var methodChannel = MethodChannel('in.androidfame.attendance');
+      var result = await methodChannel.invokeMethod('stopService');
       return true;
     } else {
       await pr.hide();

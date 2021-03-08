@@ -48,8 +48,9 @@ import 'package:flutter/services.dart';
 // import 'package:background_locator/settings/locator_settings.dart' as ls;
 
 class RemoteServices {
-  // static var baseURL = 'http://13.232.255.84:8090/v1/api';
-  static var baseURL = 'http://52.66.61.207:8090/v1/api';
+  // static var baseURL = 'http://52.66.61.207:8090/v1/api';
+  static var baseURL = 'http://androidapp.diyosfame.com:8090/v1/api';
+  // static var baseURL = 'http://192.168.43.231:8090/v1/api';
   static var client = http.Client();
   static var header = <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
@@ -984,7 +985,7 @@ class RemoteServices {
           'checkinLng': checkinLng,
           'empRemarks': empRemarks,
           'empId': empId,
-          'image': attachment == '' ? '' : 'data:image/jpeg;base64,$attachment',
+          'attachment': attachment == '' ? '' : 'data:image/jpeg;base64,$attachment',
         },
       ),
     );

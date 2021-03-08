@@ -195,13 +195,16 @@ class DashboardController extends GetxController {
             if (response['empdetails']['gpsTracking'] != null && response['empdetails']['gpsTracking'] == true && RemoteServices().box.get('role') != '3') {
               if (dA != null && (dA['checkInDateTime'] != null && dA['checkInDateTime'] != '') && (dA['checkOutDateTime'] == null || dA['checkOutDateTime'] == '')) {
                 print('tracking');
+                await RemoteServices().box.put('gpsTracking', response['empdetails']['gpsTracking']);
                 // RemoteServices().saveLocationLog();
                 await Geolocator.getPositionStream(
                   desiredAccuracy: LocationAccuracy.bestForNavigation,
                 ).listen((Position position) async {});
                 if (Platform.isAndroid) {
                   var methodChannel = MethodChannel('in.androidfame.attendance');
-                  var result = await methodChannel.invokeMethod('startService');
+                  var result = await methodChannel.invokeMethod('startService',
+                      {"empId":RemoteServices().box.get('empid'),
+                        "companyId":RemoteServices().box.get('companyid')});
                   print('result: $result');
                 } else if (Platform.isIOS) {
                   // await LocationUpdates.initiateLocationUpdates(Get.context);
