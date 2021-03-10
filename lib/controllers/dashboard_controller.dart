@@ -197,9 +197,9 @@ class DashboardController extends GetxController {
                 print('tracking');
                 await RemoteServices().box.put('gpsTracking', response['empdetails']['gpsTracking']);
                 // RemoteServices().saveLocationLog();
-                await Geolocator.getPositionStream(
+               /* await Geolocator.getPositionStream(
                   desiredAccuracy: LocationAccuracy.bestForNavigation,
-                ).listen((Position position) async {});
+                ).listen((Position position) async {});*/
                 if (Platform.isAndroid) {
                   var methodChannel = MethodChannel('in.androidfame.attendance');
                   var result = await methodChannel.invokeMethod('startService',

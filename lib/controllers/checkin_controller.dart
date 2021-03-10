@@ -160,21 +160,23 @@ class CheckinController extends GetxController {
               currentAddress.value,
             );
             // print(checkin);
-            if (checkin != null && checkin['success'] &&
-                RemoteServices().box.get('gpsTracking') != null &&
-                RemoteServices().box.get('gpsTracking')) {
+            if (checkin != null && checkin['success']) {
               // RemoteServices().saveLocationLog();
-              await Geolocator.getPositionStream(
+             /* await Geolocator.getPositionStream(
                 desiredAccuracy: LocationAccuracy.bestForNavigation,
-              ).listen((Position position) async {});
-              if (Platform.isAndroid) {
-                var methodChannel = MethodChannel('in.androidfame.attendance');
-                var result = await methodChannel.invokeMethod('startService',
-                    {"empId":RemoteServices().box.get('empid'),
-                      "companyId":RemoteServices().box.get('companyid')});
-                print('result: $result');
-              } else if (Platform.isIOS) {
-                // await LocationUpdates.initiateLocationUpdates(Get.context);
+              ).listen((Position position) async {});*/
+              if( RemoteServices().box.get('gpsTracking') != null &&
+                  RemoteServices().box.get('gpsTracking')) {
+                if (Platform.isAndroid) {
+                  var methodChannel = MethodChannel(
+                      'in.androidfame.attendance');
+                  var result = await methodChannel.invokeMethod('startService',
+                      {"empId": RemoteServices().box.get('empid'),
+                        "companyId": RemoteServices().box.get('companyid')});
+                  print('result: $result');
+                } else if (Platform.isIOS) {
+                  // await LocationUpdates.initiateLocationUpdates(Get.context);
+                }
               }
               return true;
             } else {
