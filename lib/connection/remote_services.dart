@@ -48,8 +48,8 @@ import 'package:flutter/services.dart';
 // import 'package:background_locator/settings/locator_settings.dart' as ls;
 
 class RemoteServices {
-  // static var baseURL = 'http://52.66.61.207:8090/v1/api';
-  static var baseURL = 'http://androidapp.diyosfame.com:8090/v1/api';
+  static var baseURL = 'http://52.66.61.207:8090/v1/api';
+  // static var baseURL = 'http://androidapp.diyosfame.com:8090/v1/api';
   // static var baseURL = 'http://192.168.43.231:8090/v1/api';
   static var client = http.Client();
   static var header = <String, String>{
