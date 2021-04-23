@@ -2,15 +2,14 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:fame/models/login.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../connection/remote_services.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import '../models/login.dart';
 
 class DashboardController extends GetxController {
   var isDashboardLoading = true.obs;
@@ -149,12 +148,10 @@ class DashboardController extends GetxController {
             await RemoteServices().box.put('clientId', response['clientData']['id']);
           }
           await RemoteServices().box.put('empName', response['empdetails']['name']);
-          if(response['empdetails']['reportView']!=null) {
-            await RemoteServices().box.put(
-                'reportView', response['empdetails']['reportView']);
-          }else{
-            await RemoteServices().box.put(
-                'reportView', true);
+          if (response['empdetails']['reportView'] != null) {
+            await RemoteServices().box.put('reportView', response['empdetails']['reportView']);
+          } else {
+            await RemoteServices().box.put('reportView', true);
           }
           await RemoteServices().box.put('faceApi', response['clientData']['faceApi']);
           await RemoteServices().box.put('appFeature', jsonEncode(AppFeature.fromJson(response['appFeature'])));
@@ -202,14 +199,12 @@ class DashboardController extends GetxController {
                 print('tracking');
                 await RemoteServices().box.put('gpsTracking', response['empdetails']['gpsTracking']);
                 // RemoteServices().saveLocationLog();
-               /* await Geolocator.getPositionStream(
+                /* await Geolocator.getPositionStream(
                   desiredAccuracy: LocationAccuracy.bestForNavigation,
                 ).listen((Position position) async {});*/
                 if (Platform.isAndroid) {
                   var methodChannel = MethodChannel('in.androidfame.attendance');
-                  var result = await methodChannel.invokeMethod('startService',
-                      {"empId":RemoteServices().box.get('empid'),
-                        "companyId":RemoteServices().box.get('companyid')});
+                  var result = await methodChannel.invokeMethod('startService', {'empId': RemoteServices().box.get('empid'), 'companyId': RemoteServices().box.get('companyid')});
                   print('result: $result');
                 } else if (Platform.isIOS) {
                   // await LocationUpdates.initiateLocationUpdates(Get.context);

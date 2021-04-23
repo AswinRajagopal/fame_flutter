@@ -1,11 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer' as developer;
 import 'dart:io';
 
-import 'dart:developer' as developer;
-// import 'dart:isolate';
-// import 'dart:ui';
-
+import 'package:battery/battery.dart';
+import 'package:connectivity/connectivity.dart';
 // import 'package:background_locator/location_dto.dart';
 // import 'package:background_locator/settings/android_settings.dart' as android;
 // import 'package:background_locator/settings/android_settings.dart';
@@ -14,36 +13,29 @@ import 'dart:developer' as developer;
 import 'package:dio/dio.dart' as mydio;
 // import 'package:fame/connection/location_service_repository.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:intl/intl.dart';
-import '../models/support.dart';
-import '../models/transfer_list.dart';
-import '../models/attendance.dart';
-import '../models/leave_list.dart';
-import '../models/save_route_plan.dart';
-import '../models/apply_leave.dart';
-import '../models/face_register.dart';
-import '../models/db_calendar.dart';
-import '../models/emp_r_plan.dart';
-import '../models/dashboard.dart';
-import 'package:path/path.dart' as path;
-
-import '../models/checkin.dart';
-
-import '../models/forgot_password.dart';
-
-import '../models/otp.dart';
-
-import '../views/welcome_page.dart';
 import 'package:get/get.dart';
-
-import '../models/signup.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+import 'package:path/path.dart' as path;
+
+import '../models/attendance.dart';
+import '../models/checkin.dart';
+import '../models/dashboard.dart';
+import '../models/db_calendar.dart';
+import '../models/emp_r_plan.dart';
+import '../models/face_register.dart';
+import '../models/forgot_password.dart';
+import '../models/leave_list.dart';
 import '../models/login.dart';
-import 'package:battery/battery.dart';
-import 'package:connectivity/connectivity.dart';
-import 'package:flutter/services.dart';
+import '../models/otp.dart';
+import '../models/save_route_plan.dart';
+import '../models/signup.dart';
+import '../models/support.dart';
+import '../models/transfer_list.dart';
+import '../views/welcome_page.dart';
 // import 'package:background_locator/background_locator.dart' as bgl;
 // import 'package:background_locator/settings/locator_settings.dart' as ls;
 
@@ -557,6 +549,27 @@ class RemoteServices {
     }
   }
 
+  Future getLeaveBalance() async {
+    var response = await client.post(
+      '$baseURL/leave/leave_balance',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
   Future getShift(clientId) async {
     var response = await client.post(
       '$baseURL/transfer/client_shifts',
@@ -578,15 +591,9 @@ class RemoteServices {
     }
   }
 
-  Future<ApplyLeave> applyLeave(
-    frmDt,
-    toDt,
-    reason,
-    dayType,
-    leaveTypeId,
-  ) async {
+  Future applyLeave(frmDt, toDt, reason, dayType, leaveTypeId) async {
     var response = await client.post(
-      '$baseURL/leave/apply_leave',
+      '$baseURL/leave/leave_engine_apply',
       headers: header,
       body: jsonEncode(
         <String, dynamic>{
@@ -605,7 +612,8 @@ class RemoteServices {
     if (response.statusCode == 200) {
       var jsonString = response.body;
       print(jsonString);
-      return applyLeaveFromJson(jsonString);
+      // return applyLeaveFromJson(jsonString);
+      return json.decode(jsonString);
     } else {
       return null;
     }
@@ -630,6 +638,7 @@ class RemoteServices {
       return null;
     }
   }
+
   Future getMyClients() async {
     var response = await client.post(
       '$baseURL/attendance/all_clients',
@@ -1929,6 +1938,7 @@ class RemoteServices {
 
     var formData = mydio.FormData.fromMap({
       'companyId': box.get('companyid').toString(),
+      'empId': box.get('empid').toString(),
       'aadharFront': await mydio.MultipartFile.fromFile(
         aadharFront.path,
         filename: path.basename(aadharFront.path).toString(),

@@ -6,12 +6,14 @@ class CustomProgressIndicator extends StatelessWidget {
   final String footerText;
   final double radius;
   final double percent;
+  final double footerTop;
   CustomProgressIndicator(
     this.centerText,
     this.footerText,
     this.radius,
-    this.percent,
-  );
+    this.percent, {
+    this.footerTop,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class CustomProgressIndicator extends StatelessWidget {
       progressColor: Theme.of(context).primaryColor,
       circularStrokeCap: CircularStrokeCap.round,
       footer: Padding(
-        padding: const EdgeInsets.only(top: 10.0),
+        padding: EdgeInsets.only(top: footerTop ?? 10.0),
         child: Text(
           footerText,
           style: TextStyle(

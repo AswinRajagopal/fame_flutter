@@ -2,15 +2,15 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/services.dart';
-
-import '../connection/remote_services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+
+import '../connection/remote_services.dart';
 
 class CheckoutController extends GetxController {
   ProgressDialog pr;
@@ -148,8 +148,8 @@ class CheckoutController extends GetxController {
             // print(currentPosition.latitude);
             // print(currentPosition.longitude);
             var checkout = await RemoteServices().checkout(
-              (currentPosition !=null) ? currentPosition.latitude : '0.0',
-              (currentPosition !=null) ? currentPosition.longitude : '0.0',
+              (currentPosition != null) ? currentPosition.latitude : '0.0',
+              (currentPosition != null) ? currentPosition.longitude : '0.0',
               currentAddress.value,
             );
             // print(checkin);
@@ -229,8 +229,8 @@ class CheckoutController extends GetxController {
   Future<bool> justCheckout() async {
     await pr.show();
     var checkout = await RemoteServices().checkout(
-      (currentPosition !=null) ? currentPosition.latitude : '0.0',
-      (currentPosition !=null) ? currentPosition.longitude : '0.0',
+      (currentPosition != null) ? currentPosition.latitude : '0.0',
+      (currentPosition != null) ? currentPosition.longitude : '0.0',
       currentAddress.value,
     );
     // print(checkin);
@@ -238,6 +238,7 @@ class CheckoutController extends GetxController {
       await pr.hide();
       var methodChannel = MethodChannel('in.androidfame.attendance');
       var result = await methodChannel.invokeMethod('stopService');
+      print(result);
       return true;
     } else {
       await pr.hide();

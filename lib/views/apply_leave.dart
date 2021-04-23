@@ -1,13 +1,12 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
-import '../utils/utils.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
 import '../controllers/apply_leave_controller.dart';
-import 'package:get/get.dart';
-
-import 'package:flutter/material.dart';
-
+import '../utils/utils.dart';
+import '../widgets/loading_widget.dart';
+import '../widgets/progress_indicator.dart';
 import 'leave_page.dart';
 
 class ApplyLeave extends StatefulWidget {
@@ -66,6 +65,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
     alC.pr.style(
       backgroundColor: Colors.white,
     );
+    Future.delayed(Duration(milliseconds: 100), alC.getLeaveBalance);
     super.initState();
   }
 
@@ -84,7 +84,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
           ? DateTime.parse(stoDt.text.toString()).add(
               Duration(days: 0),
             )
-          : DateTime.now().add(Duration(days: stVal == 'F' || stVal == 'S' ? 1 : 5)),
+          : DateTime.now().add(Duration(days: stVal == 'F' || stVal == 'S' ? 1 : 365)),
     );
 
     if (picked != null) {
@@ -138,7 +138,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
       firstDate: DateTime.parse(sfromDt.toString()).add(
         Duration(days: 0),
       ),
-      lastDate: DateTime.now().add(Duration(days: 5)),
+      lastDate: DateTime.now().add(Duration(days: 365)),
     );
 
     if (picked != null) {
@@ -271,330 +271,418 @@ class _ApplyLeaveState extends State<ApplyLeave> {
             if (alC.isLoading.value) {
               return Column();
             } else {
-              return Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10.0,
-                      vertical: 5.0,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // InputDatePickerFormField(firstDate: null, lastDate: null)
-                        Flexible(
-                          child: TextField(
-                            controller: fromDt,
-                            decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: EdgeInsets.all(10),
-                              hintStyle: TextStyle(
-                                color: Colors.grey[600],
-                                fontSize: 18.0,
-                                // fontWeight: FontWeight.bold,
-                              ),
-                              hintText: 'From Date',
-                              suffixIcon: Icon(
-                                Icons.calendar_today,
-                                size: 25.0,
-                              ),
+              return SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height / 1.2,
+                      child: ListView(
+                        shrinkWrap: true,
+                        physics: ScrollPhysics(),
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 15.0,
+                              horizontal: 15.0,
                             ),
-                            readOnly: true,
-                            keyboardType: null,
-                            onTap: () {
-                              fromDate(context);
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          width: 20.0,
-                        ),
-                        Flexible(
-                          child: TextField(
-                            controller: toDt,
-                            decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: EdgeInsets.all(10),
-                              hintStyle: TextStyle(
-                                color: Colors.grey[600],
-                                fontSize: 18.0,
-                                // fontWeight: FontWeight.bold,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 15.0,
+                                horizontal: 8.0,
                               ),
-                              hintText: 'To Date',
-                              suffixIcon: Icon(
-                                Icons.calendar_today,
-                                size: 25.0,
-                              ),
-                            ),
-                            readOnly: true,
-                            keyboardType: null,
-                            onTap: () {
-                              if (fromDt.text.isEmpty) {
-                                Get.snackbar(
-                                  null,
-                                  'Please select from date',
-                                  colorText: Colors.white,
-                                  backgroundColor: Colors.black87,
-                                  snackPosition: SnackPosition.BOTTOM,
-                                  margin: EdgeInsets.symmetric(
-                                    horizontal: 8.0,
-                                    vertical: 10.0,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(
+                                    10.0,
                                   ),
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 12.0,
-                                    vertical: 18.0,
-                                  ),
-                                  borderRadius: 5.0,
-                                );
-                              } else {
-                                toDate(context);
-                              }
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10.0,
-                      vertical: 5.0,
-                    ),
-                    child: DropdownButtonFormField<String>(
-                      hint: Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Text(
-                          'Select Leave Type',
-                          style: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: 18.0,
-                            // fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      isExpanded: true,
-                      // value: alC.ltVal,
-                      items: alC.leaveTypeList.map((item) {
-                        // print('item: $item');
-                        return DropdownMenuItem(
-                          child: Text(
-                            item['name'],
-                          ),
-                          value: item['id'].toString(),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        print('value: $value');
-                        setState(() {
-                          leaveType = value.toString();
-                        });
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    height: 25.0,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10.0,
-                      vertical: 5.0,
-                    ),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Status :',
-                          style: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: 18.0,
-                            // fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Radio(
-                            value: AppUtils.WHOLEDAY,
-                            groupValue: stVal,
-                            onChanged: (sVal) {
-                              chkDate(sVal);
-                            },
-                          ),
-                          Text(
-                            'Whole Day',
-                            style: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: 16.0,
-                              // fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Radio(
-                            value: AppUtils.FIRSTHALF,
-                            groupValue: stVal,
-                            onChanged: (sVal) {
-                              chkDate(sVal);
-                            },
-                          ),
-                          Text(
-                            'First Half',
-                            style: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: 16.0,
-                              // fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Radio(
-                            value: AppUtils.SECONDHALF,
-                            groupValue: stVal,
-                            onChanged: (sVal) {
-                              chkDate(sVal);
-                            },
-                          ),
-                          Text(
-                            'Second Half',
-                            style: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: 16.0,
-                              // fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10.0,
-                      vertical: 5.0,
-                    ),
-                    child: TextField(
-                      controller: reason,
-                      decoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: EdgeInsets.all(10),
-                        hintStyle: TextStyle(
-                          color: Colors.grey[600],
-                          fontSize: 18.0,
-                          // fontWeight: FontWeight.bold,
-                        ),
-                        hintText: 'Reason',
-                      ),
-                    ),
-                  ),
-                  Flexible(
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-                        height: 70.0,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border(
-                            top: BorderSide(
-                              color: Colors.grey[300],
-                              width: 1,
-                            ),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            FlatButton(
-                              onPressed: () {
-                                print('Cancel');
-                                // Get.back();
-                                Get.offAll(LeavePage());
-                              },
-                              child: Text(
-                                'Cancel',
-                                style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20.0,
                                 ),
+                                boxShadow: <BoxShadow>[
+                                  BoxShadow(
+                                    color: Colors.black26,
+                                    blurRadius: 8.0,
+                                    offset: Offset(
+                                      0.0,
+                                      0.75,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                            RaisedButton(
-                              onPressed: () {
-                                print('Apply Leave');
-                                FocusScope.of(context).requestFocus(FocusNode());
-                                if (sfromDt == null || sfromDt == '' || stoDt == null || stoDt == '' || reason.text == null || reason.text == '' || leaveType == '') {
-                                  Get.snackbar(
-                                    null,
-                                    'Please provide all the details',
-                                    colorText: Colors.white,
-                                    backgroundColor: Colors.black87,
-                                    snackPosition: SnackPosition.BOTTOM,
-                                    margin: EdgeInsets.symmetric(
-                                      horizontal: 8.0,
-                                      vertical: 10.0,
-                                    ),
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 12.0,
-                                      vertical: 18.0,
-                                    ),
-                                    borderRadius: 5.0,
-                                  );
-                                } else {
-                                  // print('fromDate: ${fromDt.text}');
-                                  // print('toDate: ${toDt.text}');
-                                  // print('reason: ${reason.text}');
-                                  // print('dayType: $stVal');
-                                  // print('leaveTypeId: $leaveType');
-                                  alC.applyLeave(
-                                    sfromDt,
-                                    stoDt,
-                                    reason.text,
-                                    stVal,
-                                    leaveType,
+                              child: Obx(() {
+                                if (alC.isLoadingBalance.value) {
+                                  return LoadingWidget(
+                                    containerHeight: 75.0,
+                                    loaderSize: 30.0,
+                                    loaderColor: Colors.black87,
                                   );
                                 }
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 12.0,
-                                  horizontal: 18.0,
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Leave Balance',
+                                      style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 10.0,
+                                    ),
+                                    GridView.builder(
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemCount: alC.leaveBalance.length,
+                                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
+                                      itemBuilder: (BuildContext context, int index) {
+                                        var leaveBalance = alC.leaveBalance[index];
+                                        return CustomProgressIndicator(
+                                          leaveBalance['value'],
+                                          leaveBalance['leaveTypeName'],
+                                          75.0,
+                                          double.parse(leaveBalance['fill'].toString()),
+                                          footerTop: 5.0,
+                                        );
+                                      },
+                                    ),
+                                    SizedBox(
+                                      height: 10.0,
+                                    ),
+                                  ],
+                                );
+                              }),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10.0,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 5.0,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                // InputDatePickerFormField(firstDate: null, lastDate: null)
+                                Flexible(
+                                  child: TextField(
+                                    controller: fromDt,
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(10),
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey[600],
+                                        fontSize: 18.0,
+                                        // fontWeight: FontWeight.bold,
+                                      ),
+                                      hintText: 'From Date',
+                                      suffixIcon: Icon(
+                                        Icons.calendar_today,
+                                        size: 25.0,
+                                      ),
+                                    ),
+                                    readOnly: true,
+                                    keyboardType: null,
+                                    onTap: () {
+                                      fromDate(context);
+                                    },
+                                  ),
                                 ),
+                                SizedBox(
+                                  width: 20.0,
+                                ),
+                                Flexible(
+                                  child: TextField(
+                                    controller: toDt,
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(10),
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey[600],
+                                        fontSize: 18.0,
+                                        // fontWeight: FontWeight.bold,
+                                      ),
+                                      hintText: 'To Date',
+                                      suffixIcon: Icon(
+                                        Icons.calendar_today,
+                                        size: 25.0,
+                                      ),
+                                    ),
+                                    readOnly: true,
+                                    keyboardType: null,
+                                    onTap: () {
+                                      if (fromDt.text.isEmpty) {
+                                        Get.snackbar(
+                                          null,
+                                          'Please select from date',
+                                          colorText: Colors.white,
+                                          backgroundColor: Colors.black87,
+                                          snackPosition: SnackPosition.BOTTOM,
+                                          margin: EdgeInsets.symmetric(
+                                            horizontal: 8.0,
+                                            vertical: 10.0,
+                                          ),
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 12.0,
+                                            vertical: 18.0,
+                                          ),
+                                          borderRadius: 5.0,
+                                        );
+                                      } else {
+                                        toDate(context);
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 15.0,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 5.0,
+                            ),
+                            child: DropdownButtonFormField<String>(
+                              hint: Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
                                 child: Text(
-                                  'Apply Leave',
+                                  'Select Leave Type',
                                   style: TextStyle(
-                                    color: Colors.white,
+                                    color: Colors.grey[600],
+                                    fontSize: 18.0,
+                                    // fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              isExpanded: true,
+                              // value: alC.ltVal,
+                              items: alC.leaveTypeList.map((item) {
+                                // print('item: $item');
+                                return DropdownMenuItem(
+                                  child: Text(
+                                    item['name'],
+                                  ),
+                                  value: item['id'].toString(),
+                                );
+                              }).toList(),
+                              onChanged: (value) {
+                                print('value: $value');
+                                setState(() {
+                                  leaveType = value.toString();
+                                });
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            height: 25.0,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 5.0,
+                            ),
+                            child: Row(
+                              children: [
+                                Text(
+                                  'Status :',
+                                  style: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 18.0,
+                                    // fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Radio(
+                                    value: AppUtils.WHOLEDAY,
+                                    groupValue: stVal,
+                                    onChanged: (sVal) {
+                                      chkDate(sVal);
+                                    },
+                                  ),
+                                  Text(
+                                    'Whole Day',
+                                    style: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontSize: 16.0,
+                                      // fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Radio(
+                                    value: AppUtils.FIRSTHALF,
+                                    groupValue: stVal,
+                                    onChanged: (sVal) {
+                                      chkDate(sVal);
+                                    },
+                                  ),
+                                  Text(
+                                    'First Half',
+                                    style: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontSize: 16.0,
+                                      // fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Radio(
+                                    value: AppUtils.SECONDHALF,
+                                    groupValue: stVal,
+                                    onChanged: (sVal) {
+                                      chkDate(sVal);
+                                    },
+                                  ),
+                                  Text(
+                                    'Second Half',
+                                    style: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontSize: 16.0,
+                                      // fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 15.0,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 5.0,
+                            ),
+                            child: TextField(
+                              controller: reason,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding: EdgeInsets.all(10),
+                                hintStyle: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 18.0,
+                                  // fontWeight: FontWeight.bold,
+                                ),
+                                hintText: 'Reason',
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Flexible(
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          height: 70.0,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border(
+                              top: BorderSide(
+                                color: Colors.grey[300],
+                                width: 1,
+                              ),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              FlatButton(
+                                onPressed: () {
+                                  print('Cancel');
+                                  // Get.back();
+                                  Get.offAll(LeavePage());
+                                },
+                                child: Text(
+                                  'Cancel',
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20.0,
                                   ),
                                 ),
                               ),
-                              color: Colors.black87,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                side: BorderSide(
-                                  color: Colors.black87,
+                              RaisedButton(
+                                onPressed: () {
+                                  print('Apply Leave');
+                                  FocusScope.of(context).requestFocus(FocusNode());
+                                  if (sfromDt == null || sfromDt == '' || stoDt == null || stoDt == '' || reason.text == null || reason.text == '' || leaveType == '') {
+                                    Get.snackbar(
+                                      null,
+                                      'Please provide all the details',
+                                      colorText: Colors.white,
+                                      backgroundColor: Colors.black87,
+                                      snackPosition: SnackPosition.BOTTOM,
+                                      margin: EdgeInsets.symmetric(
+                                        horizontal: 8.0,
+                                        vertical: 10.0,
+                                      ),
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 12.0,
+                                        vertical: 18.0,
+                                      ),
+                                      borderRadius: 5.0,
+                                    );
+                                  } else {
+                                    // print('fromDate: ${fromDt.text}');
+                                    // print('toDate: ${toDt.text}');
+                                    // print('reason: ${reason.text}');
+                                    // print('dayType: $stVal');
+                                    // print('leaveTypeId: $leaveType');
+                                    alC.applyLeave(
+                                      sfromDt,
+                                      stoDt,
+                                      reason.text,
+                                      stVal,
+                                      leaveType,
+                                    );
+                                  }
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 12.0,
+                                    horizontal: 18.0,
+                                  ),
+                                  child: Text(
+                                    'Apply Leave',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20.0,
+                                    ),
+                                  ),
+                                ),
+                                color: Colors.black87,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  side: BorderSide(
+                                    color: Colors.black87,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               );
             }
           }),

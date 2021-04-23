@@ -2,19 +2,18 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:date_format/date_format.dart';
-import 'package:fame/connection/locationpath.dart';
-import 'package:fame/views/dashboard_page.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
-
-import '../connection/remote_services.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+
+import '../connection/locationpath.dart';
+import '../connection/remote_services.dart';
+import '../views/dashboard_page.dart';
 
 class CheckinController extends GetxController {
   ProgressDialog pr;
@@ -64,14 +63,11 @@ class CheckinController extends GetxController {
       );
       var first = placemark.first;
       print(first);
-      var distance = await Locationpath().getDistance(
-          LatLng(currentPosition.latitude, currentPosition.longitude),
-          LatLng(double.parse(RemoteServices().box.get('clientLat')), double.parse(RemoteServices().box.get('clientLng'))));      var maxDistance = RemoteServices().box.get('maxDist');
-      if(maxDistance=='0' || int.parse(maxDistance)>(distance*1000).round()) {
-        currentAddress.value =
-        '${first.street}, ${first.subLocality}, ${first.locality}, ${first
-            .postalCode}, ${first.country}';
-      }else{
+      var distance = await Locationpath().getDistance(LatLng(currentPosition.latitude, currentPosition.longitude), LatLng(double.parse(RemoteServices().box.get('clientLat')), double.parse(RemoteServices().box.get('clientLng'))));
+      var maxDistance = RemoteServices().box.get('maxDist');
+      if (maxDistance == '0' || int.parse(maxDistance) > (distance * 1000).round()) {
+        currentAddress.value = '${first.street}, ${first.subLocality}, ${first.locality}, ${first.postalCode}, ${first.country}';
+      } else {
         await showDialog(
           context: Get.context,
           barrierDismissible: false,
@@ -192,24 +188,20 @@ class CheckinController extends GetxController {
             // print(currentPosition.latitude);
             // print(currentPosition.longitude);
             var checkin = await RemoteServices().checkin(
-              (currentPosition !=null) ? currentPosition.latitude : '0.0',
-              (currentPosition !=null) ? currentPosition.longitude : '0.0',
+              (currentPosition != null) ? currentPosition.latitude : '0.0',
+              (currentPosition != null) ? currentPosition.longitude : '0.0',
               currentAddress.value,
             );
             // print(checkin);
             if (checkin != null && checkin['success']) {
               // RemoteServices().saveLocationLog();
-             /* await Geolocator.getPositionStream(
+              /* await Geolocator.getPositionStream(
                 desiredAccuracy: LocationAccuracy.bestForNavigation,
               ).listen((Position position) async {});*/
-              if( RemoteServices().box.get('gpsTracking') != null &&
-                  RemoteServices().box.get('gpsTracking')) {
+              if (RemoteServices().box.get('gpsTracking') != null && RemoteServices().box.get('gpsTracking')) {
                 if (Platform.isAndroid) {
-                  var methodChannel = MethodChannel(
-                      'in.androidfame.attendance');
-                  var result = await methodChannel.invokeMethod('startService',
-                      {"empId": RemoteServices().box.get('empid'),
-                        "companyId": RemoteServices().box.get('companyid')});
+                  var methodChannel = MethodChannel('in.androidfame.attendance');
+                  var result = await methodChannel.invokeMethod('startService', {'empId': RemoteServices().box.get('empid'), 'companyId': RemoteServices().box.get('companyid')});
                   print('result: $result');
                 } else if (Platform.isIOS) {
                   // await LocationUpdates.initiateLocationUpdates(Get.context);
@@ -282,8 +274,8 @@ class CheckinController extends GetxController {
   Future<bool> justCheckin() async {
     await pr.show();
     var checkin = await RemoteServices().checkin(
-      (currentPosition !=null) ? currentPosition.latitude : '0.0',
-      (currentPosition !=null) ? currentPosition.longitude : '0.0',
+      (currentPosition != null) ? currentPosition.latitude : '0.0',
+      (currentPosition != null) ? currentPosition.longitude : '0.0',
       currentAddress.value,
     );
     // print(checkin);

@@ -1,20 +1,22 @@
 import 'dart:async';
 
-import '../views/leave_page.dart';
-import '../utils/utils.dart';
-
-import '../connection/remote_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
+import '../connection/remote_services.dart';
+import '../utils/utils.dart';
+import '../views/leave_page.dart';
+
 class ApplyLeaveController extends GetxController {
   var isLoading = true.obs;
+  var isLoadingBalance = true.obs;
   ProgressDialog pr;
   var leaveRes;
   var appLeaveRes;
   var ltVal = '';
   final List leaveTypeList = [];
+  final List leaveBalance = [].obs;
   bool isDisposed = false;
 
   @override
@@ -93,56 +95,144 @@ class ApplyLeaveController extends GetxController {
     }
   }
 
+  void getLeaveBalance() async {
+    leaveBalance.clear();
+    try {
+      isLoadingBalance(true);
+      var leaveBalanceRes = await RemoteServices().getLeaveBalance();
+      if (leaveBalanceRes != null) {
+        isLoadingBalance(false);
+        print('leaveBalanceRes: $leaveBalanceRes');
+        if (leaveBalanceRes['success']) {
+          for (var i = 0; i < leaveBalanceRes['leaveTypeList'].length; i++) {
+            var leaveType = leaveBalanceRes['leaveTypeList'][i];
+            for (var j = 0; j < leaveBalanceRes['empLeaveBalanceList'].length; j++) {
+              var leaveBal = leaveBalanceRes['empLeaveBalanceList'][j];
+              if (leaveType['leaveTypeId'] == leaveBal['leaveTypeId']) {
+                var addLeave = {
+                  'value': leaveBal['value'].toString(),
+                  'leaveTypeName': leaveType['leaveTypeName'],
+                  'fill': int.parse(leaveBal['value'].toString()) / int.parse(leaveType['maxValue'].toString()),
+                };
+                leaveBalance.add(addLeave);
+              } else {
+                var addLeave = {
+                  'value': '0',
+                  'leaveTypeName': leaveType['leaveTypeName'],
+                  'fill': 0,
+                };
+                leaveBalance.add(addLeave);
+              }
+            }
+          }
+          print('leaveBalance: $leaveBalance');
+        } else {
+          Get.snackbar(
+            null,
+            'Something went wrong while getting leave balance',
+            colorText: Colors.white,
+            backgroundColor: Colors.black87,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+            padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+            borderRadius: 5.0,
+          );
+        }
+      }
+    } catch (e) {
+      print(e);
+      isLoadingBalance(false);
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+        padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+        borderRadius: 5.0,
+      );
+    }
+  }
+
   void applyLeave(frmDt, toDt, reason, dayType, leaveTypeId) async {
     try {
       await pr.show();
-      var appLeaveRes = await RemoteServices().applyLeave(
-        frmDt,
-        toDt,
-        reason,
-        dayType,
-        leaveTypeId,
-      );
+      var appLeaveRes = await RemoteServices().applyLeave(frmDt, toDt, reason, dayType, leaveTypeId);
       if (appLeaveRes != null) {
         await pr.hide();
-        print('appLeaveRes valid: ${appLeaveRes.success}');
-        if (appLeaveRes.success) {
+        print('appLeaveRes valid: ${appLeaveRes['success']}');
+        if (appLeaveRes['success']) {
           Get.snackbar(
             null,
             'Leave applied',
             colorText: Colors.white,
             backgroundColor: AppUtils().greenColor,
             snackPosition: SnackPosition.BOTTOM,
-            margin: EdgeInsets.symmetric(
-              horizontal: 8.0,
-              vertical: 10.0,
-            ),
-            padding: EdgeInsets.symmetric(
-              horizontal: 12.0,
-              vertical: 18.0,
-            ),
+            margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+            padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
             borderRadius: 5.0,
           );
           Timer(Duration(seconds: 2), () {
             Get.offAll(LeavePage());
           });
         } else {
-          Get.snackbar(
-            null,
-            'Leave does not applied',
-            colorText: Colors.white,
-            backgroundColor: Colors.black87,
-            snackPosition: SnackPosition.BOTTOM,
-            margin: EdgeInsets.symmetric(
-              horizontal: 8.0,
-              vertical: 10.0,
-            ),
-            padding: EdgeInsets.symmetric(
-              horizontal: 12.0,
-              vertical: 18.0,
-            ),
-            borderRadius: 5.0,
+          await showDialog(
+            context: Get.context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text(
+                  'Leave not applied!',
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                content: Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: [
+                      Text(
+                        appLeaveRes['msg'] ?? 'Leave does not applied',
+                        style: TextStyle(
+                          fontSize: 18.0,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: FlatButton(
+                          onPressed: () {
+                            Get.back();
+                          },
+                          child: Text(
+                            'Okay',
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontSize: 20.0,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
           );
+          // Get.snackbar(
+          //   null,
+          //   appLeaveRes['msg'] ?? 'Leave does not applied',
+          //   colorText: Colors.white,
+          //   backgroundColor: Colors.black87,
+          //   snackPosition: SnackPosition.BOTTOM,
+          //   margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+          //   padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+          //   borderRadius: 5.0,
+          // );
         }
       }
     } catch (e) {
