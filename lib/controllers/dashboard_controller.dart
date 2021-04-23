@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:fame/models/login.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:geolocator/geolocator.dart';
@@ -156,7 +157,11 @@ class DashboardController extends GetxController {
                 'reportView', true);
           }
           await RemoteServices().box.put('faceApi', response['clientData']['faceApi']);
-          if (response['empdetails']['empStatus'] != 1 && response['companyActive'] != true) {
+          await RemoteServices().box.put('appFeature', jsonEncode(AppFeature.fromJson(response['appFeature'])));
+          await RemoteServices().box.put('clientLat', response['clientData']['latitude']);
+          await RemoteServices().box.put('clientLng', response['clientData']['longitude']);
+          await RemoteServices().box.put('maxDist', response['clientData']['maxCheckinDistance']);
+          if (response['empdetails']['empStatus'] != 1 || response['companyActive'] != true) {
             await showDialog(
               context: context,
               barrierDismissible: false,
@@ -165,7 +170,7 @@ class DashboardController extends GetxController {
                 child: AlertDialog(
                   title: Text('Error'),
                   content: Text(
-                    'Your account is blocked. Please contact your Company Admin',
+                    'Your account is de-active. Please contact your Admin',
                     style: TextStyle(
                       color: Colors.grey,
                     ),

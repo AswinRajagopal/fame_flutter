@@ -50,7 +50,7 @@ import 'package:flutter/services.dart';
 class RemoteServices {
   static var baseURL = 'http://52.66.61.207:8090/v1/api';
   // static var baseURL = 'http://androidapp.diyosfame.com:8090/v1/api';
-  // static var baseURL = 'http://192.168.43.231:8090/v1/api';
+  // static var baseURL = 'http://192.168.43.230:8090/v1/api';
   static var client = http.Client();
   static var header = <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
@@ -618,6 +618,26 @@ class RemoteServices {
       body: jsonEncode(
         <String, String>{
           'companyId': box.get('companyid').toString(),
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+  Future getMyClients() async {
+    var response = await client.post(
+      '$baseURL/attendance/all_clients',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'empId': box.get('empid').toString(),
         },
       ),
     );

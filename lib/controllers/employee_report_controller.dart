@@ -106,7 +106,7 @@ class EmployeeReportController extends GetxController {
     try {
       isLoading(true);
       await pr.show();
-      var getClientRes = await RemoteServices().getClients();
+      var getClientRes = await RemoteServices().getMyClients();
       if (getClientRes != null) {
         await pr.hide();
         isLoading(false);

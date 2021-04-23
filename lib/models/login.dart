@@ -55,6 +55,8 @@ class AppFeature {
     this.checkinDialTime,
     this.checkoutDialTime,
     this.trackingInterval,
+    this.routePlan,
+    this.pinMyVisit,
     this.onboarding,
     this.attendanceDaysPermitted,
     this.checkinLocation
@@ -68,6 +70,8 @@ class AppFeature {
   int checkoutDialTime;
   int trackingInterval;
   bool onboarding;
+  bool routePlan;
+  bool pinMyVisit;
   bool checkinLocation;
   int attendanceDaysPermitted;
 
@@ -82,6 +86,8 @@ class AppFeature {
         checkinDialTime: json['checkinDialTime'],
         checkoutDialTime: json['checkoutDialTime'],
         trackingInterval: json['trackingInterval'],
+        routePlan: json['routePlan'],
+        pinMyVisit: json['pinMyVisit'],
         onboarding: json['onboarding'],
         attendanceDaysPermitted: json['attendanceDaysPermitted'],
         checkinLocation: json['checkinLocation'],
@@ -98,6 +104,8 @@ class AppFeature {
         'checkinDialTime': checkinDialTime,
         'checkoutDialTime': checkoutDialTime,
         'trackingInterval': trackingInterval,
+        'routePlan': routePlan,
+        'pinMyVisit': pinMyVisit,
         'onboarding': onboarding,
         'checkinLocation': checkinLocation,
         'attendanceDaysPermitted': attendanceDaysPermitted,

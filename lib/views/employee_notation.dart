@@ -551,6 +551,17 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                             ),
                                           ),
                                         ),
+                                        Visibility(
+                                          visible: emp['oldEmpid'] != '' && emp['oldEmpid'] != null
+                                              ?  true : false,
+                                          child: Text(
+                                            emp['oldEmpid'] != '' && emp['oldEmpid'] != null
+                                                ? 'Old EmpId : '+emp['oldEmpid'] : '' ,
+                                            style: TextStyle(
+                                              fontSize: 16.0,
+                                            ),
+                                          ),
+                                        ),
                                       ],
                                     ),
                                     emp['attendanceAlias'] != null && emp['attendanceAlias'] != ''

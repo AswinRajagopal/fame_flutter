@@ -2,9 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:date_format/date_format.dart';
+import 'package:fame/connection/locationpath.dart';
+import 'package:fame/views/dashboard_page.dart';
 import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 
 import '../connection/remote_services.dart';
@@ -45,6 +49,7 @@ class CheckinController extends GetxController {
       // print(position.latitude);
       // print(position.longitude);
       getAddressFromLatLng();
+
       // ignore: unnecessary_lambdas
     }).catchError((e) {
       print(e);
@@ -59,7 +64,39 @@ class CheckinController extends GetxController {
       );
       var first = placemark.first;
       print(first);
-      currentAddress.value = '${first.street}, ${first.subLocality}, ${first.locality}, ${first.postalCode}, ${first.country}';
+      var distance = await Locationpath().getDistance(
+          LatLng(currentPosition.latitude, currentPosition.longitude),
+          LatLng(double.parse(RemoteServices().box.get('clientLat')), double.parse(RemoteServices().box.get('clientLng'))));      var maxDistance = RemoteServices().box.get('maxDist');
+      if(maxDistance=='0' || int.parse(maxDistance)>(distance*1000).round()) {
+        currentAddress.value =
+        '${first.street}, ${first.subLocality}, ${first.locality}, ${first
+            .postalCode}, ${first.country}';
+      }else{
+        await showDialog(
+          context: Get.context,
+          barrierDismissible: false,
+          builder: (context) => WillPopScope(
+            onWillPop: () async => false,
+            child: AlertDialog(
+              title: Text('Cannot Checkin'),
+              content: Text(
+                'Too long from Site Location ',
+                style: TextStyle(
+                  color: Colors.grey,
+                ),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  onPressed: () {
+                    Get.offAll(DashboardPage());
+                  },
+                  child: Text('Close'),
+                ),
+              ],
+            ),
+          ),
+        );
+      }
       // print(currentAddress);
     } catch (e) {
       print(e);

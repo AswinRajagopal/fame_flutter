@@ -352,7 +352,8 @@ class LeaveListWidget extends StatelessWidget {
                 ),
               ],
             ),
-            (leave['status'] == '0' || leave['status'] == 'Pending') && (RemoteServices().box.get('role') == '2' || RemoteServices().box.get('role') == '3') && (RemoteServices().box.get('empid') != leave['empId'])
+            (leave['status'] == '0' || leave['status'] == 'Pending') &&
+                (RemoteServices().box.get('empid') != leave['empId'])
                 ? Column(
                     children: [
                       SizedBox(
