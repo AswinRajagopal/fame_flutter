@@ -56,7 +56,7 @@ class DBActivityTile extends StatelessWidget {
                   ),
                   Chip(
                     label: Text(
-                      empAct['activity'].toString().contains('Approved') ? 'Approved' : 'Rejected',
+                      empAct['activity'].toString().toLowerCase().contains('approved') ? 'Approved' : 'Rejected',
                     ),
                     backgroundColor: Colors.teal[200],
                   ),

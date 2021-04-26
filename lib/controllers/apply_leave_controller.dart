@@ -112,7 +112,7 @@ class ApplyLeaveController extends GetxController {
                 var addLeave = {
                   'value': leaveBal['value'].toString(),
                   'leaveTypeName': leaveType['leaveTypeName'],
-                  'fill': int.parse(leaveBal['value'].toString()) / int.parse(leaveType['maxValue'].toString()),
+                  'fill': double.parse(leaveBal['value'].toString()) / double.parse(leaveType['maxValue'].toString()),
                 };
                 leaveBalance.add(addLeave);
               } else {
