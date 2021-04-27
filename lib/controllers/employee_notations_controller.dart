@@ -54,7 +54,7 @@ class EmployeeNotationsController extends GetxController {
     return DateFormat.jm().format(DateTime.parse(time)).toString();
   }
 
-  void getNotationsBySearch(date, clientId, empName) async {
+  void getNotationsBySearch(date, clientId, time, empName) async {
     searchList.clear();
     try {
       resSearch = await RemoteServices().getNotationsBySearch(date, clientId, empName);
@@ -64,25 +64,64 @@ class EmployeeNotationsController extends GetxController {
           // print('clientList: $clientList');
           // print(resSearch.empDailyAttView);
           // print('here: ${resSearch.attendanceNotations}');
+          print('time: $time');
+          var timeSplit = time.toString().split(' - ');
+          var ampm1 = timeSplit[0].toString().contains('pm') ? 'PM' : 'AM';
+          var ampm2 = timeSplit[1].toString().contains('pm') ? 'PM' : 'AM';
+          var timeSplitRep1 = timeSplit[0].replaceAll('am', '').replaceAll('pm', '').split(':');
+          var timeSplitRep2 = timeSplit[1].replaceAll('am', '').replaceAll('pm', '').split(':');
+          var hour1 = int.parse(timeSplitRep1[0]) < 10 ? '${timeSplitRep1[0]}' : timeSplitRep1[0];
+          var hour2 = int.parse(timeSplitRep2[0]) < 10 ? '${timeSplitRep2[0]}' : timeSplitRep2[0];
+          var min1 = (timeSplitRep1[1].length < 2 && int.parse(timeSplitRep1[1]) < 10) ? '${timeSplitRep1[1]}' : timeSplitRep1[1];
+          var min2 = (timeSplitRep2[1].length < 2 && int.parse(timeSplitRep2[1]) < 10) ? '${timeSplitRep2[1]}' : timeSplitRep2[1];
+          var passHour1 = ampm1 == 'PM' && int.parse(hour1) != 12 ? (int.parse(hour1) + 12) : hour1;
+          var passHour2 = ampm2 == 'PM' && int.parse(hour2) != 12 ? (int.parse(hour2) + 12) : hour2;
+          var formatDate1 = date + ' ' + passHour1.toString() + ':' + min1 + ':00';
+          var formatDate2 = date + ' ' + passHour2.toString() + ':' + min2 + ':00';
+          var shiftStart = DateTime.parse(formatDate1);
+          var shiftEnd = DateTime.parse(formatDate2);
+
+          print('shiftStart: $shiftStart');
+          print('shiftEnd: $shiftEnd');
+
           for (var j = 0; j < resSearch['empSuggest'].length; j++) {
             var emp = resSearch['empSuggest'][j];
             emp['showTime'] = '';
             emp['showType'] = 'att';
-            if (emp['checkInLatitude'] != null && emp['checkInLatitude'] != '0E-8') {
+            emp['showButton'] = true;
+            // if(checkoutTime <= currentShiftStart || checkinTime >= currentShiftEnd)
+            // checks out before shift starting or checks in after shift
+            // print('checkInDateTime: ${emp['checkInDateTime']}');
+            // print('checkOutDateTime: ${emp['checkOutDateTime']}');
+            // print('cond 1: ${DateTime.parse(emp['checkOutDateTime']).isBefore(shiftStart)}');
+            // print('cond 2: ${DateTime.parse(emp['checkInDateTime']).isAfter(shiftEnd)}');
+            if (emp['attendanceAlias'] != null) {
               var strToTime = emp['checkInDateTime'];
               if (emp['checkOutDateTime'] != null) {
-                strToTime = timeConvert(strToTime.toString()) + ' to ' + timeConvert(emp['checkOutDateTime'].toString());
+                if (DateTime.parse(emp['checkOutDateTime']).isBefore(shiftStart) || DateTime.parse(emp['checkInDateTime']).isAfter(shiftEnd)) {
+                  strToTime = timeConvert(strToTime.toString()) + ' to ' + timeConvert(emp['checkOutDateTime'].toString());
 
-                emp['showTime'] = strToTime;
-                // showType = 'apprej';
-                emp['showType'] = 'apprej';
+                  emp['showTime'] = strToTime;
+                  emp['showType'] = 'att';
+                  emp['showButton'] = true;
+                } else {
+                  strToTime = timeConvert(strToTime.toString()) + ' to ' + timeConvert(emp['checkOutDateTime'].toString());
+
+                  emp['showTime'] = strToTime;
+                  // showType = 'apprej';
+                  // emp['showType'] = 'apprej';
+                  emp['showType'] = 'hideapprej';
+                  emp['showButton'] = false;
+                }
               } else {
                 strToTime = timeConvert(strToTime.toString());
                 emp['showTime'] = strToTime;
                 // showType = 'remark';
                 emp['showType'] = 'remark';
+                emp['showButton'] = true;
               }
             }
+            print('emp: $emp');
             if (emp['attendanceAlias'] == 'P') {
               p.value++;
             } else if (emp['attendanceAlias'] == 'WO') {

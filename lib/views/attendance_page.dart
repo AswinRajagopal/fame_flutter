@@ -490,6 +490,7 @@ class _AttendancePageState extends State<AttendancePage> {
                                       print('status: $stVal');
                                       print('shift: ${aC.shiftTime.split('#').first}');
                                       print('time: ${aC.shiftTime.split('#').last}');
+                                      print('shiftTime: ${aC.shiftTime}');
                                       Get.to(
                                         EmployeeNotation(
                                           passDate,

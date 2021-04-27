@@ -47,14 +47,8 @@ class FaceRegisterController extends GetxController {
                 colorText: Colors.white,
                 backgroundColor: Colors.black87,
                 snackPosition: SnackPosition.BOTTOM,
-                margin: EdgeInsets.symmetric(
-                  horizontal: 8.0,
-                  vertical: 10.0,
-                ),
-                padding: EdgeInsets.symmetric(
-                  horizontal: 12.0,
-                  vertical: 18.0,
-                ),
+                margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+                padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
                 borderRadius: 5.0,
               );
               return false;
@@ -62,18 +56,12 @@ class FaceRegisterController extends GetxController {
           } else {
             Get.snackbar(
               null,
-              'Try again',
+              resDecode['msg'].toString(),
               colorText: Colors.white,
               backgroundColor: Colors.black87,
               snackPosition: SnackPosition.BOTTOM,
-              margin: EdgeInsets.symmetric(
-                horizontal: 8.0,
-                vertical: 10.0,
-              ),
-              padding: EdgeInsets.symmetric(
-                horizontal: 12.0,
-                vertical: 18.0,
-              ),
+              margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+              padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
               borderRadius: 5.0,
             );
             return false;
@@ -85,14 +73,8 @@ class FaceRegisterController extends GetxController {
             colorText: Colors.white,
             backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,
-            margin: EdgeInsets.symmetric(
-              horizontal: 8.0,
-              vertical: 10.0,
-            ),
-            padding: EdgeInsets.symmetric(
-              horizontal: 12.0,
-              vertical: 18.0,
-            ),
+            margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+            padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
             borderRadius: 5.0,
           );
           return false;
@@ -107,14 +89,8 @@ class FaceRegisterController extends GetxController {
         colorText: Colors.white,
         backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
-        margin: EdgeInsets.symmetric(
-          horizontal: 8.0,
-          vertical: 10.0,
-        ),
-        padding: EdgeInsets.symmetric(
-          horizontal: 12.0,
-          vertical: 18.0,
-        ),
+        margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+        padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
         borderRadius: 5.0,
       );
       return false;

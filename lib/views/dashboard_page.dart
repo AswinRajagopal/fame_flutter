@@ -67,50 +67,32 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   String convertTimeWithParse(time) {
-    return DateFormat('h:mm')
-        .format(DateFormat('HH:mm:ss').parse(time))
-        .toString() +
-        DateFormat('a')
-            .format(DateFormat('HH:mm:ss').parse(time))
-            .toString()
-            .toLowerCase();
+    return DateFormat('h:mm').format(DateFormat('HH:mm:ss').parse(time)).toString() + DateFormat('a').format(DateFormat('HH:mm:ss').parse(time)).toString().toLowerCase();
   }
 
   String convertTimeWithoutParse(time) {
-    return DateFormat('h:mm').format(DateTime.parse(time)).toString() +
-        DateFormat('a').format(DateTime.parse(time)).toString().toLowerCase();
+    return DateFormat('h:mm').format(DateTime.parse(time)).toString() + DateFormat('a').format(DateTime.parse(time)).toString().toLowerCase();
   }
 
   String convertTimeForCheckedIn(time) {
-    return DateFormat('dd').format(DateTime.parse(time)).toString() +
-        '/' +
-        DateFormat('MM').format(DateTime.parse(time)).toString() +
-        ' @ ' +
-        DateFormat().add_jm().format(DateTime.parse(time)).toString();
+    return DateFormat('dd').format(DateTime.parse(time)).toString() + '/' + DateFormat('MM').format(DateTime.parse(time)).toString() + ' @ ' + DateFormat().add_jm().format(DateTime.parse(time)).toString();
     // DateFormat('a').format(time).toString().toLowerCase();
   }
 
   // ignore: missing_return
   bool checkCondition(dbRes, type) {
     var curDate = DateFormat('yyyy-MM-dd').format(DateTime.now()).toString();
-    var chkDate = DateFormat('yyyy-MM-dd')
-        .format(DateTime.parse(dbRes['dailyAttendance']['checkInDateTime']))
-        .toString();
+    var chkDate = DateFormat('yyyy-MM-dd').format(DateTime.parse(dbRes['dailyAttendance']['checkInDateTime'])).toString();
     if (dbRes['dailyAttendance'] != null) {
-      if (dbRes['dailyAttendance']['checkInDateTime'] != null &&
-          dbRes['dailyAttendance']['checkOutDateTime'] == null) {
+      if (dbRes['dailyAttendance']['checkInDateTime'] != null && dbRes['dailyAttendance']['checkOutDateTime'] == null) {
         //allow checkout
         //on duty
         if (type == 'chkout') {
           return true;
         }
         return false;
-      } else if (dbRes['dailyAttendance']['checkInDateTime'] != null &&
-          dbRes['dailyAttendance']['checkOutDateTime'] != null) {
-        if (dbRes['empdetails']['shift'] == dbRes['dailyAttendance']['shift'] &&
-            dbRes['empdetails']['sitePostedTo'].toString().toLowerCase() ==
-                dbRes['dailyAttendance']['clientId'].toString().toLowerCase() &&
-            curDate == chkDate) {
+      } else if (dbRes['dailyAttendance']['checkInDateTime'] != null && dbRes['dailyAttendance']['checkOutDateTime'] != null) {
+        if (dbRes['empdetails']['shift'] == dbRes['dailyAttendance']['shift'] && dbRes['empdetails']['sitePostedTo'].toString().toLowerCase() == dbRes['dailyAttendance']['clientId'].toString().toLowerCase() && curDate == chkDate) {
           if (dbRes['dailyAttendance']['attendanceAlias'] == 'L') {
             // On Leave
             // dont allow checkin
@@ -203,24 +185,17 @@ class _DashboardPageState extends State<DashboardPage> {
   // ignore: missing_return
   bool conditionForMsg(dbRes, type) {
     var curDate = DateFormat('yyyy-MM-dd').format(DateTime.now()).toString();
-    var chkDate = DateFormat('yyyy-MM-dd')
-        .format(DateTime.parse(dbRes['dailyAttendance']['checkInDateTime']))
-        .toString();
+    var chkDate = DateFormat('yyyy-MM-dd').format(DateTime.parse(dbRes['dailyAttendance']['checkInDateTime'])).toString();
     if (dbRes['dailyAttendance'] != null) {
-      if (dbRes['dailyAttendance']['checkInDateTime'] != null &&
-          dbRes['dailyAttendance']['checkOutDateTime'] == null) {
+      if (dbRes['dailyAttendance']['checkInDateTime'] != null && dbRes['dailyAttendance']['checkOutDateTime'] == null) {
         //allow checkout
         //on duty
         if (type == 'chkout') {
           return true;
         }
         return false;
-      } else if (dbRes['dailyAttendance']['checkInDateTime'] != null &&
-          dbRes['dailyAttendance']['checkOutDateTime'] != null) {
-        if (dbRes['empdetails']['shift'] == dbRes['dailyAttendance']['shift'] &&
-            dbRes['empdetails']['sitePostedTo'].toString().toLowerCase() ==
-                dbRes['dailyAttendance']['clientId'].toString().toLowerCase() &&
-            curDate == chkDate) {
+      } else if (dbRes['dailyAttendance']['checkInDateTime'] != null && dbRes['dailyAttendance']['checkOutDateTime'] != null) {
+        if (dbRes['empdetails']['shift'] == dbRes['dailyAttendance']['shift'] && dbRes['empdetails']['sitePostedTo'].toString().toLowerCase() == dbRes['dailyAttendance']['clientId'].toString().toLowerCase() && curDate == chkDate) {
           if (dbRes['dailyAttendance']['attendanceAlias'] == 'L') {
             // On Leave
             // dont allow checkin
@@ -252,7 +227,7 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget build(BuildContext context) {
     // print('width: ${MediaQuery.of(context).size.width}');
     appFeatures = jsonDecode(RemoteServices().box.get('appFeature'));
-    if(appFeatures['routePlan'] == null){
+    if (appFeatures['routePlan'] == null) {
       appFeatures['routePlan'] = false;
       appFeatures['pinMyVisit'] = false;
     }
@@ -374,8 +349,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                   return Flexible(
                                     child: Text(
                                       // dbC.response.empdetails.name ?? 'N/A',
-                                      dbC.response['empdetails']['name'] ??
-                                          'N/A',
+                                      dbC.response['empdetails']['name'] ?? 'N/A',
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 20.0,
@@ -437,8 +411,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                     loaderColor: Colors.black87,
                                   ),
                                 );
-                              } else if (dbC.response['dailyAttendance'] ==
-                                  null) {
+                              } else if (dbC.response['dailyAttendance'] == null) {
                                 return Padding(
                                   padding: const EdgeInsets.fromLTRB(
                                     10.0,
@@ -447,14 +420,11 @@ class _DashboardPageState extends State<DashboardPage> {
                                     25.0,
                                   ),
                                   child: Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Column(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'You are posted in',
@@ -477,14 +447,8 @@ class _DashboardPageState extends State<DashboardPage> {
                                               );
                                             } else {
                                               // print('Length: ${dbC.response['clientData']['name'].length}');
-                                              var clientName =
-                                                  dbC.response['clientData']
-                                                  ['name'] ??
-                                                      'N/A';
-                                              var areaName =
-                                                  dbC.response['clientData']
-                                                  ['address'] ??
-                                                      'N/A';
+                                              var clientName = dbC.response['clientData']['name'] ?? 'N/A';
+                                              var areaName = dbC.response['clientData']['address'] ?? 'N/A';
                                               return Row(
                                                 children: [
                                                   SizedBox(
@@ -493,11 +457,9 @@ class _DashboardPageState extends State<DashboardPage> {
                                                       '$clientName at $areaName',
                                                       style: TextStyle(
                                                         fontSize: 15.0,
-                                                        fontWeight:
-                                                        FontWeight.bold,
+                                                        fontWeight: FontWeight.bold,
                                                       ),
-                                                      overflow:
-                                                      TextOverflow.ellipsis,
+                                                      overflow: TextOverflow.ellipsis,
                                                     ),
                                                   ),
                                                 ],
@@ -516,9 +478,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                 ),
                                               ),
                                               Text(
-                                                convertTimeWithParse(
-                                                    dbC.response['empdetails']
-                                                    ['shiftStartTime']),
+                                                convertTimeWithParse(dbC.response['empdetails']['shiftStartTime']),
                                                 style: TextStyle(
                                                   fontSize: 15.0,
                                                   fontWeight: FontWeight.bold,
@@ -531,9 +491,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                 ),
                                               ),
                                               Text(
-                                                convertTimeWithParse(
-                                                    dbC.response['empdetails']
-                                                    ['shiftEndTime']),
+                                                convertTimeWithParse(dbC.response['empdetails']['shiftEndTime']),
                                                 style: TextStyle(
                                                   fontSize: 15.0,
                                                   fontWeight: FontWeight.bold,
@@ -546,15 +504,8 @@ class _DashboardPageState extends State<DashboardPage> {
                                       Visibility(
                                         child: RaisedButton(
                                           onPressed: () {
-                                            print(RemoteServices()
-                                                .box
-                                                .get('faceApi'));
-                                            Get.to(CheckinPage(
-                                                RemoteServices()
-                                                    .box
-                                                    .get('faceApi'),
-                                                appFeatures[
-                                                'checkinLocation']));
+                                            print(RemoteServices().box.get('faceApi'));
+                                            Get.to(CheckinPage(RemoteServices().box.get('faceApi'), appFeatures['checkinLocation']));
                                           },
                                           child: Text(
                                             'Check In',
@@ -579,389 +530,312 @@ class _DashboardPageState extends State<DashboardPage> {
                                   ),
                                 );
                               } else {
-                                var chkinDt = dbC.response['dailyAttendance']
-                                ['checkInDateTime'];
-                                var chkoutDt = dbC.response['dailyAttendance']
-                                ['checkOutDateTime'];
-                                return (chkinDt != null && chkinDt != '') &&
-                                    (chkoutDt == null || chkoutDt == '')
+                                var chkinDt = dbC.response['dailyAttendance']['checkInDateTime'];
+                                var chkoutDt = dbC.response['dailyAttendance']['checkOutDateTime'];
+                                return (chkinDt != null && chkinDt != '') && (chkoutDt == null || chkoutDt == '')
                                     ? Padding(
-                                  padding: const EdgeInsets.fromLTRB(
-                                    10.0,
-                                    10.0,
-                                    10.0,
-                                    10.0,
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                            'Current Status: ',
-                                            style: TextStyle(
-                                              fontSize: 16.0,
-                                              color: Colors.grey,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          Text(
-                                            'On Duty',
-                                            style: TextStyle(
-                                              fontSize: 16.0,
-                                              color:
-                                              AppUtils().orangeColor,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                            'Checked in on ',
-                                            style: TextStyle(
-                                              fontSize: 16.0,
-                                              color: Colors.grey,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          Text(
-                                            convertTimeForCheckedIn(
-                                              chkinDt,
-                                            ),
-                                            style: TextStyle(
-                                              fontSize: 16.0,
-                                              color: Colors.grey,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                            // maxLines: 2,
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 5.0,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment
-                                            .spaceBetween,
-                                        children: [
-                                          Column(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    'Checked in at ',
-                                                    style: TextStyle(
-                                                      fontSize: 16.0,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    convertTimeWithoutParse(dbC
-                                                        .response[
-                                                    'dailyAttendance']
-                                                    [
-                                                    'checkInDateTime']),
-                                                    style: TextStyle(
-                                                      fontSize: 16.0,
-                                                      fontWeight:
-                                                      FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(
-                                                height: 5.0,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    'Shift ends at ',
-                                                    style: TextStyle(
-                                                      fontSize: 16.0,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    convertTimeWithParse(dbC
-                                                        .response[
-                                                    'empdetails']
-                                                    ['shiftEndTime']),
-                                                    style: TextStyle(
-                                                      fontSize: 16.0,
-                                                      fontWeight:
-                                                      FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                          Visibility(
-                                            child: RaisedButton(
-                                              onPressed: () {
-                                                //Check Condition
-                                                var chk = checkCondition(
-                                                  dbC.response,
-                                                  'chkout',
-                                                );
-                                                if (chk) {
-                                                  Get.to(CheckoutPage(
-                                                      RemoteServices()
-                                                          .box
-                                                          .get('faceApi'),
-                                                      appFeatures[
-                                                      'checkinLocation']));
-                                                  // Get.to(CheckoutPage(0));
-                                                }
-                                              },
-                                              child: Text(
-                                                'Check Out',
-                                                style: TextStyle(
-                                                  fontSize: 18.0,
-                                                  color: Colors.white,
-                                                  fontWeight:
-                                                  FontWeight.bold,
-                                                ),
-                                              ),
-                                              color:
-                                              AppUtils().orangeColor,
-                                              shape:
-                                              RoundedRectangleBorder(
-                                                borderRadius:
-                                                BorderRadius.circular(
-                                                  25.0,
-                                                ),
-                                                side: BorderSide(
-                                                  color: AppUtils()
-                                                      .orangeColor,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                )
-                                    : Padding(
-                                  padding: const EdgeInsets.fromLTRB(
-                                    10.0,
-                                    25.0,
-                                    10.0,
-                                    25.0,
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Visibility(
-                                        visible: !conditionForMsg(
-                                            dbC.response, 'chkin') &&
-                                            RemoteServices()
-                                                .box
-                                                .get('role') !=
-                                                '3',
-                                        child: Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.end,
+                                        padding: const EdgeInsets.fromLTRB(
+                                          10.0,
+                                          10.0,
+                                          10.0,
+                                          10.0,
+                                        ),
+                                        child: Column(
                                           children: [
-                                            Text(
-                                              'Attendance already given',
-                                              style: TextStyle(
-                                                fontSize: 16.0,
-                                                color: AppUtils()
-                                                    .orangeColor,
-                                                fontWeight:
-                                                FontWeight.bold,
-                                              ),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              children: [
+                                                Text(
+                                                  'Current Status: ',
+                                                  style: TextStyle(
+                                                    fontSize: 16.0,
+                                                    color: Colors.grey,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  'On Duty',
+                                                  style: TextStyle(
+                                                    fontSize: 16.0,
+                                                    color: AppUtils().orangeColor,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              children: [
+                                                Text(
+                                                  'Checked in on ',
+                                                  style: TextStyle(
+                                                    fontSize: 16.0,
+                                                    color: Colors.grey,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  convertTimeForCheckedIn(
+                                                    chkinDt,
+                                                  ),
+                                                  style: TextStyle(
+                                                    fontSize: 16.0,
+                                                    color: Colors.grey,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                  // maxLines: 2,
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 5.0,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Column(
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Text(
+                                                          'Checked in at ',
+                                                          style: TextStyle(
+                                                            fontSize: 16.0,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          convertTimeWithoutParse(dbC.response['dailyAttendance']['checkInDateTime']),
+                                                          style: TextStyle(
+                                                            fontSize: 16.0,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      height: 5.0,
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        Text(
+                                                          'Shift ends at ',
+                                                          style: TextStyle(
+                                                            fontSize: 16.0,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          convertTimeWithParse(dbC.response['empdetails']['shiftEndTime']),
+                                                          style: TextStyle(
+                                                            fontSize: 16.0,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                                Visibility(
+                                                  child: RaisedButton(
+                                                    onPressed: () {
+                                                      //Check Condition
+                                                      var chk = checkCondition(
+                                                        dbC.response,
+                                                        'chkout',
+                                                      );
+                                                      if (chk) {
+                                                        Get.to(CheckoutPage(RemoteServices().box.get('faceApi'), appFeatures['checkinLocation']));
+                                                        // Get.to(CheckoutPage(0));
+                                                      }
+                                                    },
+                                                    child: Text(
+                                                      'Check Out',
+                                                      style: TextStyle(
+                                                        fontSize: 18.0,
+                                                        color: Colors.white,
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    color: AppUtils().orangeColor,
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(
+                                                        25.0,
+                                                      ),
+                                                      side: BorderSide(
+                                                        color: AppUtils().orangeColor,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ],
                                         ),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment
-                                            .spaceBetween,
-                                        children: [
-                                          Column(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                'You are posted in',
-                                                style: TextStyle(
-                                                  fontSize: 15.0,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 5.0,
-                                              ),
-                                              Obx(() {
-                                                if (dbC.isDashboardLoading
-                                                    .value) {
-                                                  return Text(
-                                                    '...',
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 20.0,
-                                                      fontWeight:
-                                                      FontWeight.bold,
-                                                    ),
-                                                  );
-                                                } else {
-                                                  // print('Length: ${dbC.response['clientData']['name'].length}');
-                                                  var clientName = dbC
-                                                      .response[
-                                                  'clientData']
-                                                  ['name'] ??
-                                                      'N/A';
-                                                  var areaName = dbC
-                                                      .response[
-                                                  'clientData']
-                                                  ['address'] ??
-                                                      'N/A';
-                                                  return Row(
-                                                    children: [
-                                                      SizedBox(
-                                                        width: 240.0,
-                                                        child: Text(
-                                                          '$clientName at $areaName',
-                                                          style:
-                                                          TextStyle(
-                                                            fontSize:
-                                                            15.0,
-                                                            fontWeight:
-                                                            FontWeight
-                                                                .bold,
-                                                          ),
-                                                          overflow:
-                                                          TextOverflow
-                                                              .ellipsis,
-                                                        ),
-                                                      ),
-                                                      // Text(
-                                                      //   ' in ',
-                                                      //   style: TextStyle(
-                                                      //     fontSize: 15.0,
-                                                      //   ),
-                                                      // ),
-                                                      // SizedBox(
-                                                      //   width: 40.0,
-                                                      //   child: Text(
-                                                      //     // dbC.response['empdetails']['area'] ?? 'N/A',
-                                                      //     'asdasd asdasd asdasdasd',
-                                                      //     style: TextStyle(
-                                                      //       fontSize: 15.0,
-                                                      //       fontWeight: FontWeight.bold,
-                                                      //     ),
-                                                      //     overflow: TextOverflow.ellipsis,
-                                                      //   ),
-                                                      // ),
-                                                    ],
-                                                  );
-                                                }
-                                              }),
-                                              SizedBox(
-                                                height: 5.0,
-                                              ),
-                                              Row(
+                                      )
+                                    : Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                          10.0,
+                                          25.0,
+                                          10.0,
+                                          25.0,
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            Visibility(
+                                              visible: !conditionForMsg(dbC.response, 'chkin') && RemoteServices().box.get('role') != '3',
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.end,
                                                 children: [
                                                   Text(
-                                                    'Duty Timings : ',
+                                                    'Attendance already given',
                                                     style: TextStyle(
-                                                      fontSize: 15.0,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    convertTimeWithParse(dbC
-                                                        .response[
-                                                    'empdetails'][
-                                                    'shiftStartTime']),
-                                                    style: TextStyle(
-                                                      fontSize: 15.0,
-                                                      fontWeight:
-                                                      FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    ' to ',
-                                                    style: TextStyle(
-                                                      fontSize: 15.0,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    convertTimeWithParse(dbC
-                                                        .response[
-                                                    'empdetails']
-                                                    ['shiftEndTime']),
-                                                    style: TextStyle(
-                                                      fontSize: 15.0,
-                                                      fontWeight:
-                                                      FontWeight.bold,
+                                                      fontSize: 16.0,
+                                                      color: AppUtils().orangeColor,
+                                                      fontWeight: FontWeight.bold,
                                                     ),
                                                   ),
                                                 ],
                                               ),
-                                            ],
-                                          ),
-                                          Visibility(
-                                            child: RaisedButton(
-                                              onPressed: () {
-                                                //Check Condition
-                                                var chk = checkCondition(
-                                                  dbC.response,
-                                                  'chkin',
-                                                );
-                                                if (chk) {
-                                                  print(RemoteServices()
-                                                      .box
-                                                      .get('faceApi'));
-                                                  Get.to(CheckinPage(
-                                                      RemoteServices()
-                                                          .box
-                                                          .get('faceApi'),
-                                                      appFeatures[
-                                                      'checkinLocation']));
-                                                  // Get.to(CheckinPage(0));
-                                                }
-                                              },
-                                              child: Text(
-                                                'Check In',
-                                                style: TextStyle(
-                                                  fontSize: 16.0,
-                                                  color: Colors.white,
-                                                  fontWeight:
-                                                  FontWeight.bold,
-                                                ),
-                                              ),
-                                              color:
-                                              AppUtils().greenColor,
-                                              shape:
-                                              RoundedRectangleBorder(
-                                                borderRadius:
-                                                BorderRadius.circular(
-                                                  25.0,
-                                                ),
-                                                side: BorderSide(
-                                                  color: AppUtils()
-                                                      .greenColor,
-                                                ),
-                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                );
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Column(
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      'You are posted in',
+                                                      style: TextStyle(
+                                                        fontSize: 15.0,
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 5.0,
+                                                    ),
+                                                    Obx(() {
+                                                      if (dbC.isDashboardLoading.value) {
+                                                        return Text(
+                                                          '...',
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 20.0,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                        );
+                                                      } else {
+                                                        // print('Length: ${dbC.response['clientData']['name'].length}');
+                                                        var clientName = dbC.response['clientData']['name'] ?? 'N/A';
+                                                        var areaName = dbC.response['clientData']['address'] ?? 'N/A';
+                                                        return Row(
+                                                          children: [
+                                                            SizedBox(
+                                                              width: 240.0,
+                                                              child: Text(
+                                                                '$clientName at $areaName',
+                                                                style: TextStyle(
+                                                                  fontSize: 15.0,
+                                                                  fontWeight: FontWeight.bold,
+                                                                ),
+                                                                overflow: TextOverflow.ellipsis,
+                                                              ),
+                                                            ),
+                                                            // Text(
+                                                            //   ' in ',
+                                                            //   style: TextStyle(
+                                                            //     fontSize: 15.0,
+                                                            //   ),
+                                                            // ),
+                                                            // SizedBox(
+                                                            //   width: 40.0,
+                                                            //   child: Text(
+                                                            //     // dbC.response['empdetails']['area'] ?? 'N/A',
+                                                            //     'asdasd asdasd asdasdasd',
+                                                            //     style: TextStyle(
+                                                            //       fontSize: 15.0,
+                                                            //       fontWeight: FontWeight.bold,
+                                                            //     ),
+                                                            //     overflow: TextOverflow.ellipsis,
+                                                            //   ),
+                                                            // ),
+                                                          ],
+                                                        );
+                                                      }
+                                                    }),
+                                                    SizedBox(
+                                                      height: 5.0,
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        Text(
+                                                          'Duty Timings : ',
+                                                          style: TextStyle(
+                                                            fontSize: 15.0,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          convertTimeWithParse(dbC.response['empdetails']['shiftStartTime']),
+                                                          style: TextStyle(
+                                                            fontSize: 15.0,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          ' to ',
+                                                          style: TextStyle(
+                                                            fontSize: 15.0,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          convertTimeWithParse(dbC.response['empdetails']['shiftEndTime']),
+                                                          style: TextStyle(
+                                                            fontSize: 15.0,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                                Visibility(
+                                                  child: RaisedButton(
+                                                    onPressed: () {
+                                                      //Check Condition
+                                                      var chk = checkCondition(
+                                                        dbC.response,
+                                                        'chkin',
+                                                      );
+                                                      if (chk) {
+                                                        print(RemoteServices().box.get('faceApi'));
+                                                        Get.to(CheckinPage(RemoteServices().box.get('faceApi'), appFeatures['checkinLocation']));
+                                                        // Get.to(CheckinPage(0));
+                                                      }
+                                                    },
+                                                    child: Text(
+                                                      'Check In',
+                                                      style: TextStyle(
+                                                        fontSize: 16.0,
+                                                        color: Colors.white,
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    color: AppUtils().greenColor,
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(
+                                                        25.0,
+                                                      ),
+                                                      side: BorderSide(
+                                                        color: AppUtils().greenColor,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      );
                               }
                             }),
                           ],
@@ -987,198 +861,164 @@ class _DashboardPageState extends State<DashboardPage> {
                               var role = RemoteServices().box.get('role');
                               return dbC.response['psCount'] == null
                                   ? Container(
-                                width: MediaQuery.of(context).size.width,
-                                color: Colors.white,
-                                child: Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        top: 5.0,
-                                        left: 20.0,
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment
-                                            .spaceBetween,
+                                      width: MediaQuery.of(context).size.width,
+                                      color: Colors.white,
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Text(
-                                            DateFormat.MMMM()
-                                                .format(DateTime.now())
-                                                .toString(),
-                                            style: TextStyle(
-                                              fontSize: 20.0,
-                                              fontWeight: FontWeight.bold,
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                              top: 5.0,
+                                              left: 20.0,
                                             ),
-                                          ),
-                                          role == '2' || role == '3'
-                                              ? FlatButton(
-                                            onPressed: () {
-                                              Get.offAll(
-                                                AttendancePage(),
-                                              );
-                                            },
                                             child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
                                                 Text(
-                                                  'Enter Attendance',
+                                                  DateFormat.MMMM().format(DateTime.now()).toString(),
                                                   style: TextStyle(
-                                                    fontSize: 16.0,
-                                                    color:
-                                                    Colors.grey,
+                                                    fontSize: 20.0,
+                                                    fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
-                                                Icon(
-                                                  Icons
-                                                      .chevron_right,
-                                                  size: 25.0,
-                                                  color:
-                                                  Colors.grey,
-                                                ),
+                                                role == '2' || role == '3'
+                                                    ? FlatButton(
+                                                        onPressed: () {
+                                                          Get.offAll(
+                                                            AttendancePage(),
+                                                          );
+                                                        },
+                                                        child: Row(
+                                                          children: [
+                                                            Text(
+                                                              'Enter Attendance',
+                                                              style: TextStyle(
+                                                                fontSize: 16.0,
+                                                                color: Colors.grey,
+                                                              ),
+                                                            ),
+                                                            Icon(
+                                                              Icons.chevron_right,
+                                                              size: 25.0,
+                                                              color: Colors.grey,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      )
+                                                    : Container(),
                                               ],
                                             ),
-                                          )
-                                              : Container(),
+                                          ),
+                                          SizedBox(
+                                            height: 10.0,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                'No data to show',
+                                                style: TextStyle(
+                                                  fontSize: 18.0,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 20.0,
+                                          ),
                                         ],
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 10.0,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'No data to show',
-                                          style: TextStyle(
-                                            fontSize: 18.0,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 20.0,
-                                    ),
-                                  ],
-                                ),
-                              )
+                                    )
                                   : Container(
-                                // height: 150.0,
-                                width: MediaQuery.of(context).size.width,
-                                color: Colors.white,
-                                child: Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        top: 10.0,
-                                        left: 20.0,
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment
-                                            .spaceBetween,
+                                      // height: 150.0,
+                                      width: MediaQuery.of(context).size.width,
+                                      color: Colors.white,
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Text(
-                                            DateFormat.MMMM()
-                                                .format(DateTime.now())
-                                                .toString(),
-                                            style: TextStyle(
-                                              fontSize: 20.0,
-                                              fontWeight: FontWeight.bold,
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                              top: 10.0,
+                                              left: 20.0,
                                             ),
-                                          ),
-                                          role == '2' || role == '3'
-                                              ? FlatButton(
-                                            onPressed: () {
-                                              Get.offAll(
-                                                AttendancePage(),
-                                              );
-                                            },
                                             child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
                                                 Text(
-                                                  'Enter Attendance',
+                                                  DateFormat.MMMM().format(DateTime.now()).toString(),
                                                   style: TextStyle(
-                                                    fontSize: 16.0,
-                                                    color:
-                                                    Colors.grey,
+                                                    fontSize: 20.0,
+                                                    fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
-                                                Icon(
-                                                  Icons
-                                                      .chevron_right,
-                                                  size: 25.0,
-                                                  color:
-                                                  Colors.grey,
-                                                ),
+                                                role == '2' || role == '3'
+                                                    ? FlatButton(
+                                                        onPressed: () {
+                                                          Get.offAll(
+                                                            AttendancePage(),
+                                                          );
+                                                        },
+                                                        child: Row(
+                                                          children: [
+                                                            Text(
+                                                              'Enter Attendance',
+                                                              style: TextStyle(
+                                                                fontSize: 16.0,
+                                                                color: Colors.grey,
+                                                              ),
+                                                            ),
+                                                            Icon(
+                                                              Icons.chevron_right,
+                                                              size: 25.0,
+                                                              color: Colors.grey,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      )
+                                                    : Container(),
                                               ],
                                             ),
-                                          )
-                                              : Container(),
+                                          ),
+                                          SizedBox(
+                                            height: 10.0,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              CustomProgressIndicator(
+                                                // '23',
+                                                dbC.response['psCount']['shifts'].toString(),
+                                                'Total Days',
+                                                75.0,
+                                                1,
+                                              ),
+                                              CustomProgressIndicator(
+                                                dbC.response['psCount']['present'].toString(),
+                                                'Present',
+                                                75.0,
+                                                dbC.response['psCount']['present'] / dbC.response['psCount']['shifts'],
+                                              ),
+                                              CustomProgressIndicator(
+                                                dbC.response['psCount']['absent'].toString(),
+                                                'Absent',
+                                                75.0,
+                                                dbC.response['psCount']['absent'] / dbC.response['psCount']['shifts'],
+                                              ),
+                                              CustomProgressIndicator(
+                                                dbC.response['psCount']['wo'].toString(),
+                                                'Week Off',
+                                                75.0,
+                                                dbC.response['psCount']['wo'] / dbC.response['psCount']['shifts'],
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 20.0,
+                                          ),
                                         ],
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 10.0,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.center,
-                                      children: [
-                                        CustomProgressIndicator(
-                                          // '23',
-                                          dbC.response['psCount']
-                                          ['shifts']
-                                              .toString(),
-                                          'Total Days',
-                                          75.0,
-                                          1,
-                                        ),
-                                        CustomProgressIndicator(
-                                          dbC.response['psCount']
-                                          ['present']
-                                              .toString(),
-                                          'Present',
-                                          75.0,
-                                          dbC.response['psCount']
-                                          ['present'] /
-                                              dbC.response['psCount']
-                                              ['shifts'],
-                                        ),
-                                        CustomProgressIndicator(
-                                          dbC.response['psCount']
-                                          ['absent']
-                                              .toString(),
-                                          'Absent',
-                                          75.0,
-                                          dbC.response['psCount']
-                                          ['absent'] /
-                                              dbC.response['psCount']
-                                              ['shifts'],
-                                        ),
-                                        CustomProgressIndicator(
-                                          dbC.response['psCount']['wo']
-                                              .toString(),
-                                          'Week Off',
-                                          75.0,
-                                          dbC.response['psCount']['wo'] /
-                                              dbC.response['psCount']
-                                              ['shifts'],
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 20.0,
-                                    ),
-                                  ],
-                                ),
-                              );
+                                    );
                             }
                           }),
                         ],
@@ -1188,10 +1028,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       if (!dbC.isDashboardLoading.value) {
                         return Container(
                           color: AppUtils().greyScaffoldBg,
-                          height: dbC.response['empActivities'] == null ||
-                              dbC.response['empActivities'].length == 0
-                              ? 30.0
-                              : 0.0,
+                          height: dbC.response['empActivities'] == null || dbC.response['empActivities'].length == 0 ? 30.0 : 0.0,
                         );
                       }
                       return Container();
@@ -1208,10 +1045,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           );
                         } else {
                           return Visibility(
-                            visible: dbC.response['empActivities'] == null ||
-                                dbC.response['empActivities'].length == 0
-                                ? false
-                                : true,
+                            visible: dbC.response['empActivities'] == null || dbC.response['empActivities'].length == 0 ? false : true,
                             child: Container(
                               height: 190.0,
                               width: MediaQuery.of(context).size.width,
@@ -1223,14 +1057,9 @@ class _DashboardPageState extends State<DashboardPage> {
                                 ),
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
-                                  itemCount: dbC.response['empActivities'] ==
-                                      null
-                                      ? 0
-                                      : dbC.response['empActivities'].length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    var empAct =
-                                    dbC.response['empActivities'][index];
+                                  itemCount: dbC.response['empActivities'] == null ? 0 : dbC.response['empActivities'].length,
+                                  itemBuilder: (BuildContext context, int index) {
+                                    var empAct = dbC.response['empActivities'][index];
                                     return DBActivityTile(
                                       empAct,
                                       index,
@@ -1292,8 +1121,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       ),
                     ),
                     Visibility(
-                      visible: appFeatures['gps'] && appFeatures['routePlan'] ??
-                          true,
+                      visible: appFeatures['gps'] && appFeatures['routePlan'] ?? true,
                       child: Container(
                         color: AppUtils().greyScaffoldBg,
                         child: Obx(() {
@@ -1307,40 +1135,30 @@ class _DashboardPageState extends State<DashboardPage> {
                           } else {
                             return Container(
                               color: AppUtils().greyScaffoldBg,
-                              height: erpC.empRes.routePlanList == null ||
-                                  erpC.empRes.routePlanList.length == 0
-                                  ? 0.0
-                                  : 220.0,
+                              height: erpC.empRes.routePlanList == null || erpC.empRes.routePlanList.length == 0 ? 0.0 : 220.0,
                               width: MediaQuery.of(context).size.width,
                               child: Padding(
                                 padding: const EdgeInsets.only(
                                   bottom: 20.0,
                                 ),
-                                child: erpC.empRes.routePlanList == null ||
-                                    erpC.empRes.routePlanList.length == 0
+                                child: erpC.empRes.routePlanList == null || erpC.empRes.routePlanList.length == 0
                                     ? Container()
                                     : ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  // itemCount: erpC.empRes.routePlanList.length,
-                                  itemCount:
-                                  erpC.empRes.routePlanList.length > 4
-                                      ? 5
-                                      : erpC.empRes.routePlanList
-                                      .length,
-                                  itemBuilder: (context, index) {
-                                    var length =
-                                        erpC.empRes.routePlanList.length;
-                                    var empRoute =
-                                    erpC.empRes.routePlanList[index];
-                                    // print('index: $index');
-                                    return DBEmprTile(
-                                      empRoute,
-                                      index,
-                                      // erpC.empRes.routePlanList.length,
-                                      length > 4 ? 4 : length,
-                                    );
-                                  },
-                                ),
+                                        scrollDirection: Axis.horizontal,
+                                        // itemCount: erpC.empRes.routePlanList.length,
+                                        itemCount: erpC.empRes.routePlanList.length > 4 ? 5 : erpC.empRes.routePlanList.length,
+                                        itemBuilder: (context, index) {
+                                          var length = erpC.empRes.routePlanList.length;
+                                          var empRoute = erpC.empRes.routePlanList[index];
+                                          // print('index: $index');
+                                          return DBEmprTile(
+                                            empRoute,
+                                            index,
+                                            // erpC.empRes.routePlanList.length,
+                                            length > 4 ? 4 : length,
+                                          );
+                                        },
+                                      ),
                               ),
                             );
                           }
@@ -1348,9 +1166,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       ),
                     ),
                     Visibility(
-                      visible: appFeatures['routePlan'] ||
-                          appFeatures['pinMyVisit'] ??
-                          true,
+                      visible: appFeatures['routePlan'] || appFeatures['pinMyVisit'] ?? true,
                       child: Container(
                         width: MediaQuery.of(context).size.width,
                         color: Colors.white,
@@ -1381,34 +1197,34 @@ class _DashboardPageState extends State<DashboardPage> {
                                     width: 6.0,
                                   ),
                                   Visibility(
-                                      visible: appFeatures['routePlan'] ?? true,
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          Get.to(RoutePlanning());
-                                        },
-                                        child: Text(
-                                          'Create New Route Plan',
-                                          style: TextStyle(
-                                            fontSize: 18.0,
-                                            color: Colors.grey,
-                                          ),
+                                    visible: appFeatures['routePlan'] ?? true,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Get.to(RoutePlanning());
+                                      },
+                                      child: Text(
+                                        'Create New Route Plan',
+                                        style: TextStyle(
+                                          fontSize: 18.0,
+                                          color: Colors.grey,
                                         ),
-                                      )),
+                                      ),
+                                    ),
+                                  ),
                                   Spacer(),
                                   Visibility(
-                                      visible:
-                                      appFeatures['pinMyVisit'] ?? true,
-                                      child: Icon(
-                                        Icons.pin_drop,
-                                        size: 25.0,
-                                        color: Colors.grey,
-                                      )),
+                                    visible: appFeatures['pinMyVisit'] ?? true,
+                                    child: Icon(
+                                      Icons.pin_drop,
+                                      size: 25.0,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
                                   SizedBox(
                                     width: 6.0,
                                   ),
                                   Visibility(
-                                      visible:
-                                      appFeatures['pinMyVisit'] ?? true,
+                                      visible: appFeatures['pinMyVisit'] ?? true,
                                       child: GestureDetector(
                                         onTap: () {
                                           Get.to(PinMyVisit());
@@ -1472,19 +1288,15 @@ class _DashboardPageState extends State<DashboardPage> {
                                 onTap: () {
                                   if (calC.calendarType != 'myCal') {
                                     calC.calendarType = 'myCal';
-                                    var dateParse =
-                                    DateTime.parse(calC.changedDate);
-                                    var formattedDate =
-                                        '${dateParse.month}${dateParse.year.toString().substring(2)}';
+                                    var dateParse = DateTime.parse(calC.changedDate);
+                                    var formattedDate = '${dateParse.month}${dateParse.year.toString().substring(2)}';
                                     calC.getCalendar(month: formattedDate);
                                     setState(() {});
                                   }
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
-                                    color: calC.calendarType == 'myCal'
-                                        ? Colors.white
-                                        : Theme.of(context).primaryColor,
+                                    color: calC.calendarType == 'myCal' ? Colors.white : Theme.of(context).primaryColor,
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(
                                         50.0,
@@ -1505,9 +1317,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                           style: TextStyle(
                                             fontSize: 18.0,
                                             fontWeight: FontWeight.bold,
-                                            color: calC.calendarType == 'myCal'
-                                                ? Theme.of(context).primaryColor
-                                                : Colors.white,
+                                            color: calC.calendarType == 'myCal' ? Theme.of(context).primaryColor : Colors.white,
                                           ),
                                         ),
                                       ),
@@ -1519,19 +1329,15 @@ class _DashboardPageState extends State<DashboardPage> {
                                 onTap: () {
                                   if (calC.calendarType != 'myRos') {
                                     calC.calendarType = 'myRos';
-                                    var dateParse =
-                                    DateTime.parse(calC.changedDate);
-                                    var formattedDate =
-                                        '${dateParse.month}${dateParse.year.toString().substring(2)}';
+                                    var dateParse = DateTime.parse(calC.changedDate);
+                                    var formattedDate = '${dateParse.month}${dateParse.year.toString().substring(2)}';
                                     calC.getCalendar(month: formattedDate);
                                     setState(() {});
                                   }
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
-                                    color: calC.calendarType == 'myRos'
-                                        ? Colors.white
-                                        : Theme.of(context).primaryColor,
+                                    color: calC.calendarType == 'myRos' ? Colors.white : Theme.of(context).primaryColor,
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(
                                         50.0,
@@ -1552,9 +1358,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                           style: TextStyle(
                                             fontSize: 18.0,
                                             fontWeight: FontWeight.bold,
-                                            color: calC.calendarType == 'myRos'
-                                                ? Theme.of(context).primaryColor
-                                                : Colors.white,
+                                            color: calC.calendarType == 'myRos' ? Theme.of(context).primaryColor : Colors.white,
                                           ),
                                         ),
                                       ),
