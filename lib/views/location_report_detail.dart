@@ -20,6 +20,7 @@ class _LocationReportDetailState extends State<LocationReportDetail> {
   final EmployeeReportController epC = Get.put(EmployeeReportController());
   GoogleMapController controller;
   final Set<Marker> _markers = {};
+  int live = 0,total =0;
 
   @override
   void initState() {
@@ -80,16 +81,27 @@ class _LocationReportDetailState extends State<LocationReportDetail> {
     setState(() {
       controller = controllerParam;
       // controller.setMapStyle(_mapStyle);
-
       epC.locations.asMap().forEach((index, emp) async {
         print(emp);
+        var markIcon;
+        var time = DateTime.parse(emp['timeStamp']);
+        DateTime now = new DateTime.now();;
+        total++;
+        markIcon = await BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(size: Size(24, 24)), 'assets/images/siteposted_nolive.png');
+        if(time.millisecondsSinceEpoch > (now.millisecondsSinceEpoch - (3600*1000))){
+          live++;
+          markIcon = await BitmapDescriptor.fromAssetImage(
+              ImageConfiguration(size: Size(24, 24)), 'assets/images/siteposted.png');
+        }
+
         var snippetString = '${emp['datetime']}, ${emp['battery']}%';
         _markers.add(
           Marker(
             markerId: MarkerId(
               emp['empId'],
             ),
-            // icon: pinTaskIcon,
+            icon: markIcon,
             position: LatLng(
               double.parse(emp['lat']),
               double.parse(emp['lng']),
@@ -151,14 +163,15 @@ class _LocationReportDetailState extends State<LocationReportDetail> {
           return Padding(
             padding: const EdgeInsets.all(15.0),
             child: Center(
-              child: ClipRRect(
+              child: Stack (children: [
+            ClipRRect(
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(15),
                   topRight: Radius.circular(15),
                   bottomRight: Radius.circular(15),
                   bottomLeft: Radius.circular(15),
                 ),
-                child: Align(
+                child :Align(
                   alignment: Alignment.center,
                   child: GoogleMap(
                     buildingsEnabled: true,
@@ -175,8 +188,17 @@ class _LocationReportDetailState extends State<LocationReportDetail> {
                     ),
                     mapType: MapType.normal,
                   ),
-                ),
-              ),
+                )),
+                  Align(
+                    alignment: Alignment.bottomLeft,
+                    child : Container(
+                      padding: EdgeInsets.all(6),
+                      color: Colors.grey[400],
+                      child: Text('Live '+live.toString()+'/'+total.toString(),
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),),
+                    )
+                  )
+              ]),
             ),
           );
         }),

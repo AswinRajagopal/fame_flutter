@@ -1,23 +1,25 @@
 import 'dart:io';
 
-import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart' as path;
-
-import '../utils/utils.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 import 'package:checkdigit/checkdigit.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:path/path.dart' as path;
+import 'package:progress_dialog/progress_dialog.dart';
 
 import '../controllers/admin_controller.dart';
-import 'package:flutter/material.dart';
+import '../utils/utils.dart';
 
 class AddEmployeeNew extends StatefulWidget {
   @override
   _AddEmployeeNewState createState() => _AddEmployeeNewState();
 }
 
-class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAliveClientMixin<AddEmployeeNew>, SingleTickerProviderStateMixin {
+class _AddEmployeeNewState extends State<AddEmployeeNew>
+    with
+        AutomaticKeepAliveClientMixin<AddEmployeeNew>,
+        SingleTickerProviderStateMixin {
   final AdminController adminC = Get.put(AdminController());
   TextEditingController name = TextEditingController();
   TextEditingController dtOfBirth = TextEditingController();
@@ -78,7 +80,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
   var pantSize;
   var shoeSize;
   var dobFatherVal;
-  var dobFamilyVal;
+  var dobFamilyVal= '1999-01-01';
   var idProof1;
   var idProof = 'AadharCard';
   var idProof2;
@@ -230,7 +232,12 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
   bool validateStep(step) {
     FocusScope.of(context).requestFocus(FocusNode());
     if (step == 0) {
-      if (name.isNullOrBlank || dtOfBirth.isNullOrBlank || language.isNullOrBlank || empPhone.isNullOrBlank || empUANNumber.isNullOrBlank || dtOfJoin.isNullOrBlank || department == null || client == null || blood == null || designation == null || qualification == null || reporting == null) {
+      if (AppUtils.checkTextisNull(name,'Name') ||
+          AppUtils.checkTextisNull(dtOfBirth, 'Dob') ||
+          AppUtils.checkTextisNull(dtOfJoin, 'Joining Date') ||
+          AppUtils.checkTextisNull(empPhone,'EmpPhone') ||
+          client == null ||
+          designation == null) {
         Get.snackbar(
           null,
           'Please provide all the details',
@@ -254,10 +261,21 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
           borderRadius: 5.0,
         );
         return false;
-      } else if (empUANNumber.text.length != 12) {
+      } else if (client== null) {
         Get.snackbar(
           null,
-          'Please provide 12 digit UAN number',
+          'Client is not selected',
+          colorText: Colors.white,
+          backgroundColor: Colors.black87,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+          padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+          borderRadius: 5.0,
+        );
+      } else if (designation== null) {
+        Get.snackbar(
+          null,
+          'Designation is not selected',
           colorText: Colors.white,
           backgroundColor: Colors.black87,
           snackPosition: SnackPosition.BOTTOM,
@@ -268,24 +286,10 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
       } else {
         return true;
       }
-    } else if (step == 1) {
-      if (bank == null || accountNo.isNullOrBlank || ifsc.isNullOrBlank || shirtSize == null || pantSize == null || shoeSize == null) {
-        Get.snackbar(
-          null,
-          'Please provide all the details',
-          colorText: Colors.white,
-          backgroundColor: Colors.black87,
-          snackPosition: SnackPosition.BOTTOM,
-          margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-          padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
-          borderRadius: 5.0,
-        );
-        return false;
-      } else {
-        return true;
-      }
-    } else if (step == 2) {
-      if (presenthouseNo.isNullOrBlank || presentStreet.isNullOrBlank || presentColony.isNullOrBlank || presentState == null || presentCity == null || permanenthouseNo.isNullOrBlank || permanentStreet.isNullOrBlank || permanentColony.isNullOrBlank || permanentState == null || permanentCity == null) {
+    } else if(step ==1){
+      return true;
+    }else if (step == 2) {
+      if (AppUtils.checkTextisNull(permanenthouseNo, 'House Number') ) {
         Get.snackbar(
           null,
           'Please provide all the details',
@@ -301,7 +305,9 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
         return true;
       }
     } else if (step == 3) {
-      if (fatherName.isNullOrBlank || dobFather.isNullOrBlank || ageFather.isNullOrBlank || aadharNumberFather.isNullOrBlank || relFather == null || familyName.isNullOrBlank || dobFamily.isNullOrBlank || ageFamily.isNullOrBlank || aadharNumberFamily.isNullOrBlank || relFamily == null) {
+      if (AppUtils.checkTextisNull(fatherName, 'Father Name') ||
+          AppUtils.checkTextisNull(aadharNumberFather,'Father Aadhar') ||
+          AppUtils.checkTextisNull(ageFather, 'Father Age')) {
         Get.snackbar(
           null,
           'Please provide all the details',
@@ -313,7 +319,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
           borderRadius: 5.0,
         );
         return false;
-      } else if (!verhoeff.validate(aadharNumberFather.text) || !verhoeff.validate(aadharNumberFamily.text)) {
+      } else if (!verhoeff.validate(aadharNumberFather.text)) {
         Get.snackbar(
           null,
           'Please add valid aadhar number',
@@ -329,7 +335,12 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
         return true;
       }
     } else if (step == 4) {
-      if (proofAadharNumber.isNullOrBlank || proofAadharNumberConfirm.isNullOrBlank || proofNumber2.isNullOrBlank || aadhar1 == null || aadhar2 == null || proof11 == null || proof12 == null || idProof == null || idProof1 == null) {
+      if (proofAadharNumber.isNullOrBlank ||
+          proofNumber2.isNullOrBlank ||
+          aadhar1 == null ||
+          aadhar2 == null ||
+          proof11 == null ||
+          proof12 == null) {
         Get.snackbar(
           null,
           'Please provide all the details and select proof images',
@@ -586,7 +597,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                       color: Colors.grey[600],
                                       fontSize: 18.0,
                                     ),
-                                    hintText: 'Name',
+                                    hintText: 'Name*',
                                   ),
                                 ),
                               ),
@@ -767,7 +778,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                       color: Colors.grey[600],
                                       fontSize: 18.0,
                                     ),
-                                    hintText: 'Date of Birth',
+                                    hintText: 'Date of Birth*',
                                     prefixIcon: Image.asset(
                                       'assets/images/icon_calender.png',
                                       color: Colors.grey,
@@ -818,7 +829,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                       color: Colors.grey[600],
                                       fontSize: 18.0,
                                     ),
-                                    hintText: 'Phone No.',
+                                    hintText: 'Phone No.*',
                                     prefixIcon: Column(
                                       children: [
                                         Image.asset(
@@ -848,7 +859,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     ),
                                     hintText: 'UAN Number',
                                     prefixIcon: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Image.asset(
                                           'assets/images/aadhar.png',
@@ -887,7 +899,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   }).toList(),
                                   decoration: InputDecoration(
                                     prefixIcon: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Image.asset(
                                           'assets/images/branch.png',
@@ -898,7 +911,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     ),
                                   ),
                                   onChanged: (value) {
-                                    FocusScope.of(context).requestFocus(FocusNode());
+                                    FocusScope.of(context)
+                                        .requestFocus(FocusNode());
                                     department = value;
                                     // setState(() {});
                                   },
@@ -911,7 +925,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                 ),
                                 child: DropdownButtonFormField<dynamic>(
                                   hint: Text(
-                                    'Select Client',
+                                    'Select Client*',
                                     style: TextStyle(
                                       color: Colors.grey[600],
                                       fontSize: 18.0,
@@ -922,7 +936,9 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   value: client,
                                   items: adminC.clientList.map((item) {
                                     //print('item: $item');
-                                    var sC = item['name'] + ' - ' + item['id'].toString();
+                                    var sC = item['name'] +
+                                        ' - ' +
+                                        item['id'].toString();
                                     return DropdownMenuItem(
                                       child: Text(
                                         sC,
@@ -932,7 +948,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   }).toList(),
                                   decoration: InputDecoration(
                                     prefixIcon: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Image.asset(
                                           'assets/images/siteposted.png',
@@ -943,7 +960,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     ),
                                   ),
                                   onChanged: (value) {
-                                    FocusScope.of(context).requestFocus(FocusNode());
+                                    FocusScope.of(context)
+                                        .requestFocus(FocusNode());
                                     client = value;
                                     // setState(() {});
                                   },
@@ -976,7 +994,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   }).toList(),
                                   decoration: InputDecoration(
                                     prefixIcon: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         Image.asset(
                                           'assets/images/blood.png',
@@ -987,7 +1006,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     ),
                                   ),
                                   onChanged: (value) {
-                                    FocusScope.of(context).requestFocus(FocusNode());
+                                    FocusScope.of(context)
+                                        .requestFocus(FocusNode());
                                     blood = value;
                                     // setState(() {});
                                   },
@@ -1000,7 +1020,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                 ),
                                 child: DropdownButtonFormField<dynamic>(
                                   hint: Text(
-                                    'Select Designation',
+                                    'Select Designation*',
                                     style: TextStyle(
                                       color: Colors.grey[600],
                                       fontSize: 18.0,
@@ -1020,7 +1040,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   }).toList(),
                                   decoration: InputDecoration(
                                     prefixIcon: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         Image.asset(
                                           'assets/images/designation.png',
@@ -1031,7 +1052,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     ),
                                   ),
                                   onChanged: (value) {
-                                    FocusScope.of(context).requestFocus(FocusNode());
+                                    FocusScope.of(context)
+                                        .requestFocus(FocusNode());
                                     designation = value;
                                     // setState(() {});
                                   },
@@ -1053,7 +1075,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                       color: Colors.grey[600],
                                       fontSize: 18.0,
                                     ),
-                                    hintText: 'Date of Joining',
+                                    hintText: 'Date of Joining*',
                                     prefixIcon: Image.asset(
                                       'assets/images/icon_calender.png',
                                       color: Colors.grey,
@@ -1082,7 +1104,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     ),
                                     hintText: 'Qualification',
                                     prefixIcon: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Image.asset(
                                           'assets/images/qualification.png',
@@ -1111,7 +1134,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     ),
                                     hintText: 'Reporting Manager',
                                     prefixIcon: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         Image.asset(
                                           'assets/images/reportingmanager.png',
@@ -1146,7 +1170,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   vertical: 10.0,
                                 ),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
                                   children: [
                                     FlatButton(
                                       onPressed: () {
@@ -1164,7 +1189,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     ),
                                     RaisedButton(
                                       onPressed: () {
-                                        FocusScope.of(context).requestFocus(FocusNode());
+                                        FocusScope.of(context)
+                                            .requestFocus(FocusNode());
                                         if (validateStep(0)) {
                                           tabController.animateTo(1);
                                         }
@@ -1185,7 +1211,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                       ),
                                       color: Theme.of(context).primaryColor,
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(5.0),
+                                        borderRadius:
+                                            BorderRadius.circular(5.0),
                                         side: BorderSide(
                                           color: Theme.of(context).primaryColor,
                                         ),
@@ -1255,7 +1282,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     //print('item: $item');
                                     return DropdownMenuItem(
                                       child: Padding(
-                                        padding: const EdgeInsets.only(left: 10.0),
+                                        padding:
+                                            const EdgeInsets.only(left: 10.0),
                                         child: Text(
                                           item['bankname'],
                                         ),
@@ -1276,7 +1304,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   //   ),
                                   // ),
                                   onChanged: (value) {
-                                    FocusScope.of(context).requestFocus(FocusNode());
+                                    FocusScope.of(context)
+                                        .requestFocus(FocusNode());
                                     bank = value;
                                     setState(() {});
                                   },
@@ -1354,7 +1383,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     //print('item: $item');
                                     return DropdownMenuItem(
                                       child: Padding(
-                                        padding: const EdgeInsets.only(left: 10.0),
+                                        padding:
+                                            const EdgeInsets.only(left: 10.0),
                                         child: Text(
                                           item,
                                         ),
@@ -1375,7 +1405,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   //   ),
                                   // ),
                                   onChanged: (value) {
-                                    FocusScope.of(context).requestFocus(FocusNode());
+                                    FocusScope.of(context)
+                                        .requestFocus(FocusNode());
                                     shirtSize = value;
                                     // setState(() {});
                                   },
@@ -1404,7 +1435,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     //print('item: $item');
                                     return DropdownMenuItem(
                                       child: Padding(
-                                        padding: const EdgeInsets.only(left: 10.0),
+                                        padding:
+                                            const EdgeInsets.only(left: 10.0),
                                         child: Text(
                                           item,
                                         ),
@@ -1425,7 +1457,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   //   ),
                                   // ),
                                   onChanged: (value) {
-                                    FocusScope.of(context).requestFocus(FocusNode());
+                                    FocusScope.of(context)
+                                        .requestFocus(FocusNode());
                                     pantSize = value;
                                     // setState(() {});
                                   },
@@ -1454,7 +1487,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     //print('item: $item');
                                     return DropdownMenuItem(
                                       child: Padding(
-                                        padding: const EdgeInsets.only(left: 10.0),
+                                        padding:
+                                            const EdgeInsets.only(left: 10.0),
                                         child: Text(
                                           item,
                                         ),
@@ -1475,7 +1509,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   //   ),
                                   // ),
                                   onChanged: (value) {
-                                    FocusScope.of(context).requestFocus(FocusNode());
+                                    FocusScope.of(context)
+                                        .requestFocus(FocusNode());
                                     shoeSize = value;
                                     // setState(() {});
                                   },
@@ -1508,7 +1543,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   children: [
                                     RaisedButton(
                                       onPressed: () {
-                                        FocusScope.of(context).requestFocus(FocusNode());
+                                        FocusScope.of(context)
+                                            .requestFocus(FocusNode());
                                         if (!validateStep(0)) {
                                           tabController.animateTo(0);
                                         } else if (validateStep(1)) {
@@ -1531,7 +1567,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                       ),
                                       color: Theme.of(context).primaryColor,
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(5.0),
+                                        borderRadius:
+                                            BorderRadius.circular(5.0),
                                         side: BorderSide(
                                           color: Theme.of(context).primaryColor,
                                         ),
@@ -1594,7 +1631,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     ),
                                     hintText: 'House No.',
                                     prefixIcon: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Image.asset(
                                           'assets/images/home.png',
@@ -1622,7 +1660,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     ),
                                     hintText: 'Street',
                                     prefixIcon: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Image.asset(
                                           'assets/images/street.png',
@@ -1650,7 +1689,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     ),
                                     hintText: 'Colony',
                                     prefixIcon: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Image.asset(
                                           'assets/images/colony.png',
@@ -1689,7 +1729,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   }).toList(),
                                   decoration: InputDecoration(
                                     prefixIcon: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Image.asset(
                                           'assets/images/state.png',
@@ -1700,10 +1741,12 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     ),
                                   ),
                                   onChanged: (value) {
-                                    FocusScope.of(context).requestFocus(FocusNode());
+                                    FocusScope.of(context)
+                                        .requestFocus(FocusNode());
                                     presentState = value;
                                     setState(() {});
-                                    adminC.getCities(int.parse(value), 'present');
+                                    adminC.getCities(
+                                        int.parse(value), 'present');
                                   },
                                 ),
                               ),
@@ -1734,7 +1777,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   }).toList(),
                                   decoration: InputDecoration(
                                     prefixIcon: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Image.asset(
                                           'assets/images/city.png',
@@ -1745,7 +1789,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     ),
                                   ),
                                   onChanged: (value) {
-                                    FocusScope.of(context).requestFocus(FocusNode());
+                                    FocusScope.of(context)
+                                        .requestFocus(FocusNode());
                                     presentCity = value;
                                     setState(() {});
                                   },
@@ -1762,25 +1807,37 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                       value: copyAdd,
                                       onChanged: (value) {
                                         print(value);
-                                        if (presenthouseNo.text.isNullOrBlank || presentStreet.text.isNullOrBlank || presentColony.text.isNullOrBlank || presentState == null || presentCity == null) {
+                                        if (presenthouseNo.text.isNullOrBlank ||
+                                            presentStreet.text.isNullOrBlank ||
+                                            presentColony.text.isNullOrBlank ||
+                                            presentState == null ||
+                                            presentCity == null) {
                                           Get.snackbar(
                                             null,
                                             'Please provide present address first',
                                             colorText: Colors.white,
                                             backgroundColor: Colors.black87,
                                             snackPosition: SnackPosition.BOTTOM,
-                                            margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                                            padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+                                            margin: EdgeInsets.symmetric(
+                                                horizontal: 8.0,
+                                                vertical: 10.0),
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 12.0,
+                                                vertical: 18.0),
                                             borderRadius: 5.0,
                                           );
                                         } else {
                                           if (value) {
-                                            permanenthouseNo.text = presenthouseNo.text;
-                                            permanentStreet.text = presentStreet.text;
-                                            permanentColony.text = presentColony.text;
+                                            permanenthouseNo.text =
+                                                presenthouseNo.text;
+                                            permanentStreet.text =
+                                                presentStreet.text;
+                                            permanentColony.text =
+                                                presentColony.text;
                                             permanentState = presentState;
                                             permanentCity = presentCity;
-                                            adminC.percitiesList.addAll(adminC.citiesList);
+                                            adminC.percitiesList
+                                                .addAll(adminC.citiesList);
                                           } else {
                                             permanenthouseNo.clear();
                                             permanentStreet.clear();
@@ -1831,9 +1888,10 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                       color: Colors.grey[600],
                                       fontSize: 18.0,
                                     ),
-                                    hintText: 'House No.',
+                                    hintText: 'House No.*',
                                     prefixIcon: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Image.asset(
                                           'assets/images/home.png',
@@ -1861,7 +1919,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     ),
                                     hintText: 'Street',
                                     prefixIcon: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Image.asset(
                                           'assets/images/street.png',
@@ -1889,7 +1948,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     ),
                                     hintText: 'Colony',
                                     prefixIcon: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Image.asset(
                                           'assets/images/colony.png',
@@ -1928,7 +1988,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   }).toList(),
                                   decoration: InputDecoration(
                                     prefixIcon: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Image.asset(
                                           'assets/images/state.png',
@@ -1939,10 +2000,12 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     ),
                                   ),
                                   onChanged: (value) {
-                                    FocusScope.of(context).requestFocus(FocusNode());
+                                    FocusScope.of(context)
+                                        .requestFocus(FocusNode());
                                     permanentState = value;
                                     setState(() {});
-                                    adminC.getCities(int.parse(value), 'permanent');
+                                    adminC.getCities(
+                                        int.parse(value), 'permanent');
                                   },
                                 ),
                               ),
@@ -1973,7 +2036,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   }).toList(),
                                   decoration: InputDecoration(
                                     prefixIcon: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Image.asset(
                                           'assets/images/city.png',
@@ -1984,7 +2048,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     ),
                                   ),
                                   onChanged: (value) {
-                                    FocusScope.of(context).requestFocus(FocusNode());
+                                    FocusScope.of(context)
+                                        .requestFocus(FocusNode());
                                     permanentCity = value;
                                     setState(() {});
                                   },
@@ -2017,7 +2082,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   children: [
                                     RaisedButton(
                                       onPressed: () {
-                                        FocusScope.of(context).requestFocus(FocusNode());
+                                        FocusScope.of(context)
+                                            .requestFocus(FocusNode());
                                         if (!validateStep(0)) {
                                           tabController.animateTo(0);
                                         } else if (!validateStep(1)) {
@@ -2042,7 +2108,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                       ),
                                       color: Theme.of(context).primaryColor,
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(5.0),
+                                        borderRadius:
+                                            BorderRadius.circular(5.0),
                                         side: BorderSide(
                                           color: Theme.of(context).primaryColor,
                                         ),
@@ -2099,7 +2166,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     color: Colors.grey[600],
                                     fontSize: 18.0,
                                   ),
-                                  hintText: 'Father Name',
+                                  hintText: 'Father Name*',
                                   prefixIcon: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -2129,7 +2196,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     color: Colors.grey[600],
                                     fontSize: 18.0,
                                   ),
-                                  hintText: 'Date of Birth',
+                                  hintText: 'Date of Birth*',
                                   prefixIcon: Image.asset(
                                     'assets/images/icon_calender.png',
                                     color: Colors.grey,
@@ -2156,7 +2223,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     color: Colors.grey[600],
                                     fontSize: 18.0,
                                   ),
-                                  hintText: 'Age',
+                                  hintText: 'Age*',
                                   prefixIcon: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -2185,7 +2252,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     color: Colors.grey[600],
                                     fontSize: 18.0,
                                   ),
-                                  hintText: 'Aadhar Number',
+                                  hintText: 'Aadhar Number*',
                                   prefixIcon: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -2237,7 +2304,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   ),
                                 ),
                                 onChanged: (value) {
-                                  FocusScope.of(context).requestFocus(FocusNode());
+                                  FocusScope.of(context)
+                                      .requestFocus(FocusNode());
                                   relFather = value;
                                   setState(() {});
                                 },
@@ -2441,7 +2509,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   ),
                                 ),
                                 onChanged: (value) {
-                                  FocusScope.of(context).requestFocus(FocusNode());
+                                  FocusScope.of(context)
+                                      .requestFocus(FocusNode());
                                   relFamily = value;
                                   setState(() {});
                                 },
@@ -2508,7 +2577,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                 children: [
                                   RaisedButton(
                                     onPressed: () {
-                                      FocusScope.of(context).requestFocus(FocusNode());
+                                      FocusScope.of(context)
+                                          .requestFocus(FocusNode());
                                       if (!validateStep(0)) {
                                         tabController.animateTo(0);
                                       } else if (!validateStep(1)) {
@@ -2571,7 +2641,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                 vertical: 10.0,
                               ),
                               child: Text(
-                                'ID Proof 1',
+                                'ID Proof 1*',
                                 style: TextStyle(
                                   fontSize: 18.0,
                                 ),
@@ -2615,7 +2685,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   ),
                                 ),
                                 onChanged: (value) {
-                                  FocusScope.of(context).requestFocus(FocusNode());
+                                  FocusScope.of(context)
+                                      .requestFocus(FocusNode());
                                   idProof = value;
                                   setState(() {});
                                 },
@@ -2627,7 +2698,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                 vertical: 10.0,
                               ),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Flexible(
                                     child: TextField(
@@ -2640,7 +2712,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                           fontSize: 18.0,
                                           // fontWeight: FontWeight.bold,
                                         ),
-                                        hintText: 'Upload ID Proof Front',
+                                        hintText: 'Upload ID Proof Front*',
                                         suffixIcon: Image.asset(
                                           'assets/images/uplode_proof.png',
                                           // color: Colors.grey,
@@ -2650,10 +2722,13 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                       readOnly: true,
                                       keyboardType: null,
                                       onTap: () async {
-                                        var pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+                                        var pickedFile = await ImagePicker()
+                                            .getImage(
+                                                source: ImageSource.gallery);
                                         if (pickedFile != null) {
                                           aadhar1 = File(pickedFile.path);
-                                          proof1.text = path.basename(pickedFile.path);
+                                          proof1.text =
+                                              path.basename(pickedFile.path);
                                           setState(() {});
                                         } else {
                                           print('No image selected.');
@@ -2678,7 +2753,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                           fontSize: 18.0,
                                           // fontWeight: FontWeight.bold,
                                         ),
-                                        hintText: 'Upload ID Proof Back',
+                                        hintText: 'Upload ID Proof Back*',
                                         suffixIcon: Image.asset(
                                           'assets/images/uplode_proof.png',
                                           // color: Colors.grey,
@@ -2688,10 +2763,13 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                       readOnly: true,
                                       keyboardType: null,
                                       onTap: () async {
-                                        var pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+                                        var pickedFile = await ImagePicker()
+                                            .getImage(
+                                                source: ImageSource.gallery);
                                         if (pickedFile != null) {
                                           aadhar2 = File(pickedFile.path);
-                                          proof2.text = path.basename(pickedFile.path);
+                                          proof2.text =
+                                              path.basename(pickedFile.path);
                                           setState(() {});
                                         } else {
                                           print('No image selected.');
@@ -2720,7 +2798,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                     color: Colors.grey[600],
                                     fontSize: 18.0,
                                   ),
-                                  hintText: 'Aadhar Number',
+                                  hintText: 'Aadhar Number*',
                                   prefixIcon: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -2769,7 +2847,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                 vertical: 10.0,
                               ),
                               child: Text(
-                                'ID Proof 2',
+                                'ID Proof 2*',
                                 style: TextStyle(
                                   fontSize: 18.0,
                                 ),
@@ -2813,7 +2891,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   ),
                                 ),
                                 onChanged: (value) {
-                                  FocusScope.of(context).requestFocus(FocusNode());
+                                  FocusScope.of(context)
+                                      .requestFocus(FocusNode());
                                   idProof1 = value;
                                   setState(() {});
                                 },
@@ -2825,7 +2904,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                 vertical: 10.0,
                               ),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Flexible(
                                     child: TextField(
@@ -2838,7 +2918,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                           fontSize: 18.0,
                                           // fontWeight: FontWeight.bold,
                                         ),
-                                        hintText: 'Upload ID Proof Front',
+                                        hintText: 'Upload ID Proof Front*',
                                         suffixIcon: Image.asset(
                                           'assets/images/uplode_proof.png',
                                           // color: Colors.grey,
@@ -2848,10 +2928,13 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                       readOnly: true,
                                       keyboardType: null,
                                       onTap: () async {
-                                        var pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+                                        var pickedFile = await ImagePicker()
+                                            .getImage(
+                                                source: ImageSource.gallery);
                                         if (pickedFile != null) {
                                           proof11 = File(pickedFile.path);
-                                          proof3.text = path.basename(pickedFile.path);
+                                          proof3.text =
+                                              path.basename(pickedFile.path);
                                           setState(() {});
                                         } else {
                                           print('No image selected.');
@@ -2876,7 +2959,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                           fontSize: 18.0,
                                           // fontWeight: FontWeight.bold,
                                         ),
-                                        hintText: 'Upload ID Proof Back',
+                                        hintText: 'Upload ID Proof Back*',
                                         suffixIcon: Image.asset(
                                           'assets/images/uplode_proof.png',
                                           // color: Colors.grey,
@@ -2886,10 +2969,13 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                       readOnly: true,
                                       keyboardType: null,
                                       onTap: () async {
-                                        var pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+                                        var pickedFile = await ImagePicker()
+                                            .getImage(
+                                                source: ImageSource.gallery);
                                         if (pickedFile != null) {
                                           proof12 = File(pickedFile.path);
-                                          proof4.text = path.basename(pickedFile.path);
+                                          proof4.text =
+                                              path.basename(pickedFile.path);
                                           setState(() {});
                                         } else {
                                           print('No image selected.');
@@ -2982,7 +3068,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   ),
                                 ),
                                 onChanged: (value) {
-                                  FocusScope.of(context).requestFocus(FocusNode());
+                                  FocusScope.of(context)
+                                      .requestFocus(FocusNode());
                                   idProof2 = value;
                                   setState(() {});
                                 },
@@ -2994,7 +3081,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                 vertical: 10.0,
                               ),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Flexible(
                                     child: TextField(
@@ -3017,10 +3105,13 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                       readOnly: true,
                                       keyboardType: null,
                                       onTap: () async {
-                                        var pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+                                        var pickedFile = await ImagePicker()
+                                            .getImage(
+                                                source: ImageSource.gallery);
                                         if (pickedFile != null) {
                                           proof21 = File(pickedFile.path);
-                                          proof5.text = path.basename(pickedFile.path);
+                                          proof5.text =
+                                              path.basename(pickedFile.path);
                                           setState(() {});
                                         } else {
                                           print('No image selected.');
@@ -3055,10 +3146,13 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                       readOnly: true,
                                       keyboardType: null,
                                       onTap: () async {
-                                        var pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+                                        var pickedFile = await ImagePicker()
+                                            .getImage(
+                                                source: ImageSource.gallery);
                                         if (pickedFile != null) {
                                           proof22 = File(pickedFile.path);
-                                          proof6.text = path.basename(pickedFile.path);
+                                          proof6.text =
+                                              path.basename(pickedFile.path);
                                           setState(() {});
                                         } else {
                                           print('No image selected.');
@@ -3128,7 +3222,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                 children: [
                                   RaisedButton(
                                     onPressed: () async {
-                                      FocusScope.of(context).requestFocus(FocusNode());
+                                      FocusScope.of(context)
+                                          .requestFocus(FocusNode());
                                       if (!validateStep(0)) {
                                         tabController.animateTo(0);
                                       } else if (!validateStep(1)) {
@@ -3151,23 +3246,35 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                           'department': department.toString(),
                                           'empDesgn': designation.toString(),
                                           'empUANNumber': empUANNumber.text,
-                                          'empQualification': qualification.text,
+                                          'empQualification':
+                                              qualification.text,
                                           'empbankname': bank.toString(),
                                           'empBankAcNo': accountNo.text,
                                           'empIFSCcode': ifsc.text,
                                           'doj': doj.toString(),
-                                          'empPermanentAddress': permanenthouseNo.text + ', ' + permanentStreet.text + ', ' + permanentColony.text,
+                                          'empPermanentAddress':
+                                              permanenthouseNo.text +
+                                                  ', ' +
+                                                  permanentStreet.text +
+                                                  ', ' +
+                                                  permanentColony.text,
                                           'peCity': permanentCity.toString(),
                                           'peState': permanentState.toString(),
                                           'pepincode': '',
                                           'peTown': '',
-                                          'empPresentAddress': presenthouseNo.text + ', ' + presentStreet.text + ', ' + presentColony.text,
+                                          'empPresentAddress':
+                                              presenthouseNo.text +
+                                                  ', ' +
+                                                  presentStreet.text +
+                                                  ', ' +
+                                                  presentColony.text,
                                           'prCity': presentCity.toString(),
                                           'prState': presentState.toString(),
                                           'prpincode': '',
                                           'prTown': '',
                                         };
-                                        var empId = await adminC.addEmployeeNew(empdetails);
+                                        var empId = await adminC
+                                            .addEmployeeNew(empdetails);
                                         print('empId: $empId');
                                         if (empId != null) {
                                           var empRelationshipList = [
@@ -3176,41 +3283,50 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                               'relType': relFather.toString(),
                                               'age': ageFather.text,
                                               'empId': empId.toString(),
-                                              'relAadhaarNo': aadharNumberFather.text,
-                                              'dofBirth': dobFatherVal.toString(),
+                                              'relAadhaarNo':
+                                                  aadharNumberFather.text,
+                                              'dofBirth':
+                                                  dobFatherVal.toString(),
                                               'pfNominee': nominee1 ? 'Y' : 'N',
-                                              'esiNominee': nominee1 ? 'Y' : 'N',
+                                              'esiNominee':
+                                                  nominee1 ? 'Y' : 'N',
                                             },
                                             {
                                               'relName': familyName.text,
                                               'relType': relFamily.toString(),
                                               'age': ageFamily.text,
                                               'empId': empId.toString(),
-                                              'relAadhaarNo': aadharNumberFamily.text,
-                                              'dofBirth': dobFamilyVal.toString(),
+                                              'relAadhaarNo':
+                                                  aadharNumberFamily.text,
+                                              'dofBirth':
+                                                  dobFamilyVal.toString(),
                                               'pfNominee': nominee2 ? 'Y' : 'N',
-                                              'esiNominee': nominee2 ? 'Y' : 'N',
+                                              'esiNominee':
+                                                  nominee2 ? 'Y' : 'N',
                                             },
                                           ];
                                           var proofDetails = {
                                             'empId': empId.toString(),
-                                            'aadharCardNo': proofAadharNumber.text,
+                                            'aadharCardNo':
+                                                proofAadharNumber.text,
                                             'passBookNo': idProof1 == 'PassBook'
                                                 ? proofNumber2.text
                                                 : idProof2 == 'PassBook'
                                                     ? proofNumber3.text
                                                     : '',
-                                            'rationCardNo': idProof1 == 'RationCard'
-                                                ? proofNumber2.text
-                                                : idProof2 == 'RationCard'
-                                                    ? proofNumber3.text
-                                                    : '',
+                                            'rationCardNo':
+                                                idProof1 == 'RationCard'
+                                                    ? proofNumber2.text
+                                                    : idProof2 == 'RationCard'
+                                                        ? proofNumber3.text
+                                                        : '',
                                             'esicCardNo': idProof1 == 'ESICCard'
                                                 ? proofNumber2.text
                                                 : idProof2 == 'ESICCard'
                                                     ? proofNumber3.text
                                                     : '',
-                                            'drivingLicenseNo': idProof1 == 'DrivingLicense'
+                                            'drivingLicenseNo': idProof1 ==
+                                                    'DrivingLicense'
                                                 ? proofNumber2.text
                                                 : idProof2 == 'DrivingLicense'
                                                     ? proofNumber3.text
@@ -3220,7 +3336,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                                 : idProof2 == 'PanCard'
                                                     ? proofNumber3.text
                                                     : '',
-                                            'electricityBillNo': idProof1 == 'ElectricityBill'
+                                            'electricityBillNo': idProof1 ==
+                                                    'ElectricityBill'
                                                 ? proofNumber2.text
                                                 : idProof2 == 'ElectricityBill'
                                                     ? proofNumber3.text
@@ -3232,9 +3349,18 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                                     : '',
                                           };
                                           print('empdetails: $empdetails');
-                                          print('empRelationshipList: $empRelationshipList');
+                                          print(
+                                              'empRelationshipList: $empRelationshipList');
                                           print('proofDetails: $proofDetails');
-                                          adminC.addEmployeeData(empRelationshipList, proofDetails, aadhar1, aadhar2, proof11, proof12, proof21, proof22);
+                                          adminC.addEmployeeData(
+                                              empRelationshipList,
+                                              proofDetails,
+                                              aadhar1,
+                                              aadhar2,
+                                              proof11,
+                                              proof12,
+                                              proof21,
+                                              proof22);
                                         }
                                       }
                                     },

@@ -11,6 +11,7 @@ import 'package:connectivity/connectivity.dart';
 // import 'package:background_locator/settings/ios_settings.dart' as ios;
 // import 'package:background_locator/settings/locator_settings.dart';
 import 'package:dio/dio.dart' as mydio;
+import 'package:fame/utils/utils.dart';
 // import 'package:fame/connection/location_service_repository.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
@@ -43,6 +44,7 @@ class RemoteServices {
   static var baseURL = 'http://52.66.61.207:8090/v1/api';
   // static var baseURL = 'http://androidapp.diyosfame.com:8090/v1/api';
   // static var baseURL = 'http://192.168.43.230:8090/v1/api';
+  // static var baseURL = 'http://182.18.157.28:8090/v1/api';
   static var client = http.Client();
   static var header = <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
@@ -420,6 +422,19 @@ class RemoteServices {
       //show error message
       return null;
     }
+  }
+  Future getAddressFromLatLng(double lat, double lng) async {
+    String _host = 'https://maps.googleapis.com/maps/api/geocode/json';
+    final url = '$_host?key=AIzaSyADoNEFbFbgHCpu7mz7yLWhbbUMZqk4yHU&language=en&latlng=$lat,$lng';
+    if(lat != null && lng != null){
+      var response = await http.get(Uri.parse(url));
+      if(response.statusCode == 200) {
+        Map data = jsonDecode(response.body);
+        String _formattedAddress = data["results"][0]["formatted_address"];
+        print("response ==== $_formattedAddress");
+        return _formattedAddress;
+      } else return null;
+    } else return null;
   }
 
   Future checkin(lat, lng, address) async {
@@ -1935,7 +1950,19 @@ class RemoteServices {
 
   Future newRecUploadProof(File aadharFront, File aadharBack, File passbookFront, File passbookBack, File proof3Front, File proof3Back) async {
     var dio = mydio.Dio();
-
+    var proof3backvar = null, proof3frontvar=null;
+    if(proof3Back!=null) {
+      proof3backvar = await mydio.MultipartFile.fromFile(
+        proof3Back.path,
+        filename: path.basename(proof3Back.path).toString(),
+      );
+    }
+    if(proof3Front!=null) {
+      proof3frontvar = await mydio.MultipartFile.fromFile(
+        proof3Front.path,
+        filename: path.basename(proof3Front.path).toString(),
+      );
+    }
     var formData = mydio.FormData.fromMap({
       'companyId': box.get('companyid').toString(),
       'empId': box.get('empid').toString(),
@@ -1955,14 +1982,8 @@ class RemoteServices {
         passbookBack.path,
         filename: path.basename(passbookBack.path).toString(),
       ),
-      'proof3Front': await mydio.MultipartFile.fromFile(
-        proof3Front.path,
-        filename: path.basename(proof3Front.path).toString(),
-      ),
-      'proof3Back': await mydio.MultipartFile.fromFile(
-        proof3Back.path,
-        filename: path.basename(proof3Back.path).toString(),
-      ),
+      'proof3Front': proof3frontvar,
+      'proof3Back': proof3backvar,
     });
     var response = await dio.post(
       '$baseURL/company/upload_rec_proof',

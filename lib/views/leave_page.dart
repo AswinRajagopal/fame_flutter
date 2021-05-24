@@ -81,9 +81,7 @@ class _LeavePageState extends State<LeavePage> {
           },
         ),
       ),
-      floatingActionButton: Visibility(
-        visible: RemoteServices().box.get('role') == '3' ? false : true,
-        child: Column(
+      floatingActionButton:Column(
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
@@ -99,7 +97,6 @@ class _LeavePageState extends State<LeavePage> {
             ),
           ],
         ),
-      ),
       body: WillPopScope(
         onWillPop: backButtonPressed,
         child: Scrollbar(

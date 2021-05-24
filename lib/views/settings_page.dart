@@ -126,6 +126,24 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             GestureDetector(
               onTap: () {
+                Get.to(ViewBroadcast());
+              },
+              child: ListContainer(
+                'assets/images/msgic.png',
+                'Broadcast Messages',
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Get.to(SOS());
+              },
+              child: ListContainer(
+                'assets/images/icon_attendance.png',
+                'My SOS',
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
                 print('isAvailable: $isAvailable');
                 // inAppReview.openStoreListing();
                 if (isAvailable) {
@@ -135,28 +153,6 @@ class _SettingsPageState extends State<SettingsPage> {
               child: ListContainer(
                 'assets/images/icon_rating.png',
                 'Rate The App',
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                Get.to(Support());
-              },
-              child: ListContainer(
-                'assets/images/supportic.png',
-                'Support',
-              ),
-            ),
-            Visibility(
-              // visible: roleId == '3' ? true : false,
-              visible: true,
-              child: GestureDetector(
-                onTap: () {
-                  Get.to(ViewBroadcast());
-                },
-                child: ListContainer(
-                  'assets/images/msgic.png',
-                  'View Broadcast',
-                ),
               ),
             ),
             GestureDetector(
@@ -257,13 +253,14 @@ class _SettingsPageState extends State<SettingsPage> {
                 'Feedback',
               ),
             ),
+
             GestureDetector(
               onTap: () {
-                Get.to(SOS());
+                Get.to(Support());
               },
               child: ListContainer(
-                'assets/images/icon_attendance.png',
-                'My SOS',
+                'assets/images/supportic.png',
+                'Support',
               ),
             ),
             GestureDetector(
@@ -274,24 +271,10 @@ class _SettingsPageState extends State<SettingsPage> {
               },
               child: ListContainer(
                 'assets/images/shareic.png',
-                'Share',
+                'Share This App',
               ),
             ),
-            Visibility(
-              visible: roleId == '3' ? true : false,
-              child: GestureDetector(
-                onTap: () {
-                  Get.to(Broadcast());
-                },
-                child: ListContainer(
-                  'assets/images/msgic.png',
-                  'Broadcast',
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
+            
           ],
         ),
       ),

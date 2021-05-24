@@ -24,6 +24,8 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController password = TextEditingController();
   var _obscureText = true;
 
+  var isSwitched = false;
+
   @override
   void initState() {
     super.initState();
@@ -118,6 +120,21 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ],
             ),
+            Align(
+                alignment: Alignment.topRight,
+                child: Column(children: [
+                  Switch(
+                    value: isSwitched,
+                    activeTrackColor: Colors.lightGreenAccent,
+                    activeColor: Colors.green,
+                    onChanged: (value) {
+                      setState(() {
+                        isSwitched = value;
+                      });
+                    },
+                  ),
+                  Text('Lite Mode ', style: TextStyle(color: Colors.white))
+                ])),
             Align(
               alignment: Alignment.topCenter,
               child: Container(
@@ -222,7 +239,9 @@ class _LoginPageState extends State<LoginPage> {
                                   setState(() {});
                                 },
                                 child: Icon(
-                                  _obscureText ? Icons.visibility : Icons.visibility_off,
+                                  _obscureText
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
                                   size: 22.0,
                                 ),
                               ),
@@ -320,7 +339,12 @@ class _LoginPageState extends State<LoginPage> {
                     shape: CircleBorder(),
                     onPressed: () {
                       FocusScope.of(context).requestFocus(FocusNode());
-                      if (username.text == null || username.text == '' || empid.text == null || empid.text == '' || password.text == null || password.text == '') {
+                      if (username.text == null ||
+                          username.text == '' ||
+                          empid.text == null ||
+                          empid.text == '' ||
+                          password.text == null ||
+                          password.text == '') {
                         Get.snackbar(
                           null,
                           'Please provide all the details',
@@ -344,6 +368,7 @@ class _LoginPageState extends State<LoginPage> {
                           username.text,
                           empid.text,
                           password.text,
+                          isSwitched
                         );
                       }
                     },
@@ -371,6 +396,7 @@ class CommonTextField extends StatelessWidget {
   final String prefixIcon;
   final String type;
   final TextEditingController inputController;
+
   CommonTextField(
     this.hintText,
     this.prefixIcon,

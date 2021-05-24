@@ -60,7 +60,7 @@ class OnboardingPage extends StatelessWidget {
               },
               child: ListContainer(
                 'assets/images/employee.png',
-                'Add Employee',
+                'Onboard Employee',
               ),
             ),
             SizedBox(

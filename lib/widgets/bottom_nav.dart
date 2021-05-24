@@ -30,21 +30,8 @@ class BottomNav extends StatelessWidget {
           Get.to(ProfilePage());
         } else if (index == 2) {
         } else if (index == 3) {
-          if (roleId == '2' || roleId == '3') {
             Get.to(MorePage());
-          } else {
-            // Get.to(MorePage());
-            Get.snackbar(
-              null,
-              'Only FO and admin can access this',
-              colorText: Colors.white,
-              backgroundColor: Colors.black87,
-              snackPosition: SnackPosition.BOTTOM,
-              margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-              padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
-              borderRadius: 5.0,
-            );
-          }
+
           // if (roleId == '2' || roleId == '3') {
           //   Get.to(MorePage());
           // } else {

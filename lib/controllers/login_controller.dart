@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:fame/views/lite_dashboard_page.dart';
+
 import '../views/dashboard_page.dart';
 
 import 'package:flutter/material.dart';
@@ -18,9 +20,10 @@ class LoginController extends GetxController {
     clearBox();
   }
 
-  void loginUser(username, empid, password) async {
+  void loginUser(username, empid, password, lite) async {
     try {
       await pr.show();
+      RemoteServices().box.put('lite', lite);
       var loginResponse = await RemoteServices.login(username, empid, password);
       if (loginResponse != null) {
         await pr.hide();

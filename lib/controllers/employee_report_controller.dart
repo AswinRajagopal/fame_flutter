@@ -277,14 +277,25 @@ class EmployeeReportController extends GetxController {
               if (pitstop['checkinLat'] == null || pitstop['checkinLat'] == '' || pitstop['checkinLng'] == null || pitstop['checkinLng'] == '') {
                 pitstop['address'] = 'N/A';
               } else {
-                var placemark = await placemarkFromCoordinates(
-                  double.parse(pitstop['checkinLat']),
-                  double.parse(pitstop['checkinLng']),
-                );
-                var first = placemark.first;
-                // print(first);
-                var address = '${first.street}, ${first.thoroughfare}, ${first.subLocality}, ${first.locality}, ${first.administrativeArea}, ${first.postalCode}, ${first.country}';
-                pitstop['address'] = address;
+                try {
+                  var placemark = await placemarkFromCoordinates(
+                    double.parse(pitstop['checkinLat']),
+                    double.parse(pitstop['checkinLng']),
+                  );
+                  var first = placemark.first;
+                  // print(first);
+
+                  var address = '${first.street}, ${first.thoroughfare}, ${first
+                      .subLocality}, ${first.locality}, ${first
+                      .administrativeArea}, ${first.postalCode}, ${first
+                      .country}';
+                  pitstop['address'] = address;
+                } on Exception catch(_) {
+                  var address = await new RemoteServices().getAddressFromLatLng(
+                      double.parse(pitstop['checkinLat']),
+                      double.parse(pitstop['checkinLng']));
+                  pitstop['address'] = address;
+                }
               }
               pitsStops.add(pitstop);
             }
@@ -297,17 +308,28 @@ class EmployeeReportController extends GetxController {
               if (pitstop['lat'] == null || pitstop['lat'] == '' || pitstop['lng'] == null || pitstop['lng'] == '') {
                 pitstop['address'] = 'N/A';
               } else {
-                var placemark = await placemarkFromCoordinates(
-                  double.parse(pitstop['lat']),
-                  double.parse(pitstop['lng']),
-                );
-                var first = placemark.first;
-                // print(first);
-                var address = '${first.street}, ${first.thoroughfare}, ${first.subLocality}, ${first.locality}, ${first.administrativeArea}, ${first.postalCode}, ${first.country}';
-                pitstop['address'] = address;
+                try {
+                  var placemark = await placemarkFromCoordinates(
+                    double.parse(pitstop['lat']),
+                    double.parse(pitstop['lng']),
+                  );
+                  var first = placemark.first;
+                  // print(first);
+                  var address = '${first.street}, ${first.thoroughfare}, ${first
+                      .subLocality}, ${first.locality}, ${first
+                      .administrativeArea}, ${first.postalCode}, ${first
+                      .country}';
+                  pitstop['address'] = address;
+                }on Exception catch(_) {
+                  var address = await new RemoteServices().getAddressFromLatLng(
+                      double.parse(pitstop['lat']),
+                      double.parse(pitstop['lng']));
+                  pitstop['address'] = address;
+                }
               }
               pitsStops.add(pitstop);
             }
+            // pitsStops.sort((a,b)=> DateTime.parse(b['timeStamp']).isAfter(DateTime.parse(b['timeStamp']))?1:-1);
           }
           isLoadingTimeline(false);
           await pr.hide();
@@ -382,8 +404,11 @@ class EmployeeReportController extends GetxController {
                 var first = placemark.first;
                 // print(first);
                 var address = '${first.street}, ${first.thoroughfare}, ${first.subLocality}, ${first.locality}, ${first.administrativeArea}, ${first.postalCode}, ${first.country}';
-                pitstop['address'] = address;
-              }
+                if(address.isNullOrBlank){
+                  pitstop['address'] = address;
+                }else {
+                  pitstop['address'] = address;
+                }              }
               pitsStopsRoute.add(pitstop);
             }
             for (var d = 0; d < pitsStopsRoute.length - 1; d++) {
@@ -476,7 +501,9 @@ class EmployeeReportController extends GetxController {
             var location = getLocationRes['empDetailsTlnList'][i];
             var date = location['timeStamp'];
 
-            location['datetime'] = DateFormat('dd-MM-yyyy hh:mm').format(DateTime.parse(date)).toString() + '' + DateFormat('a').format(DateTime.parse(date)).toString().toLowerCase();
+            location['datetime'] = DateFormat('dd-MM-yyyy hh:mm').format
+              (DateTime.parse(date)).toString() + '' +
+                DateFormat('a').format(DateTime.parse(date)).toString().toLowerCase();
             locations.add(location);
           }
           isLoadingLocation(false);

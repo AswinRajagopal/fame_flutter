@@ -53,11 +53,10 @@ public class BackgroundService extends Service {
     ArrayList<String> latlngarr = new ArrayList<>();
     DBAdapter db;
     LocationManager locationManager;
-    private static int LOCATION_INTERVAL = 15;
+    private static int LOCATION_INTERVAL = 10;
     private final int LOCATION_DISTANCE = 0;
     FusedLocationProviderClient fusedLocationProviderClient;
-    String battery_percent, current_date_time;
-    String companyId,empId;
+    String companyId,empId,battery_percent;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -69,16 +68,29 @@ public class BackgroundService extends Service {
         public void onReceive(Context ctxt, Intent intent) {
             int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
             battery_percent = String.valueOf(level);
-
-            System.out.println("batery_percent >>> " + battery_percent);
-            Date today = new Date();
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String dateToStr = format.format(today);
-            System.out.println("curent date time >>> " + dateToStr);
-            current_date_time = dateToStr;
         }
     };
 
+    public static int getBatteryPercentage(Context context) {
+
+        if (Build.VERSION.SDK_INT >= 21) {
+
+            BatteryManager bm = (BatteryManager) context.getSystemService(BATTERY_SERVICE);
+            return bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
+
+        } else {
+
+            IntentFilter iFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+            Intent batteryStatus = context.registerReceiver(null, iFilter);
+
+            int level = batteryStatus != null ? batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1) : -1;
+            int scale = batteryStatus != null ? batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1) : -1;
+
+            double batteryPct = level / (double) scale;
+
+            return (int) (batteryPct * 100);
+        }
+    }
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 //        if(intent!=null) {
@@ -95,7 +107,7 @@ public class BackgroundService extends Service {
         Log.i(TAG, "onCreate");
 //        Toast.makeText(getApplicationContext(), "Service start", Toast.LENGTH_SHORT).show();
         db = new DBAdapter(getApplicationContext());
-        this.registerReceiver(this.mBatInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+//        this.registerReceiver(this.mBatInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForeground(12345678, getNotification());
         }
@@ -163,7 +175,7 @@ public class BackgroundService extends Service {
                 if (latitude != 0 && longitude != 0) {
                     insertintodb(latitude + "", longitude + "");
 
-//                    if (isInternetConnected(getApplicationContext())) {
+                    if (isInternetConnected(getApplicationContext())) {
 
                         getalllatlng();
 
@@ -172,7 +184,7 @@ public class BackgroundService extends Service {
 
                         current_update_location(sharedPreference.getPreferenceString(MySharedPreference.COMPANY_ID), sharedPreference.getPreferenceString(MySharedPreference.USER_ID), latlngarr.toString());
 //                    dellatlng();
-//                    }
+                    }
                 }
 
 
@@ -236,7 +248,7 @@ public class BackgroundService extends Service {
         // TODO Auto-generated method stub
 
         System.out.println("get lat>>>>>> " + c.getString(1) + "get lng>>>>>> " + c.getString(2) + "time stamp>>>>>> " + c.getString(3));
-        latlngarr.add("{\"lat\":\"" + c.getString(1) + "\",\"lng\":\"" + c.getString(2) + "\",\"battery\":\"" + battery_percent + "\",\"timeStamp\":\"" + c.getString(3) + "\"}");
+        latlngarr.add("{\"lat\":\"" + c.getString(1) + "\",\"lng\":\"" + c.getString(2) + "\",\"battery\":\"" + getBatteryPercentage(getApplicationContext()) + "\",\"timeStamp\":\"" + c.getString(3) + "\"}");
 
     }
 

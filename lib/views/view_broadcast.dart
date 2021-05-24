@@ -1,3 +1,5 @@
+import 'package:fame/connection/remote_services.dart';
+
 import '../widgets/broadcast_list_widget.dart';
 
 import '../utils/utils.dart';
@@ -7,6 +9,8 @@ import '../controllers/broadcast_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'new_broadcast.dart';
+
 class ViewBroadcast extends StatefulWidget {
   @override
   _ViewBroadcastState createState() => _ViewBroadcastState();
@@ -14,6 +18,7 @@ class ViewBroadcast extends StatefulWidget {
 
 class _ViewBroadcastState extends State<ViewBroadcast> {
   final BroadcastController bC = Get.put(BroadcastController());
+  var roleId = RemoteServices().box.get('role');
 
   @override
   void initState() {
@@ -69,6 +74,23 @@ class _ViewBroadcastState extends State<ViewBroadcast> {
           'Broadcast Messages',
         ),
       ),
+      floatingActionButton: roleId=='3'?Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: () {
+              // Get.offAll(ApplyLeave());
+              Get.to(Broadcast());
+            },
+            child: Icon(
+              Icons.add,
+              size: 32.0,
+            ),
+            backgroundColor: Theme.of(context).primaryColor,
+          ),
+        ],
+      ):Container(),
       body: SafeArea(
         child: Scrollbar(
           radius: Radius.circular(

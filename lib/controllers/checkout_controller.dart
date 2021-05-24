@@ -53,7 +53,13 @@ class CheckoutController extends GetxController {
         currentPosition.longitude,
       );
       var first = placemark.first;
-      currentAddress.value = '${first.subLocality}, ${first.locality}, ${first.postalCode}, ${first.country}';
+      if(first!=null) {
+        currentAddress.value =
+        '${first.subLocality}, ${first.locality}, ${first.postalCode}, ${first
+            .country}';
+      }else {
+        currentAddress.value = 'Please checkout';
+      }
       // print(currentAddress);
     } catch (e) {
       print(e);

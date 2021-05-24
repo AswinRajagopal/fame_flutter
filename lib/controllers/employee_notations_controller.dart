@@ -98,12 +98,14 @@ class EmployeeNotationsController extends GetxController {
             if (emp['attendanceAlias'] != null) {
               var strToTime = emp['checkInDateTime'];
               if (emp['checkOutDateTime'] != null) {
-                if (DateTime.parse(emp['checkOutDateTime']).isBefore(shiftStart) || DateTime.parse(emp['checkInDateTime']).isAfter(shiftEnd)) {
+                if (DateTime.parse(emp['checkOutDateTime']).millisecondsSinceEpoch <= shiftStart.millisecondsSinceEpoch ||
+                    DateTime.parse(emp['checkInDateTime']).millisecondsSinceEpoch >= shiftEnd.millisecondsSinceEpoch) {
                   strToTime = timeConvert(strToTime.toString()) + ' to ' + timeConvert(emp['checkOutDateTime'].toString());
 
                   emp['showTime'] = strToTime;
                   emp['showType'] = 'att';
                   emp['showButton'] = true;
+                  emp['attendanceAlias'] = '';
                 } else {
                   strToTime = timeConvert(strToTime.toString()) + ' to ' + timeConvert(emp['checkOutDateTime'].toString());
 
@@ -119,10 +121,11 @@ class EmployeeNotationsController extends GetxController {
                 // showType = 'remark';
                 emp['showType'] = 'remark';
                 emp['showButton'] = true;
+                emp['attendanceAlias'] = '';
               }
             }
             print('emp: $emp');
-            if (emp['attendanceAlias'] == 'P') {
+        /*    if (emp['attendanceAlias'] == 'P') {
               p.value++;
             } else if (emp['attendanceAlias'] == 'WO') {
               wo.value++;
@@ -130,7 +133,7 @@ class EmployeeNotationsController extends GetxController {
               l.value++;
             } else if (emp['attendanceAlias'] == 'A') {
               a.value++;
-            }
+            }*/
             searchList.add(emp);
           }
         }
