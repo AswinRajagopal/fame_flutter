@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:fame/views/grievance_report.dart';
+import 'package:fame/views/policy_doc_list.dart';
 
 import 'onboarding_page.dart';
 import 'transfer_list.dart';
@@ -155,11 +156,7 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             GestureDetector(
               onTap: () {
-                print('isAvailable: $isAvailable');
-                // inAppReview.openStoreListing();
-                if (isAvailable) {
-                  inAppReview.requestReview();
-                }
+                Get.to(PolicyDocs());
               },
               child: ListContainer(
                 'assets/images/employee_report.png',

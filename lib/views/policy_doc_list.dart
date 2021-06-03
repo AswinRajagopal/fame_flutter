@@ -1,5 +1,7 @@
 import 'package:fame/connection/remote_services.dart';
 import 'package:fame/controllers/grie_controller.dart';
+import 'package:fame/controllers/policy_doc_controller.dart';
+import 'package:fame/widgets/doc_list_widget.dart';
 import 'package:fame/widgets/grie_list_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,15 +12,16 @@ import '../controllers/broadcast_controller.dart';
 import '../utils/utils.dart';
 import '../widgets/broadcast_list_widget.dart';
 import 'new_broadcast.dart';
+import 'new_policy_doc.dart';
 
-class GrievanceReport extends StatefulWidget {
+class PolicyDocs extends StatefulWidget {
   @override
   _GrievanceReport createState() => _GrievanceReport();
 }
 
-class _GrievanceReport extends State<GrievanceReport> {
-  final GrieController bC = Get.put(GrieController());
-  TextEditingController grieCont = TextEditingController();
+class _GrievanceReport extends State<PolicyDocs> {
+  final PolicyDocController bC = Get.put(PolicyDocController());
+  var roleId = RemoteServices().box.get('role');
 
   @override
   void initState() {
@@ -55,7 +58,7 @@ class _GrievanceReport extends State<GrievanceReport> {
     );
     Future.delayed(
       Duration(milliseconds: 100),
-      bC.getGrie,
+      bC.getPolicies,
     );
     super.initState();
   }
@@ -71,73 +74,42 @@ class _GrievanceReport extends State<GrievanceReport> {
       backgroundColor: AppUtils().greyScaffoldBg,
       appBar: AppBar(
         title: Text(
-          'Grievance Report',
+          'Policy Documents',
         ),
       ),
+      floatingActionButton: roleId == '3'
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                FloatingActionButton(
+                  onPressed: () {
+                    Get.to(NewPolicyDoc());
+                  },
+                  child: Icon(
+                    Icons.add,
+                    size: 32.0,
+                  ),
+                  backgroundColor: Theme.of(context).primaryColor,
+                ),
+              ],
+            )
+          : Container(),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Obx(() {
             if (bC.isLoading.value) {
               return Column();
             } else {
-              if (bC.grieList.isEmpty || bC.grieList.isNull) {
+              if (bC.docList.isEmpty || bC.docList.isNull) {
                 return Container(
                   height: MediaQuery.of(context).size.height / 1.2,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      MyTextField(
-                        'Grievance',
-                        grieCont,
-                      ),
-                      RaisedButton(
-                        onPressed: () {
-                          print('Submit');
-                          FocusScope.of(context).requestFocus(FocusNode());
-                          if (grieCont.text == null ||
-                              grieCont.text == '') {
-                            Get.snackbar(
-                              null,
-                              'Please provide Grievance',
-                              colorText: Colors.white,
-                              backgroundColor: Colors.black87,
-                              snackPosition: SnackPosition.BOTTOM,
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 4.0,
-                                vertical: 4.0,
-                              ),
-                              borderRadius: 5.0,
-                            );
-                          } else {
-                            print(grieCont.text);
-                            bC.newGrie(grieCont.text);
-                          }
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 12.0,
-                            horizontal: 20.0,
-                          ),
-                          child: Text(
-                            'Send',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16.0,
-                            ),
-                          ),
-                        ),
-                        color: Colors.blue,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          side: BorderSide(
-                            color: Colors.blue,
-                          ),
-                        ),
-                      ),
                       Center(
                         child: Text(
-                          'No message found',
+                          'No Documents found',
                           style: TextStyle(
                             fontSize: 18.0,
                             // fontWeight: FontWeight.bold,
@@ -152,64 +124,15 @@ class _GrievanceReport extends State<GrievanceReport> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    MyTextField(
-                      'Grievance',
-                      grieCont,
-                    ),
-                    RaisedButton(
-                      onPressed: () {
-                        print('Submit');
-                        FocusScope.of(context).requestFocus(FocusNode());
-                        if (grieCont.text == null ||
-                            grieCont.text == '') {
-                          Get.snackbar(
-                            null,
-                            'Please provide Grievance',
-                            colorText: Colors.white,
-                            backgroundColor: Colors.black87,
-                            snackPosition: SnackPosition.BOTTOM,
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 4.0,
-                              vertical: 4.0,
-                            ),
-                            borderRadius: 5.0,
-                          );
-                        } else {
-                          print(grieCont.text);
-                          bC.newGrie(grieCont.text);
-                        }
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 12.0,
-                          horizontal: 20.0,
-                        ),
-                        child: Text(
-                          'Send',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16.0,
-                          ),
-                        ),
-                      ),
-                      color: Colors.blue,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                        side: BorderSide(
-                          color: Colors.blue,
-                        ),
-                      ),
-                    ),
                     ListView.builder(
                       shrinkWrap: true,
                       primary: true,
                       padding: EdgeInsets.only(bottom: 12),
                       physics: ScrollPhysics(),
-                      itemCount: bC.grieList.length,
+                      itemCount: bC.docList.length,
                       itemBuilder: (context, index) {
-                        var broadcast = bC.grieList[index];
-                        return GrieListWidget(broadcast);
+                        var doc = bC.docList[index];
+                        return DocListWidget(doc);
                       },
                     )
                   ]);

@@ -41,9 +41,9 @@ import '../views/welcome_page.dart';
 // import 'package:background_locator/settings/locator_settings.dart' as ls;
 
 class RemoteServices {
-  static var baseURL = 'http://52.66.61.207:8090/v1/api';
+  // static var baseURL = 'http://52.66.61.207:8090/v1/api';
   // static var baseURL = 'http://androidapp.diyosfame.com:8090/v1/api';
-  // static var baseURL = 'http://192.168.43.230:8090/v1/api';
+  static var baseURL = 'http://192.168.43.230:8090/v1/api';
   // static var baseURL = 'http://182.18.157.28:8090/v1/api';
   static var client = http.Client();
   static var header = <String, String>{
@@ -516,6 +516,36 @@ class RemoteServices {
     if (response.statusCode == 200) {
       var jsonString = response.data;
       return faceRegFromJson(jsonEncode(jsonString));
+    } else {
+      return null;
+    }
+  }
+
+
+  Future uploadPolicyDoc(File imageFile, name) async {
+    // print('companyid: ${box.get('companyid')}');
+    // print('empid: ${box.get('empid')}');
+    var dio = mydio.Dio();
+
+    var formData = mydio.FormData.fromMap({
+      'companyId': box.get('companyid'),
+      'empId': box.get('empid'),
+      'label': name,
+      'file': await mydio.MultipartFile.fromFile(
+        imageFile.path,
+        filename: 'image.jpg',
+      ),
+    });
+    var response = await dio.post(
+      '$baseURL/company/upload_policy',
+      data: formData,
+    );
+
+    // print(response.data);
+    // developer.log('jsonString: ${response.data.toString()}');
+    if (response.statusCode == 200) {
+      var jsonString = response.data;
+      return json.decode(jsonString);
     } else {
       return null;
     }
@@ -1170,6 +1200,26 @@ class RemoteServices {
   Future getGrie() async {
     var response = await client.post(
       '$baseURL/company/get_grie',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+  Future getPolicyDocs() async {
+    var response = await client.post(
+      '$baseURL/company/get_policy_docs',
       headers: header,
       body: jsonEncode(
         <String, dynamic>{
