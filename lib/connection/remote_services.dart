@@ -1167,6 +1167,27 @@ class RemoteServices {
     }
   }
 
+  Future getGrie() async {
+    var response = await client.post(
+      '$baseURL/company/get_grie',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
   Future newBroadcast(empId, broadcast) async {
     var response = await client.post(
       '$baseURL/broadcast/new_broadcast',
@@ -1178,6 +1199,28 @@ class RemoteServices {
           'clientId': 'all',
           'roleId': 'all',
           'broadcast': broadcast,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future newGrie( broadcast) async {
+    var response = await client.post(
+      '$baseURL/company/create_grie',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'report': broadcast,
         },
       ),
     );

@@ -917,6 +917,39 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                     },
                                                   );
                                                 }
+                                                if ((val == 'JOT' && emp['attendanceAlias'] == 'JOT')) {
+                                                  otT.text = emp['overTime'];
+                                                  await Get.defaultDialog(
+                                                    title: 'OT hours',
+                                                    content: TextField(
+                                                      controller: otT,
+                                                      readOnly: true,
+                                                      keyboardType: TextInputType.number,
+                                                      decoration: InputDecoration(
+                                                        isDense: true,
+                                                        contentPadding: EdgeInsets.all(
+                                                          10.0,
+                                                        ),
+                                                        hintStyle: TextStyle(
+                                                          color: Colors.grey[600],
+                                                          fontSize: 18.0,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                        hintText: 'hours',
+                                                        border: OutlineInputBorder(
+                                                          borderRadius: const BorderRadius.all(
+                                                            Radius.circular(5.0),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    radius: 5.0,
+                                                    barrierDismissible: false,
+                                                    onCancel: () {
+                                                      otT.text = '';
+                                                    },
+                                                  );
+                                                }
                                                 if (val == 'LT' && emp['attendanceAlias'] == 'LT') {
                                                   ltT.text = emp['lt'];
                                                   await Get.defaultDialog(
@@ -956,6 +989,85 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                     empRemarks = emp['remarks'];
                                                   }
                                                   if (val == 'OT') {
+                                                    otT.text = '';
+                                                    await Get.defaultDialog(
+                                                      title: 'OT hours',
+                                                      content: TextField(
+                                                        controller: otT,
+                                                        keyboardType: TextInputType.number,
+                                                        autofocus: true,
+                                                        decoration: InputDecoration(
+                                                          isDense: true,
+                                                          contentPadding: EdgeInsets.all(
+                                                            10.0,
+                                                          ),
+                                                          hintStyle: TextStyle(
+                                                            color: Colors.grey[600],
+                                                            fontSize: 18.0,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                          hintText: 'hours',
+                                                          border: OutlineInputBorder(
+                                                            borderRadius: const BorderRadius.all(
+                                                              Radius.circular(5.0),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      radius: 5.0,
+                                                      barrierDismissible: false,
+                                                      onConfirm: () async {
+                                                        if (otT.text != '') {
+                                                          emp['overTime'] = otT.text;
+                                                          otT.text = '';
+                                                          Get.back();
+                                                          attendanceRes = await enC.giveAttendance(
+                                                            widget.date,
+                                                            widget.shift,
+                                                            widget.clientId,
+                                                            val,
+                                                            emp['empId'],
+                                                            emp['designation'],
+                                                            empRemarks,
+                                                            stDt,
+                                                            endDt,
+                                                            extraName: 'OverTime',
+                                                            extraParam: emp['overTime'],
+                                                          );
+                                                          if (attendanceRes) {
+                                                            if (emp['attendanceAlias'] != null) {
+                                                              if (emp['attendanceAlias'] == 'P') {
+                                                                enC.p.value--;
+                                                              } else if (emp['attendanceAlias'] == 'WO') {
+                                                                enC.wo.value--;
+                                                              } else if (emp['attendanceAlias'] == 'L') {
+                                                                enC.l.value--;
+                                                              } else if (emp['attendanceAlias'] == 'A') {
+                                                                enC.a.value--;
+                                                              }
+                                                            }
+                                                            emp['lt'] = null;
+                                                            emp['attendanceAlias'] = val;
+                                                            if (val == 'P') {
+                                                              enC.p.value++;
+                                                            } else if (val == 'WO') {
+                                                              enC.wo.value++;
+                                                            } else if (val == 'L') {
+                                                              enC.l.value++;
+                                                            } else if (val == 'A') {
+                                                              enC.a.value++;
+                                                            }
+                                                            setState(() {});
+                                                          }
+                                                        }
+                                                      },
+                                                      onCancel: () {
+                                                        otT.text = '';
+                                                      },
+                                                      confirmTextColor: Colors.white,
+                                                      textConfirm: 'Submit',
+                                                    );
+                                                  } if (val == 'OT'|| val =='JOT') {
                                                     otT.text = '';
                                                     await Get.defaultDialog(
                                                       title: 'OT hours',

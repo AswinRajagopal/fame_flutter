@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:fame/views/grievance_report.dart';
+
 import 'onboarding_page.dart';
 import 'transfer_list.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -142,6 +144,29 @@ class _SettingsPageState extends State<SettingsPage> {
                 'My SOS',
               ),
             ),
+            GestureDetector(
+              onTap: () {
+                Get.to(GrievanceReport());
+              },
+              child: ListContainer(
+                'assets/images/shortage_report.png',
+                'Grievance Reports',
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                print('isAvailable: $isAvailable');
+                // inAppReview.openStoreListing();
+                if (isAvailable) {
+                  inAppReview.requestReview();
+                }
+              },
+              child: ListContainer(
+                'assets/images/employee_report.png',
+                'Policy Documents',
+              ),
+            ),
+
             GestureDetector(
               onTap: () {
                 print('isAvailable: $isAvailable');
