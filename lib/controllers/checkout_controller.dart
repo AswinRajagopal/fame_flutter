@@ -170,9 +170,32 @@ class CheckoutController extends GetxController {
               }
               return true;
             } else {
+              var msg = 'Something went wrong! Please try again later';
+              if(checkout['message']!=null){
+                msg = checkout['message'];
+                showDialog(
+                  context : Get.context,
+                  builder: (context) => AlertDialog(
+                    content: Text(
+                      msg,
+                      style: TextStyle(
+                        color: Colors.grey,
+                      ),
+                    ),
+                    actions: <Widget>[
+                      FlatButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        child: Text('Ok'),
+                      )
+                    ],
+                  ),
+                );
+              }else{
               Get.snackbar(
                 null,
-                'Something went wrong! Please try again later',
+                msg,
                 colorText: Colors.white,
                 backgroundColor: Colors.black87,
                 snackPosition: SnackPosition.BOTTOM,
@@ -185,7 +208,7 @@ class CheckoutController extends GetxController {
                   vertical: 18.0,
                 ),
                 borderRadius: 5.0,
-              );
+              );}
               return false;
             }
           }
@@ -248,9 +271,13 @@ class CheckoutController extends GetxController {
       return true;
     } else {
       await pr.hide();
+      var msg = 'Something went wrong! Please try again later';
+      if(checkout['message']!=null){
+        msg = checkout['message'];
+      }
       Get.snackbar(
         null,
-        'Something went wrong! Please try again later',
+        msg,
         colorText: Colors.white,
         backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,

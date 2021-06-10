@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:fame/views/policy_doc_list.dart';
+
 import '../connection/remote_services.dart';
 import '../utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +17,7 @@ class PolicyDocController extends GetxController {
   final List clientList = [].obs;
 
   void getPolicies() async {
+    docList.clear();
     try {
       isLoading(true);
       await pr.show();
@@ -89,7 +92,9 @@ class PolicyDocController extends GetxController {
             padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
             borderRadius: 5.0,
           );
-          Timer(Duration(seconds: 2), Get.back);
+          Timer(Duration(seconds: 2), () {
+            Get.to(PolicyDocs());
+          });
         } else {
           showError();
         }

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fame/connection/remote_services.dart';
 import 'package:fame/controllers/grie_controller.dart';
 import 'package:fame/controllers/policy_doc_controller.dart';
@@ -6,6 +7,7 @@ import 'package:fame/widgets/grie_list_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
 import '../controllers/broadcast_controller.dart';
@@ -132,7 +134,11 @@ class _GrievanceReport extends State<PolicyDocs> {
                       itemCount: bC.docList.length,
                       itemBuilder: (context, index) {
                         var doc = bC.docList[index];
-                        return DocListWidget(doc);
+                        return GestureDetector(
+                        child: DocListWidget(doc),
+                          onTap: () => Get.to(
+                              DetailScreen(RemoteServices.baseURL+'/company/get-image?id='+doc['companyPolicyId'])),
+                        );
                       },
                     )
                   ]);
@@ -169,6 +175,32 @@ class MyTextField extends StatelessWidget {
           ),
           hintText: hintText,
         ),
+      ),
+    );
+  }
+
+}
+class DetailScreen extends StatelessWidget {
+  final String url;
+  DetailScreen(this.url);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: GestureDetector(
+        child: Center(
+          child: Hero(
+            tag: 'imageHero',
+            child: CachedNetworkImage(
+        imageUrl: url,
+        imageBuilder: (context, imageProvider) => PhotoView(
+      imageProvider: imageProvider,
+    ),)
+          ),
+        ),
+        onTap: () {
+          Navigator.pop(context);
+        },
       ),
     );
   }

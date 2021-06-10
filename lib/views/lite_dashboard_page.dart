@@ -41,6 +41,7 @@ class _LiteDashboardPage extends State<LiteDashboardPage> {
   final DashboardController dbC = Get.put(DashboardController());
   final EmprplanController erpC = Get.put(EmprplanController());
   final DBCalController calC = Get.put(DBCalController());
+  final DateFormat formatter = DateFormat('jm');
 
   @override
   void initState() {
@@ -68,8 +69,8 @@ class _LiteDashboardPage extends State<LiteDashboardPage> {
 
   String convertTimeWithParse(time) {
     return DateFormat('h:mm')
-            .format(DateFormat('HH:mm:ss').parse(time))
-            .toString() +
+        .format(DateFormat('HH:mm:ss').parse(time))
+        .toString() +
         DateFormat('a')
             .format(DateFormat('HH:mm:ss').parse(time))
             .toString()
@@ -271,8 +272,13 @@ class _LiteDashboardPage extends State<LiteDashboardPage> {
                   clipper: OvalBottomBorderClipper(),
                   child: Container(
                     height: 250,
-                    width: MediaQuery.of(context).size.width,
-                    color: Theme.of(context).primaryColor,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width,
+                    color: Theme
+                        .of(context)
+                        .primaryColor,
                     child: Padding(
                       padding: const EdgeInsets.only(
                         top: 15.0,
@@ -406,7 +412,10 @@ class _LiteDashboardPage extends State<LiteDashboardPage> {
                   children: [
                     //CHANGED
                     Container(
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width,
                       child: Card(
                         elevation: 6.0,
                         margin: EdgeInsets.only(
@@ -448,13 +457,13 @@ class _LiteDashboardPage extends State<LiteDashboardPage> {
                                   ),
                                   child: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                     children: [
                                       Column(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                        MainAxisAlignment.start,
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'You are posted in',
@@ -479,11 +488,11 @@ class _LiteDashboardPage extends State<LiteDashboardPage> {
                                               // print('Length: ${dbC.response['clientData']['name'].length}');
                                               var clientName =
                                                   dbC.response['clientData']
-                                                          ['name'] ??
+                                                  ['name'] ??
                                                       'N/A';
                                               var areaName =
                                                   dbC.response['clientData']
-                                                          ['address'] ??
+                                                  ['address'] ??
                                                       'N/A';
                                               return Row(
                                                 children: [
@@ -494,10 +503,10 @@ class _LiteDashboardPage extends State<LiteDashboardPage> {
                                                       style: TextStyle(
                                                         fontSize: 15.0,
                                                         fontWeight:
-                                                            FontWeight.bold,
+                                                        FontWeight.bold,
                                                       ),
                                                       overflow:
-                                                          TextOverflow.ellipsis,
+                                                      TextOverflow.ellipsis,
                                                     ),
                                                   ),
                                                 ],
@@ -518,7 +527,7 @@ class _LiteDashboardPage extends State<LiteDashboardPage> {
                                               Text(
                                                 convertTimeWithParse(
                                                     dbC.response['empdetails']
-                                                        ['shiftStartTime']),
+                                                    ['shiftStartTime']),
                                                 style: TextStyle(
                                                   fontSize: 15.0,
                                                   fontWeight: FontWeight.bold,
@@ -533,7 +542,7 @@ class _LiteDashboardPage extends State<LiteDashboardPage> {
                                               Text(
                                                 convertTimeWithParse(
                                                     dbC.response['empdetails']
-                                                        ['shiftEndTime']),
+                                                    ['shiftEndTime']),
                                                 style: TextStyle(
                                                   fontSize: 15.0,
                                                   fontWeight: FontWeight.bold,
@@ -554,7 +563,7 @@ class _LiteDashboardPage extends State<LiteDashboardPage> {
                                                     .box
                                                     .get('faceApi'),
                                                 appFeatures[
-                                                    'checkinLocation']));
+                                                'checkinLocation']));
                                           },
                                           child: Text(
                                             'Check In',
@@ -580,389 +589,396 @@ class _LiteDashboardPage extends State<LiteDashboardPage> {
                                 );
                               } else {
                                 var chkinDt = dbC.response['dailyAttendance']
-                                    ['checkInDateTime'];
+                                ['checkInDateTime'];
                                 var chkoutDt = dbC.response['dailyAttendance']
-                                    ['checkOutDateTime'];
+                                ['checkOutDateTime'];
                                 return (chkinDt != null && chkinDt != '') &&
-                                        (chkoutDt == null || chkoutDt == '')
+                                    (chkoutDt == null || chkoutDt == '')
                                     ? Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                          10.0,
-                                          10.0,
-                                          10.0,
-                                          10.0,
-                                        ),
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              children: [
-                                                Text(
-                                                  'Current Status: ',
-                                                  style: TextStyle(
-                                                    fontSize: 16.0,
-                                                    color: Colors.grey,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  'On Duty',
-                                                  style: TextStyle(
-                                                    fontSize: 16.0,
-                                                    color:
-                                                        AppUtils().orangeColor,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ],
+                                  padding: const EdgeInsets.fromLTRB(
+                                    10.0,
+                                    10.0,
+                                    10.0,
+                                    10.0,
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                            'Current Status: ',
+                                            style: TextStyle(
+                                              fontSize: 16.0,
+                                              color: Colors.grey,
+                                              fontWeight: FontWeight.bold,
                                             ),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              children: [
-                                                Text(
-                                                  'Checked in on ',
-                                                  style: TextStyle(
-                                                    fontSize: 16.0,
-                                                    color: Colors.grey,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  convertTimeForCheckedIn(
-                                                    chkinDt,
-                                                  ),
-                                                  style: TextStyle(
-                                                    fontSize: 16.0,
-                                                    color: Colors.grey,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                  // maxLines: 2,
-                                                ),
-                                              ],
+                                          ),
+                                          Text(
+                                            'On Duty',
+                                            style: TextStyle(
+                                              fontSize: 16.0,
+                                              color:
+                                              AppUtils().orangeColor,
+                                              fontWeight: FontWeight.bold,
                                             ),
-                                            SizedBox(
-                                              height: 5.0,
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                            'Checked in on ',
+                                            style: TextStyle(
+                                              fontSize: 16.0,
+                                              color: Colors.grey,
+                                              fontWeight: FontWeight.bold,
                                             ),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        Text(
-                                                          'Checked in at ',
-                                                          style: TextStyle(
-                                                            fontSize: 16.0,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          convertTimeWithoutParse(dbC
-                                                                      .response[
-                                                                  'dailyAttendance']
-                                                              [
-                                                              'checkInDateTime']),
-                                                          style: TextStyle(
-                                                            fontSize: 16.0,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    SizedBox(
-                                                      height: 5.0,
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        Text(
-                                                          'Shift ends at ',
-                                                          style: TextStyle(
-                                                            fontSize: 16.0,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          convertTimeWithParse(dbC
-                                                                      .response[
-                                                                  'empdetails']
-                                                              ['shiftEndTime']),
-                                                          style: TextStyle(
-                                                            fontSize: 16.0,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                                Visibility(
-                                                  child: RaisedButton(
-                                                    onPressed: () {
-                                                      //Check Condition
-                                                      var chk = checkCondition(
-                                                        dbC.response,
-                                                        'chkout',
-                                                      );
-                                                      if (chk) {
-                                                        Get.to(CheckoutPage(
-                                                            RemoteServices()
-                                                                .box
-                                                                .get('faceApi'),
-                                                            appFeatures[
-                                                                'checkinLocation']));
-                                                        // Get.to(CheckoutPage(0));
-                                                      }
-                                                    },
-                                                    child: Text(
-                                                      'Check Out',
-                                                      style: TextStyle(
-                                                        fontSize: 18.0,
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                    color:
-                                                        AppUtils().orangeColor,
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                        25.0,
-                                                      ),
-                                                      side: BorderSide(
-                                                        color: AppUtils()
-                                                            .orangeColor,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
+                                          ),
+                                          Text(
+                                            convertTimeForCheckedIn(
+                                              chkinDt,
                                             ),
-                                          ],
-                                        ),
-                                      )
-                                    : Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                          10.0,
-                                          25.0,
-                                          10.0,
-                                          25.0,
-                                        ),
-                                        child: Column(
-                                          children: [
-                                            Visibility(
-                                              visible: !conditionForMsg(
-                                                      dbC.response, 'chkin') &&
-                                                  RemoteServices()
-                                                          .box
-                                                          .get('role') !=
-                                                      '3',
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
+                                            style: TextStyle(
+                                              fontSize: 16.0,
+                                              color: Colors.grey,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            // maxLines: 2,
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 5.0,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment
+                                            .spaceBetween,
+                                        children: [
+                                          Column(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
                                                 children: [
                                                   Text(
-                                                    'Attendance already given',
+                                                    'Checked in at ',
                                                     style: TextStyle(
                                                       fontSize: 16.0,
-                                                      color: AppUtils()
-                                                          .orangeColor,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    convertTimeWithoutParse(dbC
+                                                        .response[
+                                                    'dailyAttendance']
+                                                    [
+                                                    'checkInDateTime']),
+                                                    style: TextStyle(
+                                                      fontSize: 16.0,
                                                       fontWeight:
-                                                          FontWeight.bold,
+                                                      FontWeight.bold,
                                                     ),
                                                   ),
                                                 ],
                                               ),
-                                            ),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      'You are posted in',
-                                                      style: TextStyle(
-                                                        fontSize: 15.0,
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 5.0,
-                                                    ),
-                                                    Obx(() {
-                                                      if (dbC.isDashboardLoading
-                                                          .value) {
-                                                        return Text(
-                                                          '...',
-                                                          style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 20.0,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
-                                                        );
-                                                      } else {
-                                                        // print('Length: ${dbC.response['clientData']['name'].length}');
-                                                        var clientName = dbC
-                                                                        .response[
-                                                                    'clientData']
-                                                                ['name'] ??
-                                                            'N/A';
-                                                        var areaName = dbC
-                                                                        .response[
-                                                                    'clientData']
-                                                                ['address'] ??
-                                                            'N/A';
-                                                        return Row(
-                                                          children: [
-                                                            SizedBox(
-                                                              width: 240.0,
-                                                              child: Text(
-                                                                '$clientName at $areaName',
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize:
-                                                                      15.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                ),
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                              ),
-                                                            ),
-                                                            // Text(
-                                                            //   ' in ',
-                                                            //   style: TextStyle(
-                                                            //     fontSize: 15.0,
-                                                            //   ),
-                                                            // ),
-                                                            // SizedBox(
-                                                            //   width: 40.0,
-                                                            //   child: Text(
-                                                            //     // dbC.response['empdetails']['area'] ?? 'N/A',
-                                                            //     'asdasd asdasd asdasdasd',
-                                                            //     style: TextStyle(
-                                                            //       fontSize: 15.0,
-                                                            //       fontWeight: FontWeight.bold,
-                                                            //     ),
-                                                            //     overflow: TextOverflow.ellipsis,
-                                                            //   ),
-                                                            // ),
-                                                          ],
-                                                        );
-                                                      }
-                                                    }),
-                                                    SizedBox(
-                                                      height: 5.0,
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        Text(
-                                                          'Duty Timings : ',
-                                                          style: TextStyle(
-                                                            fontSize: 15.0,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          convertTimeWithParse(dbC
-                                                                      .response[
-                                                                  'empdetails'][
-                                                              'shiftStartTime']),
-                                                          style: TextStyle(
-                                                            fontSize: 15.0,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          ' to ',
-                                                          style: TextStyle(
-                                                            fontSize: 15.0,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          convertTimeWithParse(dbC
-                                                                      .response[
-                                                                  'empdetails']
-                                                              ['shiftEndTime']),
-                                                          style: TextStyle(
-                                                            fontSize: 15.0,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                                Visibility(
-                                                  child: RaisedButton(
-                                                    onPressed: () {
-                                                      //Check Condition
-                                                      var chk = checkCondition(
-                                                        dbC.response,
-                                                        'chkin',
-                                                      );
-                                                      if (chk) {
-                                                        print(RemoteServices()
-                                                            .box
-                                                            .get('faceApi'));
-                                                        Get.to(CheckinPage(
-                                                            RemoteServices()
-                                                                .box
-                                                                .get('faceApi'),
-                                                            appFeatures[
-                                                                'checkinLocation']));
-                                                        // Get.to(CheckinPage(0));
-                                                      }
-                                                    },
-                                                    child: Text(
-                                                      'Check In',
-                                                      style: TextStyle(
-                                                        fontSize: 16.0,
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                    color:
-                                                        AppUtils().greenColor,
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                        25.0,
-                                                      ),
-                                                      side: BorderSide(
-                                                        color: AppUtils()
-                                                            .greenColor,
-                                                      ),
+                                              SizedBox(
+                                                height: 5.0,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    'Shift ends at ',
+                                                    style: TextStyle(
+                                                      fontSize: 16.0,
                                                     ),
                                                   ),
+                                                  Text(
+                                                    convertTimeWithParse(dbC
+                                                        .response[
+                                                    'empdetails']
+                                                    ['shiftEndTime']),
+                                                    style: TextStyle(
+                                                      fontSize: 16.0,
+                                                      fontWeight:
+                                                      FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          Visibility(
+                                            child: RaisedButton(
+                                              onPressed: () {
+                                                //Check Condition
+                                                var chk = checkCondition(
+                                                  dbC.response,
+                                                  'chkout',
+                                                );
+                                                if (chk) {
+                                                  Get.to(CheckoutPage(
+                                                      RemoteServices()
+                                                          .box
+                                                          .get('faceApi'),
+                                                      appFeatures[
+                                                      'checkinLocation']));
+                                                  // Get.to(CheckoutPage(0));
+                                                }
+                                              },
+                                              child: Text(
+                                                'Check Out',
+                                                style: TextStyle(
+                                                  fontSize: 18.0,
+                                                  color: Colors.white,
+                                                  fontWeight:
+                                                  FontWeight.bold,
                                                 ),
-                                              ],
+                                              ),
+                                              color:
+                                              AppUtils().orangeColor,
+                                              shape:
+                                              RoundedRectangleBorder(
+                                                borderRadius:
+                                                BorderRadius.circular(
+                                                  25.0,
+                                                ),
+                                                side: BorderSide(
+                                                  color: AppUtils()
+                                                      .orangeColor,
+                                                ),
+                                              ),
                                             ),
-                                          ],
-                                        ),
-                                      );
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                )
+                                    : Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                      10.0,
+                                      25.0,
+                                      10.0,
+                                      25.0,
+                                    ),
+                                    child: Column(
+                                        children: [
+                                    Visibility(
+                                    visible: !conditionForMsg(
+                                    dbC.response, 'chkin') &&
+                                        RemoteServices()
+                                            .box
+                                            .get('role') !=
+                                            '3',
+                                    child: Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.end,
+                                        children: [
+                                    Text(
+                                    'Attendance already given\nTiming : '+
+                                    formatter.format
+                                        (DateTime.parse(dbC.response['dailyAttendance']['checkInDateTime'])) +
+                                    ' to ' +
+                                    formatter.format(DateTime.parse(dbC
+                                        .response['dailyAttendance']['checkOutDateTime'])),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                              fontSize: 16.0,
+                              color: AppUtils()
+                                  .orangeColor,
+                              fontWeight:
+                              FontWeight.bold,
+                              ),
+                              ),
+                              ],
+                              ),
+                              ),
+                              Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment
+                                  .spaceBetween,
+                              children: [
+                              Column(
+                              mainAxisAlignment:
+                              MainAxisAlignment.start,
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                              children: [
+                              Text(
+                              'You are posted in',
+                              style: TextStyle(
+                              fontSize: 15.0,
+                              ),
+                              ),
+                              SizedBox(
+                              height: 5.0,
+                              ),
+                              Obx(() {
+                              if (dbC.isDashboardLoading
+                                  .value) {
+                              return Text(
+                              '...',
+                              style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20.0,
+                              fontWeight:
+                              FontWeight.bold,
+                              ),
+                              );
+                              } else {
+                              // print('Length: ${dbC.response['clientData']['name'].length}');
+                              var clientName = dbC
+                                  .response[
+                              'clientData']
+                              ['name'] ??
+                              'N/A';
+                              var areaName = dbC
+                                  .response[
+                              'clientData']
+                              ['address'] ??
+                              'N/A';
+                              return Row(
+                              children: [
+                              SizedBox(
+                              width: 240.0,
+                              child: Text(
+                              '$clientName at $areaName',
+                              style:
+                              TextStyle(
+                              fontSize:
+                              15.0,
+                              fontWeight:
+                              FontWeight
+                                  .bold,
+                              ),
+                              overflow:
+                              TextOverflow
+                                  .ellipsis,
+                              ),
+                              ),
+                              // Text(
+                              //   ' in ',
+                              //   style: TextStyle(
+                              //     fontSize: 15.0,
+                              //   ),
+                              // ),
+                              // SizedBox(
+                              //   width: 40.0,
+                              //   child: Text(
+                              //     // dbC.response['empdetails']['area'] ?? 'N/A',
+                              //     'asdasd asdasd asdasdasd',
+                              //     style: TextStyle(
+                              //       fontSize: 15.0,
+                              //       fontWeight: FontWeight.bold,
+                              //     ),
+                              //     overflow: TextOverflow.ellipsis,
+                              //   ),
+                              // ),
+                              ],
+                              );
                               }
+                              }),
+                              SizedBox(
+                              height: 5.0,
+                              ),
+                              Row(
+                              children: [
+                              Text(
+                              'Duty Timings : ',
+                              style: TextStyle(
+                              fontSize: 15.0,
+                              ),
+                              ),
+                              Text(
+                              convertTimeWithParse(dbC
+                                  .response[
+                              'empdetails'][
+                              'shiftStartTime']),
+                              style: TextStyle(
+                              fontSize: 15.0,
+                              fontWeight:
+                              FontWeight.bold,
+                              ),
+                              ),
+                              Text(
+                              ' to ',
+                              style: TextStyle(
+                              fontSize: 15.0,
+                              ),
+                              ),
+                              Text(
+                              convertTimeWithParse(dbC
+                                  .response[
+                              'empdetails']
+                              ['shiftEndTime']),
+                              style: TextStyle(
+                              fontSize: 15.0,
+                              fontWeight:
+                              FontWeight.bold,
+                              ),
+                              ),
+                              ],
+                              ),
+                              ],
+                              ),
+                              Visibility(
+                              child: RaisedButton(
+                              onPressed: () {
+                              //Check Condition
+                              var chk = checkCondition(
+                              dbC.response,
+                              'chkin',
+                              );
+                              if (chk) {
+                              print(RemoteServices()
+                                  .box
+                                  .get('faceApi'));
+                              Get.to(CheckinPage(
+                              RemoteServices()
+                                  .box
+                                  .get('faceApi'),
+                              appFeatures[
+                              'checkinLocation']));
+                              // Get.to(CheckinPage(0));
+                              }
+                              },
+                              child: Text(
+                              'Check In',
+                              style: TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.white,
+                              fontWeight:
+                              FontWeight.bold,
+                              ),
+                              ),
+                              color:
+                              AppUtils().greenColor,
+                              shape:
+                              RoundedRectangleBorder(
+                              borderRadius:
+                              BorderRadius.circular(
+                              25.0,
+                              ),
+                              side: BorderSide(
+                              color: AppUtils()
+                                  .greenColor,
+                              ),
+                              ),
+                              ),
+                              ),
+                              ],
+                              ),
+                              ],
+                              )
+                              ,
+                              );
+                            }
                             }),
                           ],
                         ),
@@ -986,144 +1002,150 @@ class _LiteDashboardPage extends State<LiteDashboardPage> {
                             } else {
                               var role = RemoteServices().box.get('role');
                               return dbC.response['psCount'] == null &&
-                                      role != '3'
+                                  role != '3'
                                   ? Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      color: Colors.white,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                width: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width,
+                                color: Colors.white,
+                                child: Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        top: 5.0,
+                                        left: 20.0,
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment
+                                            .spaceBetween,
                                         children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                              top: 5.0,
-                                              left: 20.0,
+                                          Text(
+                                            DateFormat.MMMM()
+                                                .format(DateTime.now())
+                                                .toString(),
+                                            style: TextStyle(
+                                              fontSize: 20.0,
+                                              fontWeight: FontWeight.bold,
                                             ),
+                                          ),
+                                          role == '2' || role == '3'
+                                              ? FlatButton(
+                                            onPressed: () {
+                                              Get.offAll(
+                                                AttendancePage(),
+                                              );
+                                            },
                                             child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
                                               children: [
                                                 Text(
-                                                  DateFormat.MMMM()
-                                                      .format(DateTime.now())
-                                                      .toString(),
+                                                  'Enter Attendance',
                                                   style: TextStyle(
-                                                    fontSize: 20.0,
-                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16.0,
+                                                    color:
+                                                    Colors.grey,
                                                   ),
                                                 ),
-                                                role == '2' || role == '3'
-                                                    ? FlatButton(
-                                                        onPressed: () {
-                                                          Get.offAll(
-                                                            AttendancePage(),
-                                                          );
-                                                        },
-                                                        child: Row(
-                                                          children: [
-                                                            Text(
-                                                              'Enter Attendance',
-                                                              style: TextStyle(
-                                                                fontSize: 16.0,
-                                                                color:
-                                                                    Colors.grey,
-                                                              ),
-                                                            ),
-                                                            Icon(
-                                                              Icons
-                                                                  .chevron_right,
-                                                              size: 25.0,
-                                                              color:
-                                                                  Colors.grey,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      )
-                                                    : Container(),
+                                                Icon(
+                                                  Icons
+                                                      .chevron_right,
+                                                  size: 25.0,
+                                                  color:
+                                                  Colors.grey,
+                                                ),
                                               ],
                                             ),
-                                          ),
-                                          SizedBox(
-                                            height: 10.0,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                'No data to show',
-                                                style: TextStyle(
-                                                  fontSize: 18.0,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 20.0,
-                                          ),
+                                          )
+                                              : Container(),
                                         ],
                                       ),
-                                    )
+                                    ),
+                                    SizedBox(
+                                      height: 10.0,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'No data to show',
+                                          style: TextStyle(
+                                            fontSize: 18.0,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 20.0,
+                                    ),
+                                  ],
+                                ),
+                              )
                                   : Container(
-                                      // height: 150.0,
-                                      width: MediaQuery.of(context).size.width,
-                                      color: Colors.white,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                // height: 150.0,
+                                width: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width,
+                                color: Colors.white,
+                                child: Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        top: 10.0,
+                                        left: 20.0,
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment
+                                            .spaceBetween,
                                         children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                              top: 10.0,
-                                              left: 20.0,
-                                            ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  '',
-                                                  style: TextStyle(
-                                                    fontSize: 20.0,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                role == '2' || role == '3'
-                                                    ? FlatButton(
-                                                        onPressed: () {
-                                                          Get.offAll(
-                                                            AttendancePage(),
-                                                          );
-                                                        },
-                                                        child: Row(
-                                                          children: [
-                                                            Text(
-                                                              'Enter Attendance',
-                                                              style: TextStyle(
-                                                                fontSize: 16.0,
-                                                                color:
-                                                                    Colors.grey,
-                                                              ),
-                                                            ),
-                                                            Icon(
-                                                              Icons
-                                                                  .chevron_right,
-                                                              size: 25.0,
-                                                              color:
-                                                                  Colors.grey,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      )
-                                                    : Container(),
-                                              ],
+                                          Text(
+                                            '',
+                                            style: TextStyle(
+                                              fontSize: 20.0,
+                                              fontWeight: FontWeight.bold,
                                             ),
                                           ),
+                                          role == '2' || role == '3'
+                                              ? FlatButton(
+                                            onPressed: () {
+                                              Get.offAll(
+                                                AttendancePage(),
+                                              );
+                                            },
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  'Enter Attendance',
+                                                  style: TextStyle(
+                                                    fontSize: 16.0,
+                                                    color:
+                                                    Colors.grey,
+                                                  ),
+                                                ),
+                                                Icon(
+                                                  Icons
+                                                      .chevron_right,
+                                                  size: 25.0,
+                                                  color:
+                                                  Colors.grey,
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                              : Container(),
                                         ],
                                       ),
-                                    );
+                                    ),
+                                  ],
+                                ),
+                              );
                             }
                           }),
                         ],

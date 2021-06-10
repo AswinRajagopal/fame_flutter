@@ -79,7 +79,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
           : DateTime.parse(
               sfromDt.toString(),
             ),
-      firstDate: DateTime.now().add(Duration(days: 1)),
+      firstDate: DateTime.now(),
       lastDate: stoDt != null
           ? DateTime.parse(stoDt.text.toString()).add(
               Duration(days: 0),

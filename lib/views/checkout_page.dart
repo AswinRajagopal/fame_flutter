@@ -34,9 +34,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
   @override
   void initState() {
     super.initState();
+
     if(widget.checkinLocation != null && !widget.checkinLocation) {
       checkoutController.currentAddress.value = 'Site';
     }
+
     if (widget.faceApi == 1) {
       initCam();
     } else if(widget.checkinLocation == null || widget.checkinLocation) {
@@ -620,3 +622,4 @@ class _CheckoutPageState extends State<CheckoutPage> {
     );
   }
 }
+

@@ -93,6 +93,7 @@ class _DashboardPageState extends State<DashboardPage> {
         DateFormat().add_jm().format(DateTime.parse(time)).toString();
     // DateFormat('a').format(time).toString().toLowerCase();
   }
+  final DateFormat formatter = DateFormat('jm');
 
   // ignore: missing_return
   bool checkCondition(dbRes, type) {
@@ -792,7 +793,10 @@ class _DashboardPageState extends State<DashboardPage> {
                                                       MainAxisAlignment.end,
                                                   children: [
                                                     Text(
-                                                      'Attendance already given',
+                                                      'Attendance already given\nTiming : '+
+                                                          formatter.format(DateTime.parse(dbC.response['dailyAttendance']['checkInDateTime']))+' to '+
+                                                              formatter.format(DateTime.parse(dbC.response['dailyAttendance']['checkOutDateTime'])),
+                                                      textAlign: TextAlign.center,
                                                       style: TextStyle(
                                                         fontSize: 16.0,
                                                         color: AppUtils()
@@ -1707,7 +1711,10 @@ class _DashboardPageState extends State<DashboardPage> {
                                                       MainAxisAlignment.end,
                                                   children: [
                                                     Text(
-                                                      'Attendance already given',
+                                                      'Attendance already given\nTiming : '+
+                                                          formatter.format(DateTime.parse(dbC.response['dailyAttendance']['checkInDateTime']))+' to '+
+                                                          formatter.format(DateTime.parse(dbC.response['dailyAttendance']['checkOutDateTime'])),
+                                                      textAlign: TextAlign.center,
                                                       style: TextStyle(
                                                         fontSize: 16.0,
                                                         color: AppUtils()
@@ -2653,4 +2660,5 @@ class _DashboardPageState extends State<DashboardPage> {
       );
     }
   }
+
 }

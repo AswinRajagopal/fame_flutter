@@ -42,8 +42,8 @@ import '../views/welcome_page.dart';
 
 class RemoteServices {
   // static var baseURL = 'http://52.66.61.207:8090/v1/api';
-  // static var baseURL = 'http://androidapp.diyosfame.com:8090/v1/api';
-  static var baseURL = 'http://192.168.43.230:8090/v1/api';
+  static var baseURL = 'http://androidapp.mydiyosfame.com:8090/v1/api';
+  // static var baseURL = 'http://192.168.43.230:8090/v1/api';
   // static var baseURL = 'http://182.18.157.28:8090/v1/api';
   static var client = http.Client();
   static var header = <String, String>{
@@ -533,7 +533,7 @@ class RemoteServices {
       'label': name,
       'file': await mydio.MultipartFile.fromFile(
         imageFile.path,
-        filename: 'image.jpg',
+        filename: imageFile.path.split('/').last,
       ),
     });
     var response = await dio.post(
@@ -545,7 +545,7 @@ class RemoteServices {
     // developer.log('jsonString: ${response.data.toString()}');
     if (response.statusCode == 200) {
       var jsonString = response.data;
-      return json.decode(jsonString);
+      return jsonString;
     } else {
       return null;
     }

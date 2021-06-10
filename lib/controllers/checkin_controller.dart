@@ -218,9 +218,13 @@ class CheckinController extends GetxController {
               }
               return true;
             } else {
+              var msg = 'Something went wrong! Please try again later';
+              if(checkin['message']!=null){
+                msg = checkin['message'];
+              }
               Get.snackbar(
                 null,
-                'Something went wrong! Please try again later',
+                msg,
                 colorText: Colors.white,
                 backgroundColor: Colors.black87,
                 snackPosition: SnackPosition.BOTTOM,
@@ -282,6 +286,7 @@ class CheckinController extends GetxController {
 
   Future<bool> justCheckin() async {
     await pr.show();
+
     var checkin = await RemoteServices().checkin(
       (currentPosition != null) ? currentPosition.latitude : '0.0',
       (currentPosition != null) ? currentPosition.longitude : '0.0',
@@ -293,9 +298,13 @@ class CheckinController extends GetxController {
       return true;
     } else {
       await pr.hide();
+      var msg = 'Something went wrong! Please try again later';
+      if(checkin['message']!=null){
+        msg = checkin['message'];
+      }
       Get.snackbar(
         null,
-        'Something went wrong! Please try again later',
+        msg,
         colorText: Colors.white,
         backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,

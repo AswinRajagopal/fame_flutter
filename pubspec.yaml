@@ -94,7 +94,8 @@ dependencies:
   # flutter_background_location: ^0.0.4
   # background_locator: ^1.4.0+1
   # flutter_background_geolocation: ^1.11.0
-
+  cached_network_image: ^2.1.0
+  photo_view: ^0.10.0
 # flutter_icons:
 #   image_path: "assets/images/icon.png"
 #   android: true
