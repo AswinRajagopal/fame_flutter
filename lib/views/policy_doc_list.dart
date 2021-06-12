@@ -79,7 +79,7 @@ class _GrievanceReport extends State<PolicyDocs> {
           'Policy Documents',
         ),
       ),
-      floatingActionButton: roleId == '3'
+      floatingActionButton: roleId == AppUtils.ADMIN
           ? Column(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,

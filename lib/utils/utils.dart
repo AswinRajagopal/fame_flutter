@@ -12,6 +12,8 @@ class AppUtils {
   Color lightBlueColor = HexColor('54D2DB');
   Color orangeColor = HexColor('FF7933');
   static String WHOLEDAY = 'W';
+  static String ADMIN = '4';
+  static String MANAGER = '3';
   static String FIRSTHALF = 'F';
   static String SECONDHALF = 'S';
   static String GKEY = 'AIzaSyADoNEFbFbgHCpu7mz7yLWhbbUMZqk4yHU';

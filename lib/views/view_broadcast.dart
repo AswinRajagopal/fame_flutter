@@ -74,7 +74,7 @@ class _ViewBroadcastState extends State<ViewBroadcast> {
           'Broadcast Messages',
         ),
       ),
-      floatingActionButton: roleId=='3'?Column(
+      floatingActionButton: roleId==AppUtils.ADMIN?Column(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [

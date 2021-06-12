@@ -3242,6 +3242,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew>
                                           'motherTongue': language.text,
                                           'empPhone': empPhone.text,
                                           'branch': '1',
+                                          'unitId': client.toString(),
                                           'empBloodGroup': blood.toString(),
                                           'department': department.toString(),
                                           'empDesgn': designation.toString(),

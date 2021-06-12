@@ -787,7 +787,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                     RemoteServices()
                                                             .box
                                                             .get('role') !=
-                                                        '3',
+                                                        '4',
                                                 child: Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.end,
@@ -1021,7 +1021,7 @@ class _DashboardPageState extends State<DashboardPage> {
                               } else {
                                 var role = RemoteServices().box.get('role');
                                 return dbC.response['psCount'] == null &&
-                                        role != '3'
+                                        role != '4'
                                     ? Container(
                                         width:
                                             MediaQuery.of(context).size.width,
@@ -1050,7 +1050,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                           FontWeight.bold,
                                                     ),
                                                   ),
-                                                  role == '2' || role == '3'
+                                                  role != '1'
                                                       ? FlatButton(
                                                           onPressed: () {
                                                             Get.offAll(
@@ -1131,7 +1131,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                           FontWeight.bold,
                                                     ),
                                                   ),
-                                                  role == '2' || role == '3'
+                                                  role != '1'
                                                       ? FlatButton(
                                                           onPressed: () {
                                                             Get.offAll(
@@ -1705,7 +1705,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                     RemoteServices()
                                                             .box
                                                             .get('role') !=
-                                                        '3',
+                                                        '4',
                                                 child: Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.end,
@@ -1939,7 +1939,7 @@ class _DashboardPageState extends State<DashboardPage> {
                               } else {
                                 var role = RemoteServices().box.get('role');
                                 return dbC.response['psCount'] == null &&
-                                        role != '3'
+                                        role != '4'
                                     ? Container(
                                         width:
                                             MediaQuery.of(context).size.width,
@@ -1968,7 +1968,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                           FontWeight.bold,
                                                     ),
                                                   ),
-                                                  role == '2' || role == '3'
+                                                  role != '1'
                                                       ? FlatButton(
                                                           onPressed: () {
                                                             Get.offAll(
@@ -2051,7 +2051,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                           FontWeight.bold,
                                                     ),
                                                   ),
-                                                  role == '2' || role == '3'
+                                                  role != '1'
                                                       ? FlatButton(
                                                           onPressed: () {
                                                             Get.offAll(
@@ -2087,7 +2087,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                             SizedBox(
                                               height: 10.0,
                                             ),
-                                            role != '3'
+                                            role != '4'
                                                 ? Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
@@ -2144,7 +2144,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                     ],
                                                   )
                                                 : Container(),
-                                            role == '2'
+                                            role == '2' || role == '3'
                                                 ? Column(children: [
                                                     SizedBox(
                                                       height: 10.0,

@@ -151,7 +151,7 @@ class LeaveListWidget extends StatelessWidget {
                 ),
                 Flexible(
                   child: Text(
-                    convertDate(leave['fromDateTime']),
+                    convertDate(leave['fromDate']),
                     style: TextStyle(
                       fontSize: textSize,
                       color: Colors.grey,
@@ -189,7 +189,7 @@ class LeaveListWidget extends StatelessWidget {
                   width: secondWidth,
                 ),
                 Text(
-                  convertDate(leave['toDateTime']),
+                  convertDate(leave['toDate']),
                   style: TextStyle(
                     fontSize: textSize,
                     color: Colors.grey,
@@ -226,7 +226,7 @@ class LeaveListWidget extends StatelessWidget {
                   width: secondWidth,
                 ),
                 Text(
-                  convertDate(leave['createdDateTime']),
+                  convertDate(leave['appliedOn']),
                   style: TextStyle(
                     fontSize: textSize,
                     color: Colors.grey,
@@ -264,7 +264,7 @@ class LeaveListWidget extends StatelessWidget {
                 ),
                 Flexible(
                   child: Text(
-                    leave['reason'],
+                    leave['remarks'],
                     // maxLines: 5,
                     style: TextStyle(
                       fontSize: textSize,
@@ -379,7 +379,7 @@ class LeaveListWidget extends StatelessWidget {
                           children: [
                             RaisedButton(
                               onPressed: () {
-                                lC.aprRejLeave(index, leave['id'], '2');
+                                lC.aprRejLeave(index, leave['empLeaveHistoryId'], '2');
                               },
                               child: Text(
                                 'Reject',
@@ -402,7 +402,7 @@ class LeaveListWidget extends StatelessWidget {
                             ),
                             RaisedButton(
                               onPressed: () {
-                                lC.aprRejLeave(index, leave['id'], '1');
+                                lC.aprRejLeave(index, leave['empLeaveHistoryId'], '1');
                               },
                               child: Text(
                                 'Accept',

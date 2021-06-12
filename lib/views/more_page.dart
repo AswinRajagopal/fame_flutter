@@ -41,7 +41,7 @@ class MorePage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                if (roleId == '2' || roleId == '3') {
+                if (roleId != '1') {
                   Get.to(ShortageReport());
                 } else {
                   Get.snackbar(
@@ -69,7 +69,7 @@ class MorePage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                if (roleId == '2' || roleId == '3') {
+                if (roleId != '1') {
                   Get.to(ClientWiseAttendance());
                 } else {
                   Get.snackbar(
@@ -97,7 +97,7 @@ class MorePage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                if (roleId == '2' || roleId == '3') {
+                if (roleId != '1') {
                   Get.to(DailyEmployeeReport());
                 } else {
                   Get.snackbar(
@@ -125,7 +125,7 @@ class MorePage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                if (roleId == '2' || roleId == '3') {
+                if (roleId != '1') {
                   Get.to(EmployeeReport());
                 } else {
                   Get.snackbar(
@@ -153,7 +153,7 @@ class MorePage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                if ((roleId == '2' || roleId == '3') && reportView) {
+                if ((roleId != '1') && reportView) {
                   Get.to(TimelineReport());
                 } else {
                   Get.snackbar(
@@ -181,7 +181,7 @@ class MorePage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                if ((roleId == '2' || roleId == '3') && reportView) {
+                if ((roleId != '1') && reportView) {
                   Get.to(LocationReportDetail());
                 } else {
                   Get.snackbar(
@@ -209,7 +209,8 @@ class MorePage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                if ( roleId == '3') {
+                if ( roleId == AppUtils.MANAGER ||
+                    roleId == AppUtils.ADMIN) {
                   Get.to(VisitPlan());
                 } else {
                   Get.to(

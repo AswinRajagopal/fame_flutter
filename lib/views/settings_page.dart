@@ -120,7 +120,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 Get.to(OnboardingPage());
               },
               child: Visibility(
-                visible: (roleId == '3' && jsonDecode(RemoteServices().box.get('appFeature'))['onboarding']) ? true : false,
+                visible: (roleId == AppUtils.ADMIN && jsonDecode(RemoteServices().box.get('appFeature'))['onboarding']) ? true : false,
                 child: ListContainer(
                   'assets/images/onboarding.png',
                   'Onboarding',
