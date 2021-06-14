@@ -42,8 +42,8 @@ import '../views/welcome_page.dart';
 
 class RemoteServices {
   // static var baseURL = 'http://52.66.61.207:8090/v1/api';
-  // static var baseURL = 'http://androidapp.mydiyosfame.com:8090/v1/api';
-  static var baseURL = 'http://192.168.43.230:8090/v1/api';
+  static var baseURL = 'http://androidapp.mydiyosfame.com:8090/v1/api';
+  // static var baseURL = 'http://192.168.43.230:8090/v1/api';
   // static var baseURL = 'http://182.18.157.28:8090/v1/api';
   static var client = http.Client();
   static var header = <String, String>{

@@ -1050,7 +1050,8 @@ class _DashboardPageState extends State<DashboardPage> {
                                                           FontWeight.bold,
                                                     ),
                                                   ),
-                                                  role != '1'
+                                                  role != '1'&& appFeatures[
+                                                  'attendance']
                                                       ? FlatButton(
                                                           onPressed: () {
                                                             Get.offAll(
@@ -1131,7 +1132,8 @@ class _DashboardPageState extends State<DashboardPage> {
                                                           FontWeight.bold,
                                                     ),
                                                   ),
-                                                  role != '1'
+                                                  role != '1'&& appFeatures[
+                                                  'attendance']
                                                       ? FlatButton(
                                                           onPressed: () {
                                                             Get.offAll(
@@ -1968,7 +1970,8 @@ class _DashboardPageState extends State<DashboardPage> {
                                                           FontWeight.bold,
                                                     ),
                                                   ),
-                                                  role != '1'
+                                                  role != '1' && appFeatures[
+                                                  'attendance']
                                                       ? FlatButton(
                                                           onPressed: () {
                                                             Get.offAll(
@@ -2051,7 +2054,8 @@ class _DashboardPageState extends State<DashboardPage> {
                                                           FontWeight.bold,
                                                     ),
                                                   ),
-                                                  role != '1'
+                                                  role != '1' && appFeatures[
+                                                  'attendance']
                                                       ? FlatButton(
                                                           onPressed: () {
                                                             Get.offAll(
