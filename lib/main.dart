@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:in_app_update/in_app_update.dart';
@@ -62,14 +64,46 @@ class PocketFaME extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    InAppUpdate.checkForUpdate().then((info) {
-      if (info != null && info.updateAvailable) {
-        // ignore: unnecessary_lambdas
-        InAppUpdate.performImmediateUpdate().catchError((e) => _showError(e));
-      }
-      // ignore: unnecessary_lambdas
-    }).catchError((e) => _showError(e));
+    bool appUpdate = false;
+    try {
+      appUpdate =
+      jsonDecode(RemoteServices().box.get('appFeature'))['appUpdate'];
+    }catch(e){
 
+    }
+    if(appUpdate!=null && appUpdate) {
+      Get.snackbar(
+        'Msg',
+        "Getting updating",
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+      );
+      InAppUpdate.checkForUpdate().then((info) {
+        if (info != null && info.updateAvailable) {
+          // ignore: unnecessary_lambdas
+          InAppUpdate.performImmediateUpdate().catchError((e) => _showError(e));
+        }
+        // ignore: unnecessary_lambdas
+      }).catchError((e) => _showError(e));
+
+    }else{
+      Get.snackbar(
+          'Msg',
+          "Not updating",
+          colorText: Colors.white,
+          backgroundColor: Colors.black87,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: EdgeInsets.symmetric(
+            horizontal: 8.0,
+            vertical: 10.0,
+          ),
+        );
+    }
     // SystemChrome.setSystemUIOverlayStyle(
     //   SystemUiOverlayStyle(
     //     statusBarColor: Colors.black,

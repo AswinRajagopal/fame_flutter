@@ -41,4 +41,10 @@ class AppUtils {
     }
   }
 
+  static String checkStr(var str){
+    if(str == 'null'){
+      str = '[NULL]';
+    }
+    return str;
+  }
 }

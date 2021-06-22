@@ -23,6 +23,24 @@ class GrieController extends GetxController {
         await pr.hide();
         if (res['success']) {
           if (res['grievanceList'] != null) {
+            if(res['grievanceList'].length==0){
+              Get.snackbar(
+                null,
+                'No Grievance Found',
+                colorText: Colors.white,
+                backgroundColor: Colors.black87,
+                snackPosition: SnackPosition.BOTTOM,
+                margin: EdgeInsets.symmetric(
+                  horizontal: 8.0,
+                  vertical: 10.0,
+                ),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 12.0,
+                  vertical: 18.0,
+                ),
+                borderRadius: 5.0,
+              );
+            }
             for (var i = 0; i < res['grievanceList'].length; i++) {
               grieList.add(res['grievanceList'][i]);
             }

@@ -497,7 +497,8 @@ class AdminController extends GetxController {
     }
   }
 
-  void addEmployeeData(empRelationshipList, proofDetails, aadharFront, aadharBack, passbookFront, passbookBack, proof3Front, proof3Back) async {
+  void addEmployeeData(empRelationshipList, proofDetails, aadharFront, aadharBack, passbookFront,
+      passbookBack, proof3Front, proof3Back, profile) async {
     try {
       var addNewEmpRel = await RemoteServices().newRecRel(empRelationshipList);
 
@@ -507,7 +508,8 @@ class AdminController extends GetxController {
           var addNewEmpProof = await RemoteServices().newRecProof(proofDetails);
           if (addNewEmpProof != null) {
             if (addNewEmpProof['success']) {
-              var uploadNewEmpProof = await RemoteServices().newRecUploadProof(aadharFront, aadharBack, passbookFront, passbookBack, proof3Front, proof3Back);
+              var uploadNewEmpProof = await RemoteServices().newRecUploadProof(aadharFront, aadharBack,
+                  passbookFront, passbookBack, proof3Front, proof3Back, profile);
               if (uploadNewEmpProof != null) {
                 if (uploadNewEmpProof['success']) {
                   await pr.hide();

@@ -41,7 +41,7 @@ class _DashboardPageState extends State<DashboardPage> {
   final DashboardController dbC = Get.put(DashboardController());
   final EmprplanController erpC = Get.put(EmprplanController());
   final DBCalController calC = Get.put(DBCalController());
-  var liteMode;
+  var liteMode = false;
 
   @override
   void initState() {
@@ -51,7 +51,7 @@ class _DashboardPageState extends State<DashboardPage> {
     Future.delayed(Duration(milliseconds: 100), () {
       dbC.init(context: context);
     });
-    if (!liteMode) {
+    if (liteMode !=null && !liteMode) {
       Future.delayed(Duration(milliseconds: 100), () {
         erpC.init(fromWhere: 'db');
       });

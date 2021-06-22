@@ -58,6 +58,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew>
   File aadhar1;
   File aadhar2;
   File proof11;
+  File profile;
   File proof12;
   File proof21;
   File proof22;
@@ -86,8 +87,10 @@ class _AddEmployeeNewState extends State<AddEmployeeNew>
   var idProof2;
   var relFather = 'Father';
   var relFamily;
+  var profileLink = 'https://cdn.pixabay.com/photo/2018/08/28/12/41/avatar-3637425_960_720.png';
   var currentTabIndex = 0;
   bool copyAdd = false;
+  bool profileAdd = false;
   bool nominee1 = false;
   bool nominee2 = false;
 
@@ -2635,6 +2638,38 @@ class _AddEmployeeNewState extends State<AddEmployeeNew>
                             SizedBox(
                               height: 10.0,
                             ),
+                            Center(
+                            child : GestureDetector(
+                              onTap: () async {
+                                print('take picture');
+                                var pickedFile = await ImagePicker()
+                                    .getImage(
+                                    source: ImageSource.gallery);
+                                if (pickedFile != null) {
+                                  profile = File(pickedFile.path);
+                                  profileAdd=true;
+                                  profileLink = 'https://cdn.iconscout.com/icon/premium/png-256-thumb/done-36-832708.png';
+                                  setState(() {});
+                                } else {
+                                  print('No image selected.');
+                                  profile = null;
+                                  profileAdd=false;
+                                  setState(() {});
+                                }
+                              },
+                               child : Stack(
+                                 children : [ Image.network(
+                                profileLink,
+                                // fit: BoxFit.cover,
+                                height: 100.0,
+                                width: 100.0,
+                              ),Image.asset(
+                                 'assets/images/uplode_proof.png',
+                                 // color: Colors.grey,
+                                 scale: 2.2,
+                               )]
+                               )
+                            )),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 10.0,
@@ -3242,15 +3277,18 @@ class _AddEmployeeNewState extends State<AddEmployeeNew>
                                           'motherTongue': language.text,
                                           'empPhone': empPhone.text,
                                           'branch': '1',
+                                          'employeeType': '',
+                                          'empFatherName': '',
+                                          'title': '',
                                           'unitId': client.toString(),
-                                          'empBloodGroup': blood.toString(),
-                                          'department': department.toString(),
-                                          'empDesgn': designation.toString(),
+                                          'empBloodGroup': AppUtils.checkStr(blood.toString()),
+                                          'department': AppUtils.checkStr(department.toString()),
+                                          'empDesgn': AppUtils.checkStr(designation.toString()),
                                           'empUANNumber': empUANNumber.text,
                                           'empQualification':
                                               qualification.text,
                                           'empbankname': bank.toString(),
-                                          'empBankAcNo': accountNo.text,
+                                          'empBankAcNo': AppUtils.checkStr(accountNo.text),
                                           'empIFSCcode': ifsc.text,
                                           'doj': doj.toString(),
                                           'empPermanentAddress':
@@ -3280,7 +3318,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew>
                                         if (empId != null) {
                                           var empRelationshipList = [
                                             {
-                                              'relName': fatherName.text,
+                                              'relName': AppUtils.checkStr(fatherName.text),
                                               'relType': relFather.toString(),
                                               'age': ageFather.text,
                                               'empId': empId.toString(),
@@ -3361,7 +3399,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew>
                                               proof11,
                                               proof12,
                                               proof21,
-                                              proof22);
+                                              proof22,
+                                              profile);
                                         }
                                       }
                                     },

@@ -2,11 +2,14 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:fame/connection/locationpath.dart';
+import 'package:fame/views/dashboard_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
@@ -52,13 +55,46 @@ class CheckoutController extends GetxController {
         currentPosition.latitude,
         currentPosition.longitude,
       );
-      var first = placemark.first;
-      if(first!=null) {
-        currentAddress.value =
-        '${first.subLocality}, ${first.locality}, ${first.postalCode}, ${first
-            .country}';
-      }else {
-        currentAddress.value = 'Please checkout';
+      var first ;
+      if(placemark!=null) {
+        first = placemark.first;
+      }
+      print(first);
+      var distance = await Locationpath().getDistance(LatLng(currentPosition.latitude, currentPosition.longitude), LatLng(double.parse(RemoteServices().box.get('clientLat')), double.parse(RemoteServices().box.get('clientLng'))));
+      var maxDistance = RemoteServices().box.get('maxDist');
+      if (maxDistance == '0' || int.parse(maxDistance) > (distance * 1000).round()) {
+        if(first!=null) {
+          currentAddress.value =
+          '${first.street}, ${first.subLocality}, ${first.locality}, ${first
+              .postalCode}, ${first.country}';
+        }else{
+          currentAddress.value = 'Please checkout';
+        }
+      } else {
+        await showDialog(
+          context: Get.context,
+          barrierDismissible: false,
+          builder: (context) => WillPopScope(
+            onWillPop: () async => false,
+            child: AlertDialog(
+              title: Text('Cannot Checkout'),
+              content: Text(
+                'Too long from Site Location ',
+                style: TextStyle(
+                  color: Colors.grey,
+                ),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  onPressed: () {
+                    Get.offAll(DashboardPage());
+                  },
+                  child: Text('Close'),
+                ),
+              ],
+            ),
+          ),
+        );
       }
       // print(currentAddress);
     } catch (e) {
