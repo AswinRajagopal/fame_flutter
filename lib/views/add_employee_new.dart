@@ -3400,7 +3400,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew>
                                               proof12,
                                               proof21,
                                               proof22,
-                                              profile);
+                                              profile,
+                                          empId);
                                         }
                                       }
                                     },

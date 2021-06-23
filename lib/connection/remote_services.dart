@@ -41,9 +41,9 @@ import '../views/welcome_page.dart';
 // import 'package:background_locator/settings/locator_settings.dart' as ls;
 
 class RemoteServices {
-  // static var baseURL = 'http://52.66.61.207:8090/v1/api';
+  static var baseURL = 'http://52.66.61.207:8090/v1/api';
   // static var baseURL = 'http://androidapp.mydiyosfame.com:8090/v1/api';
-  static var baseURL = 'http://192.168.43.230:8090/v1/api';
+  // static var baseURL = 'http://192.168.43.230:8090/v1/api';
   // static var baseURL = 'http://182.18.157.28:8090/v1/api';
   static var client = http.Client();
   static var header = <String, String>{
@@ -2041,7 +2041,7 @@ class RemoteServices {
     }
   }
 
-  Future newRecUploadProof(File aadharFront, File aadharBack, File passbookFront,
+  Future newRecUploadProof(var empId,File aadharFront, File aadharBack, File passbookFront,
       File passbookBack, File proof3Front, File proof3Back, File profile) async {
     var dio = mydio.Dio();
     var proof3backvar = null, proof3frontvar=null, profilevar = null;
@@ -2065,7 +2065,7 @@ class RemoteServices {
     }
     var formData = mydio.FormData.fromMap({
       'companyId': box.get('companyid').toString(),
-      'empId': box.get('empid').toString(),
+      'empId': empId,
       'aadharFront': await mydio.MultipartFile.fromFile(
         aadharFront.path,
         filename: path.basename(aadharFront.path).toString(),
@@ -2081,6 +2081,10 @@ class RemoteServices {
       'passbookBack': await mydio.MultipartFile.fromFile(
         passbookBack.path,
         filename: path.basename(passbookBack.path).toString(),
+      ),
+      'profile': await mydio.MultipartFile.fromFile(
+        profile.path,
+        filename: path.basename(profile.path).toString(),
       ),
       'proof3Front': proof3frontvar,
       'proof3Back': proof3backvar,
