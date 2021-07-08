@@ -1,29 +1,20 @@
 import 'dart:convert';
 
-import 'package:fame/views/add_employee_new.dart';
-import 'package:fame/views/grievance_report.dart';
-import 'package:fame/views/policy_doc_list.dart';
-
-import 'onboarding_page.dart';
-import 'transfer_list.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-
-import '../connection/remote_services.dart';
 import 'package:share/share.dart';
 
-import 'sos.dart';
-
-import 'new_broadcast.dart';
-
-import 'view_broadcast.dart';
-
-import 'support.dart';
-import 'package:get/get.dart';
-
+import '../connection/remote_services.dart';
 import '../utils/utils.dart';
-import 'package:flutter/material.dart';
-
-import 'package:in_app_review/in_app_review.dart';
+import 'add_employee_new.dart';
+import 'grievance_report.dart';
+import 'policy_doc_list.dart';
+import 'sos.dart';
+import 'support.dart';
+import 'transfer_list.dart';
+import 'view_broadcast.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -121,8 +112,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 Get.to(AddEmployeeNew());
               },
               child: Visibility(
-                visible: ((roleId == AppUtils.ADMIN || roleId == AppUtils.MANAGER)
-                    && jsonDecode(RemoteServices().box.get('appFeature'))['onboarding']) ? true : false,
+                visible: ((roleId == AppUtils.ADMIN || roleId == AppUtils.MANAGER) && jsonDecode(RemoteServices().box.get('appFeature'))['onboarding']) ? true : false,
                 child: ListContainer(
                   'assets/images/employee.png',
                   'Onboarding',
@@ -165,7 +155,6 @@ class _SettingsPageState extends State<SettingsPage> {
                 'Policy Documents',
               ),
             ),
-
             GestureDetector(
               onTap: () {
                 print('isAvailable: $isAvailable');
@@ -277,7 +266,6 @@ class _SettingsPageState extends State<SettingsPage> {
                 'Feedback',
               ),
             ),
-
             GestureDetector(
               onTap: () {
                 Get.to(Support());
@@ -298,7 +286,6 @@ class _SettingsPageState extends State<SettingsPage> {
                 'Share This App',
               ),
             ),
-            
           ],
         ),
       ),

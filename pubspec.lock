@@ -211,6 +211,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.1"
+  confirm_dialog:
+    dependency: "direct main"
+    description:
+      name: confirm_dialog
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1"
   connectivity:
     dependency: "direct main"
     description:

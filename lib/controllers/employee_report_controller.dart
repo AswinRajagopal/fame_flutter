@@ -1,15 +1,13 @@
-import '../connection/locationpath.dart';
-
+import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
-
-import '../utils/utils.dart';
-
-import '../connection/remote_services.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+
+import '../connection/locationpath.dart';
+import '../connection/remote_services.dart';
+import '../utils/utils.dart';
 
 class EmployeeReportController extends GetxController {
   var isLoading = true.obs;
@@ -285,15 +283,10 @@ class EmployeeReportController extends GetxController {
                   var first = placemark.first;
                   // print(first);
 
-                  var address = '${first.street}, ${first.thoroughfare}, ${first
-                      .subLocality}, ${first.locality}, ${first
-                      .administrativeArea}, ${first.postalCode}, ${first
-                      .country}';
+                  var address = '${first.street}, ${first.thoroughfare}, ${first.subLocality}, ${first.locality}, ${first.administrativeArea}, ${first.postalCode}, ${first.country}';
                   pitstop['address'] = address;
-                } on Exception catch(_) {
-                  var address = await new RemoteServices().getAddressFromLatLng(
-                      double.parse(pitstop['checkinLat']),
-                      double.parse(pitstop['checkinLng']));
+                } on Exception catch (_) {
+                  var address = await new RemoteServices().getAddressFromLatLng(double.parse(pitstop['checkinLat']), double.parse(pitstop['checkinLng']));
                   pitstop['address'] = address;
                 }
               }
@@ -315,15 +308,10 @@ class EmployeeReportController extends GetxController {
                   );
                   var first = placemark.first;
                   // print(first);
-                  var address = '${first.street}, ${first.thoroughfare}, ${first
-                      .subLocality}, ${first.locality}, ${first
-                      .administrativeArea}, ${first.postalCode}, ${first
-                      .country}';
+                  var address = '${first.street}, ${first.thoroughfare}, ${first.subLocality}, ${first.locality}, ${first.administrativeArea}, ${first.postalCode}, ${first.country}';
                   pitstop['address'] = address;
-                }on Exception catch(_) {
-                  var address = await new RemoteServices().getAddressFromLatLng(
-                      double.parse(pitstop['lat']),
-                      double.parse(pitstop['lng']));
+                } on Exception catch (_) {
+                  var address = await new RemoteServices().getAddressFromLatLng(double.parse(pitstop['lat']), double.parse(pitstop['lng']));
                   pitstop['address'] = address;
                 }
               }
@@ -404,11 +392,12 @@ class EmployeeReportController extends GetxController {
                 var first = placemark.first;
                 // print(first);
                 var address = '${first.street}, ${first.thoroughfare}, ${first.subLocality}, ${first.locality}, ${first.administrativeArea}, ${first.postalCode}, ${first.country}';
-                if(address.isNullOrBlank){
+                if (address.isNullOrBlank) {
                   pitstop['address'] = address;
-                }else {
+                } else {
                   pitstop['address'] = address;
-                }              }
+                }
+              }
               pitsStopsRoute.add(pitstop);
             }
             for (var d = 0; d < pitsStopsRoute.length - 1; d++) {
@@ -494,16 +483,14 @@ class EmployeeReportController extends GetxController {
       await pr.show();
       getLocationRes = await RemoteServices().getLocationReport(empId);
       if (getLocationRes != null) {
-        // print('getEmpReportRes valid: $getEmpReportRes');
+        print('getEmpReportRes valid: $getEmpReportRes');
         if (getLocationRes['success']) {
           print('getLocationRes: $getLocationRes');
           for (var i = 0; i < getLocationRes['empDetailsTlnList'].length; i++) {
             var location = getLocationRes['empDetailsTlnList'][i];
             var date = location['timeStamp'];
 
-            location['datetime'] = DateFormat('dd-MM-yyyy hh:mm').format
-              (DateTime.parse(date)).toString() + '' +
-                DateFormat('a').format(DateTime.parse(date)).toString().toLowerCase();
+            location['datetime'] = DateFormat('dd-MM-yyyy hh:mm').format(DateTime.parse(date)).toString() + '' + DateFormat('a').format(DateTime.parse(date)).toString().toLowerCase();
             locations.add(location);
           }
           isLoadingLocation(false);

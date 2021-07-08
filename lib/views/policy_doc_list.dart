@@ -1,19 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fame/connection/remote_services.dart';
-import 'package:fame/controllers/grie_controller.dart';
-import 'package:fame/controllers/policy_doc_controller.dart';
-import 'package:fame/widgets/doc_list_widget.dart';
-import 'package:fame/widgets/grie_list_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
-import '../controllers/broadcast_controller.dart';
+import '../connection/remote_services.dart';
+import '../controllers/policy_doc_controller.dart';
 import '../utils/utils.dart';
-import '../widgets/broadcast_list_widget.dart';
-import 'new_broadcast.dart';
+import '../widgets/doc_list_widget.dart';
 import 'new_policy_doc.dart';
 
 class PolicyDocs extends StatefulWidget {
@@ -23,7 +18,7 @@ class PolicyDocs extends StatefulWidget {
 
 class _GrievanceReport extends State<PolicyDocs> {
   final PolicyDocController bC = Get.put(PolicyDocController());
-  var roleId = RemoteServices().box.get('role');
+  var roleId;
 
   @override
   void initState() {
@@ -62,6 +57,7 @@ class _GrievanceReport extends State<PolicyDocs> {
       Duration(milliseconds: 100),
       bC.getPolicies,
     );
+    roleId = RemoteServices().box.get('role');
     super.initState();
   }
 
@@ -122,26 +118,22 @@ class _GrievanceReport extends State<PolicyDocs> {
                   ),
                 );
               }
-              return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    ListView.builder(
-                      shrinkWrap: true,
-                      primary: true,
-                      padding: EdgeInsets.only(bottom: 12),
-                      physics: ScrollPhysics(),
-                      itemCount: bC.docList.length,
-                      itemBuilder: (context, index) {
-                        var doc = bC.docList[index];
-                        return GestureDetector(
-                        child: DocListWidget(doc),
-                          onTap: () => Get.to(
-                              DetailScreen(RemoteServices.baseURL+'/company/get-image?id='+doc['companyPolicyId'])),
-                        );
-                      },
-                    )
-                  ]);
+              return Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: [
+                ListView.builder(
+                  shrinkWrap: true,
+                  primary: true,
+                  padding: EdgeInsets.only(bottom: 12),
+                  physics: ScrollPhysics(),
+                  itemCount: bC.docList.length,
+                  itemBuilder: (context, index) {
+                    var doc = bC.docList[index];
+                    return GestureDetector(
+                      child: DocListWidget(doc),
+                      onTap: () => Get.to(DetailScreen(RemoteServices.baseURL + '/company/get-image?id=' + doc['companyPolicyId'])),
+                    );
+                  },
+                )
+              ]);
             }
           }),
         ),
@@ -178,8 +170,8 @@ class MyTextField extends StatelessWidget {
       ),
     );
   }
-
 }
+
 class DetailScreen extends StatelessWidget {
   final String url;
   DetailScreen(this.url);
@@ -190,13 +182,13 @@ class DetailScreen extends StatelessWidget {
       body: GestureDetector(
         child: Center(
           child: Hero(
-            tag: 'imageHero',
-            child: CachedNetworkImage(
-        imageUrl: url,
-        imageBuilder: (context, imageProvider) => PhotoView(
-      imageProvider: imageProvider,
-    ),)
-          ),
+              tag: 'imageHero',
+              child: CachedNetworkImage(
+                imageUrl: url,
+                imageBuilder: (context, imageProvider) => PhotoView(
+                  imageProvider: imageProvider,
+                ),
+              )),
         ),
         onTap: () {
           Navigator.pop(context);

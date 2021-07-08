@@ -1,15 +1,14 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 import '../connection/remote_services.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-
 import '../controllers/employee_report_controller.dart';
 import '../utils/utils.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 
 class LocationReportDetail extends StatefulWidget {
   @override
@@ -20,7 +19,7 @@ class _LocationReportDetailState extends State<LocationReportDetail> {
   final EmployeeReportController epC = Get.put(EmployeeReportController());
   GoogleMapController controller;
   final Set<Marker> _markers = {};
-  int live = 0,total =0;
+  int live = 0, total = 0;
 
   @override
   void initState() {
@@ -85,14 +84,13 @@ class _LocationReportDetailState extends State<LocationReportDetail> {
         print(emp);
         var markIcon;
         var time = DateTime.parse(emp['timeStamp']);
-        DateTime now = new DateTime.now();;
+        var now = DateTime.now();
+        ;
         total++;
-        markIcon = await BitmapDescriptor.fromAssetImage(
-            ImageConfiguration(size: Size(24, 24)), 'assets/images/siteposted_nolive.png');
-        if(time.millisecondsSinceEpoch > (now.millisecondsSinceEpoch - (3600*1000))){
+        markIcon = await BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(24, 24)), 'assets/images/siteposted_nolive.png');
+        if (time.millisecondsSinceEpoch > (now.millisecondsSinceEpoch - (3600 * 1000))) {
           live++;
-          markIcon = await BitmapDescriptor.fromAssetImage(
-              ImageConfiguration(size: Size(24, 24)), 'assets/images/siteposted.png');
+          markIcon = await BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(24, 24)), 'assets/images/siteposted.png');
         }
 
         var snippetString = '${emp['datetime']}, ${emp['battery']}%';
@@ -163,41 +161,42 @@ class _LocationReportDetailState extends State<LocationReportDetail> {
           return Padding(
             padding: const EdgeInsets.all(15.0),
             child: Center(
-              child: Stack (children: [
-            ClipRRect(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(15),
-                  topRight: Radius.circular(15),
-                  bottomRight: Radius.circular(15),
-                  bottomLeft: Radius.circular(15),
-                ),
-                child :Align(
-                  alignment: Alignment.center,
-                  child: GoogleMap(
-                    buildingsEnabled: true,
-                    myLocationEnabled: true,
-                    mapToolbarEnabled: true,
-                    markers: _markers,
-                    onMapCreated: _onMapCreated,
-                    initialCameraPosition: CameraPosition(
-                      target: LatLng(
-                        double.parse(epC.locations.first['lat']),
-                        double.parse(epC.locations.first['lng']),
-                      ),
-                      zoom: 8,
+              child: Stack(children: [
+                ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(15),
+                      topRight: Radius.circular(15),
+                      bottomRight: Radius.circular(15),
+                      bottomLeft: Radius.circular(15),
                     ),
-                    mapType: MapType.normal,
-                  ),
-                )),
-                  Align(
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: GoogleMap(
+                        buildingsEnabled: true,
+                        myLocationEnabled: true,
+                        mapToolbarEnabled: true,
+                        markers: _markers,
+                        onMapCreated: _onMapCreated,
+                        initialCameraPosition: CameraPosition(
+                          target: LatLng(
+                            double.parse(epC.locations.first['lat']),
+                            double.parse(epC.locations.first['lng']),
+                          ),
+                          zoom: 8,
+                        ),
+                        mapType: MapType.normal,
+                      ),
+                    )),
+                Align(
                     alignment: Alignment.bottomLeft,
-                    child : Container(
+                    child: Container(
                       padding: EdgeInsets.all(6),
                       color: Colors.grey[400],
-                      child: Text('Live '+live.toString()+'/'+total.toString(),
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),),
-                    )
-                  )
+                      child: Text(
+                        'Live ' + live.toString() + '/' + total.toString(),
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                      ),
+                    ))
               ]),
             ),
           );

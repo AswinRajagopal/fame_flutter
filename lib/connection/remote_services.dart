@@ -40,9 +40,9 @@ import '../views/welcome_page.dart';
 // import 'package:background_locator/settings/locator_settings.dart' as ls;
 
 class RemoteServices {
-  // static var baseURL = 'http://52.66.61.207:8090/v1/api';
+  static var baseURL = 'http://52.66.61.207:8090/v1/api';
   // static var baseURL = 'http://androidapp.mydiyosfame.com:8090/v1/api';
-  static var baseURL = 'http://192.168.43.230:8090/v1/api';
+  // static var baseURL = 'http://192.168.43.230:8090/v1/api';
 
   // static var baseURL = 'http://182.18.157.28:8090/v1/api';
   static var client = http.Client();
@@ -423,18 +423,23 @@ class RemoteServices {
       return null;
     }
   }
+
   Future getAddressFromLatLng(double lat, double lng) async {
-    String _host = 'https://maps.googleapis.com/maps/api/geocode/json';
+    var _host = 'https://maps.googleapis.com/maps/api/geocode/json';
     final url = '$_host?key=AIzaSyADoNEFbFbgHCpu7mz7yLWhbbUMZqk4yHU&language=en&latlng=$lat,$lng';
-    if(lat != null && lng != null){
+    if (lat != null && lng != null) {
       var response = await http.get(Uri.parse(url));
-      if(response.statusCode == 200) {
+      if (response.statusCode == 200) {
         Map data = jsonDecode(response.body);
-        String _formattedAddress = data["results"][0]["formatted_address"];
-        print("response ==== $_formattedAddress");
+        String _formattedAddress = data['results'][0]['formatted_address'];
+        print('response ==== $_formattedAddress');
         return _formattedAddress;
-      } else return null;
-    } else return null;
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
   }
 
   Future checkin(lat, lng, address) async {
@@ -520,7 +525,6 @@ class RemoteServices {
       return null;
     }
   }
-
 
   Future uploadPolicyDoc(File imageFile, name) async {
     // print('companyid: ${box.get('companyid')}');
@@ -1218,6 +1222,7 @@ class RemoteServices {
       return null;
     }
   }
+
   Future getPolicyDocs() async {
     var response = await client.post(
       '$baseURL/company/get_policy_docs',
@@ -1263,7 +1268,7 @@ class RemoteServices {
     }
   }
 
-  Future newGrie( broadcast) async {
+  Future newGrie(broadcast) async {
     var response = await client.post(
       '$baseURL/company/create_grie',
       headers: header,
@@ -1390,6 +1395,7 @@ class RemoteServices {
     print(response.statusCode);
     if (response.statusCode == 200) {
       var jsonString = response.body;
+      print(jsonString);
       return json.decode(jsonString);
     } else {
       //show error message
@@ -2043,14 +2049,10 @@ class RemoteServices {
     }
   }
 
-  Future newRecUploadProof(var empId,File aadharFront, File aadharBack, File passbookFront,
-      File passbookBack, File proof3Front, File proof3Back, File profile) async {
+  Future newRecUploadProof(var empId, File aadharFront, File aadharBack, File passbookFront, File passbookBack, File proof3Front, File proof3Back, File profile) async {
     var dio = mydio.Dio();
-    var proof3backvar = null,
-        proof3frontvar = null,
-        profilevar = null,
-        passbookFrontVar,
-        passbookBackVar;
+    // ignore: avoid_init_to_null
+    var proof3backvar = null, proof3frontvar = null, profilevar = null, passbookFrontVar, passbookBackVar;
     if (proof3Back != null) {
       proof3backvar = await mydio.MultipartFile.fromFile(
         proof3Back.path,

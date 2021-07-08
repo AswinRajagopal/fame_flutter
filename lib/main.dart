@@ -1,28 +1,23 @@
 import 'dart:convert';
 
+import 'package:device_preview/device_preview.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
+import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:hive/hive.dart';
 import 'package:in_app_update/in_app_update.dart';
-
-import 'views/dashboard_page.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 import 'connection/remote_services.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
-
-import 'views/welcome_page.dart';
-
+import 'views/dashboard_page.dart';
 import 'views/forgot_password_page.dart';
-
-import 'views/signup_page.dart';
-import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart';
-
 import 'views/login_page.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:device_preview/device_preview.dart';
-import 'package:responsive_framework/responsive_framework.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'views/signup_page.dart';
+import 'views/welcome_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -64,17 +59,16 @@ class PocketFaME extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool appUpdate = false;
+    var appUpdate = false;
     try {
-      appUpdate =
-      jsonDecode(RemoteServices().box.get('appFeature'))['appUpdate'];
-    }catch(e){
-
+      appUpdate = jsonDecode(RemoteServices().box.get('appFeature'))['appUpdate'];
+    } catch (e) {
+      print(e);
     }
-    if(appUpdate!=null && appUpdate) {
+    if (appUpdate != null && appUpdate) {
       Get.snackbar(
         'Msg',
-        "Getting updating",
+        'Getting updating',
         colorText: Colors.white,
         backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
@@ -90,19 +84,18 @@ class PocketFaME extends StatelessWidget {
         }
         // ignore: unnecessary_lambdas
       }).catchError((e) => _showError(e));
-
-    }else{
-      Get.snackbar(
-          'Msg',
-          "Not updating",
-          colorText: Colors.white,
-          backgroundColor: Colors.black87,
-          snackPosition: SnackPosition.BOTTOM,
-          margin: EdgeInsets.symmetric(
-            horizontal: 8.0,
-            vertical: 10.0,
-          ),
-        );
+    } else {
+      // Get.snackbar(
+      //   'Msg',
+      //   'Not updating',
+      //   colorText: Colors.white,
+      //   backgroundColor: Colors.black87,
+      //   snackPosition: SnackPosition.BOTTOM,
+      //   margin: EdgeInsets.symmetric(
+      //     horizontal: 8.0,
+      //     vertical: 10.0,
+      //   ),
+      // );
     }
     // SystemChrome.setSystemUIOverlayStyle(
     //   SystemUiOverlayStyle(
