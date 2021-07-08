@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:fame/views/add_employee_new.dart';
 import 'package:fame/views/grievance_report.dart';
 import 'package:fame/views/policy_doc_list.dart';
 
@@ -117,13 +118,13 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             GestureDetector(
               onTap: () {
-                Get.to(OnboardingPage());
+                Get.to(AddEmployeeNew());
               },
               child: Visibility(
                 visible: ((roleId == AppUtils.ADMIN || roleId == AppUtils.MANAGER)
                     && jsonDecode(RemoteServices().box.get('appFeature'))['onboarding']) ? true : false,
                 child: ListContainer(
-                  'assets/images/onboarding.png',
+                  'assets/images/employee.png',
                   'Onboarding',
                 ),
               ),

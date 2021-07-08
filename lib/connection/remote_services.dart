@@ -11,7 +11,6 @@ import 'package:connectivity/connectivity.dart';
 // import 'package:background_locator/settings/ios_settings.dart' as ios;
 // import 'package:background_locator/settings/locator_settings.dart';
 import 'package:dio/dio.dart' as mydio;
-import 'package:fame/utils/utils.dart';
 // import 'package:fame/connection/location_service_repository.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
@@ -41,9 +40,10 @@ import '../views/welcome_page.dart';
 // import 'package:background_locator/settings/locator_settings.dart' as ls;
 
 class RemoteServices {
-  static var baseURL = 'http://52.66.61.207:8090/v1/api';
+  // static var baseURL = 'http://52.66.61.207:8090/v1/api';
   // static var baseURL = 'http://androidapp.mydiyosfame.com:8090/v1/api';
-  // static var baseURL = 'http://192.168.43.230:8090/v1/api';
+  static var baseURL = 'http://192.168.43.230:8090/v1/api';
+
   // static var baseURL = 'http://182.18.157.28:8090/v1/api';
   static var client = http.Client();
   static var header = <String, String>{
@@ -671,6 +671,7 @@ class RemoteServices {
       body: jsonEncode(
         <String, String>{
           'companyId': box.get('companyid').toString(),
+          'empId': box.get('empid').toString(),
         },
       ),
     );
@@ -1806,6 +1807,7 @@ class RemoteServices {
       body: jsonEncode(
         <String, String>{
           'companyId': box.get('companyid').toString(),
+          'empId': box.get('empid').toString(),
           'unitName': unitName,
         },
       ),
@@ -2044,23 +2046,39 @@ class RemoteServices {
   Future newRecUploadProof(var empId,File aadharFront, File aadharBack, File passbookFront,
       File passbookBack, File proof3Front, File proof3Back, File profile) async {
     var dio = mydio.Dio();
-    var proof3backvar = null, proof3frontvar=null, profilevar = null;
-    if(proof3Back!=null) {
+    var proof3backvar = null,
+        proof3frontvar = null,
+        profilevar = null,
+        passbookFrontVar,
+        passbookBackVar;
+    if (proof3Back != null) {
       proof3backvar = await mydio.MultipartFile.fromFile(
         proof3Back.path,
         filename: path.basename(proof3Back.path).toString(),
       );
     }
-    if(proof3Front!=null) {
+    if (proof3Front != null) {
       proof3frontvar = await mydio.MultipartFile.fromFile(
         proof3Front.path,
         filename: path.basename(proof3Front.path).toString(),
       );
     }
-    if(profile!=null) {
+    if (profile != null) {
       profilevar = await mydio.MultipartFile.fromFile(
         profile.path,
         filename: path.basename(profile.path).toString(),
+      );
+    }
+    if (passbookBack != null) {
+      passbookBackVar = await mydio.MultipartFile.fromFile(
+        passbookBack.path,
+        filename: path.basename(passbookBack.path).toString(),
+      );
+    }
+    if (passbookFront != null) {
+      passbookFrontVar = await mydio.MultipartFile.fromFile(
+        passbookFront.path,
+        filename: path.basename(passbookFront.path).toString(),
       );
     }
     var formData = mydio.FormData.fromMap({
@@ -2074,18 +2092,9 @@ class RemoteServices {
         aadharBack.path,
         filename: path.basename(aadharBack.path).toString(),
       ),
-      'passbookFront': await mydio.MultipartFile.fromFile(
-        passbookFront.path,
-        filename: path.basename(passbookFront.path).toString(),
-      ),
-      'passbookBack': await mydio.MultipartFile.fromFile(
-        passbookBack.path,
-        filename: path.basename(passbookBack.path).toString(),
-      ),
-      'profile': await mydio.MultipartFile.fromFile(
-        profile.path,
-        filename: path.basename(profile.path).toString(),
-      ),
+      'passbookFront': passbookFrontVar,
+      'passbookBack': passbookBackVar,
+      'profile': profilevar,
       'proof3Front': proof3frontvar,
       'proof3Back': proof3backvar,
     });

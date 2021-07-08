@@ -1,7 +1,10 @@
 import 'dart:io';
 
+import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:checkdigit/checkdigit.dart';
+import 'package:fame/connection/remote_services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -49,6 +52,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew>
   TextEditingController proofAadharNumberConfirm = TextEditingController();
   TextEditingController proofNumber2 = TextEditingController();
   TextEditingController proofNumber3 = TextEditingController();
+  TextEditingController clientAu = TextEditingController();
   TextEditingController proof1 = TextEditingController();
   TextEditingController proof2 = TextEditingController();
   TextEditingController proof3 = TextEditingController();
@@ -341,9 +345,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew>
       if (proofAadharNumber.isNullOrBlank ||
           proofNumber2.isNullOrBlank ||
           aadhar1 == null ||
-          aadhar2 == null ||
-          proof11 == null ||
-          proof12 == null) {
+          aadhar2 == null) {
         Get.snackbar(
           null,
           'Please provide all the details and select proof images',
@@ -926,48 +928,62 @@ class _AddEmployeeNewState extends State<AddEmployeeNew>
                                   horizontal: 10.0,
                                   vertical: 10.0,
                                 ),
-                                child: DropdownButtonFormField<dynamic>(
-                                  hint: Text(
-                                    'Select Client*',
-                                    style: TextStyle(
-                                      color: Colors.grey[600],
-                                      fontSize: 18.0,
-                                      // fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  isExpanded: false,
-                                  value: client,
-                                  items: adminC.clientList.map((item) {
-                                    //print('item: $item');
-                                    var sC = item['name'] +
-                                        ' - ' +
-                                        item['id'].toString();
-                                    return DropdownMenuItem(
-                                      child: Text(
-                                        sC,
+                                child: TypeAheadField(
+                                  textFieldConfiguration: TextFieldConfiguration(
+                                    controller: clientAu,
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(10),
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey[600],
+                                        fontSize: 18.0,
                                       ),
-                                      value: item['id'],
-                                    );
-                                  }).toList(),
-                                  decoration: InputDecoration(
-                                    prefixIcon: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Image.asset(
-                                          'assets/images/siteposted.png',
-                                          color: Colors.grey[400],
-                                          scale: 2.0,
-                                        ),
-                                      ],
+                                      hintText: 'Enter Client Name*',
+                                      prefixIcon: Column(
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/siteposted.png',
+                                            color: Colors.grey[400],
+                                            scale: 1.8,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                  onChanged: (value) {
-                                    FocusScope.of(context)
-                                        .requestFocus(FocusNode());
-                                    client = value;
-                                    // setState(() {});
+                                  suggestionsCallback: (pattern) async {
+                                    // print(pattern);
+                                    if (pattern.isNotEmpty) {
+                                      return await RemoteServices()
+                                          .getClientsSugg(pattern);
+                                    } else {
+                                      sitePostedTo = null;
+                                    }
+                                    return null;
                                   },
+                                  hideOnEmpty: true,
+                                  noItemsFoundBuilder: (context) {
+                                    return Text('No client found');
+                                  },
+                                  itemBuilder: (context, suggestion) {
+                                    return ListTile(
+                                      title: Text(
+                                        suggestion['name'],
+                                      ),
+                                      subtitle: Text(
+                                        suggestion['id'],
+                                      ),
+                                    );
+                                  },
+                                  onSuggestionSelected: (suggestion) {
+                                    print(suggestion);
+                                    print(suggestion['name']);
+                                    client = suggestion['id'];
+                                    clientAu.text = suggestion['name']
+                                        .toString()
+                                        .trimRight() + ' - ' + suggestion['id'];
+                                    sitePostedTo = suggestion['id'];
+                                  },
+                                  autoFlipDirection: true,
                                 ),
                               ),
                               Padding(
@@ -2882,7 +2898,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew>
                                 vertical: 10.0,
                               ),
                               child: Text(
-                                'ID Proof 2*',
+                                'ID Proof 2',
                                 style: TextStyle(
                                   fontSize: 18.0,
                                 ),
@@ -2953,7 +2969,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew>
                                           fontSize: 18.0,
                                           // fontWeight: FontWeight.bold,
                                         ),
-                                        hintText: 'Upload ID Proof Front*',
+                                        hintText: 'Upload ID Proof Front',
                                         suffixIcon: Image.asset(
                                           'assets/images/uplode_proof.png',
                                           // color: Colors.grey,
@@ -2994,7 +3010,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew>
                                           fontSize: 18.0,
                                           // fontWeight: FontWeight.bold,
                                         ),
-                                        hintText: 'Upload ID Proof Back*',
+                                        hintText: 'Upload ID Proof Back',
                                         suffixIcon: Image.asset(
                                           'assets/images/uplode_proof.png',
                                           // color: Colors.grey,

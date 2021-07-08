@@ -236,6 +236,7 @@ class MyTextField extends StatelessWidget {
       ),
       child: TextField(
         controller: inputController,
+        maxLines: 2,
         decoration: InputDecoration(
           isDense: true,
           contentPadding: EdgeInsets.all(10),

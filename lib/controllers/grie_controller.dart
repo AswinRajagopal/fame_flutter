@@ -48,7 +48,7 @@ class GrieController extends GetxController {
         } else {
           Get.snackbar(
             null,
-            'Something went wrong! Please try again later',
+            res['msg'],
             colorText: Colors.white,
             backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,

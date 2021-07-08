@@ -238,13 +238,14 @@ class MyTextField extends StatelessWidget {
       ),
       child: TextField(
         controller: inputController,
+        maxLines: 3,
         decoration: InputDecoration(
           isDense: true,
           contentPadding: EdgeInsets.all(10),
           hintStyle: TextStyle(
             color: Colors.grey[600],
             fontSize: 18.0,
-           // fontWeight: FontWeight.bold,
+            // fontWeight: FontWeight.bold,
           ),
           hintText: hintText,
         ),
