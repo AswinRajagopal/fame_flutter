@@ -1,14 +1,11 @@
-import 'package:fame/connection/remote_services.dart';
-
-import '../widgets/broadcast_list_widget.dart';
-
-import '../utils/utils.dart';
-import 'package:progress_dialog/progress_dialog.dart';
-
-import '../controllers/broadcast_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
+import '../connection/remote_services.dart';
+import '../controllers/broadcast_controller.dart';
+import '../utils/utils.dart';
+import '../widgets/broadcast_list_widget.dart';
 import 'new_broadcast.dart';
 
 class ViewBroadcast extends StatefulWidget {
@@ -18,7 +15,8 @@ class ViewBroadcast extends StatefulWidget {
 
 class _ViewBroadcastState extends State<ViewBroadcast> {
   final BroadcastController bC = Get.put(BroadcastController());
-  var roleId = RemoteServices().box.get('role');
+  // var roleId = RemoteServices().box.get('role');
+  var roleId;
 
   @override
   void initState() {
@@ -57,6 +55,7 @@ class _ViewBroadcastState extends State<ViewBroadcast> {
       Duration(milliseconds: 100),
       bC.getBroadcast,
     );
+    roleId = RemoteServices().box.get('role');
     super.initState();
   }
 
