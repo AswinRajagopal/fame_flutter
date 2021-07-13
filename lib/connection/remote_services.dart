@@ -808,7 +808,16 @@ class RemoteServices {
   }
 
   Future aprRejLeave(id, status) async {
-    // print('empName: $empName');
+    print(
+      jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'approvedBy': box.get('empid').toString(),
+          'status': status,
+          'id': id,
+        },
+      ),
+    );
     var response = await client.post(
       '$baseURL/leave/approve_leave',
       headers: header,

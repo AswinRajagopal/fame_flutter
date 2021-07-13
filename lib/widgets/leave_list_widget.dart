@@ -1,3 +1,4 @@
+import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:dotted_line/dotted_line.dart';
 import '../controllers/leave_controller.dart';
 import '../connection/remote_services.dart';
@@ -28,6 +29,8 @@ class LeaveListWidget extends StatelessWidget {
       return 'Pending';
     } else if (status == 1) {
       return 'Approved';
+    } else if (status == 3) {
+      return 'Cancelled';
     } else {
       return 'Rejected';
     }
@@ -352,8 +355,67 @@ class LeaveListWidget extends StatelessWidget {
                 ),
               ],
             ),
-            (leave['status'] == '0' || leave['status'] == 'Pending') &&
-                (RemoteServices().box.get('empid') != leave['empId'])
+            RemoteServices().box.get('empid') == leave['empId'] && int.parse(leave['status']) != 3
+                ? DateTime.now().isAfter(DateTime.parse(leave['fromDate']))
+                    ? Container()
+                    : Column(
+                        children: [
+                          SizedBox(
+                            height: 15.0,
+                          ),
+                          DottedLine(
+                            direction: Axis.horizontal,
+                            lineLength: double.infinity,
+                            lineThickness: 1.0,
+                            dashLength: 4.0,
+                            dashColor: Colors.grey,
+                            dashRadius: 0.0,
+                            dashGapLength: 4.0,
+                            dashGapColor: Colors.transparent,
+                            dashGapRadius: 0.0,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: 20.0,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                RaisedButton(
+                                  onPressed: () async {
+                                    if (await confirm(
+                                      context,
+                                      title: Text('Confirm!'),
+                                      content: Text('Are you sure, you want to cancel the leave?'),
+                                      textOK: Text('Yes'),
+                                      textCancel: Text('No'),
+                                    )) {
+                                      lC.aprRejLeave(index, leave['empLeaveHistoryId'], '3');
+                                    }
+                                  },
+                                  child: Text(
+                                    'Cancel',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16.0,
+                                    ),
+                                  ),
+                                  color: Theme.of(context).primaryColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    side: BorderSide(
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      )
+                : Container(),
+            (leave['status'] == '0' || leave['status'] == 'Pending') && (RemoteServices().box.get('empid') != leave['empId'])
                 ? Column(
                     children: [
                       SizedBox(

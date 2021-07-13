@@ -283,6 +283,34 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.symmetric(
+                              vertical: 10.0,
+                              horizontal: 15.0,
+                            ),
+                            child: Row(
+                              children: [
+                                Text(
+                                  'Reporting Manager:',
+                                  style: TextStyle(
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10.0,
+                                ),
+                                Text(
+                                  alC.reportingManager.value,
+                                  style: TextStyle(
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
                               vertical: 15.0,
                               horizontal: 15.0,
                             ),

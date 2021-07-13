@@ -17,6 +17,7 @@ class ApplyLeaveController extends GetxController {
   var ltVal = '';
   final List leaveTypeList = [];
   final List leaveBalance = [].obs;
+  var reportingManager = 'N/A'.obs;
   bool isDisposed = false;
 
   @override
@@ -97,6 +98,7 @@ class ApplyLeaveController extends GetxController {
 
   void getLeaveBalance() async {
     leaveBalance.clear();
+    reportingManager('N/A');
     try {
       isLoadingBalance(true);
       var leaveBalanceRes = await RemoteServices().getLeaveBalance();
@@ -104,6 +106,7 @@ class ApplyLeaveController extends GetxController {
         isLoadingBalance(false);
         print('leaveBalanceRes: $leaveBalanceRes');
         if (leaveBalanceRes['success']) {
+          if (leaveBalanceRes['reportingManager'] != null) reportingManager(leaveBalanceRes['reportingManager']);
           for (var i = 0; i < leaveBalanceRes['leaveTypeList'].length; i++) {
             var leaveType = leaveBalanceRes['leaveTypeList'][i];
             for (var j = 0; j < leaveBalanceRes['empLeaveBalanceList'].length; j++) {

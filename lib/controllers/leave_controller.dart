@@ -87,7 +87,7 @@ class LeaveController extends GetxController {
       if (appRejRes != null) {
         isUpdating(false);
         await pr.hide();
-        // print('res valid: $res');
+        print('res valid: $appRejRes');
         if (appRejRes['success']) {
           print('here');
           leaveList.clear();
