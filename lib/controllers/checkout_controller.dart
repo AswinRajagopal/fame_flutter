@@ -55,19 +55,17 @@ class CheckoutController extends GetxController {
         currentPosition.latitude,
         currentPosition.longitude,
       );
-      var first ;
-      if(placemark!=null) {
+      var first;
+      if (placemark != null) {
         first = placemark.first;
       }
       print(first);
       var distance = await Locationpath().getDistance(LatLng(currentPosition.latitude, currentPosition.longitude), LatLng(double.parse(RemoteServices().box.get('clientLat')), double.parse(RemoteServices().box.get('clientLng'))));
       var maxDistance = RemoteServices().box.get('maxDist');
       if (maxDistance == '0' || int.parse(maxDistance) > (distance * 1000).round()) {
-        if(first!=null) {
-          currentAddress.value =
-          '${first.street}, ${first.subLocality}, ${first.locality}, ${first
-              .postalCode}, ${first.country}';
-        }else{
+        if (first != null) {
+          currentAddress.value = 'lat: ${currentPosition.latitude}\nlng: ${currentPosition.longitude}\n${first.street}, ${first.subLocality}, ${first.locality}, ${first.postalCode}, ${first.country}';
+        } else {
           currentAddress.value = 'Please checkout';
         }
       } else {
@@ -207,10 +205,10 @@ class CheckoutController extends GetxController {
               return true;
             } else {
               var msg = 'Something went wrong! Please try again later';
-              if(checkout['message']!=null){
+              if (checkout['message'] != null) {
                 msg = checkout['message'];
                 showDialog(
-                  context : Get.context,
+                  context: Get.context,
                   builder: (context) => AlertDialog(
                     content: Text(
                       msg,
@@ -228,23 +226,24 @@ class CheckoutController extends GetxController {
                     ],
                   ),
                 );
-              }else{
-              Get.snackbar(
-                null,
-                msg,
-                colorText: Colors.white,
-                backgroundColor: Colors.black87,
-                snackPosition: SnackPosition.BOTTOM,
-                margin: EdgeInsets.symmetric(
-                  horizontal: 8.0,
-                  vertical: 10.0,
-                ),
-                padding: EdgeInsets.symmetric(
-                  horizontal: 12.0,
-                  vertical: 18.0,
-                ),
-                borderRadius: 5.0,
-              );}
+              } else {
+                Get.snackbar(
+                  null,
+                  msg,
+                  colorText: Colors.white,
+                  backgroundColor: Colors.black87,
+                  snackPosition: SnackPosition.BOTTOM,
+                  margin: EdgeInsets.symmetric(
+                    horizontal: 8.0,
+                    vertical: 10.0,
+                  ),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 12.0,
+                    vertical: 18.0,
+                  ),
+                  borderRadius: 5.0,
+                );
+              }
               return false;
             }
           }
@@ -308,7 +307,7 @@ class CheckoutController extends GetxController {
     } else {
       await pr.hide();
       var msg = 'Something went wrong! Please try again later';
-      if(checkout['message']!=null){
+      if (checkout['message'] != null) {
         msg = checkout['message'];
       }
       Get.snackbar(
