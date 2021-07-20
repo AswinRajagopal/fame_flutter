@@ -42,7 +42,7 @@ import '../views/welcome_page.dart';
 class RemoteServices {
   static var baseURL = 'http://52.66.61.207:8090/v1/api';
   // static var baseURL = 'http://androidapp.mydiyosfame.com:8090/v1/api';
-  // static var baseURL = 'http://192.168.43.230:8090/v1/api';
+  // static var baseURL = 'http://192.168.43.26:8090/v1/api';
 
   // static var baseURL = 'http://182.18.157.28:8090/v1/api';
   static var client = http.Client();
@@ -1823,6 +1823,29 @@ class RemoteServices {
         <String, String>{
           'companyId': box.get('companyid').toString(),
           'empId': box.get('empid').toString(),
+          'unitName': unitName,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString)['clientsSuggest'];
+    } else {
+      //show error message
+      return null;
+    }
+  }
+  Future getBranchClientsSugg(unitName) async {
+    // print('empName: $empName');
+    var response = await client.post(
+      '$baseURL/transfer/get_unit_suggest',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'empId': box.get('empid').toString(),
+          'branch': "1",
           'unitName': unitName,
         },
       ),

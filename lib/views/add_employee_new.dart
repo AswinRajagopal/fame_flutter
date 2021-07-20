@@ -937,7 +937,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   suggestionsCallback: (pattern) async {
                                     // print(pattern);
                                     if (pattern.isNotEmpty) {
-                                      return await RemoteServices().getClientsSugg(pattern);
+                                      return await RemoteServices().getBranchClientsSugg(pattern);
                                     } else {
                                       sitePostedTo = null;
                                     }
