@@ -25,6 +25,7 @@ class CheckinController extends GetxController {
   @override
   void onInit() {
     updateTime();
+    latlngTimeout();
     super.onInit();
   }
 
@@ -34,9 +35,16 @@ class CheckinController extends GetxController {
   }
 
   void updateTime() {
-    Timer.periodic(Duration(seconds: 1), (timer) {
+    Timer.periodic(Duration(seconds: 10), (timer) {
       todayString.value = DateFormat.yMd().add_jm().format(DateTime.now()).toString();
     });
+  }
+
+  Future latlngTimeout() {
+     new Timer(const Duration(seconds: 10), ()=>
+     (currentAddress.value=='Fetching your location...')?currentAddress.value='Please checkin':''
+     );
+     return null;
   }
 
   void getCurrentLocation() {

@@ -29,10 +29,12 @@ class LeaveListWidget extends StatelessWidget {
       return 'Pending';
     } else if (status == 1) {
       return 'Approved';
+    }else if (status == 2) {
+      return 'Rejected';
     } else if (status == 3) {
       return 'Cancelled';
     } else {
-      return 'Rejected';
+      return 'Cancel Pending';
     }
   }
 
@@ -355,7 +357,7 @@ class LeaveListWidget extends StatelessWidget {
                 ),
               ],
             ),
-            RemoteServices().box.get('empid') == leave['empId'] && int.parse(leave['status']) != 3
+            RemoteServices().box.get('empid') == leave['empId'] && int.parse(leave['status']) < 2
                 ? DateTime.now().isAfter(DateTime.parse(leave['fromDate']))
                     ? Container()
                     : Column(
@@ -415,7 +417,9 @@ class LeaveListWidget extends StatelessWidget {
                         ],
                       )
                 : Container(),
-            (leave['status'] == '0' || leave['status'] == 'Pending') && (RemoteServices().box.get('empid') != leave['empId'])
+            (leave['status'] == '0' || leave['status'] == 'Pending'
+                || leave['status'] == '4' || leave['status'] == 'Cancel Pending')
+                && (RemoteServices().box.get('empid') != leave['empId'])
                 ? Column(
                     children: [
                       SizedBox(

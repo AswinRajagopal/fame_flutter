@@ -25,6 +25,7 @@ class CheckoutController extends GetxController {
   @override
   void onInit() {
     updateTime();
+    latlngTimeout();
     super.onInit();
   }
 
@@ -48,7 +49,12 @@ class CheckoutController extends GetxController {
       print(e);
     });
   }
-
+  Future latlngTimeout() {
+    new Timer(const Duration(seconds: 10), ()=>
+    (currentAddress.value=='Fetching your location...')?currentAddress.value='Please checkout':''
+    );
+    return null;
+  }
   void getAddressFromLatLng() async {
     try {
       var placemark = await placemarkFromCoordinates(
