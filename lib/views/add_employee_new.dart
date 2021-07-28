@@ -525,6 +525,10 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                   ),
                   GestureDetector(
                     onTap: () {
+                      // tabController.animateTo(4);
+                      // setState(() {
+                      //   currentTabIndex = 4;
+                      // });
                       print('currentTabIndex: $currentTabIndex');
                       print('goto: 4');
                       if (currentTabIndex > 4) {
@@ -2584,56 +2588,137 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                               height: 10.0,
                             ),
                             Center(
-                                child: GestureDetector(
-                                    onTap: () async {
-                                      var pickedFile;
-                                      print('take picture');
-                                      if (await confirm(
-                                        context,
-                                        title: Text('Choose'),
-                                        content: Text('Please choose from'),
-                                        textOK: Text(
-                                          'Gallery',
-                                        ),
-                                        textCancel: GestureDetector(
-                                          onTap: () async {
-                                            print('No');
-                                            Get.back();
-                                            pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
-                                          },
-                                          child: Text(
-                                            'Camera',
-                                          ),
-                                        ),
-                                      )) {
-                                        pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
-                                      }
-                                      // var pickedFile = await ImagePicker().getImage(source: source);
-                                      if (pickedFile != null) {
-                                        profile = File(pickedFile.path);
-                                        profileAdd = true;
-                                        profileLink = 'https://cdn.iconscout.com/icon/premium/png-256-thumb/done-36-832708.png';
-                                        setState(() {});
-                                      } else {
-                                        print('No image selected.');
-                                        profile = null;
-                                        profileAdd = false;
-                                        setState(() {});
-                                      }
-                                    },
-                                    child: Stack(children: [
-                                      Image.network(
-                                        profileLink,
-                                        // fit: BoxFit.cover,
-                                        height: 100.0,
-                                        width: 100.0,
+                              child: GestureDetector(
+                                onTap: () async {
+                                  var pickedFile;
+                                  await Get.bottomSheet(
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 15.0,
+                                        vertical: 15.0,
                                       ),
-                                      Image.asset(
-                                        'assets/images/uplode_proof.png',
-                                        // color: Colors.grey,
-                                        scale: 2.2,
-                                      )
-                                    ]))),
+                                      child: ListView(
+                                        shrinkWrap: true,
+                                        physics: ScrollPhysics(),
+                                        children: [
+                                          Text(
+                                            'Please choose from...',
+                                            style: TextStyle(
+                                              fontSize: 20.0,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 15.0,
+                                          ),
+                                          Row(
+                                            children: [
+                                              TextButton(
+                                                onPressed: () async {
+                                                  Get.back();
+                                                  pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+                                                  if (pickedFile != null) {
+                                                    profile = File(pickedFile.path);
+                                                    profileAdd = true;
+                                                    // profileLink = 'https://cdn.iconscout.com/icon/premium/png-256-thumb/done-36-832708.png';
+                                                    setState(() {});
+                                                  } else {
+                                                    print('No image selected.');
+                                                    profile = null;
+                                                    profileAdd = false;
+                                                    profileLink = 'https://cdn.pixabay.com/photo/2018/08/28/12/41/avatar-3637425_960_720.png';
+                                                    setState(() {});
+                                                  }
+                                                },
+                                                child: Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.camera,
+                                                      size: 30.0,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 10.0,
+                                                    ),
+                                                    Text(
+                                                      'Camera',
+                                                      style: TextStyle(
+                                                        fontSize: 20.0,
+                                                        color: Theme.of(context).primaryColor,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Spacer(),
+                                              TextButton(
+                                                onPressed: () async {
+                                                  Get.back();
+                                                  pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+                                                  if (pickedFile != null) {
+                                                    profile = File(pickedFile.path);
+                                                    profileAdd = true;
+                                                    // profileLink = 'https://cdn.iconscout.com/icon/premium/png-256-thumb/done-36-832708.png';
+                                                    setState(() {});
+                                                  } else {
+                                                    print('No image selected.');
+                                                    profile = null;
+                                                    profileAdd = false;
+                                                    profileLink = 'https://cdn.pixabay.com/photo/2018/08/28/12/41/avatar-3637425_960_720.png';
+                                                    setState(() {});
+                                                  }
+                                                },
+                                                child: Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.image,
+                                                      size: 30.0,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 10.0,
+                                                    ),
+                                                    Text(
+                                                      'Gallery',
+                                                      style: TextStyle(
+                                                        fontSize: 20.0,
+                                                        color: Theme.of(context).primaryColor,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    isDismissible: true,
+                                    backgroundColor: Colors.white,
+                                  );
+                                },
+                                child: Stack(
+                                  children: [
+                                    profile != null
+                                        ? Image.file(
+                                            profile,
+                                            height: 100.0,
+                                            width: 100.0,
+                                          )
+                                        : Image.network(
+                                            profileLink,
+                                            // fit: BoxFit.cover,
+                                            height: 100.0,
+                                            width: 100.0,
+                                          ),
+                                    Image.asset(
+                                      'assets/images/uplode_proof.png',
+                                      // color: Colors.grey,
+                                      scale: 2.2,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 10.0,
@@ -2720,38 +2805,140 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                       keyboardType: null,
                                       onTap: () async {
                                         var pickedFile;
-                                        print('take picture');
-                                        if (await confirm(
-                                          context,
-                                          title: Text('Choose'),
-                                          content: Text('Please choose from'),
-                                          textOK: Text(
-                                            'Gallery',
-                                          ),
-                                          textCancel: GestureDetector(
-                                            onTap: () async {
-                                              print('No');
-                                              Get.back();
-                                              pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
-                                            },
-                                            child: Text(
-                                              'Camera',
+                                        await Get.bottomSheet(
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 15.0,
+                                              vertical: 15.0,
+                                            ),
+                                            child: ListView(
+                                              shrinkWrap: true,
+                                              physics: ScrollPhysics(),
+                                              children: [
+                                                Text(
+                                                  'Please choose from...',
+                                                  style: TextStyle(
+                                                    fontSize: 20.0,
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 15.0,
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    TextButton(
+                                                      onPressed: () async {
+                                                        Get.back();
+                                                        pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+                                                        if (pickedFile != null) {
+                                                          aadhar1 = File(pickedFile.path);
+                                                          proof1.text = path.basename(pickedFile.path);
+                                                          setState(() {});
+                                                        } else {
+                                                          print('No image selected.');
+                                                          aadhar1 = null;
+                                                          proof1.clear();
+                                                          setState(() {});
+                                                        }
+                                                      },
+                                                      child: Row(
+                                                        children: [
+                                                          Icon(
+                                                            Icons.camera,
+                                                            size: 30.0,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 10.0,
+                                                          ),
+                                                          Text(
+                                                            'Camera',
+                                                            style: TextStyle(
+                                                              fontSize: 20.0,
+                                                              color: Theme.of(context).primaryColor,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Spacer(),
+                                                    TextButton(
+                                                      onPressed: () async {
+                                                        Get.back();
+                                                        pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+                                                        if (pickedFile != null) {
+                                                          aadhar1 = File(pickedFile.path);
+                                                          proof1.text = path.basename(pickedFile.path);
+                                                          setState(() {});
+                                                        } else {
+                                                          print('No image selected.');
+                                                          aadhar1 = null;
+                                                          proof1.clear();
+                                                          setState(() {});
+                                                        }
+                                                      },
+                                                      child: Row(
+                                                        children: [
+                                                          Icon(
+                                                            Icons.image,
+                                                            size: 30.0,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 10.0,
+                                                          ),
+                                                          Text(
+                                                            'Gallery',
+                                                            style: TextStyle(
+                                                              fontSize: 20.0,
+                                                              color: Theme.of(context).primaryColor,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                        )) {
-                                          pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
-                                        }
-                                        // var pickedFile = await ImagePicker().getImage(source: source);
-                                        if (pickedFile != null) {
-                                          aadhar1 = File(pickedFile.path);
-                                          proof1.text = path.basename(pickedFile.path);
-                                          setState(() {});
-                                        } else {
-                                          print('No image selected.');
-                                          aadhar1 = null;
-                                          proof1.clear();
-                                          setState(() {});
-                                        }
+                                          isDismissible: true,
+                                          backgroundColor: Colors.white,
+                                        );
+
+                                        // var pickedFile;
+                                        // print('take picture');
+                                        // if (await confirm(
+                                        //   context,
+                                        //   title: Text('Choose'),
+                                        //   content: Text('Please choose from'),
+                                        //   textOK: Text(
+                                        //     'Gallery',
+                                        //   ),
+                                        //   textCancel: GestureDetector(
+                                        //     onTap: () async {
+                                        //       print('No');
+                                        //       Get.back();
+                                        //       pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+                                        //     },
+                                        //     child: Text(
+                                        //       'Camera',
+                                        //     ),
+                                        //   ),
+                                        // )) {
+                                        //   pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+                                        // }
+                                        // // var pickedFile = await ImagePicker().getImage(source: source);
+                                        // if (pickedFile != null) {
+                                        //   aadhar1 = File(pickedFile.path);
+                                        //   proof1.text = path.basename(pickedFile.path);
+                                        //   setState(() {});
+                                        // } else {
+                                        //   print('No image selected.');
+                                        //   aadhar1 = null;
+                                        //   proof1.clear();
+                                        //   setState(() {});
+                                        // }
                                       },
                                     ),
                                   ),
@@ -2780,38 +2967,140 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                       keyboardType: null,
                                       onTap: () async {
                                         var pickedFile;
-                                        print('take picture');
-                                        if (await confirm(
-                                          context,
-                                          title: Text('Choose'),
-                                          content: Text('Please choose from'),
-                                          textOK: Text(
-                                            'Gallery',
-                                          ),
-                                          textCancel: GestureDetector(
-                                            onTap: () async {
-                                              print('No');
-                                              Get.back();
-                                              pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
-                                            },
-                                            child: Text(
-                                              'Camera',
+                                        await Get.bottomSheet(
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 15.0,
+                                              vertical: 15.0,
+                                            ),
+                                            child: ListView(
+                                              shrinkWrap: true,
+                                              physics: ScrollPhysics(),
+                                              children: [
+                                                Text(
+                                                  'Please choose from...',
+                                                  style: TextStyle(
+                                                    fontSize: 20.0,
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 15.0,
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    TextButton(
+                                                      onPressed: () async {
+                                                        Get.back();
+                                                        pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+                                                        if (pickedFile != null) {
+                                                          aadhar2 = File(pickedFile.path);
+                                                          proof2.text = path.basename(pickedFile.path);
+                                                          setState(() {});
+                                                        } else {
+                                                          print('No image selected.');
+                                                          aadhar2 = null;
+                                                          proof2.clear();
+                                                          setState(() {});
+                                                        }
+                                                      },
+                                                      child: Row(
+                                                        children: [
+                                                          Icon(
+                                                            Icons.camera,
+                                                            size: 30.0,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 10.0,
+                                                          ),
+                                                          Text(
+                                                            'Camera',
+                                                            style: TextStyle(
+                                                              fontSize: 20.0,
+                                                              color: Theme.of(context).primaryColor,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Spacer(),
+                                                    TextButton(
+                                                      onPressed: () async {
+                                                        Get.back();
+                                                        pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+                                                        if (pickedFile != null) {
+                                                          aadhar2 = File(pickedFile.path);
+                                                          proof2.text = path.basename(pickedFile.path);
+                                                          setState(() {});
+                                                        } else {
+                                                          print('No image selected.');
+                                                          aadhar2 = null;
+                                                          proof2.clear();
+                                                          setState(() {});
+                                                        }
+                                                      },
+                                                      child: Row(
+                                                        children: [
+                                                          Icon(
+                                                            Icons.image,
+                                                            size: 30.0,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 10.0,
+                                                          ),
+                                                          Text(
+                                                            'Gallery',
+                                                            style: TextStyle(
+                                                              fontSize: 20.0,
+                                                              color: Theme.of(context).primaryColor,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                        )) {
-                                          pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
-                                        }
-                                        // var pickedFile = await ImagePicker().getImage(source: source);
-                                        if (pickedFile != null) {
-                                          aadhar2 = File(pickedFile.path);
-                                          proof2.text = path.basename(pickedFile.path);
-                                          setState(() {});
-                                        } else {
-                                          print('No image selected.');
-                                          aadhar2 = null;
-                                          proof2.clear();
-                                          setState(() {});
-                                        }
+                                          isDismissible: true,
+                                          backgroundColor: Colors.white,
+                                        );
+
+                                        // var pickedFile;
+                                        // print('take picture');
+                                        // if (await confirm(
+                                        //   context,
+                                        //   title: Text('Choose'),
+                                        //   content: Text('Please choose from'),
+                                        //   textOK: Text(
+                                        //     'Gallery',
+                                        //   ),
+                                        //   textCancel: GestureDetector(
+                                        //     onTap: () async {
+                                        //       print('No');
+                                        //       Get.back();
+                                        //       pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+                                        //     },
+                                        //     child: Text(
+                                        //       'Camera',
+                                        //     ),
+                                        //   ),
+                                        // )) {
+                                        //   pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+                                        // }
+                                        // // var pickedFile = await ImagePicker().getImage(source: source);
+                                        // if (pickedFile != null) {
+                                        //   aadhar2 = File(pickedFile.path);
+                                        //   proof2.text = path.basename(pickedFile.path);
+                                        //   setState(() {});
+                                        // } else {
+                                        //   print('No image selected.');
+                                        //   aadhar2 = null;
+                                        //   proof2.clear();
+                                        //   setState(() {});
+                                        // }
                                       },
                                     ),
                                   ),
@@ -2962,38 +3251,140 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                       keyboardType: null,
                                       onTap: () async {
                                         var pickedFile;
-                                        print('take picture');
-                                        if (await confirm(
-                                          context,
-                                          title: Text('Choose'),
-                                          content: Text('Please choose from'),
-                                          textOK: Text(
-                                            'Gallery',
-                                          ),
-                                          textCancel: GestureDetector(
-                                            onTap: () async {
-                                              print('No');
-                                              Get.back();
-                                              pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
-                                            },
-                                            child: Text(
-                                              'Camera',
+                                        await Get.bottomSheet(
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 15.0,
+                                              vertical: 15.0,
+                                            ),
+                                            child: ListView(
+                                              shrinkWrap: true,
+                                              physics: ScrollPhysics(),
+                                              children: [
+                                                Text(
+                                                  'Please choose from...',
+                                                  style: TextStyle(
+                                                    fontSize: 20.0,
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 15.0,
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    TextButton(
+                                                      onPressed: () async {
+                                                        Get.back();
+                                                        pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+                                                        if (pickedFile != null) {
+                                                          proof11 = File(pickedFile.path);
+                                                          proof3.text = path.basename(pickedFile.path);
+                                                          setState(() {});
+                                                        } else {
+                                                          print('No image selected.');
+                                                          proof11 = null;
+                                                          proof3.clear();
+                                                          setState(() {});
+                                                        }
+                                                      },
+                                                      child: Row(
+                                                        children: [
+                                                          Icon(
+                                                            Icons.camera,
+                                                            size: 30.0,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 10.0,
+                                                          ),
+                                                          Text(
+                                                            'Camera',
+                                                            style: TextStyle(
+                                                              fontSize: 20.0,
+                                                              color: Theme.of(context).primaryColor,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Spacer(),
+                                                    TextButton(
+                                                      onPressed: () async {
+                                                        Get.back();
+                                                        pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+                                                        if (pickedFile != null) {
+                                                          proof11 = File(pickedFile.path);
+                                                          proof3.text = path.basename(pickedFile.path);
+                                                          setState(() {});
+                                                        } else {
+                                                          print('No image selected.');
+                                                          proof11 = null;
+                                                          proof3.clear();
+                                                          setState(() {});
+                                                        }
+                                                      },
+                                                      child: Row(
+                                                        children: [
+                                                          Icon(
+                                                            Icons.image,
+                                                            size: 30.0,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 10.0,
+                                                          ),
+                                                          Text(
+                                                            'Gallery',
+                                                            style: TextStyle(
+                                                              fontSize: 20.0,
+                                                              color: Theme.of(context).primaryColor,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                        )) {
-                                          pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
-                                        }
-                                        // var pickedFile = await ImagePicker().getImage(source: source);
-                                        if (pickedFile != null) {
-                                          proof11 = File(pickedFile.path);
-                                          proof3.text = path.basename(pickedFile.path);
-                                          setState(() {});
-                                        } else {
-                                          print('No image selected.');
-                                          proof11 = null;
-                                          proof3.clear();
-                                          setState(() {});
-                                        }
+                                          isDismissible: true,
+                                          backgroundColor: Colors.white,
+                                        );
+
+                                        // var pickedFile;
+                                        // print('take picture');
+                                        // if (await confirm(
+                                        //   context,
+                                        //   title: Text('Choose'),
+                                        //   content: Text('Please choose from'),
+                                        //   textOK: Text(
+                                        //     'Gallery',
+                                        //   ),
+                                        //   textCancel: GestureDetector(
+                                        //     onTap: () async {
+                                        //       print('No');
+                                        //       Get.back();
+                                        //       pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+                                        //     },
+                                        //     child: Text(
+                                        //       'Camera',
+                                        //     ),
+                                        //   ),
+                                        // )) {
+                                        //   pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+                                        // }
+                                        // // var pickedFile = await ImagePicker().getImage(source: source);
+                                        // if (pickedFile != null) {
+                                        //   proof11 = File(pickedFile.path);
+                                        //   proof3.text = path.basename(pickedFile.path);
+                                        //   setState(() {});
+                                        // } else {
+                                        //   print('No image selected.');
+                                        //   proof11 = null;
+                                        //   proof3.clear();
+                                        //   setState(() {});
+                                        // }
                                       },
                                     ),
                                   ),
@@ -3022,38 +3413,140 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                       keyboardType: null,
                                       onTap: () async {
                                         var pickedFile;
-                                        print('take picture');
-                                        if (await confirm(
-                                          context,
-                                          title: Text('Choose'),
-                                          content: Text('Please choose from'),
-                                          textOK: Text(
-                                            'Gallery',
-                                          ),
-                                          textCancel: GestureDetector(
-                                            onTap: () async {
-                                              print('No');
-                                              Get.back();
-                                              pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
-                                            },
-                                            child: Text(
-                                              'Camera',
+                                        await Get.bottomSheet(
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 15.0,
+                                              vertical: 15.0,
+                                            ),
+                                            child: ListView(
+                                              shrinkWrap: true,
+                                              physics: ScrollPhysics(),
+                                              children: [
+                                                Text(
+                                                  'Please choose from...',
+                                                  style: TextStyle(
+                                                    fontSize: 20.0,
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 15.0,
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    TextButton(
+                                                      onPressed: () async {
+                                                        Get.back();
+                                                        pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+                                                        if (pickedFile != null) {
+                                                          proof12 = File(pickedFile.path);
+                                                          proof4.text = path.basename(pickedFile.path);
+                                                          setState(() {});
+                                                        } else {
+                                                          print('No image selected.');
+                                                          proof12 = null;
+                                                          proof4.clear();
+                                                          setState(() {});
+                                                        }
+                                                      },
+                                                      child: Row(
+                                                        children: [
+                                                          Icon(
+                                                            Icons.camera,
+                                                            size: 30.0,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 10.0,
+                                                          ),
+                                                          Text(
+                                                            'Camera',
+                                                            style: TextStyle(
+                                                              fontSize: 20.0,
+                                                              color: Theme.of(context).primaryColor,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Spacer(),
+                                                    TextButton(
+                                                      onPressed: () async {
+                                                        Get.back();
+                                                        pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+                                                        if (pickedFile != null) {
+                                                          proof12 = File(pickedFile.path);
+                                                          proof4.text = path.basename(pickedFile.path);
+                                                          setState(() {});
+                                                        } else {
+                                                          print('No image selected.');
+                                                          proof12 = null;
+                                                          proof4.clear();
+                                                          setState(() {});
+                                                        }
+                                                      },
+                                                      child: Row(
+                                                        children: [
+                                                          Icon(
+                                                            Icons.image,
+                                                            size: 30.0,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 10.0,
+                                                          ),
+                                                          Text(
+                                                            'Gallery',
+                                                            style: TextStyle(
+                                                              fontSize: 20.0,
+                                                              color: Theme.of(context).primaryColor,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                        )) {
-                                          pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
-                                        }
-                                        // var pickedFile = await ImagePicker().getImage(source: source);
-                                        if (pickedFile != null) {
-                                          proof12 = File(pickedFile.path);
-                                          proof4.text = path.basename(pickedFile.path);
-                                          setState(() {});
-                                        } else {
-                                          print('No image selected.');
-                                          proof12 = null;
-                                          proof4.clear();
-                                          setState(() {});
-                                        }
+                                          isDismissible: true,
+                                          backgroundColor: Colors.white,
+                                        );
+
+                                        // var pickedFile;
+                                        // print('take picture');
+                                        // if (await confirm(
+                                        //   context,
+                                        //   title: Text('Choose'),
+                                        //   content: Text('Please choose from'),
+                                        //   textOK: Text(
+                                        //     'Gallery',
+                                        //   ),
+                                        //   textCancel: GestureDetector(
+                                        //     onTap: () async {
+                                        //       print('No');
+                                        //       Get.back();
+                                        //       pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+                                        //     },
+                                        //     child: Text(
+                                        //       'Camera',
+                                        //     ),
+                                        //   ),
+                                        // )) {
+                                        //   pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+                                        // }
+                                        // // var pickedFile = await ImagePicker().getImage(source: source);
+                                        // if (pickedFile != null) {
+                                        //   proof12 = File(pickedFile.path);
+                                        //   proof4.text = path.basename(pickedFile.path);
+                                        //   setState(() {});
+                                        // } else {
+                                        //   print('No image selected.');
+                                        //   proof12 = null;
+                                        //   proof4.clear();
+                                        //   setState(() {});
+                                        // }
                                       },
                                     ),
                                   ),
@@ -3175,38 +3668,140 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                       keyboardType: null,
                                       onTap: () async {
                                         var pickedFile;
-                                        print('take picture');
-                                        if (await confirm(
-                                          context,
-                                          title: Text('Choose'),
-                                          content: Text('Please choose from'),
-                                          textOK: Text(
-                                            'Gallery',
-                                          ),
-                                          textCancel: GestureDetector(
-                                            onTap: () async {
-                                              print('No');
-                                              Get.back();
-                                              pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
-                                            },
-                                            child: Text(
-                                              'Camera',
+                                        await Get.bottomSheet(
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 15.0,
+                                              vertical: 15.0,
+                                            ),
+                                            child: ListView(
+                                              shrinkWrap: true,
+                                              physics: ScrollPhysics(),
+                                              children: [
+                                                Text(
+                                                  'Please choose from...',
+                                                  style: TextStyle(
+                                                    fontSize: 20.0,
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 15.0,
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    TextButton(
+                                                      onPressed: () async {
+                                                        Get.back();
+                                                        pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+                                                        if (pickedFile != null) {
+                                                          proof21 = File(pickedFile.path);
+                                                          proof5.text = path.basename(pickedFile.path);
+                                                          setState(() {});
+                                                        } else {
+                                                          print('No image selected.');
+                                                          proof21 = null;
+                                                          proof5.clear();
+                                                          setState(() {});
+                                                        }
+                                                      },
+                                                      child: Row(
+                                                        children: [
+                                                          Icon(
+                                                            Icons.camera,
+                                                            size: 30.0,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 10.0,
+                                                          ),
+                                                          Text(
+                                                            'Camera',
+                                                            style: TextStyle(
+                                                              fontSize: 20.0,
+                                                              color: Theme.of(context).primaryColor,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Spacer(),
+                                                    TextButton(
+                                                      onPressed: () async {
+                                                        Get.back();
+                                                        pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+                                                        if (pickedFile != null) {
+                                                          proof21 = File(pickedFile.path);
+                                                          proof5.text = path.basename(pickedFile.path);
+                                                          setState(() {});
+                                                        } else {
+                                                          print('No image selected.');
+                                                          proof21 = null;
+                                                          proof5.clear();
+                                                          setState(() {});
+                                                        }
+                                                      },
+                                                      child: Row(
+                                                        children: [
+                                                          Icon(
+                                                            Icons.image,
+                                                            size: 30.0,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 10.0,
+                                                          ),
+                                                          Text(
+                                                            'Gallery',
+                                                            style: TextStyle(
+                                                              fontSize: 20.0,
+                                                              color: Theme.of(context).primaryColor,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                        )) {
-                                          pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
-                                        }
-                                        // var pickedFile = await ImagePicker().getImage(source: source);
-                                        if (pickedFile != null) {
-                                          proof21 = File(pickedFile.path);
-                                          proof5.text = path.basename(pickedFile.path);
-                                          setState(() {});
-                                        } else {
-                                          print('No image selected.');
-                                          proof21 = null;
-                                          proof5.clear();
-                                          setState(() {});
-                                        }
+                                          isDismissible: true,
+                                          backgroundColor: Colors.white,
+                                        );
+
+                                        // var pickedFile;
+                                        // print('take picture');
+                                        // if (await confirm(
+                                        //   context,
+                                        //   title: Text('Choose'),
+                                        //   content: Text('Please choose from'),
+                                        //   textOK: Text(
+                                        //     'Gallery',
+                                        //   ),
+                                        //   textCancel: GestureDetector(
+                                        //     onTap: () async {
+                                        //       print('No');
+                                        //       Get.back();
+                                        //       pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+                                        //     },
+                                        //     child: Text(
+                                        //       'Camera',
+                                        //     ),
+                                        //   ),
+                                        // )) {
+                                        //   pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+                                        // }
+                                        // // var pickedFile = await ImagePicker().getImage(source: source);
+                                        // if (pickedFile != null) {
+                                        //   proof21 = File(pickedFile.path);
+                                        //   proof5.text = path.basename(pickedFile.path);
+                                        //   setState(() {});
+                                        // } else {
+                                        //   print('No image selected.');
+                                        //   proof21 = null;
+                                        //   proof5.clear();
+                                        //   setState(() {});
+                                        // }
                                       },
                                     ),
                                   ),
@@ -3235,38 +3830,140 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                       keyboardType: null,
                                       onTap: () async {
                                         var pickedFile;
-                                        print('take picture');
-                                        if (await confirm(
-                                          context,
-                                          title: Text('Choose'),
-                                          content: Text('Please choose from'),
-                                          textOK: Text(
-                                            'Gallery',
-                                          ),
-                                          textCancel: GestureDetector(
-                                            onTap: () async {
-                                              print('No');
-                                              Get.back();
-                                              pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
-                                            },
-                                            child: Text(
-                                              'Camera',
+                                        await Get.bottomSheet(
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 15.0,
+                                              vertical: 15.0,
+                                            ),
+                                            child: ListView(
+                                              shrinkWrap: true,
+                                              physics: ScrollPhysics(),
+                                              children: [
+                                                Text(
+                                                  'Please choose from...',
+                                                  style: TextStyle(
+                                                    fontSize: 20.0,
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 15.0,
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    TextButton(
+                                                      onPressed: () async {
+                                                        Get.back();
+                                                        pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+                                                        if (pickedFile != null) {
+                                                          proof22 = File(pickedFile.path);
+                                                          proof6.text = path.basename(pickedFile.path);
+                                                          setState(() {});
+                                                        } else {
+                                                          print('No image selected.');
+                                                          proof22 = null;
+                                                          proof6.clear();
+                                                          setState(() {});
+                                                        }
+                                                      },
+                                                      child: Row(
+                                                        children: [
+                                                          Icon(
+                                                            Icons.camera,
+                                                            size: 30.0,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 10.0,
+                                                          ),
+                                                          Text(
+                                                            'Camera',
+                                                            style: TextStyle(
+                                                              fontSize: 20.0,
+                                                              color: Theme.of(context).primaryColor,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Spacer(),
+                                                    TextButton(
+                                                      onPressed: () async {
+                                                        Get.back();
+                                                        pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+                                                        if (pickedFile != null) {
+                                                          proof22 = File(pickedFile.path);
+                                                          proof6.text = path.basename(pickedFile.path);
+                                                          setState(() {});
+                                                        } else {
+                                                          print('No image selected.');
+                                                          proof22 = null;
+                                                          proof6.clear();
+                                                          setState(() {});
+                                                        }
+                                                      },
+                                                      child: Row(
+                                                        children: [
+                                                          Icon(
+                                                            Icons.image,
+                                                            size: 30.0,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 10.0,
+                                                          ),
+                                                          Text(
+                                                            'Gallery',
+                                                            style: TextStyle(
+                                                              fontSize: 20.0,
+                                                              color: Theme.of(context).primaryColor,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                        )) {
-                                          pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
-                                        }
-                                        // var pickedFile = await ImagePicker().getImage(source: source);
-                                        if (pickedFile != null) {
-                                          proof22 = File(pickedFile.path);
-                                          proof6.text = path.basename(pickedFile.path);
-                                          setState(() {});
-                                        } else {
-                                          print('No image selected.');
-                                          proof22 = null;
-                                          proof6.clear();
-                                          setState(() {});
-                                        }
+                                          isDismissible: true,
+                                          backgroundColor: Colors.white,
+                                        );
+
+                                        // var pickedFile;
+                                        // print('take picture');
+                                        // if (await confirm(
+                                        //   context,
+                                        //   title: Text('Choose'),
+                                        //   content: Text('Please choose from'),
+                                        //   textOK: Text(
+                                        //     'Gallery',
+                                        //   ),
+                                        //   textCancel: GestureDetector(
+                                        //     onTap: () async {
+                                        //       print('No');
+                                        //       Get.back();
+                                        //       pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+                                        //     },
+                                        //     child: Text(
+                                        //       'Camera',
+                                        //     ),
+                                        //   ),
+                                        // )) {
+                                        //   pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+                                        // }
+                                        // // var pickedFile = await ImagePicker().getImage(source: source);
+                                        // if (pickedFile != null) {
+                                        //   proof22 = File(pickedFile.path);
+                                        //   proof6.text = path.basename(pickedFile.path);
+                                        //   setState(() {});
+                                        // } else {
+                                        //   print('No image selected.');
+                                        //   proof22 = null;
+                                        //   proof6.clear();
+                                        //   setState(() {});
+                                        // }
                                       },
                                     ),
                                   ),
