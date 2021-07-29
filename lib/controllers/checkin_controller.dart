@@ -25,7 +25,8 @@ class CheckinController extends GetxController {
   @override
   void onInit() {
     updateTime();
-    latlngTimeout();
+    print('locationFetchTimeout: ${jsonDecode(RemoteServices().box.get('appFeature'))}');
+    if (jsonDecode(RemoteServices().box.get('appFeature'))['locFetchTimeout']) latlngTimeout();
     super.onInit();
   }
 
@@ -41,10 +42,8 @@ class CheckinController extends GetxController {
   }
 
   Future latlngTimeout() {
-     new Timer(const Duration(seconds: 10), ()=>
-     (currentAddress.value=='Fetching your location...')?currentAddress.value='Please checkin':''
-     );
-     return null;
+    Timer(const Duration(seconds: 10), () => (currentAddress.value == 'Fetching your location...') ? currentAddress.value = 'Please checkin' : '');
+    return null;
   }
 
   void getCurrentLocation() {

@@ -154,6 +154,8 @@ class DashboardController extends GetxController {
             await RemoteServices().box.put('reportView', true);
           }
           await RemoteServices().box.put('faceApi', response['clientData']['faceApi']);
+          await RemoteServices().box.delete('appFeature');
+          print(response['appFeature']);
           await RemoteServices().box.put('appFeature', jsonEncode(AppFeature.fromJson(response['appFeature'])));
           await RemoteServices().box.put('clientLat', response['clientData']['latitude']);
           await RemoteServices().box.put('clientLng', response['clientData']['longitude']);

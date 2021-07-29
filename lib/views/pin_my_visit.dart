@@ -230,7 +230,10 @@ class _PinMyVisitState extends State<PinMyVisit> {
           children: [
             RaisedButton(
               onPressed: () async {
-                var pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+                var pickedFile = await ImagePicker().getImage(
+                  source: ImageSource.camera,
+                  imageQuality: 50,
+                );
                 if (pickedFile != null) {
                   attachment = File(pickedFile.path);
                 } else {

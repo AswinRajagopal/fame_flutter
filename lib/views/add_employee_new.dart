@@ -2617,7 +2617,10 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                               TextButton(
                                                 onPressed: () async {
                                                   Get.back();
-                                                  pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+                                                  pickedFile = await ImagePicker().getImage(
+                                                    source: ImageSource.camera,
+                                                    imageQuality: 50,
+                                                  );
                                                   if (pickedFile != null) {
                                                     profile = File(pickedFile.path);
                                                     profileAdd = true;
@@ -2831,7 +2834,10 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                                     TextButton(
                                                       onPressed: () async {
                                                         Get.back();
-                                                        pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+                                                        pickedFile = await ImagePicker().getImage(
+                                                          source: ImageSource.camera,
+                                                          imageQuality: 50,
+                                                        );
                                                         if (pickedFile != null) {
                                                           aadhar1 = File(pickedFile.path);
                                                           proof1.text = path.basename(pickedFile.path);
@@ -2919,7 +2925,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                         //     onTap: () async {
                                         //       print('No');
                                         //       Get.back();
-                                        //       pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+                                        //       pickedFile = await ImagePicker().getImage(source: ImageSource.camera, imageQuality: 50,);
                                         //     },
                                         //     child: Text(
                                         //       'Camera',
@@ -2993,7 +2999,10 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                                     TextButton(
                                                       onPressed: () async {
                                                         Get.back();
-                                                        pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+                                                        pickedFile = await ImagePicker().getImage(
+                                                          source: ImageSource.camera,
+                                                          imageQuality: 50,
+                                                        );
                                                         if (pickedFile != null) {
                                                           aadhar2 = File(pickedFile.path);
                                                           proof2.text = path.basename(pickedFile.path);
@@ -3081,7 +3090,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                         //     onTap: () async {
                                         //       print('No');
                                         //       Get.back();
-                                        //       pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+                                        //       pickedFile = await ImagePicker().getImage(source: ImageSource.camera, imageQuality: 50,);
                                         //     },
                                         //     child: Text(
                                         //       'Camera',
@@ -3277,7 +3286,10 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                                     TextButton(
                                                       onPressed: () async {
                                                         Get.back();
-                                                        pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+                                                        pickedFile = await ImagePicker().getImage(
+                                                          source: ImageSource.camera,
+                                                          imageQuality: 50,
+                                                        );
                                                         if (pickedFile != null) {
                                                           proof11 = File(pickedFile.path);
                                                           proof3.text = path.basename(pickedFile.path);
@@ -3365,7 +3377,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                         //     onTap: () async {
                                         //       print('No');
                                         //       Get.back();
-                                        //       pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+                                        //       pickedFile = await ImagePicker().getImage(source: ImageSource.camera, imageQuality: 50,);
                                         //     },
                                         //     child: Text(
                                         //       'Camera',
@@ -3439,7 +3451,10 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                                     TextButton(
                                                       onPressed: () async {
                                                         Get.back();
-                                                        pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+                                                        pickedFile = await ImagePicker().getImage(
+                                                          source: ImageSource.camera,
+                                                          imageQuality: 50,
+                                                        );
                                                         if (pickedFile != null) {
                                                           proof12 = File(pickedFile.path);
                                                           proof4.text = path.basename(pickedFile.path);
@@ -3527,7 +3542,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                         //     onTap: () async {
                                         //       print('No');
                                         //       Get.back();
-                                        //       pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+                                        //       pickedFile = await ImagePicker().getImage(source: ImageSource.camera, imageQuality: 50,);
                                         //     },
                                         //     child: Text(
                                         //       'Camera',
@@ -3694,7 +3709,10 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                                     TextButton(
                                                       onPressed: () async {
                                                         Get.back();
-                                                        pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+                                                        pickedFile = await ImagePicker().getImage(
+                                                          source: ImageSource.camera,
+                                                          imageQuality: 50,
+                                                        );
                                                         if (pickedFile != null) {
                                                           proof21 = File(pickedFile.path);
                                                           proof5.text = path.basename(pickedFile.path);
@@ -3782,7 +3800,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                         //     onTap: () async {
                                         //       print('No');
                                         //       Get.back();
-                                        //       pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+                                        //       pickedFile = await ImagePicker().getImage(source: ImageSource.camera, imageQuality: 50,);
                                         //     },
                                         //     child: Text(
                                         //       'Camera',
@@ -3856,7 +3874,10 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                                     TextButton(
                                                       onPressed: () async {
                                                         Get.back();
-                                                        pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+                                                        pickedFile = await ImagePicker().getImage(
+                                                          source: ImageSource.camera,
+                                                          imageQuality: 50,
+                                                        );
                                                         if (pickedFile != null) {
                                                           proof22 = File(pickedFile.path);
                                                           proof6.text = path.basename(pickedFile.path);
@@ -3944,7 +3965,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                         //     onTap: () async {
                                         //       print('No');
                                         //       Get.back();
-                                        //       pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+                                        //       pickedFile = await ImagePicker().getImage(source: ImageSource.camera, imageQuality: 50,);
                                         //     },
                                         //     child: Text(
                                         //       'Camera',

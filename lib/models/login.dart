@@ -59,7 +59,14 @@ class AppFeature {
     this.pinMyVisit,
     this.onboarding,
     this.attendanceDaysPermitted,
-    this.checkinLocation
+    this.checkinLocation,
+    // this.weekOff,
+    this.locFetchTimeout,
+    this.probationaries,
+    this.diyFace,
+    this.autoCheckout,
+    this.hubFeature,
+    this.appUpdate,
   });
   String companyId;
   bool gps;
@@ -74,6 +81,13 @@ class AppFeature {
   bool pinMyVisit;
   bool checkinLocation;
   int attendanceDaysPermitted;
+  // String weekOff;
+  bool locFetchTimeout;
+  bool probationaries;
+  bool diyFace;
+  bool autoCheckout;
+  bool hubFeature;
+  bool appUpdate;
 
   factory AppFeature.fromJson(Map<String, dynamic> json) => AppFeature(
         attendance: json['attendance'],
@@ -91,6 +105,13 @@ class AppFeature {
         onboarding: json['onboarding'],
         attendanceDaysPermitted: json['attendanceDaysPermitted'],
         checkinLocation: json['checkinLocation'],
+        // weekOff: json['weekOff'],
+        locFetchTimeout: json['locFetchTimeout'],
+        probationaries: json['probationaries'],
+        diyFace: json['diyFace'],
+        autoCheckout: json['autoCheckout'],
+        hubFeature: json['hubFeature'],
+        appUpdate: json['appUpdate'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -109,6 +130,13 @@ class AppFeature {
         'onboarding': onboarding,
         'checkinLocation': checkinLocation,
         'attendanceDaysPermitted': attendanceDaysPermitted,
+        // 'weekOff': weekOff,
+        'locFetchTimeout': locFetchTimeout,
+        'probationaries': probationaries,
+        'diyFace': diyFace,
+        'autoCheckout': autoCheckout,
+        'hubFeature': hubFeature,
+        'appUpdate': appUpdate,
       };
 }
 

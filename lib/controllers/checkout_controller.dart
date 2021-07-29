@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:fame/connection/locationpath.dart';
-import 'package:fame/views/dashboard_page.dart';
+import '../connection/locationpath.dart';
+import '../views/dashboard_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
@@ -25,7 +25,8 @@ class CheckoutController extends GetxController {
   @override
   void onInit() {
     updateTime();
-    latlngTimeout();
+    print('locationFetchTimeout: ${jsonDecode(RemoteServices().box.get('appFeature'))}');
+    if (jsonDecode(RemoteServices().box.get('appFeature'))['locFetchTimeout']) latlngTimeout();
     super.onInit();
   }
 
@@ -49,12 +50,12 @@ class CheckoutController extends GetxController {
       print(e);
     });
   }
+
   Future latlngTimeout() {
-    new Timer(const Duration(seconds: 10), ()=>
-    (currentAddress.value=='Fetching your location...')?currentAddress.value='Please checkout':''
-    );
+    new Timer(const Duration(seconds: 10), () => (currentAddress.value == 'Fetching your location...') ? currentAddress.value = 'Please checkout' : '');
     return null;
   }
+
   void getAddressFromLatLng() async {
     try {
       var placemark = await placemarkFromCoordinates(
