@@ -475,10 +475,10 @@ class AdminController extends GetxController {
         if (addNewEmp['success']) {
           return addNewEmp['empId'];
         } else {
-          showError();
+          showError(addNewEmp['msg'] ?? '');
         }
       } else {
-        showError();
+        showError('');
       }
       // await pr.hide();
     } catch (e) {
@@ -497,8 +497,7 @@ class AdminController extends GetxController {
     }
   }
 
-  void addEmployeeData(empRelationshipList, proofDetails, aadharFront, aadharBack, passbookFront,
-      passbookBack, proof3Front, proof3Back, profile,empId) async {
+  void addEmployeeData(empRelationshipList, proofDetails, aadharFront, aadharBack, passbookFront, passbookBack, proof3Front, proof3Back, profile, empId) async {
     try {
       var addNewEmpRel = await RemoteServices().newRecRel(empRelationshipList);
 
@@ -508,8 +507,7 @@ class AdminController extends GetxController {
           var addNewEmpProof = await RemoteServices().newRecProof(proofDetails);
           if (addNewEmpProof != null) {
             if (addNewEmpProof['success']) {
-              var uploadNewEmpProof = await RemoteServices().newRecUploadProof(empId,aadharFront, aadharBack,
-                  passbookFront, passbookBack, proof3Front, proof3Back, profile);
+              var uploadNewEmpProof = await RemoteServices().newRecUploadProof(empId, aadharFront, aadharBack, passbookFront, passbookBack, proof3Front, proof3Back, profile);
               if (uploadNewEmpProof != null) {
                 if (uploadNewEmpProof['success']) {
                   await pr.hide();
@@ -526,22 +524,22 @@ class AdminController extends GetxController {
                   );
                   Timer(Duration(seconds: 2), Get.back);
                 } else {
-                  showError();
+                  showError(uploadNewEmpProof['msg'] ?? '');
                 }
               } else {
-                showError();
+                showError(uploadNewEmpProof['msg'] ?? '');
               }
             } else {
-              showError();
+              showError(addNewEmpProof['msg'] ?? '');
             }
           } else {
-            showError();
+            showError(addNewEmpProof['msg'] ?? '');
           }
         } else {
-          showError();
+          showError(addNewEmpRel['msg'] ?? '');
         }
       } else {
-        showError();
+        showError(addNewEmpRel['msg'] ?? '');
       }
       // await pr.hide();
     } catch (e) {
@@ -560,11 +558,11 @@ class AdminController extends GetxController {
     }
   }
 
-  void showError() async {
+  void showError(msg) async {
     await pr.hide();
     Get.snackbar(
       null,
-      'Something went wrong! Please try again later',
+      msg == '' ? 'Something went wrong! Please try again later' : msg.toString(),
       colorText: Colors.white,
       backgroundColor: Colors.black87,
       snackPosition: SnackPosition.BOTTOM,
