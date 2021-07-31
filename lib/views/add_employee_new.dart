@@ -50,6 +50,8 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
   TextEditingController proofNumber2 = TextEditingController();
   TextEditingController proofNumber3 = TextEditingController();
   TextEditingController clientAu = TextEditingController();
+  TextEditingController desigAu = TextEditingController();
+  TextEditingController deptAu = TextEditingController();
   TextEditingController proof1 = TextEditingController();
   TextEditingController proof2 = TextEditingController();
   TextEditingController proof3 = TextEditingController();
@@ -566,6 +568,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                     return Column();
                   }
                   return SingleChildScrollView(
+                    reverse: true,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -872,45 +875,100 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   horizontal: 10.0,
                                   vertical: 10.0,
                                 ),
-                                child: DropdownButtonFormField<dynamic>(
-                                  hint: Text(
-                                    'Select Department',
-                                    style: TextStyle(
-                                      color: Colors.grey[600],
-                                      fontSize: 18.0,
-                                      // fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  isExpanded: true,
-                                  value: department,
-                                  items: adminC.departmentsList.map((item) {
-                                    //print('item: $item');
-                                    return DropdownMenuItem(
-                                      child: Text(
-                                        item['deptName'],
+                                child: TypeAheadField(
+                                  textFieldConfiguration: TextFieldConfiguration(
+                                    controller: deptAu,
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(10),
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey[600],
+                                        fontSize: 18.0,
                                       ),
-                                      value: item['deptId'].toString(),
-                                    );
-                                  }).toList(),
-                                  decoration: InputDecoration(
-                                    prefixIcon: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Image.asset(
-                                          'assets/images/branch.png',
-                                          color: Colors.grey[400],
-                                          scale: 2.0,
-                                        ),
-                                      ],
+                                      hintText: 'Enter Department',
+                                      prefixIcon: Column(
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/branch.png',
+                                            color: Colors.grey[400],
+                                            scale: 1.8,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                  onChanged: (value) {
-                                    FocusScope.of(context).requestFocus(FocusNode());
-                                    department = value;
-                                    // setState(() {});
+                                  suggestionsCallback: (pattern) async {
+                                    // print(pattern);
+                                    if (pattern.isNotEmpty) {
+                                      return await RemoteServices().getDeptSugg(pattern);
+                                    } else {
+                                      department = null;
+                                    }
+                                    return null;
                                   },
+                                  hideOnEmpty: true,
+                                  noItemsFoundBuilder: (context) {
+                                    return Text('No Department found');
+                                  },
+                                  itemBuilder: (context, suggestion) {
+                                    return ListTile(
+                                      title: Text(
+                                        suggestion['deptName'],
+                                      ),
+                                    );
+                                  },
+                                  onSuggestionSelected: (suggestion) {
+                                    department = suggestion['deptId'].toString();
+                                    deptAu.text = suggestion['deptName'].toString().trimRight();
+                                   /* sitePostedTo = suggestion['id'];*/
+                                  },
+                                  autoFlipDirection: true,
                                 ),
                               ),
+                              // Padding(
+                              //   padding: const EdgeInsets.symmetric(
+                              //     horizontal: 10.0,
+                              //     vertical: 10.0,
+                              //   ),
+                              //   child: DropdownButtonFormField<dynamic>(
+                              //     hint: Text(
+                              //       'Select Department',
+                              //       style: TextStyle(
+                              //         color: Colors.grey[600],
+                              //         fontSize: 18.0,
+                              //         // fontWeight: FontWeight.bold,
+                              //       ),
+                              //     ),
+                              //     isExpanded: true,
+                              //     value: department,
+                              //     items: adminC.departmentsList.map((item) {
+                              //       //print('item: $item');
+                              //       return DropdownMenuItem(
+                              //         child: Text(
+                              //           item['deptName'],
+                              //         ),
+                              //         value: item['deptId'].toString(),
+                              //       );
+                              //     }).toList(),
+                              //     decoration: InputDecoration(
+                              //       prefixIcon: Column(
+                              //         mainAxisAlignment: MainAxisAlignment.center,
+                              //         children: [
+                              //           Image.asset(
+                              //             'assets/images/branch.png',
+                              //             color: Colors.grey[400],
+                              //             scale: 2.0,
+                              //           ),
+                              //         ],
+                              //       ),
+                              //     ),
+                              //     onChanged: (value) {
+                              //       FocusScope.of(context).requestFocus(FocusNode());
+                              //       department = value;
+                              //       // setState(() {});
+                              //     },
+                              //   ),
+                              // ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 10.0,
@@ -1015,50 +1073,106 @@ class _AddEmployeeNewState extends State<AddEmployeeNew> with AutomaticKeepAlive
                                   },
                                 ),
                               ),
+                              // Padding(
+                              //   padding: const EdgeInsets.symmetric(
+                              //     horizontal: 10.0,
+                              //     vertical: 10.0,
+                              //   ),
+                              //   child: DropdownButtonFormField<dynamic>(
+                              //     hint: Text(
+                              //       'Select Designation*',
+                              //       style: TextStyle(
+                              //         color: Colors.grey[600],
+                              //         fontSize: 18.0,
+                              //         // fontWeight: FontWeight.bold,
+                              //       ),
+                              //     ),
+                              //     isExpanded: false,
+                              //     value: designation,
+                              //     items: adminC.designationsList.map((item) {
+                              //       //print('item: $item');
+                              //       return DropdownMenuItem(
+                              //         child: Text(
+                              //           item['design'],
+                              //         ),
+                              //         value: item['designId'],
+                              //       );
+                              //     }).toList(),
+                              //     decoration: InputDecoration(
+                              //       prefixIcon: Column(
+                              //         mainAxisAlignment: MainAxisAlignment.start,
+                              //         children: [
+                              //           Image.asset(
+                              //             'assets/images/designation.png',
+                              //             color: Colors.grey[400],
+                              //             scale: 2.0,
+                              //           ),
+                              //         ],
+                              //       ),
+                              //     ),
+                              //     onChanged: (value) {
+                              //       FocusScope.of(context).requestFocus(FocusNode());
+                              //       designation = value;
+                              //       // setState(() {});
+                              //     },
+                              //   ),
+                              // ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 10.0,
                                   vertical: 10.0,
                                 ),
-                                child: DropdownButtonFormField<dynamic>(
-                                  hint: Text(
-                                    'Select Designation*',
-                                    style: TextStyle(
-                                      color: Colors.grey[600],
-                                      fontSize: 18.0,
-                                      // fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  isExpanded: false,
-                                  value: designation,
-                                  items: adminC.designationsList.map((item) {
-                                    //print('item: $item');
-                                    return DropdownMenuItem(
-                                      child: Text(
-                                        item['design'],
+                                child: TypeAheadField(
+                                  textFieldConfiguration: TextFieldConfiguration(
+                                    controller: desigAu,
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(10),
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey[600],
+                                        fontSize: 18.0,
                                       ),
-                                      value: item['designId'],
-                                    );
-                                  }).toList(),
-                                  decoration: InputDecoration(
-                                    prefixIcon: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Image.asset(
-                                          'assets/images/designation.png',
-                                          color: Colors.grey[400],
-                                          scale: 2.0,
-                                        ),
-                                      ],
+                                      hintText: 'Enter Designation *',
+                                      prefixIcon: Column(
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/designation.png',
+                                            color: Colors.grey[400],
+                                            scale: 1.8,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                  onChanged: (value) {
-                                    FocusScope.of(context).requestFocus(FocusNode());
-                                    designation = value;
-                                    // setState(() {});
+                                  suggestionsCallback: (pattern) async {
+                                    // print(pattern);
+                                    if (pattern.isNotEmpty) {
+                                      return await RemoteServices().getDesignSugg(pattern);
+                                    } else {
+                                      designation = null;
+                                    }
+                                    return null;
                                   },
+                                  hideOnEmpty: true,
+                                  noItemsFoundBuilder: (context) {
+                                    return Text('No Designation found');
+                                  },
+                                  itemBuilder: (context, suggestion) {
+                                    return ListTile(
+                                      title: Text(
+                                        suggestion['design'],
+                                      )
+                                    );
+                                  },
+                                  onSuggestionSelected: (suggestion) {
+                                    designation = suggestion['designId'];
+                                    desigAu.text = suggestion['design'].toString().trimRight();
+                                    // sitePostedTo = suggestion['id'];
+                                  },
+                                  autoFlipDirection: true,
                                 ),
                               ),
+
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 10.0,
