@@ -71,7 +71,7 @@ class CheckoutController extends GetxController {
       var maxDistance = RemoteServices().box.get('maxDist');
       if (maxDistance == '0' || int.parse(maxDistance) > (distance * 1000).round()) {
         if (first != null) {
-          currentAddress.value = 'lat: ${currentPosition.latitude}\nlng: ${currentPosition.longitude}\n${first.street}, ${first.subLocality}, ${first.locality}, ${first.postalCode}, ${first.country}';
+          currentAddress.value = '${first.street}, ${first.subLocality}, ${first.locality}, ${first.postalCode}, ${first.country}';
         } else {
           currentAddress.value = 'Please checkout';
         }

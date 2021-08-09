@@ -40,8 +40,8 @@ import '../views/welcome_page.dart';
 // import 'package:background_locator/settings/locator_settings.dart' as ls;
 
 class RemoteServices {
-  static var baseURL = 'http://52.66.61.207:8090/v1/api';
-  // static var baseURL = 'http://androidapp.mydiyosfame.com:8090/v1/api';
+  // static var baseURL = 'http://52.66.61.207:8090/v1/api';
+  static var baseURL = 'http://androidapp.mydiyosfame.com:8090/v1/api';
   // static var baseURL = 'http://192.168.43.26:8090/v1/api';
 
   // static var baseURL = 'http://182.18.157.28:8090/v1/api';
@@ -1854,6 +1854,49 @@ class RemoteServices {
     if (response.statusCode == 200) {
       var jsonString = response.body;
       return json.decode(jsonString)['clientsSuggest'];
+    } else {
+      //show error message
+      return null;
+    }
+  }
+  Future getDesignSugg(unitName) async {
+    // print('empName: $empName');
+    var response = await client.post(
+      '$baseURL/company/get_designations',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'desSugg': unitName,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString)['designationsList'];
+    } else {
+      //show error message
+      return null;
+    }
+  }
+  Future getDeptSugg(unitName) async {
+    // print('empName: $empName');
+    var response = await client.post(
+      '$baseURL/company/get_departments',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'depSugg': unitName,
+        },
+      ),
+    );
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString)['departmentList'];
     } else {
       //show error message
       return null;
