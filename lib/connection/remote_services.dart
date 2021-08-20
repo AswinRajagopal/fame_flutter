@@ -41,8 +41,9 @@ import '../views/welcome_page.dart';
 
 class RemoteServices {
   // static var baseURL = 'http://52.66.61.207:8090/v1/api';
-  static var baseURL = 'http://androidapp.mydiyosfame.com:8090/v1/api';
-  // static var baseURL = 'http://192.168.43.26:8090/v1/api';
+  static var baseURL = 'http://65.1.68.191:8090/v1/api';
+  // static var baseURL = 'http://androidapp.mydiyosfame.com:8090/v1/api';
+  // static var baseURL = 'http://192.168.43.27:8090/v1/api';
 
   // static var baseURL = 'http://182.18.157.28:8090/v1/api';
   static var client = http.Client();
@@ -1324,6 +1325,27 @@ class RemoteServices {
   Future getEmpReport(clientId, orderBy) async {
     var response = await client.post(
       '$baseURL/attendance/emp_report',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'clientId': clientId,
+          'orderBy': orderBy,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+  Future getOnboardEmpList(clientId, orderBy) async {
+    var response = await client.post(
+      '$baseURL/company/get_regemp_list',
       headers: header,
       body: jsonEncode(
         <String, String>{

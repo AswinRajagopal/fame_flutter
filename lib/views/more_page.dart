@@ -1,23 +1,16 @@
-import '../connection/remote_services.dart';
-
-import 'visit_plan.dart';
-
-import 'client_wise_attendance.dart';
-
-import 'location_report_detail.dart';
-
-import 'shortage_report.dart';
-
-import 'employee_report.dart';
-
-import 'timeline_report.dart';
-
-import 'daily_employee_report.dart';
-
+import 'package:fame/views/onboard_report_detail.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../connection/remote_services.dart';
 import '../utils/utils.dart';
-import 'package:flutter/material.dart';
+import 'client_wise_attendance.dart';
+import 'daily_employee_report.dart';
+import 'employee_report.dart';
+import 'location_report_detail.dart';
+import 'shortage_report.dart';
+import 'timeline_report.dart';
+import 'visit_plan.dart';
 
 class MorePage extends StatelessWidget {
   @override
@@ -209,8 +202,35 @@ class MorePage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                if ( roleId == AppUtils.MANAGER ||
-                    roleId == AppUtils.ADMIN) {
+                if ((roleId != '1') && reportView) {
+                  Get.to(OnboardReportDetail("LNSA0003"));
+                } else {
+                  Get.snackbar(
+                    null,
+                    'Insufficient permission to access this',
+                    colorText: Colors.white,
+                    backgroundColor: Colors.black87,
+                    snackPosition: SnackPosition.BOTTOM,
+                    margin: EdgeInsets.symmetric(
+                      horizontal: 8.0,
+                      vertical: 10.0,
+                    ),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12.0,
+                      vertical: 18.0,
+                    ),
+                    borderRadius: 5.0,
+                  );
+                }
+              },
+              child: ListContainer(
+                'assets/images/employee.png',
+                'Onboarding Report',
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                if (roleId == AppUtils.MANAGER || roleId == AppUtils.ADMIN) {
                   Get.to(VisitPlan());
                 } else {
                   Get.to(
@@ -238,6 +258,7 @@ class ListContainer extends StatelessWidget {
   final String title;
   final double height;
   final double width;
+
   ListContainer(this.image, this.title, {this.height, this.width});
 
   @override

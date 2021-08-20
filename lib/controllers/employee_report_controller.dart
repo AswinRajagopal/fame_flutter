@@ -26,12 +26,14 @@ class EmployeeReportController extends GetxController {
   final List shift = [].obs;
   final List searchList = [].obs;
   final List designation = [].obs;
+  final List onboardEmp = [].obs;
   final List locations = [].obs;
   final List dailySearch = [].obs;
   final List clientReport = [].obs;
   final List shortageReport = [].obs;
   var reportType = 'name';
   var getEmpReportRes;
+  var getEmpOnboardRes;
   var getEmpDetailRes;
   var getEmpDetailRepRes;
   var getClientRepRes;
@@ -42,6 +44,7 @@ class EmployeeReportController extends GetxController {
   final List pitsStops = [].obs;
   final List pitsStopsRoute = [].obs;
   double totalDistance = 0;
+  var added =0,approved=0,rejected = 1,pending=0;
 
   void getClientTimings() async {
     try {
@@ -180,6 +183,45 @@ class EmployeeReportController extends GetxController {
           //     vertical: 10.0,
           //   ),
           // );
+        }
+      }
+    } catch (e) {
+      print(e);
+      isLoadingEmpReport(false);
+      await pr.hide();
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
+      );
+    }
+  }
+
+  void getOnboardEmp(clientId, orderBy) async {
+    isLoadingEmpReport(true);
+    try {
+      await pr.show();
+      getEmpReportRes = await RemoteServices().getOnboardEmpList(clientId, orderBy);
+      if (getEmpReportRes != null) {
+        await pr.hide();
+        isLoadingEmpReport(false);
+        // print('getEmpReportRes valid: $getEmpReportRes');
+        if (getEmpReportRes['success']) {
+          print('getEmpReportRes: $getEmpReportRes');
+          approved = getEmpReportRes['empList'].length-1;
+          added = getEmpReportRes['empList'].length;
+          rejected = 1;
         }
       }
     } catch (e) {

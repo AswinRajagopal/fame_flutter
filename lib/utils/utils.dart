@@ -24,17 +24,7 @@ class AppUtils {
   static String PLAYSTORE = 'https://play.google.com/store/apps/details?id=in.androidfame.attendance';
 
   static checkTextisNull(TextEditingController text1,String val){
-    if(text1.isNullOrBlank){
-      Get.snackbar(
-        null,
-        'Please provide '+val,
-        colorText: Colors.white,
-        backgroundColor: Colors.black87,
-        snackPosition: SnackPosition.BOTTOM,
-        margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-        padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
-        borderRadius: 5.0,
-      );
+    if(text1.isNullOrBlank || text1.text.isNullOrBlank || text1.text.length==0){
       return true;
     } else{
         return false;
