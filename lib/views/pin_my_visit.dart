@@ -300,6 +300,7 @@ class _PinMyVisitState extends State<PinMyVisit> {
             checkinLng: mpC.currentPosition.longitude,
             empRemarks: remarks.text,
             attachment: base64String,
+            address: mpC.currentAddress
           );
           print(pinVisit);
           if (pinVisit != null && pinVisit['success'] == true) {

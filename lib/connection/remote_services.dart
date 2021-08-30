@@ -40,8 +40,8 @@ import '../views/welcome_page.dart';
 // import 'package:background_locator/settings/locator_settings.dart' as ls;
 
 class RemoteServices {
-  // static var baseURL = 'http://52.66.61.207:8090/v1/api';
-  static var baseURL = 'http://65.1.68.191:8090/v1/api';
+  static var baseURL = 'http://52.66.61.207:8090/v1/api';
+  // static var baseURL = 'http://65.1.68.191:8090/v1/api';
   // static var baseURL = 'http://androidapp.mydiyosfame.com:8090/v1/api';
   // static var baseURL = 'http://192.168.43.27:8090/v1/api';
 
@@ -1062,7 +1062,7 @@ class RemoteServices {
     }
   }
 
-  Future pinMyVisit({checkinLat, checkinLng, empRemarks, empId, attachment}) async {
+  Future pinMyVisit({checkinLat, checkinLng, empRemarks, empId, attachment, address}) async {
     // print('companyid: ${box.get('companyid')}');
     // print('empid: ${box.get('empid')}');
     var response = await client.post(
@@ -1073,7 +1073,9 @@ class RemoteServices {
           'checkinLat': checkinLat,
           'checkinLng': checkinLng,
           'empRemarks': empRemarks,
+          'address': address,
           'empId': empId,
+          'companyId': box.get('companyid').toString(),
           'attachment': attachment == '' ? '' : 'data:image/jpeg;base64,$attachment',
         },
       ),
@@ -2087,6 +2089,7 @@ class RemoteServices {
       body: jsonEncode(
         <String, dynamic>{
           'companyId': box.get('companyid').toString(),
+          'empId': box.get('empid').toString(),
           'empdetails': empdetails,
         },
       ),

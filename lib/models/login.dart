@@ -67,6 +67,7 @@ class AppFeature {
     this.autoCheckout,
     this.hubFeature,
     this.appUpdate,
+    this.faceReregister,
   });
   String companyId;
   bool gps;
@@ -88,6 +89,7 @@ class AppFeature {
   bool autoCheckout;
   bool hubFeature;
   bool appUpdate;
+  bool faceReregister;
 
   factory AppFeature.fromJson(Map<String, dynamic> json) => AppFeature(
         attendance: json['attendance'],
@@ -110,6 +112,7 @@ class AppFeature {
         probationaries: json['probationaries'],
         diyFace: json['diyFace'],
         autoCheckout: json['autoCheckout'],
+        faceReregister: json['faceReregister'],
         hubFeature: json['hubFeature'],
         appUpdate: json['appUpdate'],
       );
@@ -134,6 +137,7 @@ class AppFeature {
         'locFetchTimeout': locFetchTimeout,
         'probationaries': probationaries,
         'diyFace': diyFace,
+        'faceReregister': faceReregister,
         'autoCheckout': autoCheckout,
         'hubFeature': hubFeature,
         'appUpdate': appUpdate,

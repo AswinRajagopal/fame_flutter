@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
 class EmpOnboardDetailWidget extends StatelessWidget {
@@ -44,13 +45,18 @@ class EmpOnboardDetailWidget extends StatelessWidget {
             SizedBox(
               height: 5.0,
             ),
-            Text(
+            Row(
+                crossAxisAlignment:CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [Text(
               emp['empstatus'] == '1' ? 'Approved' : 'Pending',
               style: TextStyle(
                 fontSize: 16.0,
                 color: Colors.grey,
               ),
             ),
+            if(emp['createdBy'] != null)
+              Text(emp['createdBy']+' on '+DateFormat('dd-MM-yy').format(DateTime.parse(emp['createdOn'])))]),
             if (emp['empstatus'] == '0')
               Row(children: [
                 SizedBox(
