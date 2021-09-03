@@ -75,8 +75,9 @@ class CheckinController extends GetxController {
       print(first);
 
       var maxDistance = RemoteServices().box.get('maxDist');
+      var distance;
       if(maxDistance!='0') {
-        var distance = await Locationpath().getDistance(
+        distance = await Locationpath().getDistance(
             LatLng(currentPosition.latitude, currentPosition.longitude),
             LatLng(double.parse(RemoteServices().box.get('clientLat')),
                 double.parse(RemoteServices().box.get('clientLng'))));
