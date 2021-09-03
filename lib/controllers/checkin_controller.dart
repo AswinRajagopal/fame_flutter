@@ -73,8 +73,14 @@ class CheckinController extends GetxController {
         first = placemark.first;
       }
       print(first);
-      var distance = await Locationpath().getDistance(LatLng(currentPosition.latitude, currentPosition.longitude), LatLng(double.parse(RemoteServices().box.get('clientLat')), double.parse(RemoteServices().box.get('clientLng'))));
+
       var maxDistance = RemoteServices().box.get('maxDist');
+      if(maxDistance!='0') {
+        var distance = await Locationpath().getDistance(
+            LatLng(currentPosition.latitude, currentPosition.longitude),
+            LatLng(double.parse(RemoteServices().box.get('clientLat')),
+                double.parse(RemoteServices().box.get('clientLng'))));
+      }
       if (maxDistance == '0' || int.parse(maxDistance) > (distance * 1000).round()) {
         if (first != null) {
           currentAddress.value = '${first.street}, ${first.subLocality}, ${first.locality}, ${first.postalCode}, ${first.country}';
