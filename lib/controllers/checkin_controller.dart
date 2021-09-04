@@ -49,13 +49,7 @@ class CheckinController extends GetxController {
   void getCurrentLocation() {
     Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.medium).then((Position position) {
       currentPosition = position;
-      // print(position.floor);
-      // print(position.heading);
-      // print(position.accuracy);
-      // print(position.latitude);
-      // print(position.longitude);
       getAddressFromLatLng();
-
       // ignore: unnecessary_lambdas
     }).catchError((e) {
       print(e);
@@ -77,10 +71,10 @@ class CheckinController extends GetxController {
       var maxDistance = RemoteServices().box.get('maxDist');
       var distance;
       if(maxDistance!='0') {
-        distance = await Locationpath().getDistance(
-            LatLng(currentPosition.latitude, currentPosition.longitude),
-            LatLng(double.parse(RemoteServices().box.get('clientLat')),
-                double.parse(RemoteServices().box.get('clientLng'))));
+        distance = await Locationpath().calculateDistance(
+            currentPosition.latitude, currentPosition.longitude,
+            double.parse(RemoteServices().box.get('clientLat')),
+                double.parse(RemoteServices().box.get('clientLng')));
       }
       if (maxDistance == '0' || int.parse(maxDistance) > (distance * 1000).round()) {
         if (first != null) {
