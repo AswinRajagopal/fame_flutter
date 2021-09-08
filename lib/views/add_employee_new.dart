@@ -345,6 +345,18 @@ class _AddEmployeeNewState extends State<AddEmployeeNew>
           borderRadius: 5.0,
         );
         return false;
+      }   else if (AppUtils.checkTextisNull(dobFather, "Father dob")) {
+        Get.snackbar(
+          null,
+          'Please provide Father DOB',
+          colorText: Colors.white,
+          backgroundColor: Colors.black87,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+          padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+          borderRadius: 5.0,
+        );
+        return false;
       } else if (AppUtils.checkTextisNull(ageFather, 'Father Age')) {
         Get.snackbar(
           null,
@@ -357,19 +369,7 @@ class _AddEmployeeNewState extends State<AddEmployeeNew>
           borderRadius: 5.0,
         );
         return false;
-      }  else if (AppUtils.checkTextisNull(dobFather, "Father dob")) {
-        Get.snackbar(
-          null,
-          'Please provide Father DOB',
-          colorText: Colors.white,
-          backgroundColor: Colors.black87,
-          snackPosition: SnackPosition.BOTTOM,
-          margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-          padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
-          borderRadius: 5.0,
-        );
-        return false;
-      } else if (AppUtils.checkTextisNull(
+      }else if (AppUtils.checkTextisNull(
           aadharNumberFather, 'Father Aadhar')) {
         Get.snackbar(
           null,
