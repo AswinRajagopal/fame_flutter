@@ -690,6 +690,27 @@ class RemoteServices {
     }
   }
 
+  Future getActivityList() async {
+    var response = await client.post(
+      '$baseURL/company/get_activity_list',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'empId': box.get('empid').toString(),
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
   Future getMyClients() async {
     var response = await client.post(
       '$baseURL/attendance/all_clients',
@@ -1062,7 +1083,7 @@ class RemoteServices {
     }
   }
 
-  Future pinMyVisit({checkinLat, checkinLng, empRemarks, empId, attachment, address}) async {
+  Future pinMyVisit({checkinLat, checkinLng, empRemarks, empId, attachment, address, clientID, activity}) async {
     // print('companyid: ${box.get('companyid')}');
     // print('empid: ${box.get('empid')}');
     var response = await client.post(
@@ -1077,6 +1098,8 @@ class RemoteServices {
           'empId': empId,
           'companyId': box.get('companyid').toString(),
           'attachment': attachment == '' ? '' : 'data:image/jpeg;base64,$attachment',
+          'clientID': clientID,
+          'activity': activity,
         },
       ),
     );
@@ -1345,6 +1368,7 @@ class RemoteServices {
       return null;
     }
   }
+
   Future getOnboardEmpList(clientId, orderBy) async {
     var response = await client.post(
       '$baseURL/company/get_regemp_list',
@@ -1860,6 +1884,7 @@ class RemoteServices {
       return null;
     }
   }
+
   Future getBranchClientsSugg(unitName) async {
     // print('empName: $empName');
     var response = await client.post(
@@ -1883,6 +1908,7 @@ class RemoteServices {
       return null;
     }
   }
+
   Future getDesignSugg(unitName) async {
     // print('empName: $empName');
     var response = await client.post(
@@ -1904,6 +1930,7 @@ class RemoteServices {
       return null;
     }
   }
+
   Future getDeptSugg(unitName) async {
     // print('empName: $empName');
     var response = await client.post(
@@ -2060,6 +2087,26 @@ class RemoteServices {
       return null;
     }
   }
+
+  // Future getVaccineType() async {
+  //   var response = await client.post(
+  //     '$baseURL/company/get_recdata',
+  //     headers: header,
+  //     body: jsonEncode(
+  //       <String, String>{
+  //         'companyId': box.get('companyid').toString(),
+  //       },
+  //     ),
+  //   );
+  //   print(response.statusCode);
+  //   if (response.statusCode == 200) {
+  //     var jsonString = response.body;
+  //     return json.decode(jsonString);
+  //   } else {
+  //     //show error message
+  //     return null;
+  //   }
+  // }
 
   Future getCities(stateId) async {
     var response = await client.post(

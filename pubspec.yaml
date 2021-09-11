@@ -99,6 +99,8 @@ dependencies:
   photo_view: ^0.10.0
   confirm_dialog: 
   permission_handler: 
+  qr_code_scanner: 
+  xml: 
 
 # flutter_icons:
 #   image_path: "assets/images/icon.png"

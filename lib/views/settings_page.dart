@@ -8,8 +8,8 @@ import 'package:share/share.dart';
 
 import '../connection/remote_services.dart';
 import '../utils/utils.dart';
-import 'add_employee_new.dart';
 import 'grievance_report.dart';
+import 'ob_personal.dart';
 import 'policy_doc_list.dart';
 import 'sos.dart';
 import 'support.dart';
@@ -107,9 +107,21 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ),
             ),
+            // GestureDetector(
+            //   onTap: () {
+            //     Get.to(AddEmployeeNew());
+            //   },
+            //   child: Visibility(
+            //     visible: ((roleId == AppUtils.ADMIN || roleId == AppUtils.MANAGER) && jsonDecode(RemoteServices().box.get('appFeature'))['onboarding']) ? true : false,
+            //     child: ListContainer(
+            //       'assets/images/employee.png',
+            //       'Onboarding',
+            //     ),
+            //   ),
+            // ),
             GestureDetector(
               onTap: () {
-                Get.to(AddEmployeeNew());
+                Get.to(OBPersonal());
               },
               child: Visibility(
                 visible: ((roleId == AppUtils.ADMIN || roleId == AppUtils.MANAGER) && jsonDecode(RemoteServices().box.get('appFeature'))['onboarding']) ? true : false,

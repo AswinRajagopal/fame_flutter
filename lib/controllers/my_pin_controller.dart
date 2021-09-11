@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import '../connection/remote_services.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -10,11 +9,14 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
+import '../connection/remote_services.dart';
+
 class MyPinController extends GetxController {
   var isLoading = true.obs;
   var res;
   ProgressDialog pr;
   final List pitsStops = [].obs;
+  final List activityList = [].obs;
   var todayString = (DateFormat().add_jm().format(DateTime.now()).toString()).obs;
   Position currentPosition;
   var currentAddress = 'Fetching your location...'.obs;
@@ -50,6 +52,35 @@ class MyPinController extends GetxController {
     }).catchError((e) {
       print(e);
     });
+  }
+
+  void getActivityList() async {
+    try {
+      // await pr.show();
+      var getActivityRes = await RemoteServices().getActivityList();
+
+      if (getActivityRes != null) {
+        // print('getClientRes valid: $getClientRes');
+        if (getActivityRes['success'] && getActivityRes['activityList'] != null) {
+          activityList.addAll(getActivityRes['activityList']);
+          // print('clientsList: $clientList');
+        }
+      }
+      // await pr.hide();
+    } catch (e) {
+      print(e);
+      // await pr.hide();
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+        padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+        borderRadius: 5.0,
+      );
+    }
   }
 
   void getAddressFromLatLng() async {

@@ -2,16 +2,17 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
-import '../utils/utils.dart';
-import '../connection/remote_services.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
+import '../connection/remote_services.dart';
 import '../controllers/my_pin_controller.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import '../utils/utils.dart';
 
 class PinMyVisit extends StatefulWidget {
   @override
@@ -24,11 +25,14 @@ class _PinMyVisitState extends State<PinMyVisit> {
   List<CameraDescription> cameras;
   var currentTime = DateFormat().add_jm().format(DateTime.now()).toString();
   File attachment;
+  var clientId;
   final TextEditingController remarks = TextEditingController();
+  final TextEditingController clientText = TextEditingController();
   var size;
   var deviceRatio;
   var xScale;
   var faceApi;
+  var activity;
 
   @override
   void initState() {
@@ -69,6 +73,7 @@ class _PinMyVisitState extends State<PinMyVisit> {
     mpC.pr.style(
       backgroundColor: Colors.white,
     );
+    Future.delayed(Duration(milliseconds: 100), mpC.getActivityList);
   }
 
   @override
@@ -225,59 +230,142 @@ class _PinMyVisitState extends State<PinMyVisit> {
       await Get.defaultDialog(
         title: 'Attach Image or Remarks',
         radius: 5.0,
-        content: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            RaisedButton(
-              onPressed: () async {
-                var pickedFile = await ImagePicker().getImage(
-                  source: ImageSource.camera,
-                  imageQuality: 50,
-                );
-                if (pickedFile != null) {
-                  attachment = File(pickedFile.path);
-                } else {
-                  print('No image selected.');
-                }
-                setState(() {});
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  'Attachment',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+        content: Container(
+          width: MediaQuery.of(context).size.width / 1.2,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              RaisedButton(
+                onPressed: () async {
+                  var pickedFile = await ImagePicker().getImage(
+                    source: ImageSource.camera,
+                    imageQuality: 50,
+                  );
+                  if (pickedFile != null) {
+                    attachment = File(pickedFile.path);
+                  } else {
+                    print('No image selected.');
+                  }
+                  setState(() {});
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Attachment',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                color: Colors.black87,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                  side: BorderSide(
+                    color: Colors.black87,
                   ),
                 ),
               ),
-              color: Colors.black87,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5.0),
-                side: BorderSide(
-                  color: Colors.black87,
+              SizedBox(
+                height: 5.0,
+              ),
+              TextField(
+                controller: remarks,
+                decoration: InputDecoration(
+                  isDense: true,
+                  contentPadding: EdgeInsets.all(
+                    10.0,
+                  ),
+                  hintStyle: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  hintText: 'Enter remarks',
                 ),
               ),
-            ),
-            SizedBox(
-              height: 5.0,
-            ),
-            TextField(
-              controller: remarks,
-              decoration: InputDecoration(
-                isDense: true,
-                contentPadding: EdgeInsets.all(
-                  10.0,
-                ),
-                hintStyle: TextStyle(
-                  color: Colors.grey[600],
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
-                ),
-                hintText: 'Enter remarks',
+              SizedBox(
+                height: 5.0,
               ),
-            ),
-          ],
+              TypeAheadField(
+                textFieldConfiguration: TextFieldConfiguration(
+                  controller: clientText,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    contentPadding: EdgeInsets.all(10),
+                    hintStyle: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    hintText: 'Enter client name',
+                  ),
+                ),
+                suggestionsCallback: (pattern) async {
+                  // print(pattern);
+                  if (pattern.isNotEmpty) {
+                    return await RemoteServices().getBranchClientsSugg(pattern);
+                  } else {
+                    clientId = null;
+                  }
+                  return null;
+                },
+                hideOnEmpty: true,
+                noItemsFoundBuilder: (context) {
+                  return Text('No client found');
+                },
+                itemBuilder: (context, suggestion) {
+                  return ListTile(
+                    title: Text(
+                      suggestion['name'],
+                    ),
+                    subtitle: Text(
+                      suggestion['id'],
+                    ),
+                  );
+                },
+                onSuggestionSelected: (suggestion) {
+                  print(suggestion);
+                  print(suggestion['name']);
+                  clientId = suggestion['id'];
+                  clientText.text = suggestion['name'].toString().trimRight() + ' - ' + suggestion['id'];
+                },
+                autoFlipDirection: true,
+              ),
+              SizedBox(
+                height: 5.0,
+              ),
+              DropdownButtonFormField<dynamic>(
+                hint: Text(
+                  'Select activity',
+                  style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                isExpanded: false,
+                value: activity,
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.only(left: 10.0),
+                ),
+                items: mpC.activityList.map((item) {
+                  //print('item: $item');
+                  return DropdownMenuItem(
+                    child: Text(
+                      item['activityName'],
+                    ),
+                    value: item['activityName'].toString(),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  activity = value;
+                  setState(() {});
+                },
+              ),
+            ],
+          ),
         ),
         barrierDismissible: false,
         onConfirm: () async {
@@ -294,14 +382,7 @@ class _PinMyVisitState extends State<PinMyVisit> {
             // print(base64.encode(bytes));
             base64String = base64.encode(bytes);
           }
-          var pinVisit = await RemoteServices().pinMyVisit(
-            empId: RemoteServices().box.get('empid'),
-            checkinLat: mpC.currentPosition.latitude,
-            checkinLng: mpC.currentPosition.longitude,
-            empRemarks: remarks.text,
-            attachment: base64String,
-            address: mpC.currentAddress
-          );
+          var pinVisit = await RemoteServices().pinMyVisit(empId: RemoteServices().box.get('empid'), checkinLat: mpC.currentPosition.latitude, checkinLng: mpC.currentPosition.longitude, empRemarks: remarks.text, attachment: base64String, address: mpC.currentAddress, clientID: clientId, activity: activity);
           print(pinVisit);
           if (pinVisit != null && pinVisit['success'] == true) {
             await mpC.pr.hide();
