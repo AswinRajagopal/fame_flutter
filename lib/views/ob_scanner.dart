@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:xml/xml.dart';
 
@@ -53,19 +54,32 @@ class _OBScannerState extends State<OBScanner> {
             adminC.proofAadharNumber.text = uid;
             adminC.proofAadharNumberConfirm.text = uid;
           }
-          if (barcodeList[i].toString().contains('name')) {
+          if (barcodeList[i].toString().contains('name') && !barcodeList[i].toString().contains('gname')) {
             var namerep = barcodeList[i].toString().replaceAll('"', '').replaceAll("'", '');
             var name = namerep.split('=')[1];
             print('name: $name');
             adminC.name.text = name;
           }
+          if (barcodeList[i].toString().contains('house')) {
+            var houserep = barcodeList[i].toString().replaceAll('"', '').replaceAll("'", '');
+            var house = houserep.split('=')[1];
+            print('house: $house');
+            adminC.permanenthouseNo.text = house;
+          }
+          if (barcodeList[i].toString().contains('dob')) {
+            var dobrep = barcodeList[i].toString().replaceAll('"', '').replaceAll("'", '');
+            var dob = dobrep.split('=')[1];
+            print('dob: $dob');
+            adminC.dtOfBirth.text = '${dob.toString().split('/')[0]}-${dob.toString().split('/')[1]}-${dob.toString().split('/')[2]}';
+            adminC.dob = DateFormat('yyyy-MM-dd').format(DateTime.parse('${dob.toString().split('/')[2]}-${dob.toString().split('/')[1]}-${dob.toString().split('/')[0]}')).toString();
+          }
           if (barcodeList[i].toString().contains('gender')) {
             var genderrep = barcodeList[i].toString().replaceAll('"', '').replaceAll("'", '');
             var gender = genderrep.split('=')[1];
             print('gender: $gender');
-            if (gender.toUpperCase() == 'MALE') {
+            if (gender.trim().toUpperCase() == 'MALE' || gender.trim().toUpperCase() == 'M') {
               adminC.gender = 'M';
-            } else if (gender.toUpperCase() == 'FEMALE') {
+            } else if (gender.trim().toUpperCase() == 'FEMALE' || gender.trim().toUpperCase() == 'F') {
               adminC.gender = 'F';
             }
           }
@@ -77,8 +91,7 @@ class _OBScannerState extends State<OBScanner> {
             adminC.presentPincode.text = pc;
           }
         }
-        print('barcodeData: $barcodeData');
-        print('barcodeList: $barcodeList');
+        adminC.updatingData.refresh();
         setState(() {});
         Get.back();
       } else {

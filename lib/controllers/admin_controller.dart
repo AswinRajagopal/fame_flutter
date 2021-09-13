@@ -15,6 +15,7 @@ class AdminController extends GetxController {
   var isLoading = true.obs;
   var isLoadingData = true.obs;
   var draftLoded = false.obs;
+  var reload = true;
   ProgressDialog pr;
   var resAddShift;
   var resAddClient;
@@ -134,6 +135,12 @@ class AdminController extends GetxController {
   bool nominee1 = false;
   bool nominee2 = false;
   final List vaccineType = [].obs;
+  var step1 = false.obs;
+  var step2 = false.obs;
+  var step3 = false.obs;
+  var step4 = false.obs;
+  var step5 = false.obs;
+  var step6 = false.obs;
   // final vaccineType = {'Covaxin', 'Covishield', 'Sputnik v'};
 
   var curDate = DateFormat('yyyy-MM-dd').format(DateTime.now()).toString();
@@ -647,6 +654,49 @@ class AdminController extends GetxController {
                   horizontal: 10.0,
                   vertical: 10.0,
                 ),
+                child: DropdownButtonFormField<dynamic>(
+                  hint: Text(
+                    'Select Relation*',
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 18.0,
+                      // fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  isExpanded: false,
+                  value: famRelation[index].text.isEmpty ? null : famRelation[index].text,
+                  items: relationShip.map((item) {
+                    //print('item: $item');
+                    return DropdownMenuItem(
+                      child: Text(
+                        item,
+                      ),
+                      value: item,
+                    );
+                  }).toList(),
+                  decoration: InputDecoration(
+                    prefixIcon: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/images/relation.png',
+                          color: Colors.grey[400],
+                          scale: 2.0,
+                        ),
+                      ],
+                    ),
+                  ),
+                  onChanged: (value) {
+                    FocusScope.of(Get.context).requestFocus(FocusNode());
+                    famRelation[index].text = value;
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10.0,
+                  vertical: 10.0,
+                ),
                 child: Row(
                   children: [
                     // Padding(
@@ -788,49 +838,6 @@ class AdminController extends GetxController {
                       ],
                     ),
                   ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10.0,
-                  vertical: 10.0,
-                ),
-                child: DropdownButtonFormField<dynamic>(
-                  hint: Text(
-                    'Select Relation*',
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 18.0,
-                      // fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  isExpanded: false,
-                  value: famRelation[index].text.isEmpty ? null : famRelation[index].text,
-                  items: relationShip.map((item) {
-                    //print('item: $item');
-                    return DropdownMenuItem(
-                      child: Text(
-                        item,
-                      ),
-                      value: item,
-                    );
-                  }).toList(),
-                  decoration: InputDecoration(
-                    prefixIcon: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'assets/images/relation.png',
-                          color: Colors.grey[400],
-                          scale: 2.0,
-                        ),
-                      ],
-                    ),
-                  ),
-                  onChanged: (value) {
-                    FocusScope.of(Get.context).requestFocus(FocusNode());
-                    famRelation[index].text = value;
-                  },
                 ),
               ),
               Padding(
@@ -1191,6 +1198,14 @@ class AdminController extends GetxController {
     try {
       isLoadingData(true);
       await pr.show();
+      clientList.clear();
+      statesList.clear();
+      vaccineType.clear();
+      bloodGroupsList.clear();
+      departmentsList.clear();
+      designationsList.clear();
+      bankNamesList.clear();
+      branchList.clear();
       getDataRes = await RemoteServices().getData();
       var getClientRes = await RemoteServices().getClients();
       var stateRes = await RemoteServices().getStates();
@@ -1380,6 +1395,7 @@ class AdminController extends GetxController {
                   Timer(Duration(seconds: 2), () {
                     draftLoded(false);
                     RemoteServices().box.delete('employeeDraft');
+                    reload = true;
                     Get.offAll(DashboardPage());
                   });
                 } else {
@@ -1647,6 +1663,7 @@ class AdminController extends GetxController {
     );
     Timer(Duration(seconds: 2), () {
       Get.offAll(DashboardPage());
+      reload = true;
     });
   }
 

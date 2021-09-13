@@ -1,3 +1,4 @@
+import '../widgets/ob_top_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -66,6 +67,7 @@ class _OBBankState extends State<OBBank> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    OBTopNavigation('bank'),
                     SizedBox(
                       height: 10.0,
                     ),
@@ -292,6 +294,7 @@ class _OBBankState extends State<OBBank> {
                           RaisedButton(
                             onPressed: () {
                               FocusScope.of(context).requestFocus(FocusNode());
+                              adminC.step3(true);
                               Get.to(OBAddress());
                             },
                             child: Padding(

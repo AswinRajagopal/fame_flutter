@@ -6,6 +6,7 @@ import 'package:progress_dialog/progress_dialog.dart';
 import '../connection/remote_services.dart';
 import '../controllers/admin_controller.dart';
 import '../utils/utils.dart';
+import '../widgets/ob_top_navigation.dart';
 import 'ob_scanner.dart';
 import 'ob_vaccine.dart';
 
@@ -51,18 +52,27 @@ class _OBPersonalState extends State<OBPersonal> {
       backgroundColor: Colors.white,
     );
     Future.delayed(Duration(milliseconds: 100), () {
-      adminC.draftLoded(false);
-      adminC.famIndex(0);
-      adminC.famName.clear();
-      adminC.famDob.clear();
-      adminC.famAge.clear();
-      adminC.famAadhar.clear();
-      adminC.famRelation.clear();
-      adminC.famNominee.clear();
-      adminC.famPercent.clear();
-      adminC.familyDetail.clear();
-      adminC.getData();
-      adminC.setupFamily(0);
+      if (adminC.reload) {
+        adminC.draftLoded(false);
+        adminC.famIndex(0);
+        adminC.famName.clear();
+        adminC.famDob.clear();
+        adminC.famAge.clear();
+        adminC.famAadhar.clear();
+        adminC.famRelation.clear();
+        adminC.famNominee.clear();
+        adminC.famPercent.clear();
+        adminC.familyDetail.clear();
+        adminC.getData();
+        adminC.setupFamily(0);
+        adminC.step1(false);
+        adminC.step2(false);
+        adminC.step3(false);
+        adminC.step4(false);
+        adminC.step5(false);
+        adminC.step6(false);
+        adminC.reload = false;
+      }
     });
     super.initState();
   }
@@ -112,6 +122,7 @@ class _OBPersonalState extends State<OBPersonal> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    OBTopNavigation('personal'),
                     SizedBox(
                       height: 10.0,
                     ),
@@ -749,6 +760,7 @@ class _OBPersonalState extends State<OBPersonal> {
                           RaisedButton(
                             onPressed: () {
                               FocusScope.of(context).requestFocus(FocusNode());
+                              adminC.step1(false);
                               if (AppUtils.checkTextisNull(adminC.name, 'Name')) {
                                 Get.snackbar(
                                   null,
@@ -817,6 +829,7 @@ class _OBPersonalState extends State<OBPersonal> {
                                 );
                               } else {
                                 Get.to(OBVaccine());
+                                adminC.step1(true);
                               }
                             },
                             child: Padding(

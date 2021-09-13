@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:checkdigit/checkdigit.dart';
+import '../widgets/ob_top_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -64,6 +65,7 @@ class _OBPhotosState extends State<OBPhotos> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    OBTopNavigation('photos'),
                     SizedBox(
                       height: 10.0,
                     ),
@@ -1322,6 +1324,7 @@ class _OBPhotosState extends State<OBPhotos> {
                           RaisedButton(
                             onPressed: () {
                               FocusScope.of(context).requestFocus(FocusNode());
+                              adminC.step6(false);
                               if (adminC.proofAadharNumber.isNullOrBlank) {
                                 Get.snackbar(
                                   null,
@@ -1390,6 +1393,7 @@ class _OBPhotosState extends State<OBPhotos> {
                                 );
                               } else {
                                 // done
+                                adminC.step6(true);
                                 adminC.addEmployeeDataNew();
                               }
                             },

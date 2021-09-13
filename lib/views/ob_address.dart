@@ -1,3 +1,4 @@
+import '../widgets/ob_top_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -61,6 +62,7 @@ class _OBAddressState extends State<OBAddress> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    OBTopNavigation('address'),
                     SizedBox(
                       height: 10.0,
                     ),
@@ -570,6 +572,7 @@ class _OBAddressState extends State<OBAddress> {
                           RaisedButton(
                             onPressed: () {
                               FocusScope.of(context).requestFocus(FocusNode());
+                              adminC.step4(false);
                               if (AppUtils.checkTextisNull(adminC.permanenthouseNo, 'House Number')) {
                                 Get.snackbar(
                                   null,
@@ -583,6 +586,7 @@ class _OBAddressState extends State<OBAddress> {
                                 );
                               } else {
                                 Get.to(OBFamily());
+                                adminC.step4(true);
                               }
                             },
                             child: Padding(

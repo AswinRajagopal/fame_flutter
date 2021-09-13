@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../controllers/admin_controller.dart';
+import '../widgets/ob_top_navigation.dart';
 import 'ob_bank.dart';
 
 class OBVaccine extends StatefulWidget {
@@ -55,6 +56,7 @@ class _OBVaccineState extends State<OBVaccine> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    OBTopNavigation('vaccine'),
                     SizedBox(
                       height: 10.0,
                     ),
@@ -227,10 +229,13 @@ class _OBVaccineState extends State<OBVaccine> {
                           RaisedButton(
                             onPressed: () {
                               FocusScope.of(context).requestFocus(FocusNode());
+                              adminC.step2(false);
                               if (adminC.vaccineName != null && !adminC.dtOfVaccine.text.isNullOrBlank && adminC.dose != null && adminC.dose != '') {
                                 Get.to(OBBank());
+                                adminC.step2(true);
                               } else if (adminC.vaccineName == null && adminC.dtOfVaccine.text.isNullOrBlank && (adminC.dose == null || adminC.dose == '')) {
                                 Get.to(OBBank());
+                                adminC.step2(true);
                               } else {
                                 Get.snackbar(
                                   null,

@@ -1,4 +1,5 @@
 import 'package:checkdigit/checkdigit.dart';
+import '../widgets/ob_top_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -54,6 +55,7 @@ class _OBFamilyState extends State<OBFamily> {
           shrinkWrap: true,
           physics: ScrollPhysics(),
           children: [
+            OBTopNavigation('family'),
             SizedBox(
               height: 15.0,
             ),
@@ -128,6 +130,7 @@ class _OBFamilyState extends State<OBFamily> {
                   RaisedButton(
                     onPressed: () {
                       FocusScope.of(context).requestFocus(FocusNode());
+                      adminC.step5(false);
                       var error = false;
                       adminC.empFamilyMembers.clear();
                       for (var i = 0; i < adminC.familyDetail.length; i++) {
@@ -224,7 +227,10 @@ class _OBFamilyState extends State<OBFamily> {
                           }
                         }
                       }
-                      if (!error) Get.to(OBPhotos());
+                      if (!error) {
+                        Get.to(OBPhotos());
+                        adminC.step5(true);
+                      }
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
