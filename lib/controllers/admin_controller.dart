@@ -15,6 +15,10 @@ class AdminController extends GetxController {
   var isLoading = true.obs;
   var isLoadingData = true.obs;
   var draftLoded = false.obs;
+  var disabledName = false.obs;
+  var disabledDob = false.obs;
+  var disabledAadhar = false.obs;
+  var aadharScan = false;
   var reload = true;
   ProgressDialog pr;
   var resAddShift;
@@ -52,6 +56,7 @@ class AdminController extends GetxController {
   List famNominee = [];
   var familyDetail = [].obs;
   TextEditingController name = TextEditingController();
+  TextEditingController aadhar = TextEditingController();
   TextEditingController dtOfBirth = TextEditingController();
   TextEditingController dtOfVaccine = TextEditingController();
   TextEditingController dtOfJoin = TextEditingController();
@@ -958,6 +963,49 @@ class AdminController extends GetxController {
                   horizontal: 10.0,
                   vertical: 10.0,
                 ),
+                child: DropdownButtonFormField<dynamic>(
+                  hint: Text(
+                    'Select Relation*',
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 18.0,
+                      // fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  isExpanded: false,
+                  value: famRelation[index].text.isEmpty ? null : famRelation[index].text,
+                  items: relationShip.map((item) {
+                    //print('item: $item');
+                    return DropdownMenuItem(
+                      child: Text(
+                        item,
+                      ),
+                      value: item,
+                    );
+                  }).toList(),
+                  decoration: InputDecoration(
+                    prefixIcon: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/images/relation.png',
+                          color: Colors.grey[400],
+                          scale: 2.0,
+                        ),
+                      ],
+                    ),
+                  ),
+                  onChanged: (value) {
+                    FocusScope.of(Get.context).requestFocus(FocusNode());
+                    famRelation[index].text = value;
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10.0,
+                  vertical: 10.0,
+                ),
                 child: Row(
                   children: [
                     // Padding(
@@ -1099,49 +1147,6 @@ class AdminController extends GetxController {
                       ],
                     ),
                   ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10.0,
-                  vertical: 10.0,
-                ),
-                child: DropdownButtonFormField<dynamic>(
-                  hint: Text(
-                    'Select Relation*',
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 18.0,
-                      // fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  isExpanded: false,
-                  value: famRelation[index].text.isEmpty ? null : famRelation[index].text,
-                  items: relationShip.map((item) {
-                    //print('item: $item');
-                    return DropdownMenuItem(
-                      child: Text(
-                        item,
-                      ),
-                      value: item,
-                    );
-                  }).toList(),
-                  decoration: InputDecoration(
-                    prefixIcon: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'assets/images/relation.png',
-                          color: Colors.grey[400],
-                          scale: 2.0,
-                        ),
-                      ],
-                    ),
-                  ),
-                  onChanged: (value) {
-                    FocusScope.of(Get.context).requestFocus(FocusNode());
-                    famRelation[index].text = value;
-                  },
                 ),
               ),
               Padding(
@@ -1458,6 +1463,7 @@ class AdminController extends GetxController {
     var prAdd = prhouse + prstreet + prcolony;
     var empdetails = {
       'empFName': name.text,
+      'aadharScanned': aadharScan,
       'empSex': gender,
       'empMaritalStatus': mStatus,
       'empDtofBirth': dob.toString(),
@@ -1604,6 +1610,8 @@ class AdminController extends GetxController {
     };
     var empdetails = {
       'empFName': name.text,
+      'aadharScanned': aadharScan,
+      'aadhar': aadhar.text,
       'empSex': gender,
       'empMaritalStatus': mStatus,
       'empDtofBirth': dob == null ? '' : dob.toString(),
@@ -1674,6 +1682,8 @@ class AdminController extends GetxController {
       var draftEmployee = jsonDecode(RemoteServices().box.get('employeeDraft'));
       // personal info
       name.text = draftEmployee['empFName'];
+      aadharScan = draftEmployee['aadharScanned'];
+      aadhar.text = draftEmployee['aadhar'];
       gender = draftEmployee['empSex'];
       mStatus = draftEmployee['empMaritalStatus'];
       if (draftEmployee['empDtofBirth'] != null && draftEmployee['empDtofBirth'] != '') {

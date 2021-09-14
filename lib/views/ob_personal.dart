@@ -1,3 +1,4 @@
+import 'package:checkdigit/checkdigit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
@@ -54,6 +55,7 @@ class _OBPersonalState extends State<OBPersonal> {
     Future.delayed(Duration(milliseconds: 100), () {
       if (adminC.reload) {
         adminC.draftLoded(false);
+        adminC.aadharScan = false;
         adminC.famIndex(0);
         adminC.famName.clear();
         adminC.famDob.clear();
@@ -155,18 +157,21 @@ class _OBPersonalState extends State<OBPersonal> {
                         horizontal: 10.0,
                         vertical: 10.0,
                       ),
-                      child: TextField(
-                        controller: adminC.name,
-                        decoration: InputDecoration(
-                          isDense: true,
-                          contentPadding: EdgeInsets.all(10),
-                          hintStyle: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: 18.0,
+                      child: Obx(() {
+                        return TextField(
+                          controller: adminC.name,
+                          decoration: InputDecoration(
+                            enabled: !adminC.disabledName.value,
+                            isDense: true,
+                            contentPadding: EdgeInsets.all(10),
+                            hintStyle: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 18.0,
+                            ),
+                            hintText: 'Name*',
                           ),
-                          hintText: 'Name*',
-                        ),
-                      ),
+                        );
+                      }),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -334,6 +339,38 @@ class _OBPersonalState extends State<OBPersonal> {
                         horizontal: 10.0,
                         vertical: 10.0,
                       ),
+                      child: Obx(() {
+                        return TextField(
+                          controller: adminC.aadhar,
+                          keyboardType: TextInputType.number,
+                          enabled: !adminC.disabledAadhar.value,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.all(10),
+                            hintStyle: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 18.0,
+                            ),
+                            hintText: 'Aadhar Number*',
+                            prefixIcon: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/images/aadhar.png',
+                                  color: Colors.grey,
+                                  scale: 2.2,
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0,
+                        vertical: 10.0,
+                      ),
                       child: TextField(
                         controller: adminC.dtOfBirth,
                         readOnly: true,
@@ -352,9 +389,11 @@ class _OBPersonalState extends State<OBPersonal> {
                             scale: 1.2,
                           ),
                         ),
-                        onTap: () {
-                          adminC.getDate(context);
-                        },
+                        onTap: adminC.disabledDob.value
+                            ? null
+                            : () {
+                                adminC.getDate(context);
+                              },
                       ),
                     ),
                     Padding(
@@ -772,6 +811,28 @@ class _OBPersonalState extends State<OBPersonal> {
                                   padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
                                 );
+                              } else if (adminC.aadhar.isNullOrBlank) {
+                                Get.snackbar(
+                                  null,
+                                  'Please enter Aadhar Number',
+                                  colorText: Colors.white,
+                                  backgroundColor: Colors.black87,
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+                                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+                                  borderRadius: 5.0,
+                                );
+                              } else if (!verhoeff.validate(adminC.aadhar.text)) {
+                                Get.snackbar(
+                                  null,
+                                  'Please add valid aadhar number',
+                                  colorText: Colors.white,
+                                  backgroundColor: Colors.black87,
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+                                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+                                  borderRadius: 5.0,
+                                );
                               } else if (AppUtils.checkTextisNull(adminC.dtOfBirth, 'Dob')) {
                                 Get.snackbar(
                                   null,
@@ -828,6 +889,8 @@ class _OBPersonalState extends State<OBPersonal> {
                                   borderRadius: 5.0,
                                 );
                               } else {
+                                adminC.proofAadharNumber.text = adminC.aadhar.text;
+                                adminC.proofAadharNumberConfirm.text = adminC.aadhar.text;
                                 Get.to(OBVaccine());
                                 adminC.step1(true);
                               }

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:xml/xml.dart';
 
@@ -35,6 +36,17 @@ class _OBScannerState extends State<OBScanner> {
     controller.scannedDataStream.listen((scanData) {
       print('scanData: ${scanData.code}');
       if (scanData.code != null && scanData.code.isNotEmpty) {
+        adminC.proofAadharNumber.clear();
+        adminC.proofAadharNumberConfirm.clear();
+        adminC.name.clear();
+        adminC.permanenthouseNo.clear();
+        adminC.presenthouseNo.clear();
+        adminC.dtOfBirth.clear();
+        adminC.dob = null;
+        adminC.gender = 'M';
+        adminC.disabledAadhar(false);
+        adminC.disabledName(false);
+        adminC.disabledDob(false);
         controller.stopCamera();
         showQR = false;
         var document = XmlDocument.parse(scanData.code);
@@ -53,18 +65,22 @@ class _OBScannerState extends State<OBScanner> {
             print('uid: $uid');
             adminC.proofAadharNumber.text = uid;
             adminC.proofAadharNumberConfirm.text = uid;
+            adminC.aadhar.text = uid;
+            adminC.disabledAadhar(true);
           }
           if (barcodeList[i].toString().contains('name') && !barcodeList[i].toString().contains('gname')) {
             var namerep = barcodeList[i].toString().replaceAll('"', '').replaceAll("'", '');
             var name = namerep.split('=')[1];
             print('name: $name');
             adminC.name.text = name;
+            adminC.disabledName(true);
           }
           if (barcodeList[i].toString().contains('house')) {
             var houserep = barcodeList[i].toString().replaceAll('"', '').replaceAll("'", '');
             var house = houserep.split('=')[1];
             print('house: $house');
             adminC.permanenthouseNo.text = house;
+            adminC.presenthouseNo.text = house;
           }
           if (barcodeList[i].toString().contains('dob')) {
             var dobrep = barcodeList[i].toString().replaceAll('"', '').replaceAll("'", '');
@@ -72,6 +88,7 @@ class _OBScannerState extends State<OBScanner> {
             print('dob: $dob');
             adminC.dtOfBirth.text = '${dob.toString().split('/')[0]}-${dob.toString().split('/')[1]}-${dob.toString().split('/')[2]}';
             adminC.dob = DateFormat('yyyy-MM-dd').format(DateTime.parse('${dob.toString().split('/')[2]}-${dob.toString().split('/')[1]}-${dob.toString().split('/')[0]}')).toString();
+            adminC.disabledDob(true);
           }
           if (barcodeList[i].toString().contains('gender')) {
             var genderrep = barcodeList[i].toString().replaceAll('"', '').replaceAll("'", '');
@@ -91,9 +108,264 @@ class _OBScannerState extends State<OBScanner> {
             adminC.presentPincode.text = pc;
           }
         }
+        adminC.aadharScan = true;
         adminC.updatingData.refresh();
         setState(() {});
         Get.back();
+        showMaterialModalBottomSheet(
+          context: Get.context,
+          bounce: true,
+          elevation: 3.0,
+          barrierColor: Colors.black54,
+          closeProgressThreshold: 5.0,
+          enableDrag: false,
+          isDismissible: false,
+          expand: false,
+          builder: (context) {
+            return Container(
+              height: MediaQuery.of(context).size.height / 2.60,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0,
+                      ),
+                      child: Text(
+                        'We have filled below data from aadhar card',
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                      child: ListView(
+                        shrinkWrap: true,
+                        physics: ScrollPhysics(),
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Name',
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width / 1.8,
+                                child: Text(
+                                  adminC.name.text,
+                                  style: TextStyle(
+                                    fontSize: 18.0,
+                                  ),
+                                  textAlign: TextAlign.end,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 15.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Aadhar Number',
+                                  style: TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width / 1.8,
+                                  child: Text(
+                                    adminC.proofAadharNumber.text,
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                    ),
+                                    textAlign: TextAlign.end,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Visibility(
+                            visible: adminC.permanenthouseNo.text.isEmpty ? false : true,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 15.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'House',
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width / 1.8,
+                                    child: Text(
+                                      adminC.permanenthouseNo.text,
+                                      style: TextStyle(
+                                        fontSize: 18.0,
+                                      ),
+                                      textAlign: TextAlign.end,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Visibility(
+                            visible: adminC.dtOfBirth.text.isEmpty ? false : true,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 15.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'DoB',
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width / 1.8,
+                                    child: Text(
+                                      adminC.dtOfBirth.text,
+                                      style: TextStyle(
+                                        fontSize: 18.0,
+                                      ),
+                                      textAlign: TextAlign.end,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 15.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Gender',
+                                  style: TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width / 1.8,
+                                  child: Text(
+                                    adminC.gender == 'F' ? 'Female' : 'Male',
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                    ),
+                                    textAlign: TextAlign.end,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Visibility(
+                            visible: adminC.permanentPincode.text.isEmpty ? false : true,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 15.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Pincode',
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width / 1.8,
+                                    child: Text(
+                                      adminC.permanentPincode.text,
+                                      style: TextStyle(
+                                        fontSize: 18.0,
+                                      ),
+                                      textAlign: TextAlign.end,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          RaisedButton(
+                            onPressed: () {
+                              Get.back();
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 12.0,
+                                horizontal: 50.0,
+                              ),
+                              child: Text(
+                                'Close',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                            ),
+                            color: Theme.of(context).primaryColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              side: BorderSide(
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
       } else {
         Get.snackbar(
           null,

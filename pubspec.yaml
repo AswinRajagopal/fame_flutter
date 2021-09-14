@@ -101,6 +101,7 @@ dependencies:
   permission_handler: 
   qr_code_scanner: 
   xml: 
+  modal_bottom_sheet: 
 
 # flutter_icons:
 #   image_path: "assets/images/icon.png"

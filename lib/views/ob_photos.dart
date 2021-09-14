@@ -1,13 +1,13 @@
 import 'dart:io';
 
 import 'package:checkdigit/checkdigit.dart';
-import '../widgets/ob_top_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
 
 import '../controllers/admin_controller.dart';
+import '../widgets/ob_top_navigation.dart';
 
 class OBPhotos extends StatefulWidget {
   @override
@@ -539,58 +539,64 @@ class _OBPhotosState extends State<OBPhotos> {
                         horizontal: 10.0,
                         vertical: 10.0,
                       ),
-                      child: TextField(
-                        controller: adminC.proofAadharNumber,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          isDense: true,
-                          contentPadding: EdgeInsets.all(10),
-                          hintStyle: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: 18.0,
+                      child: Obx(() {
+                        return TextField(
+                          controller: adminC.proofAadharNumber,
+                          keyboardType: TextInputType.number,
+                          enabled: !adminC.disabledAadhar.value,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.all(10),
+                            hintStyle: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 18.0,
+                            ),
+                            hintText: 'Aadhar Number*',
+                            prefixIcon: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/images/aadhar.png',
+                                  color: Colors.grey,
+                                  scale: 2.2,
+                                ),
+                              ],
+                            ),
                           ),
-                          hintText: 'Aadhar Number*',
-                          prefixIcon: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                'assets/images/aadhar.png',
-                                color: Colors.grey,
-                                scale: 2.2,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                        );
+                      }),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 10.0,
                         vertical: 10.0,
                       ),
-                      child: TextField(
-                        controller: adminC.proofAadharNumberConfirm,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          isDense: true,
-                          contentPadding: EdgeInsets.all(10),
-                          hintStyle: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: 18.0,
+                      child: Obx(() {
+                        return TextField(
+                          controller: adminC.proofAadharNumberConfirm,
+                          keyboardType: TextInputType.number,
+                          enabled: !adminC.disabledAadhar.value,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.all(10),
+                            hintStyle: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 18.0,
+                            ),
+                            hintText: 'Re-enter Aadhar Number',
+                            prefixIcon: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/images/aadhar.png',
+                                  color: Colors.grey,
+                                  scale: 2.2,
+                                ),
+                              ],
+                            ),
                           ),
-                          hintText: 'Re-enter Aadhar Number',
-                          prefixIcon: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                'assets/images/aadhar.png',
-                                color: Colors.grey,
-                                scale: 2.2,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                        );
+                      }),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
