@@ -190,23 +190,41 @@ class AdminController extends GetxController {
   }
 
   Future<Null> getDateVaccine(BuildContext context) async {
-    final picked = await showDatePicker(
-      context: context,
-      initialDate: dov != null
-          ? DateTime.parse(
-              dov.toString(),
-            )
-          : DateTime.parse(
-              curDate.toString(),
-            ),
-      firstDate: DateTime.now().add(Duration(days: -36500)),
-      lastDate: DateTime.now(),
+    await DatePicker.showDatePicker(
+      context,
+      showTitleActions: true,
+      minTime: DateTime.now().add(Duration(days: -36500)),
+      maxTime: DateTime.now(),
+      onChanged: (date) {
+        print('change $date');
+      },
+      onConfirm: (date) {
+        print('confirm $date');
+        if (date != null) {
+          dtOfVaccine.text = DateFormat('dd-MM-yyyy').format(date).toString();
+          dov = DateFormat('yyyy-MM-dd').format(date).toString();
+        }
+      },
+      currentTime: dov != null ? DateTime.parse(dov.toString()) : DateTime.parse(curDate.toString()),
+      // locale: LocaleType.en,
     );
+    // final picked = await showDatePicker(
+    //   context: context,
+    //   initialDate: dov != null
+    //       ? DateTime.parse(
+    //           dov.toString(),
+    //         )
+    //       : DateTime.parse(
+    //           curDate.toString(),
+    //         ),
+    //   firstDate: DateTime.now().add(Duration(days: -36500)),
+    //   lastDate: DateTime.now(),
+    // );
 
-    if (picked != null) {
-      dtOfVaccine.text = DateFormat('dd-MM-yyyy').format(picked).toString();
-      dov = DateFormat('yyyy-MM-dd').format(picked).toString();
-    }
+    // if (picked != null) {
+    //   dtOfVaccine.text = DateFormat('dd-MM-yyyy').format(picked).toString();
+    //   dov = DateFormat('yyyy-MM-dd').format(picked).toString();
+    // }
   }
 
   Future<Null> getFatherDate(BuildContext context) async {
@@ -230,23 +248,40 @@ class AdminController extends GetxController {
   }
 
   Future<Null> getFamilyDate(BuildContext context, TextEditingController setValue) async {
-    final picked = await showDatePicker(
-      context: context,
-      initialDate: setValue != null && setValue.text.isNotEmpty
-          ? DateTime.parse(
-              '${setValue.text.toString().split('-')[2]}-${setValue.text.toString().split('-')[1]}-${setValue.text.toString().split('-')[0]}',
-            )
-          : DateTime.parse(
-              curDate.toString(),
-            ),
-      firstDate: DateTime.now().add(Duration(days: -36500)),
-      lastDate: DateTime.now(),
+    await DatePicker.showDatePicker(
+      context,
+      showTitleActions: true,
+      minTime: DateTime.now().add(Duration(days: -36500)),
+      maxTime: DateTime.now(),
+      onChanged: (date) {
+        print('change $date');
+      },
+      onConfirm: (date) {
+        print('confirm $date');
+        if (date != null) {
+          setValue.text = DateFormat('dd-MM-yyyy').format(date).toString();
+        }
+      },
+      currentTime: setValue != null && setValue.text.isNotEmpty ? DateTime.parse('${setValue.text.toString().split('-')[2]}-${setValue.text.toString().split('-')[1]}-${setValue.text.toString().split('-')[0]}') : DateTime.parse(curDate.toString()),
+      // locale: LocaleType.en,
     );
+    // final picked = await showDatePicker(
+    //   context: context,
+    //   initialDate: setValue != null && setValue.text.isNotEmpty
+    //       ? DateTime.parse(
+    //           '${setValue.text.toString().split('-')[2]}-${setValue.text.toString().split('-')[1]}-${setValue.text.toString().split('-')[0]}',
+    //         )
+    //       : DateTime.parse(
+    //           curDate.toString(),
+    //         ),
+    //   firstDate: DateTime.now().add(Duration(days: -36500)),
+    //   lastDate: DateTime.now(),
+    // );
 
-    if (picked != null) {
-      setValue.text = DateFormat('dd-MM-yyyy').format(picked).toString();
-      // dobFamilyVal = DateFormat('yyyy-MM-dd').format(picked).toString();
-    }
+    // if (picked != null) {
+    //   setValue.text = DateFormat('dd-MM-yyyy').format(picked).toString();
+    //   // dobFamilyVal = DateFormat('yyyy-MM-dd').format(picked).toString();
+    // }
   }
 
   Future<Null> getJoiningDate(BuildContext context) async {
