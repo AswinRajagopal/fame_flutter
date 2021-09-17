@@ -102,6 +102,7 @@ dependencies:
   qr_code_scanner: 
   xml: 
   modal_bottom_sheet: 
+  flutter_datetime_picker: 
 
 # flutter_icons:
 #   image_path: "assets/images/icon.png"

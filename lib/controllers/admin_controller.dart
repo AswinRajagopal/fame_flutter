@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 import '../connection/remote_services.dart';
 import '../utils/utils.dart';
@@ -151,23 +152,41 @@ class AdminController extends GetxController {
   var curDate = DateFormat('yyyy-MM-dd').format(DateTime.now()).toString();
 
   Future<Null> getDate(BuildContext context) async {
-    final picked = await showDatePicker(
-      context: context,
-      initialDate: dob != null
-          ? DateTime.parse(
-              dob.toString(),
-            )
-          : DateTime.parse(
-              curDate.toString(),
-            ),
-      firstDate: DateTime.now().add(Duration(days: -36500)),
-      lastDate: DateTime.now(),
+    await DatePicker.showDatePicker(
+      context,
+      showTitleActions: true,
+      minTime: DateTime.now().add(Duration(days: -36500)),
+      maxTime: DateTime.now(),
+      onChanged: (date) {
+        print('change $date');
+      },
+      onConfirm: (date) {
+        print('confirm $date');
+        if (date != null) {
+          dtOfBirth.text = DateFormat('dd-MM-yyyy').format(date).toString();
+          dob = DateFormat('yyyy-MM-dd').format(date).toString();
+        }
+      },
+      currentTime: dob != null ? DateTime.parse(dob.toString()) : DateTime.parse(curDate.toString()),
+      // locale: LocaleType.en,
     );
+    // final picked = await showDatePicker(
+    //   context: context,
+    //   initialDate: dob != null
+    //       ? DateTime.parse(
+    //           dob.toString(),
+    //         )
+    //       : DateTime.parse(
+    //           curDate.toString(),
+    //         ),
+    //   firstDate: DateTime.now().add(Duration(days: -36500)),
+    //   lastDate: DateTime.now(),
+    // );
 
-    if (picked != null) {
-      dtOfBirth.text = DateFormat('dd-MM-yyyy').format(picked).toString();
-      dob = DateFormat('yyyy-MM-dd').format(picked).toString();
-    }
+    // if (picked != null) {
+    //   dtOfBirth.text = DateFormat('dd-MM-yyyy').format(picked).toString();
+    //   dob = DateFormat('yyyy-MM-dd').format(picked).toString();
+    // }
   }
 
   Future<Null> getDateVaccine(BuildContext context) async {
@@ -231,23 +250,41 @@ class AdminController extends GetxController {
   }
 
   Future<Null> getJoiningDate(BuildContext context) async {
-    final picked = await showDatePicker(
-      context: context,
-      initialDate: doj != null
-          ? DateTime.parse(
-              doj.toString(),
-            )
-          : DateTime.parse(
-              curDate.toString(),
-            ),
-      firstDate: DateTime.now().add(Duration(days: -60)),
-      lastDate: DateTime.now().add(Duration(days: 120)),
+    await DatePicker.showDatePicker(
+      context,
+      showTitleActions: true,
+      minTime: DateTime.now().add(Duration(days: -60)),
+      maxTime: DateTime.now().add(Duration(days: 120)),
+      onChanged: (date) {
+        print('change $date');
+      },
+      onConfirm: (date) {
+        print('confirm $date');
+        if (date != null) {
+          dtOfJoin.text = DateFormat('dd-MM-yyyy').format(date).toString();
+          doj = DateFormat('yyyy-MM-dd').format(date).toString();
+        }
+      },
+      currentTime: doj != null ? DateTime.parse(doj.toString()) : DateTime.parse(curDate.toString()),
+      // locale: LocaleType.en,
     );
+    // final picked = await showDatePicker(
+    //   context: context,
+    //   initialDate: doj != null
+    //       ? DateTime.parse(
+    //           doj.toString(),
+    //         )
+    //       : DateTime.parse(
+    //           curDate.toString(),
+    //         ),
+    //   firstDate: DateTime.now().add(Duration(days: -60)),
+    //   lastDate: DateTime.now().add(Duration(days: 120)),
+    // );
 
-    if (picked != null) {
-      dtOfJoin.text = DateFormat('dd-MM-yyyy').format(picked).toString();
-      doj = DateFormat('yyyy-MM-dd').format(picked).toString();
-    }
+    // if (picked != null) {
+    //   dtOfJoin.text = DateFormat('dd-MM-yyyy').format(picked).toString();
+    //   doj = DateFormat('yyyy-MM-dd').format(picked).toString();
+    // }
   }
 
   void addShift(shiftName, startTime, endTime) async {
