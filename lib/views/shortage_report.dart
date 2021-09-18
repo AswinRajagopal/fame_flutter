@@ -166,61 +166,66 @@ class _ShortageReportState extends State<ShortageReport> {
                           sC.toString(),
                         ),
                       ),
-                      value: json.encode(item.clientManpowerList),
+                      value: json.encode(item.clientManpowerList) + '###${item.client.id}',
                     );
                   }).toList(),
                   onChanged: (value) {
-                    var manpower = json.decode(value);
+                    var splitIt = value.split('###');
+                    var manpower = json.decode(splitIt[0]);
                     // print('value: $manpower');
-                    clientId = manpower.first['clientId'];
                     epC.timings.clear();
                     checkList.clear();
-                    // epC.shiftTime = '';
-                    // epC.shift.clear();
-                    shift = null;
-                    for (var j = 0; j < manpower.length; j++) {
-                      // print('manpower: ${manpower[j]}');
-                      manpower[j]['shiftStartTime'] = manpower[j]['shiftStartTime'].split(':').first.length == 1 ? '0' + manpower[j]['shiftStartTime'] : manpower[j]['shiftStartTime'];
-                      manpower[j]['shiftEndTime'] = manpower[j]['shiftEndTime'].split(':').first.length == 1 ? '0' + manpower[j]['shiftEndTime'] : manpower[j]['shiftEndTime'];
-                      var sSTime = DateFormat('hh:mm')
-                              .format(
-                                DateTime.parse(
-                                  '2020-12-20 ' + manpower[j]['shiftStartTime'],
-                                ),
-                              )
-                              .toString() +
-                          DateFormat('a')
-                              .format(
-                                DateTime.parse(
-                                  '2020-12-20 ' + manpower[j]['shiftStartTime'],
-                                ),
-                              )
-                              .toString()
-                              .toLowerCase();
-                      var sETime = DateFormat('hh:mm')
-                              .format(
-                                DateTime.parse(
-                                  '2020-12-20 ' + manpower[j]['shiftEndTime'],
-                                ),
-                              )
-                              .toString() +
-                          DateFormat('a')
-                              .format(
-                                DateTime.parse(
-                                  '2020-12-20 ' + manpower[j]['shiftEndTime'],
-                                ),
-                              )
-                              .toString()
-                              .toLowerCase();
-                      var addTiming = {
-                        'shift': manpower[j]['shift'],
-                        'shiftStartTime': sSTime,
-                        'shiftEndTime': sETime,
-                      };
-                      // print(epC.timings.contains(addTiming));
-                      if (!checkList.contains(manpower[j]['shift'])) {
-                        epC.timings.add(addTiming);
-                        checkList.add(manpower[j]['shift']);
+                    if (manpower != null && manpower.length > 0) {
+                      clientId = manpower.first['clientId'];
+                      epC.timings.clear();
+                      checkList.clear();
+                      // epC.shiftTime = '';
+                      // epC.shift.clear();
+                      shift = null;
+                      for (var j = 0; j < manpower.length; j++) {
+                        // print('manpower: ${manpower[j]}');
+                        manpower[j]['shiftStartTime'] = manpower[j]['shiftStartTime'].split(':').first.length == 1 ? '0' + manpower[j]['shiftStartTime'] : manpower[j]['shiftStartTime'];
+                        manpower[j]['shiftEndTime'] = manpower[j]['shiftEndTime'].split(':').first.length == 1 ? '0' + manpower[j]['shiftEndTime'] : manpower[j]['shiftEndTime'];
+                        var sSTime = DateFormat('hh:mm')
+                                .format(
+                                  DateTime.parse(
+                                    '2020-12-20 ' + manpower[j]['shiftStartTime'],
+                                  ),
+                                )
+                                .toString() +
+                            DateFormat('a')
+                                .format(
+                                  DateTime.parse(
+                                    '2020-12-20 ' + manpower[j]['shiftStartTime'],
+                                  ),
+                                )
+                                .toString()
+                                .toLowerCase();
+                        var sETime = DateFormat('hh:mm')
+                                .format(
+                                  DateTime.parse(
+                                    '2020-12-20 ' + manpower[j]['shiftEndTime'],
+                                  ),
+                                )
+                                .toString() +
+                            DateFormat('a')
+                                .format(
+                                  DateTime.parse(
+                                    '2020-12-20 ' + manpower[j]['shiftEndTime'],
+                                  ),
+                                )
+                                .toString()
+                                .toLowerCase();
+                        var addTiming = {
+                          'shift': manpower[j]['shift'],
+                          'shiftStartTime': sSTime,
+                          'shiftEndTime': sETime,
+                        };
+                        // print(epC.timings.contains(addTiming));
+                        if (!checkList.contains(manpower[j]['shift'])) {
+                          epC.timings.add(addTiming);
+                          checkList.add(manpower[j]['shift']);
+                        }
                       }
                     }
                   },
