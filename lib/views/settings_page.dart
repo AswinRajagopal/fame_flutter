@@ -7,6 +7,7 @@ import 'package:progress_dialog/progress_dialog.dart';
 import 'package:share/share.dart';
 
 import '../connection/remote_services.dart';
+import '../controllers/admin_controller.dart';
 import '../utils/utils.dart';
 import 'grievance_report.dart';
 import 'ob_personal.dart';
@@ -24,6 +25,7 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   final InAppReview inAppReview = InAppReview.instance;
   TextEditingController feedback = TextEditingController();
+  final AdminController adminC = Get.put(AdminController());
   bool isAvailable = false;
   ProgressDialog pr;
 
@@ -121,6 +123,7 @@ class _SettingsPageState extends State<SettingsPage> {
             // ),
             GestureDetector(
               onTap: () {
+                adminC.reload = true;
                 Get.to(OBPersonal());
               },
               child: Visibility(
