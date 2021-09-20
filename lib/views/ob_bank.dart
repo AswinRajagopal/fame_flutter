@@ -91,7 +91,8 @@ class _OBBankState extends State<OBBank> {
                         isExpanded: false,
                         value: adminC.bank,
                         items: adminC.bankNamesList.map((item) {
-                          //print('item: $item');
+                          print('item: $item');
+                          print('adminC.bank: ${adminC.bank ?? 'it is null'}');
                           return DropdownMenuItem(
                             child: Padding(
                               padding: const EdgeInsets.only(left: 10.0),

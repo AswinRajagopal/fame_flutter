@@ -73,7 +73,9 @@ class _OBPersonalState extends State<OBPersonal> {
         adminC.step4(false);
         adminC.step5(false);
         adminC.step6(false);
-        adminC.reload = false;
+        Future.delayed(Duration(milliseconds: 100), () {
+          adminC.reload = false;
+        });
       }
     });
     super.initState();

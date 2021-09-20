@@ -1706,7 +1706,7 @@ class AdminController extends GetxController {
       'empDesgnText': desigAu.text,
       'empUANNumber': empUANNumber.text,
       'empQualification': qualification.text,
-      'empbankname': bank.toString(),
+      'empbankname': bank == null ? null : bank.toString(),
       'empBankAcNo': AppUtils.checkStr(accountNo.text),
       'empIFSCcode': ifsc.text,
       'shirtSize': shirtSize == null ? '' : shirtSize.toString(),
@@ -1742,8 +1742,8 @@ class AdminController extends GetxController {
       borderRadius: 5.0,
     );
     Timer(Duration(seconds: 2), () {
-      Get.offAll(DashboardPage());
       reload = true;
+      Get.offAll(DashboardPage());
     });
   }
 
@@ -1786,7 +1786,7 @@ class AdminController extends GetxController {
         dtOfVaccine.text = DateFormat('dd-MM-yyyy').format(DateTime.parse(draftEmployee['vaccineDate'].toString())).toString();
       }
       // bank & uniform info
-      if (draftEmployee['empbankname'] != null && draftEmployee['empbankname'] != '') bank = draftEmployee['empbankname'];
+      if (draftEmployee['empbankname'] != null && draftEmployee['empbankname'] != '' && draftEmployee['empbankname'] != 'null') bank = draftEmployee['empbankname'];
       accountNo.text = draftEmployee['empBankAcNo'];
       ifsc.text = draftEmployee['empIFSCcode'];
       if (draftEmployee['shirtSize'] != null && draftEmployee['shirtSize'] != '') shirtSize = draftEmployee['shirtSize'];
