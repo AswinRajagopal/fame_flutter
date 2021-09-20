@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
@@ -44,7 +45,7 @@ class EmployeeReportController extends GetxController {
   final List pitsStops = [].obs;
   final List pitsStopsRoute = [].obs;
   double totalDistance = 0;
-  var added =0,approved=0,rejected = 1,pending=0;
+  var added =0,approved=0,rejected = 0,pending=0;
 
   void getClientTimings() async {
     try {
@@ -218,10 +219,15 @@ class EmployeeReportController extends GetxController {
         isLoadingEmpReport(false);
         // print('getEmpReportRes valid: $getEmpReportRes');
         if (getEmpReportRes['success']) {
-          print('getEmpReportRes: $getEmpReportRes');
-          approved = getEmpReportRes['empList'].length-1;
           added = getEmpReportRes['empList'].length;
-          rejected = 1;
+          for(int i =0;i<added;i++) {
+            if (getEmpReportRes['empList'][i]['empstatus'] == '2') {
+              rejected++;
+            }else if(getEmpReportRes['empList'][i]['empstatus'] == '0'){
+              pending++;
+            }
+          }
+          approved = added - rejected - pending;
         }
       }
     } catch (e) {

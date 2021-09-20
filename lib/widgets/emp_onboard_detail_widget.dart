@@ -49,7 +49,7 @@ class EmpOnboardDetailWidget extends StatelessWidget {
                 crossAxisAlignment:CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [Text(
-              emp['empstatus'] == '1' ? 'Approved' : 'Pending',
+              emp['empstatus'] == '1' ? 'Approved' :emp['empstatus'] == '0' ? 'Pending' : 'Rejected',
               style: TextStyle(
                 fontSize: 16.0,
                 color: Colors.grey,
@@ -57,7 +57,7 @@ class EmpOnboardDetailWidget extends StatelessWidget {
             ),
             if(emp['createdBy'] != null)
               Text(emp['createdBy']+' on '+DateFormat('dd-MM-yy').format(DateTime.parse(emp['createdOn'])))]),
-            if (emp['empstatus'] == '0')
+            if (emp['empstatus'] == '2' && emp['empRemarks'] !=null)
               Row(children: [
                 SizedBox(
                   height: 5.0,
