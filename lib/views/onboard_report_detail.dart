@@ -104,8 +104,7 @@ class _OnboardReportDetail extends State<OnboardReportDetail> {
     }
 
     epC.getEmpReportRes['empDailyAttView'].forEach((emp) {
-      if (emp['name'].toString().toLowerCase().contains(text.toLowerCase()) ||
-          emp['empId'].toString().toLowerCase().contains(text.toLowerCase())) {
+      if (emp['name'].toString().toLowerCase().contains(text.toLowerCase()) || emp['empId'].toString().toLowerCase().contains(text.toLowerCase())) {
         epC.searchList.add(emp);
       }
     });
@@ -121,11 +120,13 @@ class _OnboardReportDetail extends State<OnboardReportDetail> {
         backgroundColor: AppUtils().greyScaffoldBg,
         appBar: AppBar(title: appBarTitle),
         body: Obx(() {
+          print(epC.isLoadingEmpReport.value);
           return SafeArea(
             child: Stack(
               children: [
-                ListView(children: [
-                  Container(
+                ListView(
+                  children: [
+                    Container(
                       padding: EdgeInsets.only(top: 12),
                       height: 75.0,
                       decoration: BoxDecoration(
@@ -258,8 +259,10 @@ class _OnboardReportDetail extends State<OnboardReportDetail> {
                             ],
                           ),
                         ],
-                      )),
-                ]),
+                      ),
+                    ),
+                  ],
+                ),
                 Positioned(
                   top: 75.0,
                   bottom: 10.0,
@@ -290,13 +293,9 @@ class _OnboardReportDetail extends State<OnboardReportDetail> {
                         child: ListView.builder(
                           physics: ScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: epC.searchList.isNotEmpty
-                              ? epC.searchList.length
-                              : epC.getEmpReportRes['empList'].length,
+                          itemCount: epC.searchList.isNotEmpty ? epC.searchList.length : epC.getEmpReportRes['empList'].length,
                           itemBuilder: (context, index) {
-                            var emp = epC.searchList.isNotEmpty
-                                ? epC.searchList[index]
-                                : epC.getEmpReportRes['empList'][index];
+                            var emp = epC.searchList.isNotEmpty ? epC.searchList[index] : epC.getEmpReportRes['empList'][index];
                             return EmpOnboardDetailWidget(emp);
                           },
                         ),
