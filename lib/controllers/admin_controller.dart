@@ -1445,12 +1445,12 @@ class AdminController extends GetxController {
 
   void addEmployeeData(empRelationshipList, proofDetails, aadharFront, aadharBack, passbookFront, passbookBack, proof3Front, proof3Back, profile, empId) async {
     try {
-      var addNewEmpRel = await RemoteServices().newRecRel(empRelationshipList);
+      var addNewEmpRel = await RemoteServices().newRecRel(empRelationshipList, empId);
 
       if (addNewEmpRel != null) {
         // print('addNewEmp: $addNewEmp');
         if (addNewEmpRel['success']) {
-          var addNewEmpProof = await RemoteServices().newRecProof(proofDetails);
+          var addNewEmpProof = await RemoteServices().newRecProof(proofDetails, empId);
           if (addNewEmpProof != null) {
             if (addNewEmpProof['success']) {
               var uploadNewEmpProof = await RemoteServices().newRecUploadProof(empId, aadharFront, aadharBack, passbookFront, passbookBack, proof3Front, proof3Back, profile);

@@ -2151,13 +2151,14 @@ class RemoteServices {
     }
   }
 
-  Future newRecRel(empRelationshipList) async {
+  Future newRecRel(empRelationshipList, empId) async {
     var response = await client.post(
       '$baseURL/company/new_rec_rel',
       headers: header,
       body: jsonEncode(
         <String, dynamic>{
           'companyId': box.get('companyid').toString(),
+          'empId': empId.toString(),
           'empRelationshipList': empRelationshipList,
         },
       ),
@@ -2174,13 +2175,14 @@ class RemoteServices {
     }
   }
 
-  Future newRecProof(proofDetails) async {
+  Future newRecProof(proofDetails, empId) async {
     var response = await client.post(
       '$baseURL/company/new_rec_proof',
       headers: header,
       body: jsonEncode(
         <String, dynamic>{
           'companyId': box.get('companyid').toString(),
+          'empId': empId.toString(),
           'proofDetails': proofDetails,
         },
       ),
