@@ -180,6 +180,26 @@ class _OBPersonalState extends State<OBPersonal> {
                         horizontal: 10.0,
                         vertical: 10.0,
                       ),
+                      child: Obx(() {
+                        return TextField(
+                          controller: adminC.fatherName,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.all(10),
+                            hintStyle: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 18.0,
+                            ),
+                            hintText: 'Father Name*',
+                          ),
+                        );
+                      }),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0,
+                        vertical: 10.0,
+                      ),
                       child: Row(
                         children: [
                           SizedBox(
@@ -806,6 +826,17 @@ class _OBPersonalState extends State<OBPersonal> {
                                 Get.snackbar(
                                   null,
                                   'Please provide Name',
+                                  colorText: Colors.white,
+                                  backgroundColor: Colors.black87,
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+                                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+                                  borderRadius: 5.0,
+                                );
+                              }else if (AppUtils.checkTextisNull(adminC.fatherName, 'FatherName')) {
+                                Get.snackbar(
+                                  null,
+                                  'Please provide Father Name',
                                   colorText: Colors.white,
                                   backgroundColor: Colors.black87,
                                   snackPosition: SnackPosition.BOTTOM,

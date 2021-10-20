@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:fame/views/onboard_report_detail.dart';
+import 'package:fame/views/view_pdf.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -226,6 +229,16 @@ class MorePage extends StatelessWidget {
               child: ListContainer(
                 'assets/images/employee.png',
                 'Onboarding Report',
+              ),
+            ),
+            if(jsonDecode(RemoteServices().box.get('appFeature'))['paySlipUrl'] != null)
+            GestureDetector(
+              onTap: () {
+                Get.to(ViewPdf());
+              },
+              child: ListContainer(
+                'assets/images/feedbacki.png',
+                'View Payslip',
               ),
             ),
             GestureDetector(

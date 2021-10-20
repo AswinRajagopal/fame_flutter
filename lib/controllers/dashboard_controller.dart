@@ -236,22 +236,50 @@ class DashboardController extends GetxController {
           }
         } else {
           isDashboardLoading(false);
-          Get.snackbar(
-            null,
-            'Something went wrong! Please try again later',
-            colorText: Colors.white,
-            backgroundColor: Colors.black87,
-            snackPosition: SnackPosition.BOTTOM,
-            margin: EdgeInsets.symmetric(
-              horizontal: 8.0,
-              vertical: 10.0,
-            ),
-            padding: EdgeInsets.symmetric(
-              horizontal: 12.0,
-              vertical: 18.0,
-            ),
-            borderRadius: 5.0,
-          );
+          if (response['msg'].length > 0) {
+            await showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) =>
+                  WillPopScope(
+                    onWillPop: () async => false,
+                    child: AlertDialog(
+                      title: Text('Error'),
+                      content: Text(
+                        response['msg'],
+                        style: TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
+                      actions: <Widget>[
+                        FlatButton(
+                          onPressed: () {
+                            RemoteServices().logout();
+                          },
+                          child: Text('OKAY'),
+                        ),
+                      ],
+                    ),
+                  ),
+            );
+          } else {
+            Get.snackbar(
+              null,
+              'Something went wrong! Please try again later',
+              colorText: Colors.white,
+              backgroundColor: Colors.black87,
+              snackPosition: SnackPosition.BOTTOM,
+              margin: EdgeInsets.symmetric(
+                horizontal: 8.0,
+                vertical: 10.0,
+              ),
+              padding: EdgeInsets.symmetric(
+                horizontal: 12.0,
+                vertical: 18.0,
+              ),
+              borderRadius: 5.0,
+            );
+          }
         }
       }
     } catch (e) {

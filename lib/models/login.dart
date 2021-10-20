@@ -60,6 +60,7 @@ class AppFeature {
     this.onboarding,
     this.attendanceDaysPermitted,
     this.checkinLocation,
+    this.paySlipUrl,
     // this.weekOff,
     this.locFetchTimeout,
     this.probationaries,
@@ -70,6 +71,7 @@ class AppFeature {
     this.faceReregister,
   });
   String companyId;
+  String paySlipUrl;
   bool gps;
   bool issueTracking;
   bool checkoutDial;
@@ -112,6 +114,7 @@ class AppFeature {
         probationaries: json['probationaries'],
         diyFace: json['diyFace'],
         autoCheckout: json['autoCheckout'],
+        paySlipUrl: json['paySlipUrl'],
         faceReregister: json['faceReregister'],
         hubFeature: json['hubFeature'],
         appUpdate: json['appUpdate'],
@@ -139,6 +142,7 @@ class AppFeature {
         'diyFace': diyFace,
         'faceReregister': faceReregister,
         'autoCheckout': autoCheckout,
+        'paySlipUrl': paySlipUrl,
         'hubFeature': hubFeature,
         'appUpdate': appUpdate,
       };

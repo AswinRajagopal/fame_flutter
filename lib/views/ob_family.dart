@@ -171,30 +171,6 @@ class _OBFamilyState extends State<OBFamily> {
                               padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
                               borderRadius: 5.0,
                             );
-                          } else if (AppUtils.checkTextisNull(adminC.famAadhar[i], 'Member Aadhar')) {
-                            error = true;
-                            Get.snackbar(
-                              null,
-                              'Please provide Member Aadhar',
-                              colorText: Colors.white,
-                              backgroundColor: Colors.black87,
-                              snackPosition: SnackPosition.BOTTOM,
-                              margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                              padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
-                              borderRadius: 5.0,
-                            );
-                          } else if (!verhoeff.validate(adminC.famAadhar[i].text)) {
-                            error = true;
-                            Get.snackbar(
-                              null,
-                              'Please add valid aadhar number',
-                              colorText: Colors.white,
-                              backgroundColor: Colors.black87,
-                              snackPosition: SnackPosition.BOTTOM,
-                              margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                              padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
-                              borderRadius: 5.0,
-                            );
                           } else if (AppUtils.checkTextisNull(adminC.famRelation[i], 'Member Relation')) {
                             error = true;
                             Get.snackbar(
