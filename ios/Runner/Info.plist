@@ -32,6 +32,8 @@
 	<string>add reminder &amp; events to calendar</string>
 	<key>NSCameraUsageDescription</key>
 	<string>attendance face recognition </string>
+	<key>NSContactsUsageDescription</key>
+	<string>get Contacts to autofill in the onboarding screen</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>get Location when on duty</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
@@ -42,6 +44,10 @@
 	<string>upload photo</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>recognise speech in app for security</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -64,6 +70,7 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>kTCCServiceMediaLibrary</key>
-	<string>music inside app </string>
-</dict>
+	<string>play music inside the app</string>
+    <key>NSAppleMusicUsageDescription</key>
+    <string>play music inside the app</string></dict>
 </plist>

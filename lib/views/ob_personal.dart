@@ -180,8 +180,7 @@ class _OBPersonalState extends State<OBPersonal> {
                         horizontal: 10.0,
                         vertical: 10.0,
                       ),
-                      child: Obx(() {
-                        return TextField(
+                      child: TextField(
                           controller: adminC.fatherName,
                           decoration: InputDecoration(
                             isDense: true,
@@ -192,8 +191,7 @@ class _OBPersonalState extends State<OBPersonal> {
                             ),
                             hintText: 'Father Name*',
                           ),
-                        );
-                      }),
+                        ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
