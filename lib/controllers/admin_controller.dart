@@ -903,7 +903,7 @@ class AdminController extends GetxController {
                       color: Colors.grey[600],
                       fontSize: 18.0,
                     ),
-                    hintText: 'Aadhar Number*',
+                    hintText: 'Aadhar Number',
                     prefixIcon: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -1207,7 +1207,7 @@ class AdminController extends GetxController {
                       color: Colors.grey[600],
                       fontSize: 18.0,
                     ),
-                    hintText: 'Aadhar Number*',
+                    hintText: 'Aadhar Number',
                     prefixIcon: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -1546,7 +1546,7 @@ class AdminController extends GetxController {
       'vaccineDose': dose,
       'branch': '1',
       'employeeType': '',
-      'empFatherName': '',
+      'empFatherName': fatherName.text,
       'title': '',
       'unitId': client.toString(),
       'empBloodGroup': AppUtils.checkStr(blood.toString()),

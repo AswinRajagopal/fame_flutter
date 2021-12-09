@@ -13,6 +13,7 @@ import 'package:get/get.dart';
 class LoginController extends GetxController {
   var isLoading = true.obs;
   ProgressDialog pr;
+  RemoteServices rs = new RemoteServices();
 
   @override
   void onInit() {
@@ -24,7 +25,7 @@ class LoginController extends GetxController {
     try {
       await pr.show();
       RemoteServices().box.put('lite', lite);
-      var loginResponse = await RemoteServices.login(username, empid, password);
+      var loginResponse = await rs.login(username, empid, password);
       if (loginResponse != null) {
         await pr.hide();
         print('loginResponse valid: ${loginResponse.valid}');
