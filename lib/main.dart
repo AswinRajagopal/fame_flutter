@@ -23,9 +23,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   // Pass all uncaught errors from the framework to Crashlytics.
-  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+  // await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   // FirebaseCrashlytics.instance.crash();
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+  // FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   final appDocumentDir = await getApplicationDocumentsDirectory();
 
   Hive.init(appDocumentDir.path);

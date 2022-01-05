@@ -474,6 +474,34 @@ class _OBPersonalState extends State<OBPersonal> {
                         vertical: 10.0,
                       ),
                       child: TextField(
+                        controller: adminC.empESINumber,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          isDense: true,
+                          contentPadding: EdgeInsets.all(10),
+                          hintStyle: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 18.0,
+                          ),
+                          hintText: 'ESI Number',
+                          prefixIcon: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                'assets/images/aadhar.png',
+                                color: Colors.grey,
+                                scale: 2.2,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0,
+                        vertical: 10.0,
+                      ),
+                      child: TextField(
                         controller: adminC.empUANNumber,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(

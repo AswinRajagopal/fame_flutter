@@ -146,7 +146,7 @@ class _ShortageReportState extends State<ShortageReport> {
                   hint: Padding(
                     padding: const EdgeInsets.only(left: 8.0),
                     child: Text(
-                      'Select Client',
+                      'All Clients',
                       style: TextStyle(
                         color: Colors.grey[600],
                         fontSize: 18.0,
@@ -227,6 +227,14 @@ class _ShortageReportState extends State<ShortageReport> {
                           checkList.add(manpower[j]['shift']);
                         }
                       }
+                      var addTiming = {
+                        'shift': 'ZZZ',
+                        'shiftStartTime': 'All ',
+                        'shiftEndTime': ' Shifts',
+                      };
+                      // print(epC.timings.contains(addTiming));
+                        epC.timings.add(addTiming);
+                        checkList.add('ZZZ');
                     }
                   },
                 ),
@@ -385,10 +393,27 @@ class _ShortageReportState extends State<ShortageReport> {
                         RaisedButton(
                           onPressed: () {
                             FocusScope.of(context).requestFocus(FocusNode());
-                            if (clientId == null || selectedDate == null || shift == null) {
+                            if (selectedDate == null) {
                               Get.snackbar(
                                 null,
-                                'Please select client, shift and date',
+                                'Please select date',
+                                colorText: Colors.white,
+                                backgroundColor: Colors.black87,
+                                snackPosition: SnackPosition.BOTTOM,
+                                margin: EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                  vertical: 10.0,
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 12.0,
+                                  vertical: 18.0,
+                                ),
+                                borderRadius: 5.0,
+                              );
+                            } else if(clientId != null && shift == null){
+                              Get.snackbar(
+                                null,
+                                'Please select shift',
                                 colorText: Colors.white,
                                 backgroundColor: Colors.black87,
                                 snackPosition: SnackPosition.BOTTOM,
@@ -403,10 +428,12 @@ class _ShortageReportState extends State<ShortageReport> {
                                 borderRadius: 5.0,
                               );
                             } else {
-                              print('clientId: $clientId');
+                              print(clientId==null?'all':clientId+'');
                               print('date: ${date.text}');
-                              print('shift: $shift');
-                              Get.to(ShortageReportDetail(clientId, selectedDate, shift));
+                              print(shift==null?'all':shift);
+                              Get.to(ShortageReportDetail(
+                                  clientId==null?'all':clientId,
+                                  selectedDate, shift==null?'all':shift));
                             }
                           },
                           child: Padding(

@@ -1,10 +1,15 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:fame/connection/remote_services.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ViewPdf extends StatefulWidget {
   @override
@@ -16,13 +21,14 @@ class _ViewPdf extends State<ViewPdf> {
   var month = DateTime.now().month;
   var year = DateTime.now().year;
   var url;
+  var month_year;
 
   String monthString;
 
   @override
   void initState() {
     super.initState();
-    var month_year = ((month-1)*100)+(year%1000);
+    month_year = ((month-1)*100)+(year%1000);
     url = jsonDecode(RemoteServices().box.get('appFeature'))['paySlipUrl'] +
         '?Empid='+RemoteServices().box.get('empid').toString()+'&month='+month_year.toString();
   }
@@ -37,7 +43,7 @@ class _ViewPdf extends State<ViewPdf> {
               icon: const Icon(
                 Icons.date_range,
                 color: Colors.white,
-                semanticLabel: 'Bookmark',
+                semanticLabel: 'Date Range',
               ),
               onPressed: () {
                 showMonthPicker(
@@ -65,7 +71,22 @@ class _ViewPdf extends State<ViewPdf> {
                     });
                   }
                 });
-              })
+              }),
+    IconButton(
+    icon: const Icon(
+    Icons.download_sharp,
+    color: Colors.white,
+    semanticLabel: 'Download',
+    ),
+    onPressed: () async {
+      var url = jsonDecode(RemoteServices().box.get('appFeature'))['paySlipUrl'] +
+      '?Empid='+RemoteServices().box.get('empid').toString()+'&month='+month_year.toString();
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else {
+        throw 'Could not launch $url';
+      }
+    })
         ],
       ),
       body: SfPdfViewer.network(

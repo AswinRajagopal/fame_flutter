@@ -75,7 +75,7 @@ class _TransferPageState extends State<TransferPage> {
     super.initState();
   }
 
-  final DateTime _frmDate = DateTime.now().add(Duration(days: 1));
+  final DateTime _frmDate = DateTime.now();
 
   Future<Null> fromDate(BuildContext context) async {
     final picked = await showDatePicker(
@@ -85,7 +85,7 @@ class _TransferPageState extends State<TransferPage> {
           : DateTime.parse(
               fD.toString(),
             ),
-      firstDate: DateTime.now().add(Duration(days: 1)),
+      firstDate: DateTime.now(),
       lastDate: tD != null
           ? DateTime.parse(tD.toString()).add(
               Duration(days: -1),

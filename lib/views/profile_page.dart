@@ -277,6 +277,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                 pC.profileRes['empDetails']['emailId'] ?? 'N/A',
                               ),
                               SizedBox(
+                                height: 10.0,
+                              ),
+                              ProfileDetailRow(
+                                'assets/images/icon_insno.png',
+                                pC.profileRes['empDetails']['insurancePolicy'] ?? 'N/A',
+                              ),
+                              SizedBox(
                                 height: 15.0,
                               ),
                               Center(

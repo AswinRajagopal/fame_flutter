@@ -1102,6 +1102,94 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                     },
                                                   );
                                                 }
+                                                if ((val == 'COP' &&
+                                                    emp['attendanceAlias'] ==
+                                                        'COP')) {
+                                                  otT.text = emp['overTime'];
+                                                  await Get.defaultDialog(
+                                                    title: 'OT hours',
+                                                    content: TextField(
+                                                      controller: otT,
+                                                      readOnly: true,
+                                                      keyboardType:
+                                                          TextInputType.number,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        isDense: true,
+                                                        contentPadding:
+                                                            EdgeInsets.all(
+                                                          10.0,
+                                                        ),
+                                                        hintStyle: TextStyle(
+                                                          color:
+                                                              Colors.grey[600],
+                                                          fontSize: 18.0,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                        hintText: 'hours',
+                                                        border:
+                                                            OutlineInputBorder(
+                                                          borderRadius:
+                                                              const BorderRadius
+                                                                  .all(
+                                                            Radius.circular(
+                                                                5.0),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    radius: 5.0,
+                                                    barrierDismissible: false,
+                                                    onCancel: () {
+                                                      otT.text = '';
+                                                    },
+                                                  );
+                                                }
+                                                if ((val == 'WOP' &&
+                                                    emp['attendanceAlias'] ==
+                                                        'WOP')) {
+                                                  otT.text = emp['overTime'];
+                                                  await Get.defaultDialog(
+                                                    title: 'OT hours',
+                                                    content: TextField(
+                                                      controller: otT,
+                                                      readOnly: true,
+                                                      keyboardType:
+                                                          TextInputType.number,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        isDense: true,
+                                                        contentPadding:
+                                                            EdgeInsets.all(
+                                                          10.0,
+                                                        ),
+                                                        hintStyle: TextStyle(
+                                                          color:
+                                                              Colors.grey[600],
+                                                          fontSize: 18.0,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                        hintText: 'hours',
+                                                        border:
+                                                            OutlineInputBorder(
+                                                          borderRadius:
+                                                              const BorderRadius
+                                                                  .all(
+                                                            Radius.circular(
+                                                                5.0),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    radius: 5.0,
+                                                    barrierDismissible: false,
+                                                    onCancel: () {
+                                                      otT.text = '';
+                                                    },
+                                                  );
+                                                }
                                                 if (val == 'LT' &&
                                                     emp['attendanceAlias'] ==
                                                         'LT') {
@@ -1266,7 +1354,8 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                   //   );
                                                   // }
                                                   if (val == 'OT' ||
-                                                      val == 'JOT') {
+                                                      val == 'JOT' || val =='COP'
+                                                  || val == 'WOP') {
                                                     otT.text = '';
                                                     await Get.defaultDialog(
                                                       title: 'OT hours',

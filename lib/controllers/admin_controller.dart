@@ -64,6 +64,7 @@ class AdminController extends GetxController {
   TextEditingController language = TextEditingController();
   TextEditingController empPhone = TextEditingController();
   TextEditingController empUANNumber = TextEditingController();
+  TextEditingController empESINumber = TextEditingController();
   TextEditingController qualification = TextEditingController();
   TextEditingController reporting = TextEditingController();
   TextEditingController presenthouseNo = TextEditingController();
@@ -1553,6 +1554,7 @@ class AdminController extends GetxController {
       'department': AppUtils.checkStr(department.toString()),
       'empDesgn': AppUtils.checkStr(designation.toString()),
       'empUANNumber': empUANNumber.text,
+      'empESINumber': empESINumber.text,
       'empQualification': qualification.text,
       'empbankname': bank.toString(),
       'empBankAcNo': AppUtils.checkStr(accountNo.text),
@@ -1566,6 +1568,12 @@ class AdminController extends GetxController {
       'peState': permanentState.toString(),
       'pepincode': presentPincode.text,
       'peTown': '',
+      'peHno': pehouse,
+      'prHno': prhouse,
+      'peStreet': pestreet,
+      'prStreet': prstreet,
+      'peColony': pecolony,
+      'prColony': presentColony.text,
       'empPresentAddress': prAdd,
       'prCity': presentCity.toString(),
       'prState': presentState.toString(),
@@ -1705,6 +1713,7 @@ class AdminController extends GetxController {
       'empDesgn': designation == null ? '' : designation.toString(),
       'empDesgnText': desigAu.text,
       'empUANNumber': empUANNumber.text,
+      'empESINumber': empESINumber.text,
       'empQualification': qualification.text,
       'empbankname': bank == null ? null : bank.toString(),
       'empBankAcNo': AppUtils.checkStr(accountNo.text),
@@ -1764,6 +1773,7 @@ class AdminController extends GetxController {
       }
       language.text = draftEmployee['motherTongue'];
       empPhone.text = draftEmployee['empPhone'];
+      empESINumber.text = draftEmployee['empESINumber'];
       empUANNumber.text = draftEmployee['empUANNumber'];
       department = draftEmployee['department'];
       deptAu.text = draftEmployee['departmentText'];
