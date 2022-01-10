@@ -1,4 +1,6 @@
+import 'package:fame/connection/remote_services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -21,6 +23,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
   TextEditingController fromDt = TextEditingController();
   TextEditingController toDt = TextEditingController();
   TextEditingController reason = TextEditingController();
+  TextEditingController empName = TextEditingController();
   var daysDiff;
   var from;
   var to;
@@ -382,14 +385,71 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                               }),
                             ),
                           ),
+
                           SizedBox(
                             height: 10.0,
                           ),
+                          RemoteServices()
+                              .box
+                              .get('role') ==
+                              '4'|| RemoteServices().box
+                              .get('role') ==
+                              '3'?Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 10.0,
+                            ),
+                            child: TypeAheadField(
+                              textFieldConfiguration: TextFieldConfiguration(
+                                controller: empName,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.all(10),
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 18.0,
+                                    // fontWeight: FontWeight.bold,
+                                  ),
+                                  hintText: 'Enter Employee Name',
+                                ),
+                              ),
+                              suggestionsCallback: (pattern) async {
+                                // print(pattern);
+                                if (pattern.isNotEmpty) {
+                                  return await RemoteServices().getEmployees(pattern);
+                                } else {
+                                  alC.empId = "888";
+                                }
+                                return null;
+                              },
+                              hideOnEmpty: true,
+                              noItemsFoundBuilder: (context) {
+                                return Text('No employee found');
+                              },
+                              itemBuilder: (context, suggestion) {
+                                return ListTile(
+                                  title: Text(
+                                    suggestion['name'],
+                                  ),
+                                  subtitle: Text(
+                                    suggestion['empId'],
+                                  ),
+                                );
+                              },
+                              onSuggestionSelected: (suggestion) async {
+                                print(suggestion);
+                                empName.text = suggestion['name'].toString().trimRight() + ' - ' + suggestion['empId'];
+                                alC.empId = suggestion['empId'];
+                                Future(alC.getLeaveBalance);
+                              },
+                            ),
+                          ):Column(),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 10.0,
                               vertical: 5.0,
                             ),
+
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [

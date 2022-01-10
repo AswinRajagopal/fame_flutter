@@ -279,13 +279,6 @@ class _ProfilePageState extends State<ProfilePage> {
                               SizedBox(
                                 height: 10.0,
                               ),
-                              ProfileDetailRow(
-                                'assets/images/icon_insno.png',
-                                pC.profileRes['empDetails']['insurancePolicy'] ?? 'N/A',
-                              ),
-                              SizedBox(
-                                height: 15.0,
-                              ),
                               Center(
                                 child: Text(
                                   'Version $version',

@@ -1526,14 +1526,14 @@ class AdminController extends GetxController {
   }
 
   void addEmployeeDataNew() async {
-    var pehouse = permanenthouseNo.text.isEmpty ? '' : '${permanenthouseNo.text},';
-    var pestreet = permanentStreet.text.isEmpty ? '' : '${permanentStreet.text},';
+    var pehouse = permanenthouseNo.text.isEmpty ? '' : '${permanenthouseNo.text}';
+    var pestreet = permanentStreet.text.isEmpty ? '' : '${permanentStreet.text}';
     var pecolony = permanentColony.text.isEmpty ? '' : '${permanentColony.text}';
-    var peAdd = pehouse + pestreet + pecolony;
-    var prhouse = presenthouseNo.text.isEmpty ? '' : '${permanenthouseNo.text},';
-    var prstreet = presentStreet.text.isEmpty ? '' : '${permanentStreet.text},';
-    var prcolony = presentColony.text.isEmpty ? '' : '${permanentColony.text}';
-    var prAdd = prhouse + prstreet + prcolony;
+    var peAdd = pehouse +', '+ pestreet +', ' +pecolony;
+    var prhouse = presenthouseNo.text.isEmpty ? '' : '${presenthouseNo.text}';
+    var prstreet = presentStreet.text.isEmpty ? '' : '${presentStreet.text}';
+    var prcolony = presentColony.text.isEmpty ? '' : '${presentColony.text}';
+    var prAdd = prhouse + ', ' + prstreet +', '+ prcolony;
     var empdetails = {
       'empFName': name.text,
       'aadharScanned': aadharScan,
@@ -1566,7 +1566,7 @@ class AdminController extends GetxController {
       'empPermanentAddress': peAdd,
       'peCity': permanentCity.toString(),
       'peState': permanentState.toString(),
-      'pepincode': presentPincode.text,
+      'pepincode': permanentPincode.text,
       'peTown': '',
       'peHno': pehouse,
       'prHno': prhouse,
@@ -1577,7 +1577,7 @@ class AdminController extends GetxController {
       'empPresentAddress': prAdd,
       'prCity': presentCity.toString(),
       'prState': presentState.toString(),
-      'prpincode': presentPincode.text,
+      'prPincode': presentPincode.text,
       'prTown': '',
     };
     var empId = await addEmployeeNew(empdetails);

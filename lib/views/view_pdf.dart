@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:fame/connection/remote_services.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:path_provider/path_provider.dart';
@@ -22,6 +23,7 @@ class _ViewPdf extends State<ViewPdf> {
   var year = DateTime.now().year;
   var url;
   var month_year;
+  bool failed = false;
 
   String monthString;
 
@@ -56,13 +58,14 @@ class _ViewPdf extends State<ViewPdf> {
                   initialDate: DateTime(year, month),
                   locale: Locale('en'),
                 ).then((date) {
+                  failed = false;
                   if (date != null) {
                     print(date);
                     print(DateFormat('MMMM').format(date));
                     print(date.year);
                     month = date.month;
                     year = date.year;
-                    var month_year = (month*100)+(year%1000);
+                    month_year = (month*100)+(year%1000);
                     print(month_year);
                     setState(() {
                       url = jsonDecode(RemoteServices().box.get('appFeature'))['paySlipUrl'] +
@@ -81,17 +84,66 @@ class _ViewPdf extends State<ViewPdf> {
     onPressed: () async {
       var url = jsonDecode(RemoteServices().box.get('appFeature'))['paySlipUrl'] +
       '?Empid='+RemoteServices().box.get('empid').toString()+'&month='+month_year.toString();
-      if (await canLaunch(url)) {
+      if (!failed && await canLaunch(url)) {
         await launch(url);
-      } else {
-        throw 'Could not launch $url';
-      }
+      } else if(failed){
+        Get.snackbar(
+          null,
+          'Salary Slip not found for this month',
+          colorText: Colors.white,
+          backgroundColor: Colors.black87,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: EdgeInsets.symmetric(
+            horizontal: 8.0,
+            vertical: 10.0,
+          ),
+          padding: EdgeInsets.symmetric(
+            horizontal: 12.0,
+            vertical: 18.0,
+          ),
+          borderRadius: 5.0,
+        );
+      }else {
+        Get.snackbar(
+          null,
+          'Could not launch Chrome',
+          colorText: Colors.white,
+          backgroundColor: Colors.black87,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: EdgeInsets.symmetric(
+            horizontal: 8.0,
+            vertical: 10.0,
+          ),
+          padding: EdgeInsets.symmetric(
+            horizontal: 12.0,
+            vertical: 18.0,
+          ),
+          borderRadius: 5.0,
+        );      }
     })
         ],
       ),
       body: SfPdfViewer.network(
         url,
         key: _pdfViewerKey,
+        onDocumentLoadFailed: (PdfDocumentLoadFailedDetails details) {
+          failed = true;
+          Get.snackbar(
+          null,
+          'Salary Slip not found for this month',
+          colorText: Colors.white,
+          backgroundColor: Colors.black87,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: EdgeInsets.symmetric(
+            horizontal: 8.0,
+            vertical: 10.0,
+          ),
+          padding: EdgeInsets.symmetric(
+            horizontal: 12.0,
+            vertical: 18.0,
+          ),
+          borderRadius: 5.0,
+        );},
       ),
     );
   }

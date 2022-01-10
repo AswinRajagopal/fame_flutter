@@ -581,13 +581,16 @@ class RemoteServices {
     }
   }
 
-  Future leaveType() async {
+  Future leaveType(String empId) async {
+    if(empId=="888"){
+      empId = box.get('empid').toString();
+    }
     var response = await client.post(
       '$baseURL/leave/leave_bal_type',
       headers: header,
       body: jsonEncode(
         <String, String>{
-          'empId': box.get('empid').toString(),
+          'empId': empId,
           'companyId': box.get('companyid').toString(),
         },
       ),
@@ -602,13 +605,16 @@ class RemoteServices {
     }
   }
 
-  Future getLeaveBalance() async {
+  Future getLeaveBalance(String empId) async {
+    if(empId=="888"){
+      empId = box.get('empid').toString();
+    }
     var response = await client.post(
       '$baseURL/leave/leave_balance',
       headers: header,
       body: jsonEncode(
         <String, String>{
-          'empId': box.get('empid').toString(),
+          'empId': empId,
           'companyId': box.get('companyid').toString(),
         },
       ),
@@ -644,13 +650,17 @@ class RemoteServices {
     }
   }
 
-  Future applyLeave(frmDt, toDt, reason, dayType, leaveTypeId) async {
+  Future applyLeave(frmDt, toDt, reason, dayType, leaveTypeId, empId) async {
+    if(empId=="888"){
+      empId = box.get('empid').toString();
+    }
     var response = await client.post(
       '$baseURL/leave/leave_engine_apply',
       headers: header,
       body: jsonEncode(
         <String, dynamic>{
-          'empId': box.get('empid').toString(),
+          'empId': empId,
+          'appliedBy': box.get('empid').toString(),
           'companyId': box.get('companyid').toString(),
           'fromDate': frmDt.toString(),
           'toDate': toDt.toString(),

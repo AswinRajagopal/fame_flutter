@@ -79,8 +79,8 @@ class _AttendancePageState extends State<AttendancePage> {
         passDate.toString(),
       ),
       firstDate: DateTime.now().add(Duration(days: -(attendanceDaysPermitted - 1))),
-      lastDate: DateTime.now().add(Duration(days: 30)),
-      // lastDate: DateTime.now(),
+      // lastDate: DateTime.now().add(Duration(days: 30)),
+      lastDate: DateTime.now(),
     );
 
     if (picked != null) {

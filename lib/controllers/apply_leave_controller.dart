@@ -13,6 +13,7 @@ class ApplyLeaveController extends GetxController {
   var isLoadingBalance = true.obs;
   ProgressDialog pr;
   var leaveRes;
+  var empId="888";
   var appLeaveRes;
   var ltVal = '';
   final List leaveTypeList = [];
@@ -44,7 +45,7 @@ class ApplyLeaveController extends GetxController {
     try {
       isLoading(true);
       await pr.show();
-      var leaveTypeRes = await RemoteServices().leaveType();
+      var leaveTypeRes = await RemoteServices().leaveType(empId);
       if (leaveTypeRes != null) {
         await pr.hide();
         isLoading(false);
@@ -101,7 +102,7 @@ class ApplyLeaveController extends GetxController {
     reportingManager('N/A');
     try {
       isLoadingBalance(true);
-      var leaveBalanceRes = await RemoteServices().getLeaveBalance();
+      var leaveBalanceRes = await RemoteServices().getLeaveBalance(empId);
       if (leaveBalanceRes != null) {
         isLoadingBalance(false);
         print('leaveBalanceRes: $leaveBalanceRes');
@@ -154,7 +155,8 @@ class ApplyLeaveController extends GetxController {
   void applyLeave(frmDt, toDt, reason, dayType, leaveTypeId) async {
     try {
       await pr.show();
-      var appLeaveRes = await RemoteServices().applyLeave(frmDt, toDt, reason, dayType, leaveTypeId);
+      var appLeaveRes = await RemoteServices().applyLeave(frmDt, toDt, reason,
+          dayType, leaveTypeId, empId);
       if (appLeaveRes != null) {
         await pr.hide();
         print('appLeaveRes valid: ${appLeaveRes['success']}');
