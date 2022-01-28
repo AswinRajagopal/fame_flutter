@@ -35,6 +35,7 @@ class MorePage extends StatelessWidget {
             SizedBox(
               height: 20.0,
             ),
+            jsonDecode(RemoteServices().box.get('appFeature'))['attendance']?
             GestureDetector(
               onTap: () {
                 if (roleId != '1') {
@@ -62,7 +63,8 @@ class MorePage extends StatelessWidget {
                 'assets/images/shortage_report.png',
                 'Shortage Report',
               ),
-            ),
+            ):Container(),
+            jsonDecode(RemoteServices().box.get('appFeature'))['attendance']?
             GestureDetector(
               onTap: () {
                 if (roleId != '1') {
@@ -90,7 +92,8 @@ class MorePage extends StatelessWidget {
                 'assets/images/client_wise_att.png',
                 'Client Wise Attendance',
               ),
-            ),
+            ):Container(),
+            jsonDecode(RemoteServices().box.get('appFeature'))['attendance']?
             GestureDetector(
               onTap: () {
                 if (roleId != '1') {
@@ -118,7 +121,8 @@ class MorePage extends StatelessWidget {
                 'assets/images/day_wise_attendance.png',
                 'Day Wise Emp. Attendance',
               ),
-            ),
+            ):Container(),
+            jsonDecode(RemoteServices().box.get('appFeature'))['attendance']?
             GestureDetector(
               onTap: () {
                 if (roleId != '1') {
@@ -146,7 +150,7 @@ class MorePage extends StatelessWidget {
                 'assets/images/employee_report.png',
                 'Employee Report',
               ),
-            ),
+            ):Container(),
             GestureDetector(
               onTap: () {
                 if ((roleId != '1') && reportView) {

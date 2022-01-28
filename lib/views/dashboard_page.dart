@@ -1241,7 +1241,8 @@ class _DashboardPageState extends State<DashboardPage> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  Text(
+                                                  appFeatures[
+                                                  'attendance']? Text(
                                                     DateFormat.MMMM()
                                                         .format(DateTime.now())
                                                         .toString(),
@@ -1250,7 +1251,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                       fontWeight:
                                                           FontWeight.bold,
                                                     ),
-                                                  ),
+                                                  ):Row(),
                                                   role != '1' &&
                                                           appFeatures[
                                                               'attendance']
@@ -2361,7 +2362,8 @@ class _DashboardPageState extends State<DashboardPage> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  Text(
+                                                  appFeatures[
+                                                  'attendance']? Text(
                                                     DateFormat.MMMM()
                                                         .format(DateTime.now())
                                                         .toString(),
@@ -2370,7 +2372,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                       fontWeight:
                                                           FontWeight.bold,
                                                     ),
-                                                  ),
+                                                  ):Row(),
                                                   role != '1' &&
                                                           appFeatures[
                                                               'attendance']
@@ -2446,7 +2448,8 @@ class _DashboardPageState extends State<DashboardPage> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  Text(
+                                                  appFeatures[
+                                                  'attendance']?Text(
                                                     DateFormat.MMMM()
                                                         .format(DateTime.now())
                                                         .toString(),
@@ -2455,7 +2458,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                       fontWeight:
                                                           FontWeight.bold,
                                                     ),
-                                                  ),
+                                                  ):Row(),
                                                   role != '1' &&
                                                           appFeatures[
                                                               'attendance']
@@ -2494,7 +2497,8 @@ class _DashboardPageState extends State<DashboardPage> {
                                             SizedBox(
                                               height: 10.0,
                                             ),
-                                            role != '4'
+                                            role != '4'&&
+                                                appFeatures['attendance']
                                                 ? Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
@@ -2567,7 +2571,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                     )
                                                   ])
                                                 : Container(),
-                                            role != '1'
+                                            role != '1' && appFeatures['attendance']
                                                 ? Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
