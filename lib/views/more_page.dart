@@ -151,6 +151,7 @@ class MorePage extends StatelessWidget {
                 'Employee Report',
               ),
             ):Container(),
+            jsonDecode(RemoteServices().box.get('appFeature'))['gps']?
             GestureDetector(
               onTap: () {
                 if ((roleId != '1') && reportView) {
@@ -178,7 +179,8 @@ class MorePage extends StatelessWidget {
                 'assets/images/timeline_report.png',
                 'Timeline Report',
               ),
-            ),
+            ):Container(),
+            jsonDecode(RemoteServices().box.get('appFeature'))['gps']?
             GestureDetector(
               onTap: () {
                 if ((roleId != '1') && reportView) {
@@ -206,7 +208,8 @@ class MorePage extends StatelessWidget {
                 'assets/images/current_location.png',
                 'Current Location',
               ),
-            ),
+            ):Container(),
+            reportView && (roleId != '1') ?
             GestureDetector(
               onTap: () {
                 if ((roleId != '1') && reportView) {
@@ -234,7 +237,7 @@ class MorePage extends StatelessWidget {
                 'assets/images/employee.png',
                 'Onboarding Report',
               ),
-            ),
+            ):Container(),
             if(jsonDecode(RemoteServices().box.get('appFeature'))['paySlipUrl'] != null)
             GestureDetector(
               onTap: () {
@@ -245,6 +248,7 @@ class MorePage extends StatelessWidget {
                 'View Payslip',
               ),
             ),
+            jsonDecode(RemoteServices().box.get('appFeature'))['pinMyVisit']?
             GestureDetector(
               onTap: () {
                 if (roleId == AppUtils.MANAGER || roleId == AppUtils.ADMIN) {
@@ -259,7 +263,7 @@ class MorePage extends StatelessWidget {
                 'assets/images/my_visit_plan.png',
                 'My Visit Report',
               ),
-            ),
+            ):Container(),
             SizedBox(
               height: 20.0,
             ),
