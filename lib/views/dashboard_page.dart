@@ -555,6 +555,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                           ],
                                         ),
                                         Visibility(
+                                          visible: appFeatures['attendance'],
                                           child: RaisedButton(
                                             onPressed: () async {
                                               print(RemoteServices()
@@ -1080,6 +1081,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                     ],
                                                   ),
                                                   Visibility(
+                                                    visible: appFeatures['attendance'],
                                                     child: RaisedButton(
                                                       onPressed: () async {
                                                         //Check Condition
@@ -1673,6 +1675,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                           ],
                                         ),
                                         Visibility(
+                                          visible: appFeatures['attendance'],
                                           child: RaisedButton(
                                             onPressed: () async {
                                               print(RemoteServices()
@@ -2198,6 +2201,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                     ],
                                                   ),
                                                   Visibility(
+                                                    visible: appFeatures['attendance'],
                                                     child: RaisedButton(
                                                       onPressed: () async {
                                                         //Check Condition

@@ -22,6 +22,7 @@ class _ViewPdf extends State<ViewPdf> {
   var month = DateTime.now().month;
   var year = DateTime.now().year;
   var url;
+  var encEmpId;
   var month_year;
   bool failed = false;
 
@@ -30,9 +31,11 @@ class _ViewPdf extends State<ViewPdf> {
   @override
   void initState() {
     super.initState();
-    month_year = ((month-1)*100)+(year%1000);
+    month_year = ((month)*100)+(year%1000);
+    Codec<String, String> stringToBase64 = utf8.fuse(base64);
+    encEmpId = stringToBase64.encode(RemoteServices().box.get('empid').toString());
     url = jsonDecode(RemoteServices().box.get('appFeature'))['paySlipUrl'] +
-        '?Empid='+RemoteServices().box.get('empid').toString()+'&month='+month_year.toString();
+        '?empId='+encEmpId+ '&month='+month_year.toString();
   }
 
   @override
@@ -69,7 +72,7 @@ class _ViewPdf extends State<ViewPdf> {
                     print(month_year);
                     setState(() {
                       url = jsonDecode(RemoteServices().box.get('appFeature'))['paySlipUrl'] +
-                          '?Empid='+RemoteServices().box.get('empid').toString()+
+                          '?empId='+encEmpId+
                           '&month='+month_year.toString();
                     });
                   }
@@ -83,7 +86,7 @@ class _ViewPdf extends State<ViewPdf> {
     ),
     onPressed: () async {
       var url = jsonDecode(RemoteServices().box.get('appFeature'))['paySlipUrl'] +
-      '?Empid='+RemoteServices().box.get('empid').toString()+'&month='+month_year.toString();
+      '?empId='+encEmpId+'&month='+month_year.toString();
       if (!failed && await canLaunch(url)) {
         await launch(url);
       } else if(failed){

@@ -28,6 +28,8 @@
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>play music inside the app</string>
 	<key>NSCalendarsUsageDescription</key>
 	<string>add reminder &amp; events to calendar</string>
 	<key>NSCameraUsageDescription</key>
@@ -71,6 +73,5 @@
 	<false/>
 	<key>kTCCServiceMediaLibrary</key>
 	<string>play music inside the app</string>
-    <key>NSAppleMusicUsageDescription</key>
-    <string>play music inside the app</string></dict>
+</dict>
 </plist>

@@ -114,7 +114,7 @@ class _SettingsPageState extends State<SettingsPage> {
             //     Get.to(AddEmployeeNew());
             //   },
             //   child: Visibility(
-            //     visible: ((roleId == AppUtils.ADMIN || roleId == AppUtils.MANAGER) && jsonDecode(RemoteServices().box.get('appFeature'))['onboarding']) ? true : false,
+            //     visible: ((roleId == AppUtils.ADMIN || roleId == AppUtils.MANAGER) && jsonDecode(RemoteServices().box.get('appFeature'))[' ing']) ? true : false,
             //     child: ListContainer(
             //       'assets/images/employee.png',
             //       'Onboarding',
