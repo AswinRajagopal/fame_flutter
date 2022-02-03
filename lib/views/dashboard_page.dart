@@ -1417,8 +1417,10 @@ class _DashboardPageState extends State<DashboardPage> {
                               children: [
                                 CircleAvatar(
                                   radius: 20.0,
-                                  backgroundImage: AssetImage(
-                                    'assets/images/tm_logo.png',
+                                  backgroundImage: appFeatures['compImg']==null?
+                                  AssetImage('assets/images/tm_logo.png'):
+                                  NetworkImage(
+                                      appFeatures['compImg']
                                   ),
                                   backgroundColor: Colors.white,
                                 ),

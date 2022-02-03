@@ -68,10 +68,12 @@ class AppFeature {
     this.autoCheckout,
     this.hubFeature,
     this.appUpdate,
+    this.compImg,
     this.faceReregister,
   });
   String companyId;
   String paySlipUrl;
+  String compImg;
   bool gps;
   bool issueTracking;
   bool checkoutDial;
@@ -115,6 +117,7 @@ class AppFeature {
         diyFace: json['diyFace'],
         autoCheckout: json['autoCheckout'],
         paySlipUrl: json['paySlipUrl'],
+        compImg: json['compImg'],
         faceReregister: json['faceReregister'],
         hubFeature: json['hubFeature'],
         appUpdate: json['appUpdate'],
@@ -143,6 +146,7 @@ class AppFeature {
         'faceReregister': faceReregister,
         'autoCheckout': autoCheckout,
         'paySlipUrl': paySlipUrl,
+        'compImg': compImg,
         'hubFeature': hubFeature,
         'appUpdate': appUpdate,
       };

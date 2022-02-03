@@ -1,15 +1,11 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:fame/connection/remote_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ViewPdf extends StatefulWidget {
@@ -25,7 +21,7 @@ class _ViewPdf extends State<ViewPdf> {
   var encEmpId;
   var month_year;
   bool failed = false;
-
+  TextEditingController dateEc = TextEditingController();
   String monthString;
 
   @override
@@ -51,32 +47,7 @@ class _ViewPdf extends State<ViewPdf> {
                 semanticLabel: 'Date Range',
               ),
               onPressed: () {
-                showMonthPicker(
-                  context: context,
-                  firstDate:
-                      DateTime(DateTime.now().year-1, DateTime.now().month),
-                  lastDate:
-                      DateTime(DateTime.now().year, DateTime.now().month),
-                  // initialDate: selectedDate ?? widget.initialDate,
-                  initialDate: DateTime(year, month),
-                  locale: Locale('en'),
-                ).then((date) {
-                  failed = false;
-                  if (date != null) {
-                    print(date);
-                    print(DateFormat('MMMM').format(date));
-                    print(date.year);
-                    month = date.month;
-                    year = date.year;
-                    month_year = (month*100)+(year%1000);
-                    print(month_year);
-                    setState(() {
-                      url = jsonDecode(RemoteServices().box.get('appFeature'))['paySlipUrl'] +
-                          '?empId='+encEmpId+
-                          '&month='+month_year.toString();
-                    });
-                  }
-                });
+                showPicker();
               }),
     IconButton(
     icon: const Icon(
@@ -126,7 +97,36 @@ class _ViewPdf extends State<ViewPdf> {
     })
         ],
       ),
-      body: SfPdfViewer.network(
+      body: Column( children : [
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 10.0,
+            vertical: 5.0,
+          ),
+          child: TextField(
+            controller: dateEc,
+            decoration: InputDecoration(
+              isDense: true,
+              contentPadding: EdgeInsets.all(10),
+              hintStyle: TextStyle(
+                color: Colors.grey[600],
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+              ),
+              hintText: 'Select Month',
+              suffixIcon: Icon(
+                Icons.calendar_today,
+                size: 25.0,
+              ),
+            ),
+            readOnly: true,
+            keyboardType: null,
+            onTap: () {
+              showPicker();
+            },
+          ),
+        ),
+        SfPdfViewer.network(
         url,
         key: _pdfViewerKey,
         onDocumentLoadFailed: (PdfDocumentLoadFailedDetails details) {
@@ -148,6 +148,38 @@ class _ViewPdf extends State<ViewPdf> {
           borderRadius: 5.0,
         );},
       ),
+      ]
+      )
     );
+  }
+
+  void showPicker(){
+    showMonthPicker(
+      context: context,
+      firstDate:
+      DateTime(DateTime.now().year-1, DateTime.now().month),
+      lastDate:
+      DateTime(DateTime.now().year, DateTime.now().month),
+      // initialDate: selectedDate ?? widget.initialDate,
+      initialDate: DateTime(year, month),
+      locale: Locale('en'),
+    ).then((date) {
+      failed = false;
+      if (date != null) {
+        print(date);
+        print(DateFormat('MMMM').format(date));
+        print(date.year);
+        month = date.month;
+        year = date.year;
+        month_year = (month*100)+(year%1000);
+        print(month_year);
+        setState(() {
+          url = jsonDecode(RemoteServices().box.get('appFeature'))['paySlipUrl'] +
+              '?empId='+encEmpId+
+              '&month='+month_year.toString();
+          dateEc.text = month.toString() + '-' + year.toString();
+        });
+      }
+    });
   }
 }
