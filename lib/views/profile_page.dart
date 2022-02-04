@@ -210,6 +210,81 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
               // my profile
+
+              //body
+              Obx(() {
+                if (pC.isLoading.value) {
+                  return Container(
+                    height: 460.0,
+                    width: MediaQuery.of(context).size.width,
+                  );
+                } else {
+                  var img;
+                  if (pC.profileRes['profileImage'] != null) {
+                    img = pC.profileRes['profileImage']['image'];
+                    img = img.contains('data:image') ? img.split(',').last : img;
+
+                    print('img.length: ${img.length}');
+                  }
+
+                  return // body
+
+                    Padding(
+                      padding: EdgeInsets.only(top: 300),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(12), topRight: Radius.circular(12))),
+                        width: double.infinity,
+                        height: size.height - 300,
+                        child: bodyList[selectedTabIndex],
+                      ),
+                    );
+                  return Container(
+                    // height: 220.0,
+                    width: MediaQuery.of(context).size.width,
+                    child: ListView(
+                      shrinkWrap: true,
+                      children: [
+                        ProfileDetailRow(
+                          'assets/images/icon_profile_address.png',
+                          pC.profileRes['empDetails']['address'] ?? 'N/A',
+                        ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        ProfileDetailRow(
+                          'assets/images/icon_profile_call.png',
+                          pC.profileRes['empDetails']['phone'] ?? 'N/A',
+                        ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        ProfileDetailRow(
+                          'assets/images/icon_profile_mail.png',
+                          pC.profileRes['empDetails']['emailId'] ?? 'N/A',
+                        ),
+                        SizedBox(
+                          height: 15.0,
+                        ),
+                        Center(
+                          child: Text(
+                            'Version $version',
+                            style: TextStyle(
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 15.0,
+                        ),
+                      ],
+                    ),
+                  );
+                }
+              }),
+
               Padding(
                 padding: const EdgeInsets.only(top: 60, left: 20),
                 child: Column(
@@ -341,18 +416,20 @@ class _ProfilePageState extends State<ProfilePage> {
                                 // Get.to(FaceRegister(pC.endPoint));
                               },
                               child: CircleAvatar(
-                                backgroundImage: img == null
-                                    ? NetworkImage(
-                                        'https://cdn.pixabay.com/photo/2018/08/28/12/41/avatar-3637425_960_720.png',
-                                        // fit: BoxFit.cover,
-                                      )
-                                    : Image.memory(
-                                        base64.decode(
-                                          img.replaceAll('\n', ''),
-                                        ),
-                                        height: 100.0,
-                                        width: 100.0,
-                                      ),
+                                backgroundImage:AssetImage('assets/images/person_male.png'),
+                                // img == null
+                                //     ?
+                                // NetworkImage(
+                                //         'https://cdn.pixabay.com/photo/2018/08/28/12/41/avatar-3637425_960_720.png',
+                                //         // fit: BoxFit.cover,
+                                //       )
+                                //     : Image.memory(
+                                //         base64.decode(
+                                //           img.replaceAll('\n', ''),
+                                //         ),
+                                //         height: 100.0,
+                                //         width: 100.0,
+                                //       ),
                                 radius: 100.0,
                               ),
                             ),
@@ -367,99 +444,102 @@ class _ProfilePageState extends State<ProfilePage> {
               // body
               // TODO: integrate this
 
-              Align(
-                alignment: Alignment.topCenter,
-                child: Container(
-                  child: SingleChildScrollView(
-                    child: Card(
-                      color: Colors.white,
-                      elevation: 6.0,
-                      margin: EdgeInsets.only(
-                        top: 20.0,
-                        right: 20.0,
-                        left: 20.0,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                          15.0,
-                        ),
-                      ),
-                      child: Obx(() {
-                        if (pC.isLoading.value) {
-                          return Container(
-                            height: 460.0,
-                            width: MediaQuery.of(context).size.width,
-                          );
-                        } else {
-                          var img;
-                          if (pC.profileRes['profileImage'] != null) {
-                            img = pC.profileRes['profileImage']['image'];
-                            img = img.contains('data:image') ? img.split(',').last : img;
 
-                            print('img.length: ${img.length}');
-                          }
 
-                          return // body
-
-                              Padding(
-                            padding: EdgeInsets.only(top: 300),
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(12), topRight: Radius.circular(12))),
-                              width: double.infinity,
-                              height: size.height - 300,
-                              child: bodyList[selectedTabIndex],
-                            ),
-                          );
-                          return Container(
-                            // height: 220.0,
-                            width: MediaQuery.of(context).size.width,
-                            child: ListView(
-                              shrinkWrap: true,
-                              children: [
-                                ProfileDetailRow(
-                                  'assets/images/icon_profile_address.png',
-                                  pC.profileRes['empDetails']['address'] ?? 'N/A',
-                                ),
-                                SizedBox(
-                                  height: 10.0,
-                                ),
-                                ProfileDetailRow(
-                                  'assets/images/icon_profile_call.png',
-                                  pC.profileRes['empDetails']['phone'] ?? 'N/A',
-                                ),
-                                SizedBox(
-                                  height: 10.0,
-                                ),
-                                ProfileDetailRow(
-                                  'assets/images/icon_profile_mail.png',
-                                  pC.profileRes['empDetails']['emailId'] ?? 'N/A',
-                                ),
-                                SizedBox(
-                                  height: 15.0,
-                                ),
-                                Center(
-                                  child: Text(
-                                    'Version $version',
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 15.0,
-                                ),
-                              ],
-                            ),
-                          );
-                        }
-                      }),
-                    ),
-                  ),
-                ),
-              ),
+              // Align(
+              //   alignment: Alignment.topCenter,
+              //   child: Container(
+              //     child: SingleChildScrollView(
+              //       child: Card(
+              //         color: Colors.white,
+              //         elevation: 6.0,
+              //         margin: EdgeInsets.only(
+              //           top: 20.0,
+              //           right: 20.0,
+              //           left: 20.0,
+              //         ),
+              //         shape: RoundedRectangleBorder(
+              //           borderRadius: BorderRadius.circular(
+              //             15.0,
+              //           ),
+              //         ),
+              //         child: Obx(() {
+              //           if (pC.isLoading.value) {
+              //             return Container(
+              //               height: 460.0,
+              //               width: MediaQuery.of(context).size.width,
+              //             );
+              //           } else {
+              //             var img;
+              //             if (pC.profileRes['profileImage'] != null) {
+              //               img = pC.profileRes['profileImage']['image'];
+              //               img = img.contains('data:image') ? img.split(',').last : img;
+              //
+              //               print('img.length: ${img.length}');
+              //             }
+              //
+              //             return // body
+              //
+              //                 Padding(
+              //               padding: EdgeInsets.only(top: 300),
+              //               child: Container(
+              //                 decoration: const BoxDecoration(
+              //                     color: Colors.white,
+              //                     borderRadius: BorderRadius.only(
+              //                         topLeft: Radius.circular(12), topRight: Radius.circular(12))),
+              //                 width: double.infinity,
+              //                 height: size.height - 300,
+              //                 child: bodyList[selectedTabIndex],
+              //               ),
+              //             );
+              //             return Container(
+              //               // height: 220.0,
+              //               width: MediaQuery.of(context).size.width,
+              //               child: ListView(
+              //                 shrinkWrap: true,
+              //                 children: [
+              //                   ProfileDetailRow(
+              //                     'assets/images/icon_profile_address.png',
+              //                     pC.profileRes['empDetails']['address'] ?? 'N/A',
+              //                   ),
+              //                   SizedBox(
+              //                     height: 10.0,
+              //                   ),
+              //                   ProfileDetailRow(
+              //                     'assets/images/icon_profile_call.png',
+              //                     pC.profileRes['empDetails']['phone'] ?? 'N/A',
+              //                   ),
+              //                   SizedBox(
+              //                     height: 10.0,
+              //                   ),
+              //                   ProfileDetailRow(
+              //                     'assets/images/icon_profile_mail.png',
+              //                     pC.profileRes['empDetails']['emailId'] ?? 'N/A',
+              //                   ),
+              //                   SizedBox(
+              //                     height: 15.0,
+              //                   ),
+              //                   Center(
+              //                     child: Text(
+              //                       'Version $version',
+              //                       style: TextStyle(
+              //                         color: Colors.grey,
+              //                       ),
+              //                     ),
+              //                   ),
+              //                   SizedBox(
+              //                     height: 15.0,
+              //                   ),
+              //                 ],
+              //               ),
+              //             );
+              //           }
+              //         }),
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              //
             ],
           ),
         ),
