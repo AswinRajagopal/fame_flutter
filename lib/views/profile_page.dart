@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:fame/connection/remote_services.dart';
 import 'package:fame/controllers/profile_controller.dart';
 import 'package:fame/widgets/ProfileTabWidgets.dart';
 import 'package:package_info/package_info.dart';
@@ -24,7 +25,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final ProfileController pC = Get.put(ProfileController());
   String version;
-  int selectedTabIndex = 1;
+  int selectedTabIndex = 0;
 
   @override
   void initState() {
@@ -68,12 +69,9 @@ class _ProfilePageState extends State<ProfilePage> {
       PersonalInfoTab(
         pC: pC,
       ),
-      FamilyTab(
+      CompilanceInfoTab(
         pC: pC,
-      ),
-      VitalsTab(
-        pC: pC,
-      ),
+      )
     ];
     pC.pr = ProgressDialog(
       context,
@@ -108,13 +106,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
 
     return Scaffold(
-      floatingActionButton: selectedTabIndex == 1
-          ? FloatingActionButton(
-              onPressed: () {},
-              backgroundColor: Color(0xff5288FB),
-              child: Icon(Icons.add),
-            )
-          : Container(),
+
       body: SafeArea(
         child: Container(
           width: size.width,
@@ -164,15 +156,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                   actions: <Widget>[
                                     ElevatedButton(
                                       onPressed: () {
-                                        // Get.back();
-                                        // pC.pr.show();
-                                        // RemoteServices().logout();
+                                        Get.back();
+                                        pC.pr.show();
+                                        RemoteServices().logout();
                                       },
                                       child: Text('YES'),
                                     ),
                                     ElevatedButton(
                                       onPressed: () {
-                                        // Get.back();
+                                        Get.back();
                                       },
                                       child: Text('NO'),
                                     ),
@@ -322,7 +314,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   if (pC.profileRes['profileImage'] != null) {
                     img = pC.profileRes['profileImage']['image'];
                     img = img.contains('data:image') ? img.split(',').last : img;
-
                     print('img.length: ${img.length}');
                   }
 
@@ -368,23 +359,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                               pC.profileRes['empDetails']['name'] ?? 'N/A',
                                               style: const TextStyle(
                                                   fontFamily: "Sofia",
-                                                  fontSize: 18,
+                                                  fontSize: 22,
                                                   color: Colors.black,
                                                   fontWeight: FontWeight.bold),
-                                            ),
-                                            Text(
-                                              pC.profileRes['empDetails']['empId'] ?? 'N/A',
-                                              style: const TextStyle(
-                                                fontFamily: "Sofia",
-                                                fontSize: 15,
-                                                color: Colors.grey,
-                                              ),
                                             ),
                                           ],
                                         ),
                                       ),
                                       const Spacer(),
-                                      Theme(
+                                      Container(
+                                      child:Theme(
                                         data: ThemeData(
                                           highlightColor: Colors.white,
                                         ),
@@ -393,13 +377,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                           children: <Widget>[
                                             buildTabButton(selectedTabIndex == 0, "Personal Info",
                                                 () => setState(() => selectedTabIndex = 0)),
-                                            buildTabButton(selectedTabIndex == 1, "Compliance",
-                                                () => setState(() => selectedTabIndex = 1)),
-                                            buildTabButton(selectedTabIndex == 2, "Address",
-                                                () => setState(() => selectedTabIndex = 2)),
+                                            Container(padding:EdgeInsets.only(bottom: 20),height: 30,width: 2,color: Colors.greenAccent),
+                                            buildTabButton(selectedTabIndex == 1, "Compliance Info",
+                                                () => setState(() => selectedTabIndex = 1))
                                           ],
                                         ),
-                                      ),
+                                      ),)
                                     ],
                                   ),
                                 ),
@@ -416,21 +399,18 @@ class _ProfilePageState extends State<ProfilePage> {
                                 // Get.to(FaceRegister(pC.endPoint));
                               },
                               child: CircleAvatar(
-                                backgroundImage:AssetImage('assets/images/person_male.png'),
-                                // img == null
-                                //     ?
-                                // NetworkImage(
-                                //         'https://cdn.pixabay.com/photo/2018/08/28/12/41/avatar-3637425_960_720.png',
-                                //         // fit: BoxFit.cover,
-                                //       )
-                                //     : Image.memory(
-                                //         base64.decode(
-                                //           img.replaceAll('\n', ''),
-                                //         ),
-                                //         height: 100.0,
-                                //         width: 100.0,
-                                //       ),
-                                radius: 100.0,
+                                // backgroundImage:AssetImage('assets/images/person_male.png'),
+                                backgroundImage : img == null ?
+                                NetworkImage(
+                                  'https://cdn.pixabay.com/photo/2018/08/28/12/41/avatar-3637425_960_720.png',
+                                  // fit: BoxFit.cover,
+                                )
+                                    : MemoryImage(
+                                  base64.decode(
+                                    img.replaceAll('\n', ''),
+                                  )
+                                ),
+                                radius: 60.0,
                               ),
                             ),
                           ],
