@@ -16,6 +16,8 @@ import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:get/get.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
+import 'face_register.dart';
+
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -137,7 +139,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             size: 24,
                             color: Color(0xFFffffff),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.back();
+                          },
                         ),
                         Padding(
                           padding: const EdgeInsets.only(right: 8.0),
@@ -396,8 +400,26 @@ class _ProfilePageState extends State<ProfilePage> {
                             GestureDetector(
                               onTap: () {
                                 print('take picture');
-                                // Get.to(FaceRegister(pC.endPoint));
-                              },
+                                if(jsonDecode(RemoteServices().box.get('appFeature'))['faceReregister']) {
+                                  Get.to(FaceRegister(pC.endPoint));
+                                }else{
+                                  Get.snackbar(
+                                    'Re-registration disabled',
+                                    'Please contact your Incharge for Re-registration',
+                                    colorText: Colors.white,
+                                    backgroundColor: Colors.black87,
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    margin: EdgeInsets.symmetric(
+                                      horizontal: 8.0,
+                                      vertical: 10.0,
+                                    ),
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 12.0,
+                                      vertical: 18.0,
+                                    ),
+                                    borderRadius: 5.0,
+                                  );
+                                }                              },
                               child: CircleAvatar(
                                 // backgroundImage:AssetImage('assets/images/person_male.png'),
                                 backgroundImage : img == null ?

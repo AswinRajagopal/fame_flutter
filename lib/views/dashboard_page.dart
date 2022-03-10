@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'package:fame/views/routeplan_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:geolocator/geolocator.dart';
@@ -2713,7 +2714,11 @@ class _DashboardPageState extends State<DashboardPage> {
                       ),
                       Visibility(
                         visible: appFeatures['routePlan'] ?? true,
-                        child: Container(
+                        child: GestureDetector(
+                          onTap: () {
+                            Get.to(RouteplanList());
+                            },
+                        child:Container(
                           width: MediaQuery.of(context).size.width,
                           color: Colors.white,
                           child: Padding(
@@ -2747,6 +2752,7 @@ class _DashboardPageState extends State<DashboardPage> {
                             ),
                           ),
                         ),
+                        )
                       ),
                       Visibility(
                         visible: appFeatures['gps'] ?? true,

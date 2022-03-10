@@ -195,7 +195,24 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text(
+                                      pitstop['clientId'] != null ? Column(
+                                          children : [Text(
+                                        'Client : '+pitstop['clientId'],
+                                        style: TextStyle(
+                                          fontSize: 17.0,
+                                          color: Colors.grey,                                        ),
+                                      ),SizedBox(
+                                        height: 6.0,
+                                      )]):Container(),
+                                      pitstop['activity'] != null ? Column(
+                                          children : [Text(
+                                        'Activity : '+pitstop['activity'],
+                                        style: TextStyle(
+                                          fontSize: 17.0,
+                                          color: Colors.black,                                        ),
+                                      ),SizedBox(
+                                        height: 6.0,
+                                      )]):Container(),Text(
                                         pitstop['address'],
                                         style: TextStyle(
                                           fontSize: 17.0,
@@ -204,13 +221,17 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
                                       SizedBox(
                                         height: 10.0,
                                       ),
-                                      Text(
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children : [Text(
                                         pitstop['datetime'],
                                         style: TextStyle(
                                           fontSize: 17.0,
                                           color: Colors.grey,
                                         ),
-                                      ),
+                                      ), pitstop['attachment'] == true ?
+                                          Icon(Icons.remove_red_eye_sharp):
+                                          Container()]),
                                     ],
                                   ),
                                 ),

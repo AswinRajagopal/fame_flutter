@@ -3,7 +3,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:get/get.dart';
 
 class AppUtils {
-  var appName = 'Blink-In';
+  var appName = 'FaME';
   Color grScaffoldBg = Colors.grey[300];
   Color greyScaffoldBg = HexColor('eff4f6');
   Color innerScaffoldBg = Colors.white;

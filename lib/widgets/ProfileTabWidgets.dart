@@ -577,7 +577,7 @@ class CompilanceInfoTab extends StatelessWidget {
                                     Container(
                                       width: MediaQuery.of(context).size.width / 1.5,
                                       child: Text(
-                                        pC.profileRes['empDetails']['aadhaarid'],
+                                        pC.profileRes['empDetails']['aadhaarid']??'',
                                         style: TextStyle(
                                             fontFamily: "Sofia",
                                             fontSize: 16,
@@ -778,7 +778,7 @@ class CompilanceInfoTab extends StatelessWidget {
                                     Container(
                                       width: MediaQuery.of(context).size.width / 1.5,
                                       child: Text(
-                                        pC.profileRes['empDetails']['empUANNumber'],
+                                        pC.profileRes['empDetails']['empUANNumber']??'',
                                         style: TextStyle(
                                             fontFamily: "Sofia",
                                             fontSize: 16,

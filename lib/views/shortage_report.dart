@@ -223,17 +223,20 @@ class _ShortageReportState extends State<ShortageReport> {
                         };
                         // print(epC.timings.contains(addTiming));
                         if (!checkList.contains(manpower[j]['shift'])) {
+                          if(j==0){
+                            var addAllTiming = {
+                              'shift': 'ZZZ',
+                              'shiftStartTime': 'All ',
+                              'shiftEndTime': ' Shifts',
+                            };
+                            epC.timings.add(addAllTiming);
+                          }
                           epC.timings.add(addTiming);
                           checkList.add(manpower[j]['shift']);
                         }
                       }
-                      var addTiming = {
-                        'shift': 'ZZZ',
-                        'shiftStartTime': 'All ',
-                        'shiftEndTime': ' Shifts',
-                      };
+
                       // print(epC.timings.contains(addTiming));
-                        epC.timings.add(addTiming);
                         checkList.add('ZZZ');
                     }
                   },

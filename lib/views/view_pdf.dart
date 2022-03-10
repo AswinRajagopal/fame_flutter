@@ -59,7 +59,7 @@ class _ViewPdf extends State<ViewPdf> {
       var url = jsonDecode(RemoteServices().box.get('appFeature'))['paySlipUrl'] +
       '?empId='+encEmpId+'&month='+month_year.toString();
       if (!failed && await canLaunch(url)) {
-        await launch(url);
+        launch(url);
       } else if(failed){
         Get.snackbar(
           null,

@@ -40,10 +40,10 @@ import '../views/welcome_page.dart';
 // import 'package:background_locator/settings/locator_settings.dart' as ls;
 
 class RemoteServices {
-  static var baseURL = 'http://52.66.61.207:8090/v1/api';
+  // static var baseURL = 'http://52.66.61.207:8090/v1/api';
   // static var baseURL = 'http://65.1.68.191:8090/v1/api';
   // static var baseURL = 'http://androidapp.mydiyosfame.com:8090/v1/api';
-  // static var baseURL = 'http://192.168.43.180:8090/v1/api';
+  static var baseURL = 'http://192.168.0.205:8090/v1/api';
   // static var baseURL = 'http://172.20.10.4:8090/v1/api'  ;
 
   // static var baseURL = 'http://182.18.157.28:8090/v1/api';

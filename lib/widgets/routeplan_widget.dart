@@ -250,7 +250,7 @@ class RouteplanWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              route.status == 0 && RemoteServices().box.get('role') == '3'
+              route.status == 0 && RemoteServices().box.get('role') == '4'
                   ? Column(
                       children: [
                         SizedBox(
