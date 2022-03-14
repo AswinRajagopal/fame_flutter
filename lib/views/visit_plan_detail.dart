@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:fame/connection/remote_services.dart';
+
 import 'visit_plan_route.dart';
 
 import '../utils/utils.dart';
@@ -165,7 +169,28 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
                             // mainAxisExtent: 200.0,
                             direction: Axis.vertical,
                             nodePosition: 0.01,
-                            contents: Card(
+                            contents: GestureDetector(
+                            onTap: () async {
+                              if(pitstop['attachment'] ) {
+                                var getPitstopAttachment = await RemoteServices()
+                                    .getPitstopAttch(
+                                    pitstop['pitstopId'].toString());
+                                print(getPitstopAttachment);
+                                var img;
+                                if (getPitstopAttachment['success'] != null) {
+                                  img =
+                                  getPitstopAttachment['pitstopAttachment']['pitstopImage'];
+                                  img = img.contains('data:image') ? img
+                                      .split(',')
+                                      .last : img;
+                                  await showDialog(
+                                      context: context,
+                                      builder: (_) => imageDialog(img)
+                                  );
+                                }
+                              }
+                            } ,
+                                child : Card(
                               elevation: 5.0,
                               margin: EdgeInsets.only(
                                 left: 10.0,
@@ -236,7 +261,7 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
                                   ),
                                 ),
                               ),
-                            ),
+                            )),
                             node: TimelineNode(),
                           );
                         },
@@ -251,4 +276,41 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
       ),
     );
   }
+  Widget imageDialog(img) {
+
+    return Dialog(
+      // backgroundColor: Colors.transparent,
+      // elevation: 0,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  icon: Icon(Icons.close_rounded),
+                  color: Colors.redAccent,
+                ),
+              ],
+            ),
+          ),
+          Container(
+            width: 400,
+            height: 400,
+            child: Image.memory(
+                  base64.decode(
+                    img.replaceAll('\n', ''),
+                  ),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ],
+      ),
+    );}
 }

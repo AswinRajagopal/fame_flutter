@@ -15,6 +15,7 @@ class EmployeeReportController extends GetxController {
   var isLoadingEmpReport = true.obs;
   var isLoadingEmpDetail = true.obs;
   var isLoadingTimeline = true.obs;
+  var isLoadingPitstopAttach = true.obs;
   var isLoadingLocation = true.obs;
   var isLoadingShortage = true.obs;
   var isLoadingDaily = true.obs;
@@ -38,6 +39,7 @@ class EmployeeReportController extends GetxController {
   var getEmpDetailRes;
   var getEmpDetailRepRes;
   var getClientRepRes;
+  var getPitstopAttachment;
   var getTimelineRes;
   var getLocationRes;
   var shortageRes;
@@ -405,6 +407,23 @@ class EmployeeReportController extends GetxController {
         ),
         borderRadius: 5.0,
       );
+    }
+  }
+  Future getPitstopAtt(pitstopId) async {
+    // isLoadingTimeline(true);
+    pitsStops.clear();
+    try {
+      await pr.show();
+      getPitstopAttachment = await RemoteServices().getPitstopAttch(pitstopId);
+      if (getPitstopAttachment != null) {
+        if (getPitstopAttachment['success']) {
+          print("pitstop : "+getPitstopAttachment);
+          return getPitstopAttachment;
+        }
+      }
+    } catch (e) {
+      print(e);
+      return null;
     }
   }
 
