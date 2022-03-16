@@ -753,6 +753,73 @@ class CompilanceInfoTab extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Icon(
+                                Icons.medical_services_outlined,
+                                size: 21,
+                                color: Colors.grey,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 6.0,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Insurance Policy No.",
+                                      style: TextStyle(
+                                          fontFamily: "Sofia",
+                                          fontSize: 16,
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    SizedBox(
+                                      height: 8,
+                                    ),
+                                    Container(
+                                      width: MediaQuery.of(context).size.width / 1.5,
+                                      child: Text(
+                                        pC.profileRes['empDetails']['insurancePolicy']??'',
+                                        style: TextStyle(
+                                            fontFamily: "Sofia",
+                                            fontSize: 16,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 8,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  )),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Material(
+              elevation: 10,
+              shadowColor: Colors.white60,
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.white,
+              child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Container(
+                    padding: const EdgeInsets.only(top: 4, left: 4, right: 4, bottom: 4),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(
                                 Icons.food_bank,
                                 size: 21,
                                 color: Colors.grey,
