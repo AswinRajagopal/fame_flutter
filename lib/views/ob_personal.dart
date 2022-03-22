@@ -431,7 +431,7 @@ class _OBPersonalState extends State<OBPersonal> {
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          hintText: 'Mother Toungue',
+                          hintText: 'Mother Tongue',
                           prefixIcon: Image.asset(
                             'assets/images/language.png',
                             color: Colors.grey,

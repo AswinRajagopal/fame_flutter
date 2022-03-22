@@ -227,6 +227,7 @@ class _PinMyVisitState extends State<PinMyVisit> {
 
     print(res);
     if (res != null && res) {
+      controller.dispose();
       await Get.defaultDialog(
         title: 'Attach Image or Remarks',
         radius: 5.0,
