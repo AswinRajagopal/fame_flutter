@@ -1,6 +1,8 @@
 import 'package:fame/controllers/profile_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class PersonalInfoTab extends StatelessWidget {
   const PersonalInfoTab({
@@ -28,7 +30,8 @@ class PersonalInfoTab extends StatelessWidget {
               child: Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Container(
-                    padding: const EdgeInsets.only(top: 4, left: 4, right: 4, bottom: 4),
+                    padding: const EdgeInsets.only(
+                        top: 4, left: 4, right: 4, bottom: 4),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -61,9 +64,11 @@ class PersonalInfoTab extends StatelessWidget {
                                       height: 8,
                                     ),
                                     Container(
-                                      width: MediaQuery.of(context).size.width / 1.5,
+                                      width: MediaQuery.of(context).size.width /
+                                          1.5,
                                       child: Text(
-                                        pC.profileRes['empDetails']['empId'] ?? 'N/A',
+                                        pC.profileRes['empDetails']['empId'] ??
+                                            'N/A',
                                         style: TextStyle(
                                             fontFamily: "Sofia",
                                             fontSize: 16,
@@ -95,7 +100,8 @@ class PersonalInfoTab extends StatelessWidget {
               child: Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Container(
-                    padding: const EdgeInsets.only(top: 4, left: 4, right: 4, bottom: 4),
+                    padding: const EdgeInsets.only(
+                        top: 4, left: 4, right: 4, bottom: 4),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -128,9 +134,12 @@ class PersonalInfoTab extends StatelessWidget {
                                       height: 8,
                                     ),
                                     Container(
-                                      width: MediaQuery.of(context).size.width / 1.5,
+                                      width: MediaQuery.of(context).size.width /
+                                          1.5,
                                       child: Text(
-                                        pC.profileRes['empDetails']['empFatherName'] ?? 'N/A',
+                                        pC.profileRes['empDetails']
+                                                ['empFatherName'] ??
+                                            'N/A',
                                         style: TextStyle(
                                             fontFamily: "Sofia",
                                             fontSize: 16,
@@ -162,7 +171,8 @@ class PersonalInfoTab extends StatelessWidget {
               child: Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Container(
-                    padding: const EdgeInsets.only(top: 4, left: 4, right: 4, bottom: 4),
+                    padding: const EdgeInsets.only(
+                        top: 4, left: 4, right: 4, bottom: 4),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -195,7 +205,8 @@ class PersonalInfoTab extends StatelessWidget {
                                       height: 8,
                                     ),
                                     Container(
-                                      width: MediaQuery.of(context).size.width / 1.5,
+                                      width: MediaQuery.of(context).size.width /
+                                          1.5,
                                       child: Text(
     pC.profileRes['empDetails']['dob']!=null ? DateFormat('dd-MM-yyyy').format(DateTime.parse(pC.profileRes['empDetails']['dob'])) ?? 'N/A':'',
                                         style: TextStyle(
@@ -229,7 +240,8 @@ class PersonalInfoTab extends StatelessWidget {
               child: Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Container(
-                    padding: const EdgeInsets.only(top: 4, left: 4, right: 4, bottom: 4),
+                    padding: const EdgeInsets.only(
+                        top: 4, left: 4, right: 4, bottom: 4),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -262,8 +274,10 @@ class PersonalInfoTab extends StatelessWidget {
                                       height: 8,
                                     ),
                                     Container(
-                                      width: MediaQuery.of(context).size.width / 1.5,
+                                      width: MediaQuery.of(context).size.width /
+                                          1.5,
                                       child: Text(
+
     pC.profileRes['empDetails']['doj'] != null  ? DateFormat('dd-MM-yyyy').format(DateTime.parse(pC.profileRes['empDetails']['doj'])) ?? 'N/A':'',
                                         style: TextStyle(
                                             fontFamily: "Sofia",
@@ -297,7 +311,8 @@ class PersonalInfoTab extends StatelessWidget {
               child: Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Container(
-                    padding: const EdgeInsets.only(top: 4, left: 4, right: 4, bottom: 4),
+                    padding: const EdgeInsets.only(
+                        top: 4, left: 4, right: 4, bottom: 4),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -330,9 +345,11 @@ class PersonalInfoTab extends StatelessWidget {
                                       height: 8,
                                     ),
                                     Container(
-                                      width: MediaQuery.of(context).size.width / 1.5,
+                                      width: MediaQuery.of(context).size.width /
+                                          1.5,
                                       child: Text(
-                                        pC.profileRes['empDetails']['phone'] ?? 'N/A',
+                                        pC.profileRes['empDetails']['phone'] ??
+                                            'N/A',
                                         style: TextStyle(
                                             fontFamily: "Sofia",
                                             fontSize: 16,
@@ -364,7 +381,8 @@ class PersonalInfoTab extends StatelessWidget {
               child: Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Container(
-                    padding: const EdgeInsets.only(top: 4, left: 4, right: 4, bottom: 4),
+                    padding: const EdgeInsets.only(
+                        top: 4, left: 4, right: 4, bottom: 4),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -397,9 +415,12 @@ class PersonalInfoTab extends StatelessWidget {
                                       height: 8,
                                     ),
                                     Container(
-                                      width: MediaQuery.of(context).size.width / 1.5,
+                                      width: MediaQuery.of(context).size.width /
+                                          1.5,
                                       child: Text(
-                                        pC.profileRes['empDetails']['emailId'] ?? 'N/A',
+                                        pC.profileRes['empDetails']
+                                                ['emailId'] ??
+                                            'N/A',
                                         style: TextStyle(
                                             fontFamily: "Sofia",
                                             fontSize: 16,
@@ -431,7 +452,8 @@ class PersonalInfoTab extends StatelessWidget {
               child: Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Container(
-                    padding: const EdgeInsets.only(top: 4, left: 4, right: 4, bottom: 4),
+                    padding: const EdgeInsets.only(
+                        top: 4, left: 4, right: 4, bottom: 4),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -449,7 +471,9 @@ class PersonalInfoTab extends StatelessWidget {
                                 ),
                                 Text(
                                   "Address",
-                                  style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w400),
+                                  style: TextStyle(
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.w400),
                                 )
                               ],
                             ),
@@ -515,6 +539,7 @@ class CompilanceInfoTab extends StatelessWidget {
     this.pC,
   }) : super(key: key);
   final ProfileController pC;
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -524,6 +549,104 @@ class CompilanceInfoTab extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
+          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+            new Center(
+              child: new ButtonBar(
+                mainAxisSize: MainAxisSize.min,
+                // this will take space as minimum as posible(to center)
+                children: <Widget>[
+                  Column(children: [
+                    MaterialButton(
+                      onPressed: () {
+                        Get.to(DetailScreen(
+                            'https://androidapp.mydiyosfame.com/empDocs/idcard/' +
+                                pC.profileRes['empDetails']['empId'] +
+                                '.pdf'));
+                      },
+                      color: Colors.blue,
+                      textColor: Colors.white,
+                      child: Icon(
+                        Icons.perm_identity,
+                        size: 24,
+                      ),
+                      padding: EdgeInsets.all(16),
+                      shape: CircleBorder(),
+                    ),
+                    Text('ID Card')
+                  ]),
+                  Container(
+                    width: 10,
+                  ),
+                  Column(children: [
+                    MaterialButton(
+                      onPressed: () {
+                        Get.to(DetailScreen(
+                            'https://androidapp.mydiyosfame.com/empDocs/appointment/' +
+                                pC.profileRes['empDetails']['empId'] +
+                                '.pdf'));
+                      },
+                      color: Colors.blue,
+                      textColor: Colors.white,
+                      child: Icon(
+                        Icons.book,
+                        size: 24,
+                      ),
+                      padding: EdgeInsets.all(16),
+                      shape: CircleBorder(),
+                    ),
+                    Text('Appointment')
+                  ]),
+                  Container(
+                    width: 10,
+                  ),
+                  Column(
+                    children: [
+                      MaterialButton(
+                        onPressed: () {
+                          Get.to(DetailScreen(
+                              'https://androidapp.mydiyosfame.com/empDocs/insurance/' +
+                                  pC.profileRes['empDetails']['empId'] +
+                                  '.pdf'));
+                        },
+                        color: Colors.blue,
+                        textColor: Colors.white,
+                        child: Icon(
+                          Icons.shield,
+                          size: 24,
+                        ),
+                        padding: EdgeInsets.all(16),
+                        shape: CircleBorder(),
+                      ),
+                      Text('Insurance')
+                    ],
+                  ),
+                  Container(
+                    width: 10,
+                  ),
+                  Column(children: [
+                    MaterialButton(
+                      onPressed: () {
+                        Get.to(DetailScreen(
+                            'https://androidapp.mydiyosfame.com/empDocs/esi/' +
+                                pC.profileRes['empDetails']['empId'] +
+                                '.pdf'));
+                      },
+                      color: Colors.blue,
+                      textColor: Colors.white,
+                      child: Icon(
+                        Icons.local_hospital,
+                        size: 24,
+                      ),
+                      padding: EdgeInsets.all(16),
+                      shape: CircleBorder(),
+                    ),
+                    Text('ESI Card')
+                  ]),
+                ],
+              ),
+            ),
+          ]),
+          Container(height: 10),
           // address line - add new
           // mobile
           // PersonalInfoRow(
@@ -542,7 +665,8 @@ class CompilanceInfoTab extends StatelessWidget {
               child: Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Container(
-                    padding: const EdgeInsets.only(top: 4, left: 4, right: 4, bottom: 4),
+                    padding: const EdgeInsets.only(
+                        top: 4, left: 4, right: 4, bottom: 4),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -575,9 +699,12 @@ class CompilanceInfoTab extends StatelessWidget {
                                       height: 8,
                                     ),
                                     Container(
-                                      width: MediaQuery.of(context).size.width / 1.5,
+                                      width: MediaQuery.of(context).size.width /
+                                          1.5,
                                       child: Text(
-                                        pC.profileRes['empDetails']['aadhaarid']??'',
+                                        pC.profileRes['empDetails']
+                                                ['aadhaarid'] ??
+                                            '',
                                         style: TextStyle(
                                             fontFamily: "Sofia",
                                             fontSize: 16,
@@ -609,7 +736,8 @@ class CompilanceInfoTab extends StatelessWidget {
               child: Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Container(
-                    padding: const EdgeInsets.only(top: 4, left: 4, right: 4, bottom: 4),
+                    padding: const EdgeInsets.only(
+                        top: 4, left: 4, right: 4, bottom: 4),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -642,7 +770,8 @@ class CompilanceInfoTab extends StatelessWidget {
                                       height: 8,
                                     ),
                                     Container(
-                                      width: MediaQuery.of(context).size.width / 1.5,
+                                      width: MediaQuery.of(context).size.width /
+                                          1.5,
                                       child: Text(
                                         pC.profileRes['empDetails']['panNo']??'',
                                         style: TextStyle(
@@ -676,7 +805,8 @@ class CompilanceInfoTab extends StatelessWidget {
               child: Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Container(
-                    padding: const EdgeInsets.only(top: 4, left: 4, right: 4, bottom: 4),
+                    padding: const EdgeInsets.only(
+                        top: 4, left: 4, right: 4, bottom: 4),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -709,7 +839,8 @@ class CompilanceInfoTab extends StatelessWidget {
                                       height: 8,
                                     ),
                                     Container(
-                                      width: MediaQuery.of(context).size.width / 1.5,
+                                      width: MediaQuery.of(context).size.width /
+                                          1.5,
                                       child: Text(
                                         pC.profileRes['empDetails']['pfNo']??'',
                                         style: TextStyle(
@@ -743,7 +874,8 @@ class CompilanceInfoTab extends StatelessWidget {
               child: Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Container(
-                    padding: const EdgeInsets.only(top: 4, left: 4, right: 4, bottom: 4),
+                    padding: const EdgeInsets.only(
+                        top: 4, left: 4, right: 4, bottom: 4),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -776,9 +908,12 @@ class CompilanceInfoTab extends StatelessWidget {
                                       height: 8,
                                     ),
                                     Container(
-                                      width: MediaQuery.of(context).size.width / 1.5,
+                                      width: MediaQuery.of(context).size.width /
+                                          1.5,
                                       child: Text(
-                                        pC.profileRes['empDetails']['insurancePolicy']??'',
+                                        pC.profileRes['empDetails']
+                                                ['insurancePolicy'] ??
+                                            '',
                                         style: TextStyle(
                                             fontFamily: "Sofia",
                                             fontSize: 16,
@@ -810,7 +945,8 @@ class CompilanceInfoTab extends StatelessWidget {
               child: Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Container(
-                    padding: const EdgeInsets.only(top: 4, left: 4, right: 4, bottom: 4),
+                    padding: const EdgeInsets.only(
+                        top: 4, left: 4, right: 4, bottom: 4),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -843,9 +979,12 @@ class CompilanceInfoTab extends StatelessWidget {
                                       height: 8,
                                     ),
                                     Container(
-                                      width: MediaQuery.of(context).size.width / 1.5,
+                                      width: MediaQuery.of(context).size.width /
+                                          1.5,
                                       child: Text(
-                                        pC.profileRes['empDetails']['empUANNumber']??'',
+                                        pC.profileRes['empDetails']
+                                                ['empUANNumber'] ??
+                                            '',
                                         style: TextStyle(
                                             fontFamily: "Sofia",
                                             fontSize: 16,
@@ -877,7 +1016,8 @@ class CompilanceInfoTab extends StatelessWidget {
               child: Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Container(
-                    padding: const EdgeInsets.only(top: 4, left: 4, right: 4, bottom: 4),
+                    padding: const EdgeInsets.only(
+                        top: 4, left: 4, right: 4, bottom: 4),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -910,7 +1050,8 @@ class CompilanceInfoTab extends StatelessWidget {
                                       height: 8,
                                     ),
                                     Container(
-                                      width: MediaQuery.of(context).size.width / 1.5,
+                                      width: MediaQuery.of(context).size.width /
+                                          1.5,
                                       child: Text(
                                         pC.profileRes['empDetails']['esiNo']??'',
                                         style: TextStyle(
@@ -944,7 +1085,8 @@ class CompilanceInfoTab extends StatelessWidget {
               child: Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Container(
-                    padding: const EdgeInsets.only(top: 4, left: 4, right: 4, bottom: 4),
+                    padding: const EdgeInsets.only(
+                        top: 4, left: 4, right: 4, bottom: 4),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -977,9 +1119,12 @@ class CompilanceInfoTab extends StatelessWidget {
                                       height: 8,
                                     ),
                                     Container(
-                                      width: MediaQuery.of(context).size.width / 1.5,
+                                      width: MediaQuery.of(context).size.width /
+                                          1.5,
                                       child: Text(
-                                        pC.profileRes['empDetails']['empBankAcNo'] ?? 'N/A',
+                                        pC.profileRes['empDetails']
+                                                ['empBankAcNo'] ??
+                                            'N/A',
                                         style: TextStyle(
                                             fontFamily: "Sofia",
                                             fontSize: 16,
@@ -1008,7 +1153,8 @@ class CompilanceInfoTab extends StatelessWidget {
 }
 
 class PersonalInfoRow extends StatelessWidget {
-  const PersonalInfoRow({Key key, this.heading, this.iconName, this.text}) : super(key: key);
+  const PersonalInfoRow({Key key, this.heading, this.iconName, this.text})
+      : super(key: key);
   final String iconName;
   final String heading;
   final String text;
@@ -1025,7 +1171,8 @@ class PersonalInfoRow extends StatelessWidget {
         child: Padding(
             padding: const EdgeInsets.all(4.0),
             child: Container(
-              padding: const EdgeInsets.only(top: 4, left: 4, right: 4, bottom: 4),
+              padding:
+                  const EdgeInsets.only(top: 4, left: 4, right: 4, bottom: 4),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -1120,17 +1267,19 @@ class FamilyTab extends StatelessWidget {
                       child: Padding(
                           padding: const EdgeInsets.all(4.0),
                           child: Container(
-                            padding:
-                                const EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 10),
+                            padding: const EdgeInsets.only(
+                                top: 10, left: 20, right: 20, bottom: 10),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 CircleAvatar(
-                                  backgroundImage: new AssetImage('assets/images/profile.png'),
+                                  backgroundImage: new AssetImage(
+                                      'assets/images/profile.png'),
                                   radius: 30.0,
                                 ),
                                 const Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 18.0),
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 18.0),
                                   child: Text(
                                     "John Doe",
                                     style: TextStyle(
@@ -1148,14 +1297,19 @@ class FamilyTab extends StatelessWidget {
                                     child: Container(
                                       decoration: BoxDecoration(
                                           gradient: LinearGradient(
-                                            colors: [Colors.red, Colors.red.withOpacity(0.9)],
+                                            colors: [
+                                              Colors.red,
+                                              Colors.red.withOpacity(0.9)
+                                            ],
                                             begin: Alignment.topLeft,
                                             end: Alignment.bottomRight,
                                           ),
-                                          borderRadius: BorderRadius.circular(10)),
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
                                       child: Center(
                                         child: Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 18.0),
                                           child: Text(
                                             "Myself",
                                             style: TextStyle(
@@ -1198,14 +1352,16 @@ class FamilyTab extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       CircleAvatar(
-                                        backgroundImage:
-                                            new AssetImage('assets/images/profile.png'),
+                                        backgroundImage: new AssetImage(
+                                            'assets/images/profile.png'),
                                         radius: 25.0,
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 8.0),
+                                        padding:
+                                            const EdgeInsets.only(left: 8.0),
                                         child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             const Text(
                                               "Jane Doe",
@@ -1246,14 +1402,16 @@ class FamilyTab extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       CircleAvatar(
-                                        backgroundImage:
-                                            new AssetImage('assets/images/profile.png'),
+                                        backgroundImage: new AssetImage(
+                                            'assets/images/profile.png'),
                                         radius: 25.0,
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 8.0),
+                                        padding:
+                                            const EdgeInsets.only(left: 8.0),
                                         child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             const Text(
                                               "Janet Doe",
@@ -1304,7 +1462,8 @@ class FamilyTab extends StatelessWidget {
                   child: Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: Container(
-                        padding: const EdgeInsets.only(top: 15, left: 10, right: 10, bottom: 15),
+                        padding: const EdgeInsets.only(
+                            top: 15, left: 10, right: 10, bottom: 15),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -1376,7 +1535,8 @@ class VitalsTab extends StatelessWidget {
                   child: Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: Container(
-                        padding: const EdgeInsets.only(top: 15, left: 10, right: 10, bottom: 15),
+                        padding: const EdgeInsets.only(
+                            top: 15, left: 10, right: 10, bottom: 15),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -1432,5 +1592,37 @@ class VitalsTab extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class DetailScreen extends StatelessWidget {
+  final String url;
+
+  DetailScreen(this.url);
+
+  final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: SfPdfViewer.network(url, key: _pdfViewerKey,
+            onDocumentLoadFailed: (PdfDocumentLoadFailedDetails details) {
+      Get.snackbar(
+        null,
+        'Document not found for the Employee',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
+      );
+    }));
   }
 }
