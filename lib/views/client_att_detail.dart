@@ -336,7 +336,9 @@ class _ClientAttDetailState extends State<ClientAttDetail> {
                                 Row(
                                   children: [
                                     Text(
-                                      epC.designation[client['designation']],
+                                      epC.designation[int.parse(
+                                          client['designation']
+                                              .toString())]['design'],
                                       style: TextStyle(
                                         fontSize: 16.0,
                                       ),

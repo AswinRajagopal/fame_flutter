@@ -168,12 +168,13 @@ class EmployeeReportController extends GetxController {
         // print('getEmpReportRes valid: $getEmpReportRes');
         if (getEmpReportRes['success']) {
           print('getEmpReportRes: $getEmpReportRes');
-          for (var i = 0; i < getEmpReportRes['designationsList'].length; i++) {
-            designation.insert(
-              int.parse(getEmpReportRes['designationsList'][i]['designId']),
-              getEmpReportRes['designationsList'][i]['design'],
-            );
-          }
+          designation.addAll(getEmpReportRes['designationsList']);
+          // for (var i = 0; i < getEmpReportRes['designationsList'].length; i++) {
+          //   designation.insert(
+          //     int.parse(getEmpReportRes['designationsList'][i]['designId']),
+          //     getEmpReportRes['designationsList'][i]['design'],
+          //   );
+          // }
         } else {
           // Get.snackbar(
           //   null,
@@ -682,12 +683,13 @@ class EmployeeReportController extends GetxController {
         // print('getEmpReportRes valid: $getEmpReportRes');
         if (getClientRepRes['success']) {
           print('getClientRepRes: $getClientRepRes');
-          for (var i = 0; i < getClientRepRes['designationsList'].length; i++) {
-            designation.insert(
-              int.parse(getClientRepRes['designationsList'][i]['designId']),
-              getClientRepRes['designationsList'][i]['design'],
-            );
-          }
+          designation.addAll(getClientRepRes['designationsList']);
+          // for (var i = 0; i < getClientRepRes['designationsList'].length; i++) {
+          //   designation.insert(
+          //     int.parse(getClientRepRes['designationsList'][i]['designId']),
+          //     getClientRepRes['designationsList'][i]['design'],
+          //   );
+          // }
           for (var i = 0; i < getClientRepRes['empDailyAttView'].length; i++) {
             var client = getClientRepRes['empDailyAttView'][i];
             var chkIn = client['checkInDateTime'];

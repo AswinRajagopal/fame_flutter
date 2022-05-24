@@ -127,7 +127,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 Get.to(OBPersonal());
               },
               child: Visibility(
-                visible: ((roleId == AppUtils.ADMIN || roleId == AppUtils.MANAGER) && jsonDecode(RemoteServices().box.get('appFeature'))['onboarding']) ? true : false,
+                visible: ((roleId!='1' ) && jsonDecode(RemoteServices().box.get('appFeature'))['onboarding']) ? true : false,
                 child: ListContainer(
                   'assets/images/employee.png',
                   'Onboarding',

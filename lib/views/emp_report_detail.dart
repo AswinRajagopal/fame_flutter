@@ -309,7 +309,7 @@ class _EmpReportDetailState extends State<EmpReportDetail> {
                       itemCount: epC.searchList.isNotEmpty ? epC.searchList.length : epC.getEmpReportRes['empDailyAttView'].length,
                       itemBuilder: (context, index) {
                         var emp = epC.searchList.isNotEmpty ? epC.searchList[index] : epC.getEmpReportRes['empDailyAttView'][index];
-                        return EmpRepDetailWidget(emp, epC.designation[emp['designation']]);
+                        return EmpRepDetailWidget(emp,  epC.designation[int.parse(emp['designation'].toString())]['design']);
                       },
                     ),
                   );
