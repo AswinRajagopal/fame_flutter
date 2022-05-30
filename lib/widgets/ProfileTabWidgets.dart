@@ -1605,7 +1605,8 @@ class DetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SfPdfViewer.network(url, key: _pdfViewerKey,
+        body: SafeArea (
+        child : SfPdfViewer.network(url, key: _pdfViewerKey,
             onDocumentLoadFailed: (PdfDocumentLoadFailedDetails details) {
       Get.snackbar(
         null,
@@ -1623,6 +1624,6 @@ class DetailScreen extends StatelessWidget {
         ),
         borderRadius: 5.0,
       );
-    }));
+    })));
   }
 }
