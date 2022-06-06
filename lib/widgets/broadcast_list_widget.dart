@@ -26,7 +26,7 @@ class BroadcastListWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Sent From : ${broadcast['createdBy']}',
+                  '',
                   style: TextStyle(
                     fontSize: 15.0,
                     fontWeight: FontWeight.w900,

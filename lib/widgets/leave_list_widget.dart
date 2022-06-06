@@ -5,11 +5,12 @@ import '../connection/remote_services.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class LeaveListWidget extends StatelessWidget {
+    class LeaveListWidget extends StatelessWidget {
   final leave;
   final int index;
   final int length;
   final LeaveController lC;
+
   LeaveListWidget(this.leave, this.index, this.length, this.lC);
 
   final double firstWidth = 48.0;
@@ -21,7 +22,18 @@ class LeaveListWidget extends StatelessWidget {
   final double sBoxSpace = 10.0;
 
   String convertDate(date) {
-    return DateFormat('dd').format(DateTime.parse(date)).toString() + '-' + DateFormat('MM').format(DateTime.parse(date)).toString() + '-' + DateFormat.y().format(DateTime.parse(date)).toString();
+    return DateFormat('dd').format(DateTime.parse(date)).toString() +
+        '-' +
+        DateFormat('MM').format(DateTime.parse(date)).toString() +
+        '-' +
+        DateFormat.y().format(DateTime.parse(date)).toString();
+  }
+
+  int dateDifference(date1, date2) {
+    var fromDate = DateTime.parse(date1);
+    var toDate = DateTime.parse(date2);
+
+    return toDate.difference(fromDate).inDays;
   }
 
   String getStatus(status) {
@@ -29,7 +41,7 @@ class LeaveListWidget extends StatelessWidget {
       return 'Pending';
     } else if (status == 1) {
       return 'Approved';
-    }else if (status == 2) {
+    } else if (status == 2) {
       return 'Rejected';
     } else if (status == 3) {
       return 'Cancelled';
@@ -60,7 +72,7 @@ class LeaveListWidget extends StatelessWidget {
                 SizedBox(
                   width: sBox,
                   child: Text(
-                    'Emp ID',
+                    'Name & Emp ID',
                     style: TextStyle(
                       // fontWeight: FontWeight.bold,
                       fontSize: titleSize,
@@ -81,7 +93,10 @@ class LeaveListWidget extends StatelessWidget {
                   width: secondWidth,
                 ),
                 Text(
-                  leave['empId'].toString(),
+                  leave['empName'].toString() +
+                      ' (' +
+                      leave['empId'].toString() +
+                      ')',
                   style: TextStyle(
                     fontSize: textSize,
                     color: Colors.grey,
@@ -99,43 +114,7 @@ class LeaveListWidget extends StatelessWidget {
                 SizedBox(
                   width: sBox,
                   child: Text(
-                    'Name',
-                    style: TextStyle(
-                      // fontWeight: FontWeight.bold,
-                      fontSize: titleSize,
-                    ),
-                  ),
-                ),
-                SizedBox(width: sBoxSpace),
-                Text(
-                  ':',
-                  style: TextStyle(
-                    fontSize: textSize,
-                  ),
-                ),
-                SizedBox(
-                  width: secondWidth,
-                ),
-                Text(
-                  leave['empName'].toString(),
-                  style: TextStyle(
-                    fontSize: textSize,
-                    color: Colors.grey,
-                  ),
-                  maxLines: 1,
-                ),
-              ],
-            ),
-            SizedBox(
-              height: rowAfterSize,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: sBox,
-                  child: Text(
-                    'From Date',
+                    'Date',
                     style: TextStyle(
                       // fontWeight: FontWeight.bold,
                       fontSize: titleSize,
@@ -156,7 +135,9 @@ class LeaveListWidget extends StatelessWidget {
                 ),
                 Flexible(
                   child: Text(
-                    convertDate(leave['fromDate']),
+                    convertDate(leave['fromDate']) +
+                        ' - ' +
+                        convertDate(leave['toDate']),
                     style: TextStyle(
                       fontSize: textSize,
                       color: Colors.grey,
@@ -165,6 +146,51 @@ class LeaveListWidget extends StatelessWidget {
                 ),
               ],
             ),
+            Visibility(
+              visible: dateDifference(leave['fromDate'], leave['toDate']) > 0,
+              child: SizedBox(
+                height: rowAfterSize,
+              ),
+            ),
+            Visibility(
+              visible: dateDifference(leave['fromDate'], leave['toDate']) > 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: sBox,
+                    child: Text(
+                      'Duration',
+                      style: TextStyle(
+                        // fontWeight: FontWeight.bold,
+                        fontSize: titleSize,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: sBoxSpace,
+                  ),
+                  Text(
+                    ':',
+                    style: TextStyle(
+                      fontSize: textSize,
+                    ),
+                  ),
+                  SizedBox(
+                    width: secondWidth,
+                  ),
+                  Text(
+                    dateDifference(leave['fromDate'], leave['toDate'])
+                            .toString() +
+                        " days",
+                    style: TextStyle(
+                      fontSize: textSize,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            ),
             SizedBox(
               height: rowAfterSize,
             ),
@@ -174,7 +200,7 @@ class LeaveListWidget extends StatelessWidget {
                 SizedBox(
                   width: sBox,
                   child: Text(
-                    'To Date',
+                    'Leave Type',
                     style: TextStyle(
                       // fontWeight: FontWeight.bold,
                       fontSize: titleSize,
@@ -194,44 +220,7 @@ class LeaveListWidget extends StatelessWidget {
                   width: secondWidth,
                 ),
                 Text(
-                  convertDate(leave['toDate']),
-                  style: TextStyle(
-                    fontSize: textSize,
-                    color: Colors.grey,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: rowAfterSize,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: sBox,
-                  child: Text(
-                    'Requested On',
-                    style: TextStyle(
-                      // fontWeight: FontWeight.bold,
-                      fontSize: titleSize,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: sBoxSpace,
-                ),
-                Text(
-                  ':',
-                  style: TextStyle(
-                    fontSize: textSize,
-                  ),
-                ),
-                SizedBox(
-                  width: secondWidth,
-                ),
-                Text(
-                  convertDate(leave['appliedOn']),
+                  leave['leaveTypeName'].toString(),
                   style: TextStyle(
                     fontSize: textSize,
                     color: Colors.grey,
@@ -288,7 +277,7 @@ class LeaveListWidget extends StatelessWidget {
                 SizedBox(
                   width: sBox,
                   child: Text(
-                    'Leave Type',
+                    'Requested On',
                     style: TextStyle(
                       // fontWeight: FontWeight.bold,
                       fontSize: titleSize,
@@ -308,7 +297,7 @@ class LeaveListWidget extends StatelessWidget {
                   width: secondWidth,
                 ),
                 Text(
-                  leave['leaveTypeName'].toString(),
+                  convertDate(leave['appliedOn']),
                   style: TextStyle(
                     fontSize: textSize,
                     color: Colors.grey,
@@ -357,7 +346,8 @@ class LeaveListWidget extends StatelessWidget {
                 ),
               ],
             ),
-            RemoteServices().box.get('empid') == leave['empId'] && int.parse(leave['status']) < 2
+            RemoteServices().box.get('empid') == leave['empId'] &&
+                    int.parse(leave['status']) < 2
                 ? DateTime.now().isAfter(DateTime.parse(leave['fromDate']))
                     ? Container()
                     : Column(
@@ -388,11 +378,13 @@ class LeaveListWidget extends StatelessWidget {
                                     if (await confirm(
                                       context,
                                       title: Text('Confirm!'),
-                                      content: Text('Are you sure, you want to cancel the leave?'),
+                                      content: Text(
+                                          'Are you sure, you want to cancel the leave?'),
                                       textOK: Text('Yes'),
                                       textCancel: Text('No'),
                                     )) {
-                                      lC.aprRejLeave(index, leave['empLeaveHistoryId'], '3');
+                                      lC.aprRejLeave(index,
+                                          leave['empLeaveHistoryId'], '3');
                                     }
                                   },
                                   child: Text(
@@ -417,9 +409,11 @@ class LeaveListWidget extends StatelessWidget {
                         ],
                       )
                 : Container(),
-            (leave['status'] == '0' || leave['status'] == 'Pending'
-                || leave['status'] == '4' || leave['status'] == 'Cancel Pending')
-                && (RemoteServices().box.get('empid') != leave['empId'])
+            (leave['status'] == '0' ||
+                        leave['status'] == 'Pending' ||
+                        leave['status'] == '4' ||
+                        leave['status'] == 'Cancel Pending') &&
+                    (RemoteServices().box.get('empid') != leave['empId'])
                 ? Column(
                     children: [
                       SizedBox(
@@ -445,7 +439,8 @@ class LeaveListWidget extends StatelessWidget {
                           children: [
                             RaisedButton(
                               onPressed: () {
-                                lC.aprRejLeave(index, leave['empLeaveHistoryId'], '2');
+                                lC.aprRejLeave(
+                                    index, leave['empLeaveHistoryId'], '2');
                               },
                               child: Text(
                                 'Reject',
@@ -468,7 +463,8 @@ class LeaveListWidget extends StatelessWidget {
                             ),
                             RaisedButton(
                               onPressed: () {
-                                lC.aprRejLeave(index, leave['empLeaveHistoryId'], '1');
+                                lC.aprRejLeave(
+                                    index, leave['empLeaveHistoryId'], '1');
                               },
                               child: Text(
                                 'Accept',

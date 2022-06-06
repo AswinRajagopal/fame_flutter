@@ -35,235 +35,246 @@ class MorePage extends StatelessWidget {
             SizedBox(
               height: 20.0,
             ),
-            jsonDecode(RemoteServices().box.get('appFeature'))['attendance']?
-            GestureDetector(
-              onTap: () {
-                if (roleId != '1') {
-                  Get.to(ShortageReport());
-                } else {
-                  Get.snackbar(
-                    null,
-                    'Only FO and admin can access this',
-                    colorText: Colors.white,
-                    backgroundColor: Colors.black87,
-                    snackPosition: SnackPosition.BOTTOM,
-                    margin: EdgeInsets.symmetric(
-                      horizontal: 8.0,
-                      vertical: 10.0,
+            jsonDecode(RemoteServices().box.get('appFeature'))['attendance']
+                ? GestureDetector(
+                    onTap: () {
+                      if (roleId != '1') {
+                        Get.to(ShortageReport());
+                      } else {
+                        Get.snackbar(
+                          null,
+                          'Only FO and admin can access this',
+                          colorText: Colors.white,
+                          backgroundColor: Colors.black87,
+                          snackPosition: SnackPosition.BOTTOM,
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 10.0,
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12.0,
+                            vertical: 18.0,
+                          ),
+                          borderRadius: 5.0,
+                        );
+                      }
+                    },
+                    child: ListContainer(
+                      'assets/images/shortage_report.png',
+                      'Shortage Report',
                     ),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 12.0,
-                      vertical: 18.0,
+                  )
+                : Container(),
+            jsonDecode(RemoteServices().box.get('appFeature'))['attendance']
+                ? GestureDetector(
+                    onTap: () {
+                      if (roleId != '1') {
+                        Get.to(ClientWiseAttendance());
+                      } else {
+                        Get.snackbar(
+                          null,
+                          'Only FO and admin can access this',
+                          colorText: Colors.white,
+                          backgroundColor: Colors.black87,
+                          snackPosition: SnackPosition.BOTTOM,
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 10.0,
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12.0,
+                            vertical: 18.0,
+                          ),
+                          borderRadius: 5.0,
+                        );
+                      }
+                    },
+                    child: ListContainer(
+                      'assets/images/client_wise_att.png',
+                      'Client Wise Attendance',
                     ),
-                    borderRadius: 5.0,
-                  );
-                }
-              },
-              child: ListContainer(
-                'assets/images/shortage_report.png',
-                'Shortage Report',
+                  )
+                : Container(),
+            jsonDecode(RemoteServices().box.get('appFeature'))['attendance']
+                ? GestureDetector(
+                    onTap: () {
+                      if (roleId != '1') {
+                        Get.to(DailyEmployeeReport());
+                      } else {
+                        Get.snackbar(
+                          null,
+                          'Only FO and admin can access this',
+                          colorText: Colors.white,
+                          backgroundColor: Colors.black87,
+                          snackPosition: SnackPosition.BOTTOM,
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 10.0,
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12.0,
+                            vertical: 18.0,
+                          ),
+                          borderRadius: 5.0,
+                        );
+                      }
+                    },
+                    child: ListContainer(
+                      'assets/images/day_wise_attendance.png',
+                      'Day Wise Emp. Attendance',
+                    ),
+                  )
+                : Container(),
+            jsonDecode(RemoteServices().box.get('appFeature'))['attendance']
+                ? GestureDetector(
+                    onTap: () {
+                      if (roleId != '1') {
+                        Get.to(EmployeeReport());
+                      } else {
+                        Get.snackbar(
+                          null,
+                          'Only FO and admin can access this',
+                          colorText: Colors.white,
+                          backgroundColor: Colors.black87,
+                          snackPosition: SnackPosition.BOTTOM,
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 10.0,
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12.0,
+                            vertical: 18.0,
+                          ),
+                          borderRadius: 5.0,
+                        );
+                      }
+                    },
+                    child: ListContainer(
+                      'assets/images/employee_report.png',
+                      'Employee Report',
+                    ),
+                  )
+                : Container(),
+            jsonDecode(RemoteServices().box.get('appFeature'))['gps']
+                ? GestureDetector(
+                    onTap: () {
+                      if ((roleId != '1') && reportView) {
+                        Get.to(TimelineReport());
+                      } else {
+                        Get.snackbar(
+                          null,
+                          'Insufficient permission to access this',
+                          colorText: Colors.white,
+                          backgroundColor: Colors.black87,
+                          snackPosition: SnackPosition.BOTTOM,
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 10.0,
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12.0,
+                            vertical: 18.0,
+                          ),
+                          borderRadius: 5.0,
+                        );
+                      }
+                    },
+                    child: ListContainer(
+                      'assets/images/timeline_report.png',
+                      'Timeline Report',
+                    ),
+                  )
+                : Container(),
+            jsonDecode(RemoteServices().box.get('appFeature'))['gps']
+                ? GestureDetector(
+                    onTap: () {
+                      if ((roleId != '1') && reportView) {
+                        Get.to(LocationReportDetail());
+                      } else {
+                        Get.snackbar(
+                          null,
+                          'Insufficient permission to access this',
+                          colorText: Colors.white,
+                          backgroundColor: Colors.black87,
+                          snackPosition: SnackPosition.BOTTOM,
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 10.0,
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12.0,
+                            vertical: 18.0,
+                          ),
+                          borderRadius: 5.0,
+                        );
+                      }
+                    },
+                    child: ListContainer(
+                      'assets/images/current_location.png',
+                      'Current Location',
+                    ),
+                  )
+                : Container(),
+            reportView && (roleId != '1')
+                ? GestureDetector(
+                    onTap: () {
+                      if ((roleId != '1') && reportView) {
+                        Get.to(OnboardReportDetail("LNSA0003"));
+                      } else {
+                        Get.snackbar(
+                          null,
+                          'Insufficient permission to access this',
+                          colorText: Colors.white,
+                          backgroundColor: Colors.black87,
+                          snackPosition: SnackPosition.BOTTOM,
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 10.0,
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12.0,
+                            vertical: 18.0,
+                          ),
+                          borderRadius: 5.0,
+                        );
+                      }
+                    },
+                    child: ListContainer(
+                      'assets/images/employee.png',
+                      'Onboarding Report',
+                    ),
+                  )
+                : Container(),
+            if (jsonDecode(
+                    RemoteServices().box.get('appFeature'))['paySlipUrl'] !=
+                null)
+              GestureDetector(
+                onTap: () {
+                  Get.to(ViewPdf());
+                },
+                child: ListContainer(
+                  'assets/images/feedbacki.png',
+                  'View Payslip',
+                ),
               ),
-            ):Container(),
-            jsonDecode(RemoteServices().box.get('appFeature'))['attendance']?
-            GestureDetector(
-              onTap: () {
-                if (roleId != '1') {
-                  Get.to(ClientWiseAttendance());
-                } else {
-                  Get.snackbar(
-                    null,
-                    'Only FO and admin can access this',
-                    colorText: Colors.white,
-                    backgroundColor: Colors.black87,
-                    snackPosition: SnackPosition.BOTTOM,
-                    margin: EdgeInsets.symmetric(
-                      horizontal: 8.0,
-                      vertical: 10.0,
+            jsonDecode(RemoteServices().box.get('appFeature'))['pinMyVisit']
+                ? GestureDetector(
+                    onTap: () {
+                      if (roleId == AppUtils.MANAGER ||
+                          roleId == AppUtils.ADMIN) {
+                        Get.to(VisitPlan());
+                      } else {
+                        Get.to(
+                          VisitPlan(user: 'emp'),
+                        );
+                      }
+                    },
+                    child: ListContainer(
+                      'assets/images/my_visit_plan.png',
+                      'My Visit Report',
                     ),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 12.0,
-                      vertical: 18.0,
-                    ),
-                    borderRadius: 5.0,
-                  );
-                }
-              },
-              child: ListContainer(
-                'assets/images/client_wise_att.png',
-                'Client Wise Attendance',
-              ),
-            ):Container(),
-            jsonDecode(RemoteServices().box.get('appFeature'))['attendance']?
-            GestureDetector(
-              onTap: () {
-                if (roleId != '1') {
-                  Get.to(DailyEmployeeReport());
-                } else {
-                  Get.snackbar(
-                    null,
-                    'Only FO and admin can access this',
-                    colorText: Colors.white,
-                    backgroundColor: Colors.black87,
-                    snackPosition: SnackPosition.BOTTOM,
-                    margin: EdgeInsets.symmetric(
-                      horizontal: 8.0,
-                      vertical: 10.0,
-                    ),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 12.0,
-                      vertical: 18.0,
-                    ),
-                    borderRadius: 5.0,
-                  );
-                }
-              },
-              child: ListContainer(
-                'assets/images/day_wise_attendance.png',
-                'Day Wise Emp. Attendance',
-              ),
-            ):Container(),
-            jsonDecode(RemoteServices().box.get('appFeature'))['attendance']?
-            GestureDetector(
-              onTap: () {
-                if (roleId != '1') {
-                  Get.to(EmployeeReport());
-                } else {
-                  Get.snackbar(
-                    null,
-                    'Only FO and admin can access this',
-                    colorText: Colors.white,
-                    backgroundColor: Colors.black87,
-                    snackPosition: SnackPosition.BOTTOM,
-                    margin: EdgeInsets.symmetric(
-                      horizontal: 8.0,
-                      vertical: 10.0,
-                    ),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 12.0,
-                      vertical: 18.0,
-                    ),
-                    borderRadius: 5.0,
-                  );
-                }
-              },
-              child: ListContainer(
-                'assets/images/employee_report.png',
-                'Employee Report',
-              ),
-            ):Container(),
-            jsonDecode(RemoteServices().box.get('appFeature'))['gps']?
-            GestureDetector(
-              onTap: () {
-                if ((roleId != '1') && reportView) {
-                  Get.to(TimelineReport());
-                } else {
-                  Get.snackbar(
-                    null,
-                    'Insufficient permission to access this',
-                    colorText: Colors.white,
-                    backgroundColor: Colors.black87,
-                    snackPosition: SnackPosition.BOTTOM,
-                    margin: EdgeInsets.symmetric(
-                      horizontal: 8.0,
-                      vertical: 10.0,
-                    ),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 12.0,
-                      vertical: 18.0,
-                    ),
-                    borderRadius: 5.0,
-                  );
-                }
-              },
-              child: ListContainer(
-                'assets/images/timeline_report.png',
-                'Timeline Report',
-              ),
-            ):Container(),
-            jsonDecode(RemoteServices().box.get('appFeature'))['gps']?
-            GestureDetector(
-              onTap: () {
-                if ((roleId != '1') && reportView) {
-                  Get.to(LocationReportDetail());
-                } else {
-                  Get.snackbar(
-                    null,
-                    'Insufficient permission to access this',
-                    colorText: Colors.white,
-                    backgroundColor: Colors.black87,
-                    snackPosition: SnackPosition.BOTTOM,
-                    margin: EdgeInsets.symmetric(
-                      horizontal: 8.0,
-                      vertical: 10.0,
-                    ),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 12.0,
-                      vertical: 18.0,
-                    ),
-                    borderRadius: 5.0,
-                  );
-                }
-              },
-              child: ListContainer(
-                'assets/images/current_location.png',
-                'Current Location',
-              ),
-            ):Container(),
-            reportView && (roleId != '1') ?
-            GestureDetector(
-              onTap: () {
-                if ((roleId != '1') && reportView) {
-                  Get.to(OnboardReportDetail("LNSA0003"));
-                } else {
-                  Get.snackbar(
-                    null,
-                    'Insufficient permission to access this',
-                    colorText: Colors.white,
-                    backgroundColor: Colors.black87,
-                    snackPosition: SnackPosition.BOTTOM,
-                    margin: EdgeInsets.symmetric(
-                      horizontal: 8.0,
-                      vertical: 10.0,
-                    ),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 12.0,
-                      vertical: 18.0,
-                    ),
-                    borderRadius: 5.0,
-                  );
-                }
-              },
-              child: ListContainer(
-                'assets/images/employee.png',
-                'Onboarding Report',
-              ),
-            ):Container(),
-            if(jsonDecode(RemoteServices().box.get('appFeature'))['paySlipUrl'] != null)
-            GestureDetector(
-              onTap: () {
-                Get.to(ViewPdf());
-              },
-              child: ListContainer(
-                'assets/images/feedbacki.png',
-                'View Payslip',
-              ),
-            ),
-            jsonDecode(RemoteServices().box.get('appFeature'))['pinMyVisit']?
-            GestureDetector(
-              onTap: () {
-                if (roleId == AppUtils.MANAGER || roleId == AppUtils.ADMIN) {
-                  Get.to(VisitPlan());
-                } else {
-                  Get.to(
-                    VisitPlan(user: 'emp'),
-                  );
-                }
-              },
-              child: ListContainer(
-                'assets/images/my_visit_plan.png',
-                'My Visit Report',
-              ),
-            ):Container(),
+                  )
+                : Container(),
             SizedBox(
               height: 20.0,
             ),

@@ -170,98 +170,131 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
                             direction: Axis.vertical,
                             nodePosition: 0.01,
                             contents: GestureDetector(
-                            onTap: () async {
-                              if(pitstop['attachment'] ) {
-                                var getPitstopAttachment = await RemoteServices()
-                                    .getPitstopAttch(
-                                    pitstop['pitstopId'].toString());
-                                print(getPitstopAttachment);
-                                var img;
-                                if (getPitstopAttachment['success'] != null) {
-                                  img =
-                                  getPitstopAttachment['pitstopAttachment']['pitstopImage'];
-                                  img = img.contains('data:image') ? img
-                                      .split(',')
-                                      .last : img;
-                                  await showDialog(
-                                      context: context,
-                                      builder: (_) => imageDialog(img)
-                                  );
-                                }
-                              }
-                            } ,
-                                child : Card(
-                              elevation: 5.0,
-                              margin: EdgeInsets.only(
-                                left: 10.0,
-                                bottom: index == epC.pitsStops.length - 1 ? 50.0 : 20.0,
-                                top: index == 0 ? 50.0 : 0.0,
-                                right: 10.0,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10.0),
-                                ),
-                              ),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(
-                                      15.0,
+                                onTap: () async {
+                                  if (pitstop['attachment']) {
+                                    var getPitstopAttachment =
+                                        await RemoteServices().getPitstopAttch(
+                                            pitstop['pitstopId'].toString());
+                                    print(getPitstopAttachment);
+                                    var img;
+                                    if (getPitstopAttachment['success'] !=
+                                        null) {
+                                      img = getPitstopAttachment[
+                                          'pitstopAttachment']['pitstopImage'];
+                                      img = img.contains('data:image')
+                                          ? img.split(',').last
+                                          : img;
+                                      await showDialog(
+                                          context: context,
+                                          builder: (_) => imageDialog(img));
+                                    }
+                                  }
+                                },
+                                child: Card(
+                                  elevation: 5.0,
+                                  margin: EdgeInsets.only(
+                                    left: 10.0,
+                                    bottom: index == epC.pitsStops.length - 1
+                                        ? 50.0
+                                        : 20.0,
+                                    top: index == 0 ? 50.0 : 0.0,
+                                    right: 10.0,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10.0),
                                     ),
                                   ),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 15.0,
-                                    horizontal: 15.0,
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      pitstop['clientId'] != null ? Column(
-                                          children : [Text(
-                                        'Client : '+pitstop['clientId'],
-                                        style: TextStyle(
-                                          fontSize: 17.0,
-                                          color: Colors.grey,                                        ),
-                                      ),SizedBox(
-                                        height: 6.0,
-                                      )]):Container(),
-                                      pitstop['activity'] != null ? Column(
-                                          children : [Text(
-                                        'Activity : '+pitstop['activity'],
-                                        style: TextStyle(
-                                          fontSize: 17.0,
-                                          color: Colors.black,                                        ),
-                                      ),SizedBox(
-                                        height: 6.0,
-                                      )]):Container(),Text(
-                                        pitstop['address'],
-                                        style: TextStyle(
-                                          fontSize: 17.0,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                          15.0,
                                         ),
                                       ),
-                                      SizedBox(
-                                        height: 10.0,
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 15.0,
+                                        horizontal: 15.0,
                                       ),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children : [Text(
-                                        pitstop['datetime'],
-                                        style: TextStyle(
-                                          fontSize: 17.0,
-                                          color: Colors.grey,
-                                        ),
-                                      ), pitstop['attachment'] == true ?
-                                          Icon(Icons.remove_red_eye_sharp):
-                                          Container()]),
-                                    ],
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          pitstop['clientId'] != null
+                                              ? Column(children: [
+                                                  Text(
+                                                    'Client : ' +
+                                                        pitstop['clientId'],
+                                                    style: TextStyle(
+                                                      fontSize: 17.0,
+                                                      color: Colors.grey,
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 6.0,
+                                                  )
+                                                ])
+                                              : Container(),
+                                          pitstop['activity'] != null
+                                              ? Column(children: [
+                                                  Text(
+                                                    'Activity : ' +
+                                                        pitstop['activity'],
+                                                    style: TextStyle(
+                                                      fontSize: 17.0,
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 6.0,
+                                                  )
+                                                ])
+                                              : Container(),
+                                          Text(
+                                            pitstop['address'],
+                                            style: TextStyle(
+                                              fontSize: 17.0,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 10.0,
+                                          ),
+                                          Container(),
+                                          Text(
+                                            'Remarks : ' +
+                                                pitstop['empRemarks'],
+                                            style: TextStyle(
+                                              fontSize: 17.0,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 10.0,
+                                          ),
+                                          Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  pitstop['datetime'],
+                                                  style: TextStyle(
+                                                    fontSize: 17.0,
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                                pitstop['attachment'] == true
+                                                    ? Icon(Icons
+                                                        .remove_red_eye_sharp)
+                                                    : Container()
+                                              ]),
+                                        ],
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                            )),
+                                )),
                             node: TimelineNode(),
                           );
                         },
@@ -276,8 +309,8 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
       ),
     );
   }
-  Widget imageDialog(img) {
 
+  Widget imageDialog(img) {
     return Dialog(
       // backgroundColor: Colors.transparent,
       // elevation: 0,
@@ -304,13 +337,14 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
             width: 400,
             height: 400,
             child: Image.memory(
-                  base64.decode(
-                    img.replaceAll('\n', ''),
-                  ),
+              base64.decode(
+                img.replaceAll('\n', ''),
+              ),
               fit: BoxFit.cover,
             ),
           ),
         ],
       ),
-    );}
+    );
+  }
 }

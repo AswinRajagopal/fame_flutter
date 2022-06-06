@@ -1,9 +1,9 @@
-import '../controllers/broadcast_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
+import '../controllers/broadcast_controller.dart';
 import '../utils/utils.dart';
-import 'package:flutter/material.dart';
 
 class Broadcast extends StatefulWidget {
   @override
@@ -14,6 +14,7 @@ class _BroadcastState extends State<Broadcast> {
   final BroadcastController bC = Get.put(BroadcastController());
   TextEditingController message = TextEditingController();
   var empId;
+  TextEditingController broadcast = TextEditingController();
 
   @override
   void initState() {
@@ -88,8 +89,8 @@ class _BroadcastState extends State<Broadcast> {
                       }
                       return Padding(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 10.0,
-                          vertical: 5.0,
+                          horizontal: 15.0,
+                          vertical: 15.0,
                         ),
                         child: DropdownButtonFormField<dynamic>(
                           hint: Padding(
@@ -124,10 +125,31 @@ class _BroadcastState extends State<Broadcast> {
                         ),
                       );
                     }),
-                    MyTextField(
-                      "Broadcast Message",
-                      message,
-                    ),
+                    Container(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10.0,
+                          vertical: 5.0,
+                        ),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: TextField(
+                            controller: broadcast,
+                            minLines: 2,
+                            maxLines: 5,
+                            keyboardType: TextInputType.multiline,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 10.0, vertical: 60.0),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              hintText: 'Broadcast Message',
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -166,7 +188,9 @@ class _BroadcastState extends State<Broadcast> {
                           onPressed: () {
                             print('Submit');
                             FocusScope.of(context).requestFocus(FocusNode());
-                            if (empId == null || message.text == null || message.text == '') {
+                            if (empId == null ||
+                                message.text == null ||
+                                message.text == '') {
                               Get.snackbar(
                                 null,
                                 'Please provide all the details',
