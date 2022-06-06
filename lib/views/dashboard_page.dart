@@ -556,7 +556,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                           ],
                                         ),
                                         Visibility(
-                                          visible: appFeatures['attendance'],
+                                          visible: appFeatures['checkin'] ==null || appFeatures['checkin'],
                                           child: RaisedButton(
                                             onPressed: () async {
                                               print(RemoteServices()
@@ -1082,7 +1082,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                     ],
                                                   ),
                                                   Visibility(
-                                                    visible: appFeatures['attendance'],
+                                                    visible: appFeatures['checkin'] ==null || appFeatures['checkin'],
                                                     child: RaisedButton(
                                                       onPressed: () async {
                                                         //Check Condition
@@ -1679,7 +1679,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                           ],
                                         ),
                                         Visibility(
-                                          visible: appFeatures['attendance'],
+                                          visible: appFeatures['checkin'] ==null || appFeatures['checkin'],
                                           child: RaisedButton(
                                             onPressed: () async {
                                               print(RemoteServices()
@@ -2205,7 +2205,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                     ],
                                                   ),
                                                   Visibility(
-                                                    visible: appFeatures['attendance'],
+                                                    visible:appFeatures['checkin'] == null || appFeatures['checkin'],
                                                     child: RaisedButton(
                                                       onPressed: () async {
                                                         //Check Condition

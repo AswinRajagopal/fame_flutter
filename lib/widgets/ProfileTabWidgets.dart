@@ -208,11 +208,7 @@ class PersonalInfoTab extends StatelessWidget {
                                       width: MediaQuery.of(context).size.width /
                                           1.5,
                                       child: Text(
-                                        DateFormat('dd-MM-yyyy').format(
-                                                DateTime.parse(
-                                                    pC.profileRes['empDetails']
-                                                        ['dob'])) ??
-                                            'N/A',
+    pC.profileRes['empDetails']['dob']!=null ? DateFormat('dd-MM-yyyy').format(DateTime.parse(pC.profileRes['empDetails']['dob'])) ?? 'N/A':'',
                                         style: TextStyle(
                                             fontFamily: "Sofia",
                                             fontSize: 16,
@@ -281,11 +277,8 @@ class PersonalInfoTab extends StatelessWidget {
                                       width: MediaQuery.of(context).size.width /
                                           1.5,
                                       child: Text(
-                                        DateFormat('dd-MM-yyyy').format(
-                                                DateTime.parse(
-                                                    pC.profileRes['empDetails']
-                                                        ['doj'])) ??
-                                            'N/A',
+
+    pC.profileRes['empDetails']['doj'] != null  ? DateFormat('dd-MM-yyyy').format(DateTime.parse(pC.profileRes['empDetails']['doj'])) ?? 'N/A':'',
                                         style: TextStyle(
                                             fontFamily: "Sofia",
                                             fontSize: 16,
@@ -506,7 +499,7 @@ class PersonalInfoTab extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      pC.profileRes['empDetails']['address'],
+                                      pC.profileRes['empDetails']['address'].toString().replaceAll(',,', ',')??'',
                                       style: TextStyle(
                                           fontFamily: "Sofia",
                                           fontSize: 16,
@@ -662,7 +655,7 @@ class CompilanceInfoTab extends StatelessWidget {
           //   text: pC.profileRes['empDetails']['phone'] ?? 'N/A',
           // ),
           // email
-          Padding(
+          pC.profileRes['empDetails']['aadhaarid']!="" ? Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Material(
               elevation: 10,
@@ -732,8 +725,8 @@ class CompilanceInfoTab extends StatelessWidget {
                     ),
                   )),
             ),
-          ),
-          Padding(
+          ) : Container(),
+          pC.profileRes['empDetails']['panNo']!="" ? Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Material(
               elevation: 10,
@@ -780,7 +773,7 @@ class CompilanceInfoTab extends StatelessWidget {
                                       width: MediaQuery.of(context).size.width /
                                           1.5,
                                       child: Text(
-                                        '',
+                                        pC.profileRes['empDetails']['panNo']??'',
                                         style: TextStyle(
                                             fontFamily: "Sofia",
                                             fontSize: 16,
@@ -801,8 +794,8 @@ class CompilanceInfoTab extends StatelessWidget {
                     ),
                   )),
             ),
-          ),
-          Padding(
+          ) : Container(),
+          pC.profileRes['empDetails']['pfNo'] !="" ? Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Material(
               elevation: 10,
@@ -849,7 +842,7 @@ class CompilanceInfoTab extends StatelessWidget {
                                       width: MediaQuery.of(context).size.width /
                                           1.5,
                                       child: Text(
-                                        '',
+                                        pC.profileRes['empDetails']['pfNo']??'',
                                         style: TextStyle(
                                             fontFamily: "Sofia",
                                             fontSize: 16,
@@ -870,8 +863,8 @@ class CompilanceInfoTab extends StatelessWidget {
                     ),
                   )),
             ),
-          ),
-          Padding(
+          ) : Container(),
+          pC.profileRes['empDetails']['insurancePolicy'] !=null ?Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Material(
               elevation: 10,
@@ -941,8 +934,8 @@ class CompilanceInfoTab extends StatelessWidget {
                     ),
                   )),
             ),
-          ),
-          Padding(
+          ): Container(),
+          pC.profileRes['empDetails']['empUANNumber'] != null ?Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Material(
               elevation: 10,
@@ -1012,8 +1005,8 @@ class CompilanceInfoTab extends StatelessWidget {
                     ),
                   )),
             ),
-          ),
-          Padding(
+          ): Container(),
+          pC.profileRes['empDetails']['esiNo']!="" ?Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Material(
               elevation: 10,
@@ -1060,7 +1053,7 @@ class CompilanceInfoTab extends StatelessWidget {
                                       width: MediaQuery.of(context).size.width /
                                           1.5,
                                       child: Text(
-                                        '',
+                                        pC.profileRes['empDetails']['esiNo']??'',
                                         style: TextStyle(
                                             fontFamily: "Sofia",
                                             fontSize: 16,
@@ -1081,8 +1074,8 @@ class CompilanceInfoTab extends StatelessWidget {
                     ),
                   )),
             ),
-          ),
-          Padding(
+          ): Container(),
+          pC.profileRes['empDetails']['empBankAcNo']!="" ? Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Material(
               elevation: 10,
@@ -1152,7 +1145,7 @@ class CompilanceInfoTab extends StatelessWidget {
                     ),
                   )),
             ),
-          ),
+          ): Container(),
         ],
       ),
     );

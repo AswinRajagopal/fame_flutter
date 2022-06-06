@@ -582,7 +582,7 @@ class RemoteServices {
   }
 
   Future leaveType(String empId) async {
-    if(empId=="888"){
+    if (empId == "888") {
       empId = box.get('empid').toString();
     }
     var response = await client.post(
@@ -606,7 +606,7 @@ class RemoteServices {
   }
 
   Future getLeaveBalance(String empId) async {
-    if(empId=="888"){
+    if (empId == "888") {
       empId = box.get('empid').toString();
     }
     var response = await client.post(
@@ -651,7 +651,7 @@ class RemoteServices {
   }
 
   Future applyLeave(frmDt, toDt, reason, dayType, leaveTypeId, empId) async {
-    if(empId=="888"){
+    if (empId == "888") {
       empId = box.get('empid').toString();
     }
     var response = await client.post(
@@ -1466,7 +1466,7 @@ class RemoteServices {
     print(response.statusCode);
     if (response.statusCode == 200) {
       var jsonString = response.body;
-      print (json.decode(jsonString));
+      print(json.decode(jsonString));
       return json.decode(jsonString);
     } else {
       //show error message
@@ -2320,6 +2320,28 @@ class RemoteServices {
       return json.decode(jsonString);
     } else {
       //show error message
+      return null;
+    }
+  }
+
+  Future getAadharData(aadharNo) async {
+    // print('empName: $empName');
+    var dio = mydio.Dio();
+
+    var formData = mydio.FormData.fromMap({
+      'aadhaar_no': aadharNo,
+    });
+    var response = await dio.post(
+      'http://52.66.61.207:5005/get_data',
+      data: formData,
+    );
+
+    // print(response.data);
+    // developer.log('jsonString: ${response.data.toString()}');
+    if (response.statusCode == 200) {
+      var jsonString = response.data;
+      return jsonString;
+    } else {
       return null;
     }
   }

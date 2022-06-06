@@ -70,6 +70,7 @@ class AppFeature {
     this.appUpdate,
     this.compImg,
     this.faceReregister,
+    this.checkin,
   });
   String companyId;
   String paySlipUrl;
@@ -94,6 +95,7 @@ class AppFeature {
   bool hubFeature;
   bool appUpdate;
   bool faceReregister;
+  bool checkin;
 
   factory AppFeature.fromJson(Map<String, dynamic> json) => AppFeature(
         attendance: json['attendance'],
@@ -121,6 +123,7 @@ class AppFeature {
         faceReregister: json['faceReregister'],
         hubFeature: json['hubFeature'],
         appUpdate: json['appUpdate'],
+        checkin: json['checkin'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -149,6 +152,7 @@ class AppFeature {
         'compImg': compImg,
         'hubFeature': hubFeature,
         'appUpdate': appUpdate,
+        'checkin': checkin,
       };
 }
 
