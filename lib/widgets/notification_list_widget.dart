@@ -26,7 +26,7 @@ class NotificationListWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Sent From : ${notification['createdBy']}',
+                  '',
                   style: TextStyle(
                     fontSize: 15.0,
                     fontWeight: FontWeight.w900,
