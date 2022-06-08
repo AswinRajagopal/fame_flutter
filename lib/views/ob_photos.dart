@@ -1353,7 +1353,7 @@ class _OBPhotosState extends State<OBPhotos> {
                                   padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
                                 );
-                              }else if (adminC.profileAdd) {
+                              }else if (!adminC.profileAdd) {
                                 Get.snackbar(
                                   null,
                                   'Select Profile Image',
@@ -1364,7 +1364,7 @@ class _OBPhotosState extends State<OBPhotos> {
                                   padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
                                 );
-                              } else if (adminC.aadhar1 == null) {
+                              }else if (adminC.aadhar1 == null) {
                                 Get.snackbar(
                                   null,
                                   'Upload Aadhar',
