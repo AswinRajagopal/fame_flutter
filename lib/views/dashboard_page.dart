@@ -2512,9 +2512,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                     children: [
                                                       CustomProgressIndicator(
                                                         // '23',
-                                                        dbC.response['psCount']
-                                                                ['shifts']
-                                                            .toString(),
+                                                        new DateTime.now().day.toString(),
                                                         'Total Days',
                                                         75.0,
                                                         1,
@@ -2523,7 +2521,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                         dbC.response['psCount']
                                                                 ['present']
                                                             .toString(),
-                                                        'Present',
+                                                        'Checkin',
                                                         75.0,
                                                         dbC.response['psCount']
                                                                 ['present'] /
@@ -2535,7 +2533,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                         dbC.response['psCount']
                                                                 ['absent']
                                                             .toString(),
-                                                        'Absent',
+                                                        'Leave',
                                                         75.0,
                                                         dbC.response['psCount']
                                                                 ['absent'] /
@@ -2547,7 +2545,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                         dbC.response['psCount']
                                                                 ['wo']
                                                             .toString(),
-                                                        'Week Off',
+                                                        'Late',
                                                         75.0,
                                                         dbC.response['psCount']
                                                                 ['wo'] /
@@ -2598,7 +2596,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                                 'adminCount']
                                                                 ['present']
                                                             .toString(),
-                                                        'Present',
+                                                        'Checkin',
                                                         75.0,
                                                         dbC.response[
                                                                     'adminCount']
@@ -2612,7 +2610,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                                 'adminCount']
                                                                 ['absent']
                                                             .toString(),
-                                                        'Absent',
+                                                        'Leave',
                                                         75.0,
                                                         dbC.response[
                                                                     'adminCount']
@@ -2626,7 +2624,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                                 'adminCount']
                                                                 ['wo']
                                                             .toString(),
-                                                        'Week Off',
+                                                        'Late',
                                                         75.0,
                                                         dbC.response[
                                                                     'adminCount']

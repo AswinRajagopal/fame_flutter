@@ -185,7 +185,7 @@ class MorePage extends StatelessWidget {
                     ),
                   )
                 : Container(),
-            jsonDecode(RemoteServices().box.get('appFeature'))['gps']
+            jsonDecode(RemoteServices().box.get('appFeature'))['gps'] && (roleId == '4') && reportView
                 ? GestureDetector(
                     onTap: () {
                       if ((roleId != '1') && reportView) {

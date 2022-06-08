@@ -89,6 +89,7 @@ class AdminController extends GetxController {
   TextEditingController proofAadharNumberConfirm = TextEditingController();
   TextEditingController proofNumber2 = TextEditingController();
   TextEditingController proofNumber3 = TextEditingController();
+  TextEditingController empRemarks = TextEditingController();
   TextEditingController clientAu = TextEditingController();
   TextEditingController desigAu = TextEditingController();
   TextEditingController deptAu = TextEditingController();
@@ -1541,6 +1542,7 @@ class AdminController extends GetxController {
       'empMaritalStatus': mStatus,
       'empDtofBirth': dob.toString(),
       'motherTongue': language.text,
+      'empRemarks': empRemarks.text,
       'empPhone': empPhone.text,
       'vaccineName': vaccineName,
       'vaccineDate': dov.toString(),
@@ -1726,6 +1728,7 @@ class AdminController extends GetxController {
       'presentStreet': presentStreet.text,
       'presentColony': presentColony.text,
       'presentPincode': presentPincode.text,
+      'empRemarks': empRemarks.text,
       'presentState': presentState == null ? '' : presentState.toString(),
       'presentCity': presentCity == null ? '' : presentCity.toString(),
       'copyAdd': copyAdd,
