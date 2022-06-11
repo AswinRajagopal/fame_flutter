@@ -82,9 +82,12 @@ class _ShortageReportDetailState extends State<ShortageReportDetail> {
         var l = sR['leave'];
         var lt = sR['late'];
         var ot = sR['ot'];
+        var suspense = sR['suspense'];
+        var x = sR['x'];
+        var ee = sR['ee'];
         var mP = int.parse(epC.shortageRes['manpower']);
         var shortage = mP - p < 0 ? 0 : mP - p;
-        var total = p + l + lt + ot;
+        var total = p + l + lt + ot + x + ee + suspense;
         var showGraph = true;
         if (p == 0 && l == 0 && lt == 0 && ot == 0) {
           showGraph = false;
@@ -174,7 +177,9 @@ class _ShortageReportDetailState extends State<ShortageReportDetail> {
                       padding: const EdgeInsets.only(
                         top: 20.0,
                       ),
-                      child: Container(
+                      child: Column(
+                        children : [
+                          Container(
                         height: 100.0,
                         decoration: BoxDecoration(
                           color: Colors.white,
@@ -190,7 +195,8 @@ class _ShortageReportDetailState extends State<ShortageReportDetail> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Column(
+                            Expanded(
+                                child :Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
@@ -212,14 +218,15 @@ class _ShortageReportDetailState extends State<ShortageReportDetail> {
                                   ),
                                 ),
                               ],
-                            ),
+                            )),
                             VerticalDivider(
                               thickness: 1,
                               color: Colors.grey[400],
                               indent: 8.0,
                               endIndent: 8.0,
                             ),
-                            Column(
+                            Expanded(
+                                child :Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
@@ -241,14 +248,15 @@ class _ShortageReportDetailState extends State<ShortageReportDetail> {
                                   ),
                                 ),
                               ],
-                            ),
+                            )),
                             VerticalDivider(
                               thickness: 1,
                               color: Colors.grey[400],
                               indent: 8.0,
                               endIndent: 8.0,
                             ),
-                            Column(
+                            Expanded(
+                                child :Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
@@ -270,16 +278,119 @@ class _ShortageReportDetailState extends State<ShortageReportDetail> {
                                   ),
                                 ),
                               ],
+                            )),
+                          ],
+                        ),
+                      ),Container(
+                        height: 100.0,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(
+                              5.0,
+                            ),
+                          ),
+                          border: Border.all(
+                            color: Colors.grey[400],
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Expanded(
+                                child :Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  '${x.toString()}',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 22.0,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10.0,
+                                ),
+                                Text(
+                                  'Auto Checkout',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0,
+                                  ),
+                                ),
+                              ],
+                            )),
+                            VerticalDivider(
+                              thickness: 1,
+                              color: Colors.grey[400],
+                              indent: 8.0,
+                              endIndent: 8.0,
+                            ),
+                            Expanded(
+                                child : Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  '${ee.toString()}',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 22.0,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10.0,
+                                ),
+                                Text(
+                                  'Early Exit',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0,
+                                  ),
+                                ),
+                              ],
+                            )),
+                            VerticalDivider(
+                              thickness: 1,
+                              color: Colors.grey[400],
+                              indent: 8.0,
+                              endIndent: 8.0,
+                            ),
+                            Expanded(
+                              child : Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  '${suspense.toString()}',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 22.0,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10.0,
+                                ),
+                                Text(
+                                  'Suspense',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0,
+                                  ),
+                                ),
+                              ],
+                            )
                             ),
                           ],
                         ),
                       ),
-                    ),
+                    ]),)
                   ],
                 ),
               ),
               Positioned(
-                top: 265.0,
+                top: 365.0,
                 bottom: 10.0,
                 left: 0.0,
                 right: 0.0,
@@ -342,7 +453,7 @@ class _ShortageReportDetailState extends State<ShortageReportDetail> {
                                               width: 5.0,
                                             ),
                                             Text(
-                                              'Present',
+                                              'P',
                                             ),
                                             SizedBox(
                                               width: 5.0,
@@ -363,7 +474,70 @@ class _ShortageReportDetailState extends State<ShortageReportDetail> {
                                               width: 5.0,
                                             ),
                                             Text(
-                                              'Leave',
+                                              'L',
+                                            ),
+                                            SizedBox(
+                                              width: 5.0,
+                                            ),
+                                            Container(
+                                              height: 12.0,
+                                              width: 12.0,
+                                              decoration: BoxDecoration(
+                                                color: Colors.grey,
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(
+                                                    50.0,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 5.0,
+                                            ),
+                                            Text(
+                                              'Auto.',
+                                            ),
+                                            SizedBox(
+                                              width: 5.0,
+                                            ),
+                                            Container(
+                                              height: 12.0,
+                                              width: 12.0,
+                                              decoration: BoxDecoration(
+                                                color: Colors.blue,
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(
+                                                    50.0,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 5.0,
+                                            ),
+                                            Text(
+                                              'EE',
+                                            ),
+                                            SizedBox(
+                                              width: 5.0,
+                                            ),
+                                            Container(
+                                              height: 12.0,
+                                              width: 12.0,
+                                              decoration: BoxDecoration(
+                                                color: Colors.yellow,
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(
+                                                    50.0,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 5.0,
+                                            ),
+                                            Text(
+                                              'S.',
                                             ),
                                             SizedBox(
                                               width: 5.0,
@@ -405,7 +579,7 @@ class _ShortageReportDetailState extends State<ShortageReportDetail> {
                                               width: 5.0,
                                             ),
                                             Text(
-                                              'Overtime',
+                                              'OT',
                                             ),
                                           ],
                                         ),
@@ -431,14 +605,20 @@ class _ShortageReportDetailState extends State<ShortageReportDetail> {
                                           Colors.pink[300],
                                           Colors.cyanAccent,
                                           Colors.indigo,
+                                          Colors.grey,
+                                          Colors.blue,
+                                          Colors.yellow,
                                         ],
                                         series: <CircularSeries>[
                                           RadialBarSeries<ChartData, String>(
                                             dataSource: [
-                                              ChartData('Present', (p * 100 / total)),
-                                              ChartData('Leave', (l * 100 / total)),
-                                              ChartData('Late', (lt * 100 / total)),
-                                              ChartData('Overtime', (ot * 100 / total)),
+                                              if(p!=0) ChartData('Present', (p * 100 / total)),
+                                              if(l!=0) ChartData('Leave', (l * 100 / total)),
+                                              if(lt!=0) ChartData('Late', (lt * 100 / total)),
+                                              if(ot!=0) ChartData('OT', (ot * 100 / total)),
+                                              if(x!=0) ChartData('Auto.', (x * 100 / total)),
+                                              if(ee!=0) ChartData('EE', (ee * 100 / total)),
+                                              if(suspense!=0) ChartData('Susp.', (suspense * 100 / total)),
                                             ],
                                             xValueMapper: (ChartData data, _) => data.x,
                                             yValueMapper: (ChartData data, _) => data.y,
