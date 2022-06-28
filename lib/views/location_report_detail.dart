@@ -18,8 +18,10 @@ class LocationReportDetail extends StatefulWidget {
 class _LocationReportDetailState extends State<LocationReportDetail> {
   final EmployeeReportController epC = Get.put(EmployeeReportController());
   GoogleMapController controller;
-  final Set<Marker> _markers = {};
+  Set<Marker> _markers = {};
   int live = 0, total = 0;
+  bool online = true;
+  bool offline = true;
 
   @override
   void initState() {
@@ -85,12 +87,16 @@ class _LocationReportDetailState extends State<LocationReportDetail> {
         var markIcon;
         var time = DateTime.parse(emp['timeStamp']);
         var now = DateTime.now();
-        ;
         total++;
-        markIcon = await BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(24, 24)), 'assets/images/siteposted_nolive.png');
-        if (time.millisecondsSinceEpoch > (now.millisecondsSinceEpoch - (3600 * 1000))) {
+        markIcon = await BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(size: Size(24, 24)),
+            'assets/images/siteposted_nolive.png');
+        if (time.millisecondsSinceEpoch >
+            (now.millisecondsSinceEpoch - (3600 * 1000))) {
           live++;
-          markIcon = await BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(24, 24)), 'assets/images/siteposted.png');
+          markIcon = await BitmapDescriptor.fromAssetImage(
+              ImageConfiguration(size: Size(24, 24)),
+              'assets/images/siteposted.png');
         }
 
         var snippetString = '${emp['datetime']}, ${emp['battery']}%';
@@ -148,7 +154,6 @@ class _LocationReportDetailState extends State<LocationReportDetail> {
                         'No data found for employee',
                         style: TextStyle(
                           fontSize: 18.0,
-                          // fontWeight: FontWeight.bold,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -158,35 +163,84 @@ class _LocationReportDetailState extends State<LocationReportDetail> {
               ),
             );
           }
+
           return Padding(
-            padding: const EdgeInsets.all(15.0),
+            padding:
+                const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 10.0),
             child: Center(
               child: Stack(children: [
                 ClipRRect(
                     borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(15),
-                      topRight: Radius.circular(15),
                       bottomRight: Radius.circular(15),
                       bottomLeft: Radius.circular(15),
                     ),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: GoogleMap(
-                        buildingsEnabled: true,
-                        myLocationEnabled: true,
-                        mapToolbarEnabled: true,
-                        markers: _markers,
-                        onMapCreated: _onMapCreated,
-                        initialCameraPosition: CameraPosition(
-                          target: LatLng(
-                            double.parse(epC.locations.first['lat']),
-                            double.parse(epC.locations.first['lng']),
+                    child: Padding(
+                        padding: EdgeInsets.only(top: 50),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: GoogleMap(
+                            buildingsEnabled: true,
+                            myLocationEnabled: true,
+                            mapToolbarEnabled: true,
+                            markers: _markers,
+                            onMapCreated: _onMapCreated,
+                            initialCameraPosition: CameraPosition(
+                              target: LatLng(
+                                double.parse(epC.locations.first['lat']),
+                                double.parse(epC.locations.first['lng']),
+                              ),
+                              zoom: 8,
+                            ),
+                            mapType: MapType.normal,
                           ),
-                          zoom: 8,
+                        ))),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Row(
+                          children: <Widget>[
+                            Switch(
+                              value: online,
+                              onChanged: (bool value) {
+                                setState(() {
+                                  online = value;
+                                  setMarkers();
+                                });
+                              },
+                            ),
+                            Text(
+                              'Online',
+                              style: TextStyle(fontSize: 18),
+                            )
+                          ],
                         ),
-                        mapType: MapType.normal,
                       ),
-                    )),
+                      Padding(
+                        padding: EdgeInsets.only(right: 200.0),
+                      ),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Row(
+                          children: <Widget>[
+                            Switch(
+                              value: offline,
+                              onChanged: (bool value) {
+                                setState(() {
+                                  offline = value;
+                                  setMarkers();
+                                });
+                              },
+                            ),
+                            Text(
+                              'Offline',
+                              style: TextStyle(fontSize: 18),
+                            )
+                          ],
+                        ),
+                      ),
+                    ]),
                 Align(
                     alignment: Alignment.bottomLeft,
                     child: Container(
@@ -194,7 +248,8 @@ class _LocationReportDetailState extends State<LocationReportDetail> {
                       color: Colors.grey[400],
                       child: Text(
                         'Live ' + live.toString() + '/' + total.toString(),
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w700),
                       ),
                     ))
               ]),
@@ -203,5 +258,76 @@ class _LocationReportDetailState extends State<LocationReportDetail> {
         }),
       ),
     );
+  }
+
+  setMarkers() {
+    setState(() {
+      total = 0;
+      live = 0;
+      _markers = {};
+      epC.locations.asMap().forEach((index, emp) async {
+        print(emp);
+        var markIcon;
+        var time = DateTime.parse(emp['timeStamp']);
+        var now = DateTime.now();
+        total++;
+
+        if (online &&
+            time.millisecondsSinceEpoch >
+                (now.millisecondsSinceEpoch - (3600 * 1000))) {
+          live++;
+          markIcon = await BitmapDescriptor.fromAssetImage(
+              ImageConfiguration(size: Size(24, 24)),
+              'assets/images/siteposted.png');
+          print("online:$online");
+          var snippetString = '${emp['datetime']}, ${emp['battery']}%';
+          _markers.add(
+            Marker(
+              markerId: MarkerId(
+                emp['empId'],
+              ),
+              icon: markIcon,
+              position: LatLng(
+                double.parse(emp['lat']),
+                double.parse(emp['lng']),
+              ),
+              infoWindow: InfoWindow(
+                title: emp['name'],
+                snippet: snippetString,
+              ),
+            ),
+          );
+        }
+        if (offline &&
+            time.millisecondsSinceEpoch <=
+                (now.millisecondsSinceEpoch - (3600 * 1000))) {
+          markIcon = await BitmapDescriptor.fromAssetImage(
+              ImageConfiguration(size: Size(24, 24)),
+              'assets/images/siteposted_nolive.png');
+          print("offline:$offline");
+          var snippetString = '${emp['datetime']}, ${emp['battery']}%';
+          _markers.add(
+            Marker(
+              markerId: MarkerId(
+                emp['empId'],
+              ),
+              icon: markIcon,
+              position: LatLng(
+                double.parse(emp['lat']),
+                double.parse(emp['lng']),
+              ),
+              infoWindow: InfoWindow(
+                title: emp['name'],
+                snippet: snippetString,
+              ),
+            ),
+          );
+        }
+      });
+    });
+    Timer(Duration(seconds: 1), () {
+      controller.showMarkerInfoWindow(MarkerId(epC.locations.first['empId']));
+      setState(() {});
+    });
   }
 }
