@@ -223,7 +223,8 @@ class _PinMyVisitState extends State<PinMyVisit> {
     }
     print(res);
     if (res != null && res) {
-      controller.dispose();
+      // controller.dispose();
+      Get.back();
       Get.to(AttachImg());
     }
   }
