@@ -14,6 +14,7 @@ import 'package:progress_dialog/progress_dialog.dart';
 import '../connection/remote_services.dart';
 import '../controllers/my_pin_controller.dart';
 import '../utils/utils.dart';
+import 'package:path/path.dart' as path;
 
 class AttachImg extends StatefulWidget {
   @override
@@ -29,6 +30,7 @@ class _AttachImgState extends State<AttachImg> {
   var clientId;
   final TextEditingController remarks = TextEditingController();
   final TextEditingController clientText = TextEditingController();
+  final TextEditingController attach = TextEditingController();
   var size;
   var deviceRatio;
   var xScale;
@@ -338,6 +340,7 @@ class _AttachImgState extends State<AttachImg> {
                 vertical: 5.0,
               ),
               child: TextField(
+                controller: attach,
                 decoration: InputDecoration(
                   isDense: true,
                   contentPadding: EdgeInsets.all(10),
@@ -354,11 +357,13 @@ class _AttachImgState extends State<AttachImg> {
                 readOnly: true,
                 keyboardType: null,
                 onTap: () async {
-                  var pickedFile =
-                      await ImagePicker().getImage(source: ImageSource.camera);
+                  var pickedFile = await ImagePicker().getImage(
+                    source: ImageSource.camera,
+                    imageQuality: 50,
+                  );
                   if (pickedFile != null) {
-                    // attach_three.text =
-                    //     date.(pickedFile.path);
+                    attachment = new File(pickedFile.path);
+                    attach.text = path.basename(pickedFile.path);
                     setState(() {});
                   } else {
                     print('No image selected.');
