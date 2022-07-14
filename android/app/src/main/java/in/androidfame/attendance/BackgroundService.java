@@ -18,6 +18,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
+import android.location.Address;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
@@ -30,7 +31,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Date;
 
 import in.androidfame.attendance.R;
@@ -39,6 +40,7 @@ import in.androidfame.attendance.MyVolley;
 import in.androidfame.attendance.DBAdapter;
 import in.androidfame.attendance.GPSTracker;
 import in.androidfame.attendance.MySharedPreference;
+import android.location.Geocoder;
 // import in.androidfame.attendance.UtilityFunctions;
 
 
@@ -182,7 +184,8 @@ public class BackgroundService extends Service {
                         String[] idArr = latlngarr.toArray(new String[latlngarr.size()]);
                         System.out.println("Selected id>>>>>>> " + latlngarr);
 
-                        current_update_location(sharedPreference.getPreferenceString(MySharedPreference.COMPANY_ID), sharedPreference.getPreferenceString(MySharedPreference.USER_ID), latlngarr.toString());
+                        current_update_location(sharedPreference.getPreferenceString
+                                (MySharedPreference.COMPANY_ID), sharedPreference.getPreferenceString(MySharedPreference.USER_ID), latlngarr.toString());
 //                    dellatlng();
                     }
                 }
@@ -246,10 +249,31 @@ public class BackgroundService extends Service {
 
     private void DisplayContact(Cursor c) {
         // TODO Auto-generated method stub
-
+        String add = addressFromLatLng(Double.parseDouble(c.getString(1)), Double.parseDouble(c.getString(2)));
         System.out.println("get lat>>>>>> " + c.getString(1) + "get lng>>>>>> " + c.getString(2) + "time stamp>>>>>> " + c.getString(3));
-        latlngarr.add("{\"lat\":\"" + c.getString(1) + "\",\"lng\":\"" + c.getString(2) + "\",\"battery\":\"" + getBatteryPercentage(getApplicationContext()) + "\",\"timeStamp\":\"" + c.getString(3) + "\"}");
+        latlngarr.add("{\"lat\":\"" + c.getString(1) + "\",\"lng\":\"" + c.getString(2) +
+                "\",\"battery\":\"" + getBatteryPercentage(getApplicationContext()) + "\",\"timeStamp\":\"" + c.getString(3) + "\"" +
+                ",\"address\":\"" + add + "\"}");
 
+
+    }
+    private String addressFromLatLng(Double lat, Double lng){
+        try {
+            Geocoder geocoder;
+            List<Address> addresses;
+            geocoder = new Geocoder(this);
+
+            addresses = geocoder.getFromLocation(lat, lng, 1);
+            // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+
+            String address = addresses.get(0).getAddressLine(0);
+            if (address.length()>101){
+                return address.substring(0,100);
+            }
+            return address;
+        }catch (Exception e){
+        }
+        return "";
     }
 
     private void insertintodb(String lat, String lng) {
@@ -303,6 +327,7 @@ public class BackgroundService extends Service {
             loginRequest.put("empId", empId);
 //            loginRequest.put("empTimelineList", latlng);
             loginRequest.put("empTimelineList", new JSONArray(latlng));
+            loginRequest.put("address", new JSONArray(latlng));
             System.out.println("location parameter>>>>>> " + loginRequest);
         } catch (Exception e) {
             e.printStackTrace();

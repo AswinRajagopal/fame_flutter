@@ -296,7 +296,7 @@ class _OBBankState extends State<OBBank> {
                           ),
                           RaisedButton(
                             onPressed: () {
-                              if (adminC.bank ==null || adminC.bank.toString().length>1) {
+                              if (adminC.bank ==null) {
                                 Get.snackbar(
                                   null,
                                   'Please provide Bank Name',
