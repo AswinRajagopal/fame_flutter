@@ -9,6 +9,7 @@ import 'package:progress_dialog/progress_dialog.dart';
 
 class EmployeeNotationsController extends GetxController {
   var isLoading = true.obs;
+  var isSearchingNotations = true.obs;
   var res;
   var resSearch;
   ProgressDialog pr;
@@ -54,13 +55,15 @@ class EmployeeNotationsController extends GetxController {
     return DateFormat.jm().format(DateTime.parse(time)).toString();
   }
 
-  void getNotationsBySearch(date, clientId, time, empName) async {
+  Future<void> getNotationsBySearch(date, clientId, time, empName) async {
     searchList.clear();
+    isSearchingNotations(true);
     try {
       resSearch = await RemoteServices().getNotationsBySearch(date, clientId, empName);
       if (resSearch != null) {
         // print('res valid: $res');
         if (resSearch['success']) {
+          isSearchingNotations(false);
           // print('clientList: $clientList');
           // print(resSearch.empDailyAttView);
           // print('here: ${resSearch.attendanceNotations}');
@@ -98,8 +101,7 @@ class EmployeeNotationsController extends GetxController {
             if (emp['attendanceAlias'] != null) {
               var strToTime = emp['checkInDateTime'];
               if (emp['checkOutDateTime'] != null) {
-                if (DateTime.parse(emp['checkOutDateTime']).millisecondsSinceEpoch <= shiftStart.millisecondsSinceEpoch ||
-                    DateTime.parse(emp['checkInDateTime']).millisecondsSinceEpoch >= shiftEnd.millisecondsSinceEpoch) {
+                if (DateTime.parse(emp['checkOutDateTime']).millisecondsSinceEpoch <= shiftStart.millisecondsSinceEpoch || DateTime.parse(emp['checkInDateTime']).millisecondsSinceEpoch >= shiftEnd.millisecondsSinceEpoch) {
                   strToTime = timeConvert(strToTime.toString()) + ' to ' + timeConvert(emp['checkOutDateTime'].toString());
 
                   emp['showTime'] = strToTime;
@@ -125,7 +127,7 @@ class EmployeeNotationsController extends GetxController {
               }
             }
             print('emp: $emp');
-        /*    if (emp['attendanceAlias'] == 'P') {
+            /*    if (emp['attendanceAlias'] == 'P') {
               p.value++;
             } else if (emp['attendanceAlias'] == 'WO') {
               wo.value++;
@@ -136,9 +138,15 @@ class EmployeeNotationsController extends GetxController {
             }*/
             searchList.add(emp);
           }
+          print('searchList: $searchList');
+        } else {
+          isSearchingNotations(false);
         }
+      } else {
+        isSearchingNotations(false);
       }
     } catch (e) {
+      isSearchingNotations(false);
       print(e);
       Get.snackbar(
         null,
@@ -159,25 +167,12 @@ class EmployeeNotationsController extends GetxController {
     }
   }
 
-  void getNotations(
-    date,
-    shift,
-    clientId,
-    orderBy,
-    checkFilter,
-  ) async {
+  void getNotations(date, shift, clientId, orderBy, checkFilter) async {
     try {
       isLoading(true);
       await pr.show();
-      res = await RemoteServices().getNotations(
-        date,
-        shift,
-        clientId,
-        orderBy,
-        checkFilter,
-      );
+      res = await RemoteServices().getNotations(date, shift, clientId, orderBy, checkFilter);
       if (res != null) {
-        isLoading(false);
         await pr.hide();
         // print('res valid: $res');
         if (res['success']) {
@@ -224,7 +219,9 @@ class EmployeeNotationsController extends GetxController {
           //   );
           // }
           // print('designation: $designation');
+          isLoading(false);
         } else {
+          isLoading(false);
           // Get.snackbar(
           //   null,
           //   'Notations not found',

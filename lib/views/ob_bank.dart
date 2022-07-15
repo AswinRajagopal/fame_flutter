@@ -1,3 +1,5 @@
+import 'package:fame/utils/utils.dart';
+
 import '../widgets/ob_top_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -80,7 +82,7 @@ class _OBBankState extends State<OBBank> {
                         hint: Padding(
                           padding: const EdgeInsets.only(left: 8.0),
                           child: Text(
-                            'Select Bank',
+                            'Select Bank*',
                             style: TextStyle(
                               color: Colors.grey[600],
                               fontSize: 18.0,
@@ -125,7 +127,7 @@ class _OBBankState extends State<OBBank> {
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          hintText: 'Account No.',
+                          hintText: 'Account No.*',
                         ),
                       ),
                     ),
@@ -143,7 +145,7 @@ class _OBBankState extends State<OBBank> {
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          hintText: 'IFSC',
+                          hintText: 'IFSC*',
                         ),
                       ),
                     ),
@@ -294,9 +296,44 @@ class _OBBankState extends State<OBBank> {
                           ),
                           RaisedButton(
                             onPressed: () {
-                              FocusScope.of(context).requestFocus(FocusNode());
-                              adminC.step3(true);
-                              Get.to(OBAddress());
+                              if (adminC.bank ==null) {
+                                Get.snackbar(
+                                  null,
+                                  'Please provide Bank Name',
+                                  colorText: Colors.white,
+                                  backgroundColor: Colors.black87,
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+                                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+                                  borderRadius: 5.0,
+                                );
+                              }else if (AppUtils.checkTextisNull(adminC.accountNo, 'Account Number')) {
+                                Get.snackbar(
+                                  null,
+                                  'Please provide Account Number',
+                                  colorText: Colors.white,
+                                  backgroundColor: Colors.black87,
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+                                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+                                  borderRadius: 5.0,
+                                );
+                              }else if (AppUtils.checkTextisNull(adminC.ifsc, 'IFSC')) {
+                                Get.snackbar(
+                                  null,
+                                  'Please provide IFSC',
+                                  colorText: Colors.white,
+                                  backgroundColor: Colors.black87,
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+                                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+                                  borderRadius: 5.0,
+                                );
+                              }else{
+                                FocusScope.of(context).requestFocus(FocusNode());
+                                adminC.step3(true);
+                                Get.to(OBAddress());
+                              }
                             },
                             child: Padding(
                               padding: const EdgeInsets.symmetric(

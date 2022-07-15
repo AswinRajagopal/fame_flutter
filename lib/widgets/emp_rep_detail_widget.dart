@@ -43,7 +43,7 @@ class EmpRepDetailWidget extends StatelessWidget {
                 height: 15.0,
               ),
               Text(
-                'Client ID : ' + emp['empId'],
+                'Emp ID : ' + emp['empId'],
                 style: TextStyle(
                   fontSize: 16.0,
                 ),
