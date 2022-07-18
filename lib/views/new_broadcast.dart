@@ -182,8 +182,7 @@ class _BroadcastState extends State<Broadcast> {
                           onPressed: () {
                             print('Submit');
                             FocusScope.of(context).requestFocus(FocusNode());
-                            if (empId == null ||
-                                message.text == null ||
+                            if (message.text == null ||
                                 message.text == '') {
                               Get.snackbar(
                                 null,
@@ -202,6 +201,9 @@ class _BroadcastState extends State<Broadcast> {
                                 borderRadius: 5.0,
                               );
                             } else {
+                              if(empId==null){
+                                empId = 'all';
+                              }
                               print(empId);
                               print(message.text);
                               bC.newBroadcast(empId, message.text);

@@ -179,6 +179,8 @@ class EmployeeNotationsController extends GetxController {
           // print('clientList: $clientList');
           // print(res.empDailyAttView);
           // print('here: ${res.attendanceNotations}');
+          designationSort.addAll(res['designationsList']);
+          print('designationSort: $designationSort');
           for (var j = 0; j < res['empDailyAttView'].length; j++) {
             var emp = res['empDailyAttView'][j];
             emp['showTime'] = '';
@@ -208,8 +210,6 @@ class EmployeeNotationsController extends GetxController {
               a.value++;
             }
           }
-          designationSort.addAll(res['designationsList']);
-          print('designationSort: $designationSort');
           // designationSort.sort((a, b) => int.parse(a['designId']).compareTo(int.parse(b['designId'])));
           // print('designationSort: $designationSort');
           // for (var i = 0; i < designationSort.length; i++) {
@@ -220,7 +220,10 @@ class EmployeeNotationsController extends GetxController {
           // }
           // print('designation: $designation');
           isLoading(false);
-        } else {
+        } else if (res['designationsList']!=null){
+          designationSort.addAll(res['designationsList']);
+          isLoading(false);
+        }else {
           isLoading(false);
           // Get.snackbar(
           //   null,

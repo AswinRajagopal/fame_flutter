@@ -126,10 +126,10 @@ class BroadcastController extends GetxController {
     }
   }
 
-  void newBroadcast(empId, broadcast) async {
+  void newBroadcast(clientId, broadcast) async {
     try {
       await pr.show();
-      var broadcastRes = await RemoteServices().newBroadcast(empId, broadcast);
+      var broadcastRes = await RemoteServices().newBroadcast(clientId, broadcast);
       if (broadcastRes != null) {
         await pr.hide();
         print('broadcastRes valid: ${broadcastRes['success']}');
