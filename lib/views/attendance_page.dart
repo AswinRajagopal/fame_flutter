@@ -142,7 +142,6 @@ class _AttendancePageState extends State<AttendancePage> {
                         hintStyle: TextStyle(
                           color: Colors.grey[600],
                           fontSize: 18.0,
-                          // fontWeight: FontWeight.bold,
                         ),
                         hintText: 'Select Date',
                         suffixIcon: Icon(
@@ -177,7 +176,6 @@ class _AttendancePageState extends State<AttendancePage> {
                       hint: 'Select Client',
                       showSelectedItem: true,
                       items: aC.clientList.map((item) {
-                        // ListTile(title: item.client.name + ' - ' + item.client.id.toString());
                         var val = item.client.name +
                             ' - ' +
                             item.client.id.toString();

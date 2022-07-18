@@ -173,11 +173,8 @@ class _ShortageReportState extends State<ShortageReport> {
                       clientId = manpower.first['clientId'];
                       epC.timings.clear();
                       checkList.clear();
-                      // epC.shiftTime = '';
-                      // epC.shift.clear();
                       shift = null;
                       for (var j = 0; j < manpower.length; j++) {
-                        // print('manpower: ${manpower[j]}');
                         manpower[j]['shiftStartTime'] = manpower[j]['shiftStartTime'].split(':').first.length == 1 ? '0' + manpower[j]['shiftStartTime'] : manpower[j]['shiftStartTime'];
                         manpower[j]['shiftEndTime'] = manpower[j]['shiftEndTime'].split(':').first.length == 1 ? '0' + manpower[j]['shiftEndTime'] : manpower[j]['shiftEndTime'];
                         var sSTime = DateFormat('hh:mm')

@@ -154,9 +154,7 @@ class _ClientWiseAttendanceState extends State<ClientWiseAttendance> {
                   ),
                   hint: 'Select Client',
                   showSelectedItem: true,
-                  // value: aC.clientList.first.client.id.toString(),
                   items: epC.clientList.map((item) {
-                    // print('item: ${item.client.id}');
                     var sC =
                         item.client.name + ' - ' + item.client.id.toString();
                     manpowerList[item.client.id.toString()] =
