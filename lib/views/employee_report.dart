@@ -1,11 +1,13 @@
-import 'emp_report_detail.dart';
-import 'package:progress_dialog/progress_dialog.dart';
+import 'dart:convert';
 
-import '../utils/utils.dart';
-
-import '../controllers/employee_report_controller.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:progress_dialog/progress_dialog.dart';
+
+import '../controllers/employee_report_controller.dart';
+import '../utils/utils.dart';
+import 'emp_report_detail.dart';
 
 class EmployeeReport extends StatefulWidget {
   @override
@@ -15,6 +17,7 @@ class EmployeeReport extends StatefulWidget {
 class _EmployeeReportState extends State<EmployeeReport> {
   final EmployeeReportController epC = Get.put(EmployeeReportController());
   var clientId;
+  var manpowerList = {};
 
   @override
   void initState() {
@@ -80,38 +83,29 @@ class _EmployeeReportState extends State<EmployeeReport> {
 
               return Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 10.0,
-                  vertical: 5.0,
+                  horizontal: 15.0,
+                  vertical: 15.0,
                 ),
-                child: DropdownButtonFormField<dynamic>(
-                  hint: Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: Text(
-                      'Select Client',
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                        fontSize: 18.0,
-                        // fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                child: DropdownSearch<String>(
+                  mode: Mode.MENU,
+                  showSearchBox: true,
+                  isFilteredOnline: true,
+                  dropDownButton: const Icon(
+                    Icons.keyboard_arrow_down,
+                    color: Colors.grey,
+                    size: 18,
                   ),
-                  isExpanded: true,
+                  hint: 'Select Client',
+                  showSelectedItem: true,
                   items: epC.clientList.map((item) {
+                    print(json.encode(item));
                     var sC = item['name'] + ' - ' + item['id'];
-                    return DropdownMenuItem(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10.0),
-                        child: Text(
-                          sC.toString(),
-                        ),
-                      ),
-                      value: item['id'],
-                    );
+                    return sC.toString();
                   }).toList(),
                   onChanged: (value) {
-                    setState(() {
-                      clientId = value;
-                    });
+                    var splitIt = value.split('-');
+                    clientId = value[1].trim();
+                    setState(() {});
                   },
                 ),
               );

@@ -1,3 +1,4 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -14,7 +15,7 @@ class _BroadcastState extends State<Broadcast> {
   final BroadcastController bC = Get.put(BroadcastController());
   TextEditingController message = TextEditingController();
   var empId;
-  TextEditingController broadcast = TextEditingController();
+  var manpowerList = {};
 
   @override
   void initState() {
@@ -92,34 +93,25 @@ class _BroadcastState extends State<Broadcast> {
                           horizontal: 15.0,
                           vertical: 15.0,
                         ),
-                        child: DropdownButtonFormField<dynamic>(
-                          hint: Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Text(
-                              'All Clients',
-                              style: TextStyle(
-                                color: Colors.grey[600],
-                                fontSize: 18.0,
-                                // fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                        child: DropdownSearch<String>(
+                          mode: Mode.MENU,
+                          showSearchBox: true,
+                          isFilteredOnline: true,
+                          dropDownButton: const Icon(
+                            Icons.keyboard_arrow_down,
+                            color: Colors.grey,
+                            size: 18,
                           ),
-                          isExpanded: true,
+                          hint: 'All Clients',
+                          showSelectedItem: true,
                           items: bC.clientList.map((item) {
                             // print('item: ${item}');
                             var sC = item['name'] + ' - ' + item['id'];
-                            return DropdownMenuItem(
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 10.0),
-                                child: Text(
-                                  sC.toString(),
-                                ),
-                              ),
-                              value: item['id'],
-                            );
+                            return sC.toString();
                           }).toList(),
                           onChanged: (value) {
-                            empId = value;
+                            var splitIt = value.split('-');
+                            empId = value[1].trim();
                             setState(() {});
                           },
                         ),
@@ -134,18 +126,20 @@ class _BroadcastState extends State<Broadcast> {
                         child: Align(
                           alignment: Alignment.topLeft,
                           child: TextField(
-                            controller: broadcast,
-                            minLines: 2,
-                            maxLines: 5,
+                            controller: message,
+                            maxLines: 4,
                             keyboardType: TextInputType.multiline,
                             decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 10.0, vertical: 60.0),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              hintText: 'Broadcast Message',
-                            ),
+                                contentPadding: const EdgeInsets.only(
+                                    left: 10.0, bottom: 60.0),
+                                hintStyle: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 18.0,
+                                ),
+                                hintText: 'Broadcast Message',
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(width: 1),
+                                )),
                           ),
                         ),
                       ),
@@ -251,6 +245,7 @@ class _BroadcastState extends State<Broadcast> {
 class MyTextField extends StatelessWidget {
   final String hintText;
   final TextEditingController inputController;
+
   MyTextField(this.hintText, this.inputController);
 
   @override
@@ -269,7 +264,6 @@ class MyTextField extends StatelessWidget {
           hintStyle: TextStyle(
             color: Colors.grey[600],
             fontSize: 18.0,
-            // fontWeight: FontWeight.bold,
           ),
           hintText: hintText,
         ),

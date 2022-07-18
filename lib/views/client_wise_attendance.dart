@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import 'client_att_detail.dart';
@@ -24,6 +25,7 @@ class _ClientWiseAttendanceState extends State<ClientWiseAttendance> {
   var shift;
   var sDate;
   var checkList = [];
+  var manpowerList = {};
 
   @override
   void initState() {
@@ -141,37 +143,31 @@ class _ClientWiseAttendanceState extends State<ClientWiseAttendance> {
                   horizontal: 10.0,
                   vertical: 5.0,
                 ),
-                child: DropdownButtonFormField<String>(
-                  hint: Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: Text(
-                      'Select Client',
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                child: DropdownSearch<String>(
+                  mode: Mode.MENU,
+                  showSearchBox: true,
+                  isFilteredOnline: true,
+                  dropDownButton: const Icon(
+                    Icons.keyboard_arrow_down,
+                    color: Colors.grey,
+                    size: 18,
                   ),
-                  isExpanded: true,
+                  hint: 'Select Client',
+                  showSelectedItem: true,
                   // value: aC.clientList.first.client.id.toString(),
                   items: epC.clientList.map((item) {
                     // print('item: ${item.client.id}');
-                    var sC = item.client.name + ' - ' + item.client.id.toString();
-                    return DropdownMenuItem(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10.0),
-                        child: Text(
-                          sC.toString(),
-                        ),
-                      ),
-                      value: json.encode(item.clientManpowerList) + '###${item.client.id}',
-                    );
+                    var sC =
+                        item.client.name + ' - ' + item.client.id.toString();
+                    manpowerList[item.client.id.toString()] =
+                        json.encode(item.clientManpowerList);
+                    print(json.encode(item.clientManpowerList));
+                    return sC.toString();
                   }).toList(),
                   onChanged: (value) {
-                    var splitIt = value.split('###');
-                    var manpower = json.decode(splitIt[0]);
-                    // print('value: $manpower');
+                    var splitIt = value.split('-');
+                    var manpower = json.decode(manpowerList[splitIt[1].trim()]);
+                    print('value: $manpower');
                     epC.timings.clear();
                     checkList.clear();
                     if (manpower != null && manpower.length > 0) {
