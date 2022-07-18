@@ -1,17 +1,16 @@
 import 'dart:convert';
 
-import 'package:hexcolor/hexcolor.dart';
-
-import 'shortage_report_detail.dart';
+import 'package:dropdown_search/dropdown_search.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:get/get.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
 import '../controllers/employee_report_controller.dart';
-import 'package:get/get.dart';
-
 import '../utils/utils.dart';
-import 'package:flutter/material.dart';
+import 'shortage_report_detail.dart';
 
 class ShortageReport extends StatefulWidget {
   @override
@@ -25,6 +24,7 @@ class _ShortageReportState extends State<ShortageReport> {
   var shift;
   var selectedDate;
   var checkList = [];
+  var manpowerList = {};
 
   @override
   void initState() {
@@ -142,48 +142,39 @@ class _ShortageReportState extends State<ShortageReport> {
                   horizontal: 10.0,
                   vertical: 5.0,
                 ),
-                child: DropdownButtonFormField<String>(
-                  hint: Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: Text(
-                      'All Clients',
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                        fontSize: 18.0,
-                        // fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                child: DropdownSearch<String>(
+                  mode: Mode.MENU,
+                  showSearchBox: true,
+                  isFilteredOnline: true,
+                  dropDownButton: const Icon(
+                    Icons.keyboard_arrow_down,
+                    color: Colors.grey,
+                    size: 18,
                   ),
-                  isExpanded: true,
+                  hint: 'Select Client',
+                  showSelectedItem: true,
                   // value: aC.clientList.first.client.id.toString(),
                   items: epC.clientList.map((item) {
                     // print('item: ${item.client.id}');
-                    var sC = item.client.name + ' - ' + item.client.id.toString();
-                    return DropdownMenuItem(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10.0),
-                        child: Text(
-                          sC.toString(),
-                        ),
-                      ),
-                      value: json.encode(item.clientManpowerList) + '###${item.client.id}',
-                    );
+                    var sC =
+                        item.client.name + ' - ' + item.client.id.toString();
+                    manpowerList[item.client.id.toString()] =
+                        json.encode(item.clientManpowerList);
+                    print(json.encode(item.clientManpowerList));
+                    return sC.toString();
                   }).toList(),
                   onChanged: (value) {
-                    var splitIt = value.split('###');
-                    var manpower = json.decode(splitIt[0]);
-                    // print('value: $manpower');
+                    var splitIt = value.split('-');
+                    var manpower = json.decode(manpowerList[splitIt[1].trim()]);
+                    print('value: $manpower');
                     epC.timings.clear();
                     checkList.clear();
                     if (manpower != null && manpower.length > 0) {
                       clientId = manpower.first['clientId'];
                       epC.timings.clear();
                       checkList.clear();
-                      // epC.shiftTime = '';
-                      // epC.shift.clear();
                       shift = null;
                       for (var j = 0; j < manpower.length; j++) {
-                        // print('manpower: ${manpower[j]}');
                         manpower[j]['shiftStartTime'] = manpower[j]['shiftStartTime'].split(':').first.length == 1 ? '0' + manpower[j]['shiftStartTime'] : manpower[j]['shiftStartTime'];
                         manpower[j]['shiftEndTime'] = manpower[j]['shiftEndTime'].split(':').first.length == 1 ? '0' + manpower[j]['shiftEndTime'] : manpower[j]['shiftEndTime'];
                         var sSTime = DateFormat('hh:mm')

@@ -1,19 +1,17 @@
 import 'dart:convert';
 
-import '../connection/remote_services.dart';
-
-import 'employee_notation.dart';
+import 'package:dropdown_search/dropdown_search.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
+import '../connection/remote_services.dart';
 import '../controllers/attendance_controller.dart';
-import 'package:intl/intl.dart';
-
 import '../utils/utils.dart';
-
 import 'dashboard_page.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'employee_notation.dart';
 
 class AttendancePage extends StatefulWidget {
   @override
@@ -24,9 +22,11 @@ class _AttendancePageState extends State<AttendancePage> {
   final AttendanceController aC = Get.put(AttendanceController());
   TextEditingController date = TextEditingController();
   var stVal = 'all';
+
   // var clientId;
   var passDate;
   var checkList = [];
+  var manpowerList = {};
 
   @override
   void initState() {
@@ -72,13 +72,15 @@ class _AttendancePageState extends State<AttendancePage> {
   }
 
   Future<Null> getDate(BuildContext context) async {
-    int attendanceDaysPermitted = jsonDecode(RemoteServices().box.get('appFeature'))['attendanceDaysPermitted'];
+    int attendanceDaysPermitted = jsonDecode(
+        RemoteServices().box.get('appFeature'))['attendanceDaysPermitted'];
     final picked = await showDatePicker(
       context: context,
       initialDate: DateTime.parse(
         passDate.toString(),
       ),
-      firstDate: DateTime.now().add(Duration(days: -(attendanceDaysPermitted - 1))),
+      firstDate:
+          DateTime.now().add(Duration(days: -(attendanceDaysPermitted - 1))),
       // lastDate: DateTime.now().add(Duration(days: 30)),
       lastDate: DateTime.now(),
     );
@@ -140,7 +142,6 @@ class _AttendancePageState extends State<AttendancePage> {
                         hintStyle: TextStyle(
                           color: Colors.grey[600],
                           fontSize: 18.0,
-                          // fontWeight: FontWeight.bold,
                         ),
                         hintText: 'Select Date',
                         suffixIcon: Icon(
@@ -163,37 +164,31 @@ class _AttendancePageState extends State<AttendancePage> {
                       horizontal: 10.0,
                       vertical: 5.0,
                     ),
-                    child: DropdownButtonFormField<String>(
-                      hint: Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Text(
-                          'Select Client',
-                          style: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: 18.0,
-                            // fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                    child: DropdownSearch<String>(
+                      mode: Mode.MENU,
+                      showSearchBox: true,
+                      isFilteredOnline: true,
+                      dropDownButton: const Icon(
+                        Icons.keyboard_arrow_down,
+                        color: Colors.grey,
+                        size: 18,
                       ),
-                      isExpanded: true,
-                      // value: json.encode(aC.clientList.first.clientManpowerList),
-                      // value: aC.selectedVal,
+                      hint: 'Select Client',
+                      showSelectedItem: true,
                       items: aC.clientList.map((item) {
-                        print('value: ${json.encode(item.clientManpowerList)}');
-                        var sC = item.client.name + ' - ' + item.client.id.toString();
-                        return DropdownMenuItem(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10.0),
-                            child: Text(
-                              sC.toString(),
-                            ),
-                          ),
-                          value: json.encode(item.clientManpowerList) + '###${item.client.id}',
-                        );
+                        var val = item.client.name +
+                            ' - ' +
+                            item.client.id.toString();
+                        manpowerList[item.client.id.toString()] =
+                            json.encode(item.clientManpowerList);
+                        print(json.encode(item.clientManpowerList));
+                        // print(manpowerList);
+                        return val.toString();
                       }).toList(),
                       onChanged: (value) {
-                        var splitIt = value.split('###');
-                        var manpower = json.decode(splitIt[0]);
+                        var splitIt = value.split('-');
+                        var manpower =
+                            json.decode(manpowerList[splitIt[1].trim()]);
                         print('value: $manpower');
                         aC.timings.clear();
                         checkList.clear();
@@ -203,20 +198,36 @@ class _AttendancePageState extends State<AttendancePage> {
                           checkList.clear();
                           aC.shiftTime = '';
                           for (var j = 0; j < manpower.length; j++) {
-                            // print('manpower: ${manpower[j]}');
-                            manpower[j]['shiftStartTime'] = manpower[j]['shiftStartTime'].split(':').first.length == 1 ? '0' + manpower[j]['shiftStartTime'] : manpower[j]['shiftStartTime'];
-                            manpower[j]['shiftEndTime'] = manpower[j]['shiftEndTime'].split(':').first.length == 1 ? '0' + manpower[j]['shiftEndTime'] : manpower[j]['shiftEndTime'];
+                            print('manpower: ${manpower[j]}');
+                            manpower[j]['shiftStartTime'] = manpower[j]
+                                            ['shiftStartTime']
+                                        .split(':')
+                                        .first
+                                        .length ==
+                                    1
+                                ? '0' + manpower[j]['shiftStartTime']
+                                : manpower[j]['shiftStartTime'];
+                            manpower[j]['shiftEndTime'] = manpower[j]
+                                            ['shiftEndTime']
+                                        .split(':')
+                                        .first
+                                        .length ==
+                                    1
+                                ? '0' + manpower[j]['shiftEndTime']
+                                : manpower[j]['shiftEndTime'];
                             var sSTime = DateFormat('hh:mm')
                                     .format(
                                       DateTime.parse(
-                                        '2020-12-20 ' + manpower[j]['shiftStartTime'],
+                                        '2020-12-20 ' +
+                                            manpower[j]['shiftStartTime'],
                                       ),
                                     )
                                     .toString() +
                                 DateFormat('a')
                                     .format(
                                       DateTime.parse(
-                                        '2020-12-20 ' + manpower[j]['shiftStartTime'],
+                                        '2020-12-20 ' +
+                                            manpower[j]['shiftStartTime'],
                                       ),
                                     )
                                     .toString()
@@ -224,14 +235,16 @@ class _AttendancePageState extends State<AttendancePage> {
                             var sETime = DateFormat('hh:mm')
                                     .format(
                                       DateTime.parse(
-                                        '2020-12-20 ' + manpower[j]['shiftEndTime'],
+                                        '2020-12-20 ' +
+                                            manpower[j]['shiftEndTime'],
                                       ),
                                     )
                                     .toString() +
                                 DateFormat('a')
                                     .format(
                                       DateTime.parse(
-                                        '2020-12-20 ' + manpower[j]['shiftEndTime'],
+                                        '2020-12-20 ' +
+                                            manpower[j]['shiftEndTime'],
                                       ),
                                     )
                                     .toString()
@@ -247,9 +260,6 @@ class _AttendancePageState extends State<AttendancePage> {
                             }
                           }
                         }
-                        // var timing = aC.timings.first;
-                        // var shiftTimeCtrl = timing['shiftStartTime'] + ' - ' + timing['shiftEndTime'];
-                        // aC.shiftTime = timing['shift'] + '#' + shiftTimeCtrl;
                       },
                     ),
                   ),
@@ -410,18 +420,23 @@ class _AttendancePageState extends State<AttendancePage> {
                                 height: 180.0,
                                 child: Center(
                                   child: StaggeredGridView.countBuilder(
-                                    staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
+                                    staggeredTileBuilder: (int index) =>
+                                        StaggeredTile.fit(1),
                                     shrinkWrap: true,
                                     crossAxisCount: 2,
                                     itemCount: aC.timings.length,
                                     itemBuilder: (context, index) {
                                       print(aC.shiftTime);
                                       var timing = aC.timings[index];
-                                      var shiftTime = timing['shiftStartTime'] + ' - ' + timing['shiftEndTime'];
+                                      var shiftTime = timing['shiftStartTime'] +
+                                          ' - ' +
+                                          timing['shiftEndTime'];
                                       return Row(
                                         children: [
                                           Radio(
-                                            value: timing['shift'] + '#' + shiftTime,
+                                            value: timing['shift'] +
+                                                '#' +
+                                                shiftTime,
                                             groupValue: aC.shiftTime,
                                             onChanged: (sVal) {
                                               setState(() {
@@ -472,7 +487,9 @@ class _AttendancePageState extends State<AttendancePage> {
                                     print('client: ${aC.clientId}');
                                     print('status: $stVal');
                                     print('shift: ${aC.shiftTime}');
-                                    if (aC.clientId == null || aC.shiftTime == null || aC.shiftTime == '') {
+                                    if (aC.clientId == null ||
+                                        aC.shiftTime == null ||
+                                        aC.shiftTime == '') {
                                       Get.snackbar(
                                         null,
                                         'Please select client and shift timing',
@@ -493,8 +510,10 @@ class _AttendancePageState extends State<AttendancePage> {
                                       print('date: $passDate');
                                       print('client: ${aC.clientId}');
                                       print('status: $stVal');
-                                      print('shift: ${aC.shiftTime.split('#').first}');
-                                      print('time: ${aC.shiftTime.split('#').last}');
+                                      print(
+                                          'shift: ${aC.shiftTime.split('#').first}');
+                                      print(
+                                          'time: ${aC.shiftTime.split('#').last}');
                                       print('shiftTime: ${aC.shiftTime}');
                                       Get.to(
                                         EmployeeNotation(
