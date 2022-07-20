@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -17,11 +18,16 @@ class LocationReportDetail extends StatefulWidget {
 
 class _LocationReportDetailState extends State<LocationReportDetail> {
   final EmployeeReportController epC = Get.put(EmployeeReportController());
+  final TextEditingController search = TextEditingController();
   GoogleMapController controller;
   Set<Marker> _markers = {};
   int live = 0, total = 0;
   bool online = true;
   bool offline = true;
+  var searchId;
+  List<String> empName = [];
+
+  get mapController => controller;
 
   @override
   void initState() {
@@ -85,6 +91,7 @@ class _LocationReportDetailState extends State<LocationReportDetail> {
       epC.locations.asMap().forEach((index, emp) async {
         print(emp);
         var markIcon;
+        empName.add(emp['name']);
         var time = DateTime.parse(emp['timeStamp']);
         var now = DateTime.now();
         total++;
@@ -124,6 +131,8 @@ class _LocationReportDetailState extends State<LocationReportDetail> {
       setState(() {});
     });
   }
+
+  GlobalKey<AutoCompleteTextFieldState<String>> key = new GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -169,31 +178,46 @@ class _LocationReportDetailState extends State<LocationReportDetail> {
                 const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 10.0),
             child: Center(
               child: Stack(children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20.0, top: 50.0),
+                  child: SimpleAutoCompleteTextField(
+                    suggestions: empName,
+                    decoration: InputDecoration(
+                      filled: true,
+                      hintText: 'Employee Name',
+                    ),
+                    key: key,
+                    textSubmitted: (name) {
+                      setMarkers(name);
+                    },
+                  ),
+                ),
                 ClipRRect(
                     borderRadius: BorderRadius.only(
                       bottomRight: Radius.circular(15),
                       bottomLeft: Radius.circular(15),
                     ),
                     child: Padding(
-                        padding: EdgeInsets.only(top: 50),
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: GoogleMap(
-                            buildingsEnabled: true,
-                            myLocationEnabled: true,
-                            mapToolbarEnabled: true,
-                            markers: _markers,
-                            onMapCreated: _onMapCreated,
-                            initialCameraPosition: CameraPosition(
-                              target: LatLng(
-                                double.parse(epC.locations.first['lat']),
-                                double.parse(epC.locations.first['lng']),
-                              ),
-                              zoom: 8,
+                      padding: EdgeInsets.only(top: 100.0),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: GoogleMap(
+                          buildingsEnabled: true,
+                          myLocationEnabled: true,
+                          mapToolbarEnabled: true,
+                          markers: _markers,
+                          onMapCreated: _onMapCreated,
+                          initialCameraPosition: CameraPosition(
+                            target: LatLng(
+                              double.parse(epC.locations.first['lat']),
+                              double.parse(epC.locations.first['lng']),
                             ),
-                            mapType: MapType.normal,
+                            zoom: 8,
                           ),
-                        ))),
+                          mapType: MapType.normal,
+                        ),
+                      ),
+                    )),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
@@ -206,7 +230,7 @@ class _LocationReportDetailState extends State<LocationReportDetail> {
                               onChanged: (bool value) {
                                 setState(() {
                                   online = value;
-                                  setMarkers();
+                                  setMarkers(null);
                                 });
                               },
                             ),
@@ -229,7 +253,7 @@ class _LocationReportDetailState extends State<LocationReportDetail> {
                               onChanged: (bool value) {
                                 setState(() {
                                   offline = value;
-                                  setMarkers();
+                                  setMarkers(null);
                                 });
                               },
                             ),
@@ -260,7 +284,7 @@ class _LocationReportDetailState extends State<LocationReportDetail> {
     );
   }
 
-  setMarkers() {
+  setMarkers(name) {
     setState(() {
       total = 0;
       live = 0;
@@ -274,7 +298,8 @@ class _LocationReportDetailState extends State<LocationReportDetail> {
 
         if (online &&
             time.millisecondsSinceEpoch >
-                (now.millisecondsSinceEpoch - (3600 * 1000))) {
+                (now.millisecondsSinceEpoch - (3600 * 1000)) &&
+            (name == null || name == emp['name'])) {
           live++;
           markIcon = await BitmapDescriptor.fromAssetImage(
               ImageConfiguration(size: Size(24, 24)),
@@ -297,10 +322,19 @@ class _LocationReportDetailState extends State<LocationReportDetail> {
               ),
             ),
           );
+          LatLng newlatlang = LatLng(
+            double.parse(emp['lat']),
+            double.parse(emp['lng']),
+          );
+          controller?.animateCamera(CameraUpdate.newCameraPosition(
+              CameraPosition(target: newlatlang, zoom: 17)
+              //17 is new zoom level
+              ));
         }
         if (offline &&
             time.millisecondsSinceEpoch <=
-                (now.millisecondsSinceEpoch - (3600 * 1000))) {
+                (now.millisecondsSinceEpoch - (3600 * 1000)) &&
+            (name == null || name == emp['name'])) {
           markIcon = await BitmapDescriptor.fromAssetImage(
               ImageConfiguration(size: Size(24, 24)),
               'assets/images/siteposted_nolive.png');
@@ -322,6 +356,14 @@ class _LocationReportDetailState extends State<LocationReportDetail> {
               ),
             ),
           );
+          LatLng newlatlang = LatLng(
+            double.parse(emp['lat']),
+            double.parse(emp['lng']),
+          );
+          controller.animateCamera(CameraUpdate.newCameraPosition(
+              CameraPosition(target: newlatlang, zoom: 17)
+              //17 is new zoom level
+              ));
         }
       });
     });
