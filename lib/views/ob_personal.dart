@@ -180,18 +180,21 @@ class _OBPersonalState extends State<OBPersonal> {
                         horizontal: 10.0,
                         vertical: 10.0,
                       ),
-                      child: TextField(
+                      child: Obx(() {
+                        return TextField(
                           controller: adminC.fatherName,
                           decoration: InputDecoration(
+                            enabled: !adminC.disabledFatherName.value,
                             isDense: true,
                             contentPadding: EdgeInsets.all(10),
                             hintStyle: TextStyle(
                               color: Colors.grey[600],
                               fontSize: 18.0,
                             ),
-                            hintText: 'Father Name*',
+                            hintText: "Father Name*",
                           ),
-                        ),
+                        );
+                      }),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -496,7 +499,8 @@ class _OBPersonalState extends State<OBPersonal> {
                           ),
                         ),
                       ),
-                    ),Padding(
+                    ),
+                    Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 10.0,
                         vertical: 10.0,
@@ -574,8 +578,8 @@ class _OBPersonalState extends State<OBPersonal> {
                         },
                         onSuggestionSelected: (suggestion) {
                           adminC.department = suggestion['deptId'].toString();
-                          adminC.deptAu.text = suggestion['deptName'].toString().trimRight();
-                          /* sitePostedTo = suggestion['id'];*/
+                          adminC.deptAu.text =
+                              suggestion['deptName'].toString().trimRight();
                         },
                         autoFlipDirection: true,
                       ),
@@ -610,7 +614,8 @@ class _OBPersonalState extends State<OBPersonal> {
                         suggestionsCallback: (pattern) async {
                           // print(pattern);
                           if (pattern.isNotEmpty) {
-                            return await RemoteServices().getBranchClientsSugg(pattern);
+                            return await RemoteServices()
+                                .getBranchClientsSugg(pattern);
                           } else {
                             adminC.sitePostedTo = null;
                           }
@@ -634,7 +639,10 @@ class _OBPersonalState extends State<OBPersonal> {
                           print(suggestion);
                           print(suggestion['name']);
                           adminC.client = suggestion['id'];
-                          adminC.clientAu.text = suggestion['name'].toString().trimRight() + ' - ' + suggestion['id'];
+                          adminC.clientAu.text =
+                              suggestion['name'].toString().trimRight() +
+                                  ' - ' +
+                                  suggestion['id'];
                           adminC.sitePostedTo = suggestion['id'];
                         },
                         autoFlipDirection: true,
@@ -651,13 +659,11 @@ class _OBPersonalState extends State<OBPersonal> {
                           style: TextStyle(
                             color: Colors.grey[600],
                             fontSize: 18.0,
-                            // fontWeight: FontWeight.bold,
                           ),
                         ),
                         isExpanded: false,
                         value: adminC.blood,
                         items: adminC.bloodGroupsList.map((item) {
-                          //print('item: $item');
                           return DropdownMenuItem(
                             child: Text(
                               item['bloodGroupName'],
@@ -714,7 +720,8 @@ class _OBPersonalState extends State<OBPersonal> {
                         suggestionsCallback: (pattern) async {
                           // print(pattern);
                           if (pattern.isNotEmpty) {
-                            return await RemoteServices().getDesignSugg(pattern);
+                            return await RemoteServices()
+                                .getDesignSugg(pattern);
                           } else {
                             adminC.designation = null;
                           }
@@ -734,7 +741,6 @@ class _OBPersonalState extends State<OBPersonal> {
                         onSuggestionSelected: (suggestion) {
                           adminC.designation = suggestion['designId'];
                           adminC.desigAu.text = suggestion['design'].toString().trimRight();
-                          // sitePostedTo = suggestion['id'];
                         },
                         autoFlipDirection: true,
                       ),
@@ -826,6 +832,35 @@ class _OBPersonalState extends State<OBPersonal> {
                       ),
                     ),
                     Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0,
+                        vertical: 10.0,
+                      ),
+                      child: TextField(
+                        controller: adminC.remarks,
+                        keyboardType: null,
+                        decoration: InputDecoration(
+                          isDense: true,
+                          contentPadding: EdgeInsets.all(10),
+                          hintStyle: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 18.0,
+                          ),
+                          hintText: 'Remarks',
+                          prefixIcon: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              new Image.asset(
+                                'assets/images/remarks.png',
+                                color: Colors.grey,
+                                scale: 2.2,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -848,26 +883,32 @@ class _OBPersonalState extends State<OBPersonal> {
                             onPressed: () {
                               FocusScope.of(context).requestFocus(FocusNode());
                               adminC.step1(false);
-                              if (AppUtils.checkTextisNull(adminC.name, 'Name')) {
+                              if (AppUtils.checkTextisNull(
+                                  adminC.name, 'Name')) {
                                 Get.snackbar(
                                   null,
                                   'Please provide Name',
                                   colorText: Colors.white,
                                   backgroundColor: Colors.black87,
                                   snackPosition: SnackPosition.BOTTOM,
-                                  margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 8.0, vertical: 10.0),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
                                 );
-                              }else if (AppUtils.checkTextisNull(adminC.fatherName, 'FatherName')) {
+                              } else if (AppUtils.checkTextisNull(
+                                  adminC.fatherName, 'FatherName')) {
                                 Get.snackbar(
                                   null,
                                   'Please provide Father Name',
                                   colorText: Colors.white,
                                   backgroundColor: Colors.black87,
                                   snackPosition: SnackPosition.BOTTOM,
-                                  margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 8.0, vertical: 10.0),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
                                 );
                               } else if (adminC.aadhar.isNullOrBlank) {
@@ -877,30 +918,38 @@ class _OBPersonalState extends State<OBPersonal> {
                                   colorText: Colors.white,
                                   backgroundColor: Colors.black87,
                                   snackPosition: SnackPosition.BOTTOM,
-                                  margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 8.0, vertical: 10.0),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
                                 );
-                              } else if (!verhoeff.validate(adminC.aadhar.text)) {
+                              } else if (!verhoeff
+                                  .validate(adminC.aadhar.text)) {
                                 Get.snackbar(
                                   null,
                                   'Please add valid aadhar number',
                                   colorText: Colors.white,
                                   backgroundColor: Colors.black87,
                                   snackPosition: SnackPosition.BOTTOM,
-                                  margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 8.0, vertical: 10.0),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
                                 );
-                              } else if (AppUtils.checkTextisNull(adminC.dtOfBirth, 'Dob')) {
+                              } else if (AppUtils.checkTextisNull(
+                                  adminC.dtOfBirth, 'Dob')) {
                                 Get.snackbar(
                                   null,
                                   'Please provide DOB',
                                   colorText: Colors.white,
                                   backgroundColor: Colors.black87,
                                   snackPosition: SnackPosition.BOTTOM,
-                                  margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 8.0, vertical: 10.0),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
                                 );
                               } else if (adminC.empPhone.text.length != 10) {
@@ -910,8 +959,10 @@ class _OBPersonalState extends State<OBPersonal> {
                                   colorText: Colors.white,
                                   backgroundColor: Colors.black87,
                                   snackPosition: SnackPosition.BOTTOM,
-                                  margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 8.0, vertical: 10.0),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
                                 );
                               } else if (adminC.client == null) {
@@ -921,8 +972,10 @@ class _OBPersonalState extends State<OBPersonal> {
                                   colorText: Colors.white,
                                   backgroundColor: Colors.black87,
                                   snackPosition: SnackPosition.BOTTOM,
-                                  margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 8.0, vertical: 10.0),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
                                 );
                               } else if (adminC.designation == null) {
@@ -932,24 +985,31 @@ class _OBPersonalState extends State<OBPersonal> {
                                   colorText: Colors.white,
                                   backgroundColor: Colors.black87,
                                   snackPosition: SnackPosition.BOTTOM,
-                                  margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 8.0, vertical: 10.0),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
                                 );
-                              } else if (AppUtils.checkTextisNull(adminC.dtOfJoin, 'Joining Date')) {
+                              } else if (AppUtils.checkTextisNull(
+                                  adminC.dtOfJoin, 'Joining Date')) {
                                 Get.snackbar(
                                   null,
                                   'Please provide Joining Date',
                                   colorText: Colors.white,
                                   backgroundColor: Colors.black87,
                                   snackPosition: SnackPosition.BOTTOM,
-                                  margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 8.0, vertical: 10.0),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
                                 );
                               } else {
-                                adminC.proofAadharNumber.text = adminC.aadhar.text;
-                                adminC.proofAadharNumberConfirm.text = adminC.aadhar.text;
+                                adminC.proofAadharNumber.text =
+                                    adminC.aadhar.text;
+                                adminC.proofAadharNumberConfirm.text =
+                                    adminC.aadhar.text;
                                 Get.to(OBVaccine());
                                 adminC.step1(true);
                               }

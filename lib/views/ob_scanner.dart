@@ -338,7 +338,10 @@ class _OBScannerState extends State<OBScanner> {
           for (var i = 0; i < barcodeList.length; i++) {
             // print('$i: ${barcodeList[i]}');
             if (barcodeList[i].toString().contains('uid')) {
-              var uidrep = barcodeList[i].toString().replaceAll('"', '').replaceAll("'", '');
+              var uidrep = barcodeList[i]
+                  .toString()
+                  .replaceAll('"', '')
+                  .replaceAll("'", '');
               var uid = uidrep.split('=')[1];
               print('uid: $uid');
               adminC.proofAadharNumber.text = uid;
@@ -346,26 +349,50 @@ class _OBScannerState extends State<OBScanner> {
               adminC.aadhar.text = uid;
               adminC.disabledAadhar(true);
             }
-            if (barcodeList[i].toString().contains('name') && !barcodeList[i].toString().contains('gname')) {
-              var namerep = barcodeList[i].toString().replaceAll('"', '').replaceAll("'", '');
+            if (barcodeList[i].toString().contains('name') &&
+                !barcodeList[i].toString().contains('gname')) {
+              var namerep = barcodeList[i]
+                  .toString()
+                  .replaceAll('"', '')
+                  .replaceAll("'", '');
               var name = namerep.split('=')[1];
               print('name: $name');
               adminC.name.text = name;
               adminC.disabledName(true);
             }
+            if (barcodeList[i].toString().contains('co')) {
+              var faname = barcodeList[i]
+                  .toString()
+                  .replaceAll('"', '')
+                  .replaceAll("'", '');
+              var co = faname.split('=')[1];
+              print('faname: $co');
+              adminC.fatherName.text = co;
+              adminC.disabledFatherName(true);
+            }
             if (barcodeList[i].toString().contains('house')) {
-              var houserep = barcodeList[i].toString().replaceAll('"', '').replaceAll("'", '');
+              var houserep = barcodeList[i]
+                  .toString()
+                  .replaceAll('"', '')
+                  .replaceAll("'", '');
               var house = houserep.split('=')[1];
               print('house: $house');
               adminC.permanenthouseNo.text = house;
               adminC.presenthouseNo.text = house;
             }
             if (barcodeList[i].toString().contains('dob')) {
-              var dobrep = barcodeList[i].toString().replaceAll('"', '').replaceAll("'", '');
+              var dobrep = barcodeList[i]
+                  .toString()
+                  .replaceAll('"', '')
+                  .replaceAll("'", '');
               var dob = dobrep.split('=')[1];
               print('dob: $dob');
-              adminC.dtOfBirth.text = '${dob.toString().split('/')[0]}-${dob.toString().split('/')[1]}-${dob.toString().split('/')[2]}';
-              adminC.dob = DateFormat('yyyy-MM-dd').format(DateTime.parse('${dob.toString().split('/')[2]}-${dob.toString().split('/')[1]}-${dob.toString().split('/')[0]}')).toString();
+              adminC.dtOfBirth.text =
+                  '${dob.toString().split('/')[0]}-${dob.toString().split('/')[1]}-${dob.toString().split('/')[2]}';
+              adminC.dob = DateFormat('yyyy-MM-dd')
+                  .format(DateTime.parse(
+                      '${dob.toString().split('/')[2]}-${dob.toString().split('/')[1]}-${dob.toString().split('/')[0]}'))
+                  .toString();
               adminC.disabledDob(true);
             }
             if (barcodeList[i].toString().contains('gender')) {
@@ -454,7 +481,37 @@ class _OBScannerState extends State<OBScanner> {
                             Padding(
                               padding: const EdgeInsets.only(top: 15.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Father Name',
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 1.8,
+                                    child: Text(
+                                      adminC.fatherName.text,
+                                      style: TextStyle(
+                                        fontSize: 18.0,
+                                      ),
+                                      textAlign: TextAlign.end,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 15.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     'Aadhar Number',
@@ -464,7 +521,8 @@ class _OBScannerState extends State<OBScanner> {
                                     ),
                                   ),
                                   SizedBox(
-                                    width: MediaQuery.of(context).size.width / 1.8,
+                                    width:
+                                        MediaQuery.of(context).size.width / 1.8,
                                     child: Text(
                                       adminC.proofAadharNumber.text,
                                       style: TextStyle(

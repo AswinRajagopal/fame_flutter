@@ -19,6 +19,7 @@ class AdminController extends GetxController {
   var disabledName = false.obs;
   var disabledDob = false.obs;
   var disabledAadhar = false.obs;
+  var disabledFatherName = false.obs;
   var aadharScan = false;
   var reload = true;
   ProgressDialog pr;
@@ -67,6 +68,7 @@ class AdminController extends GetxController {
   TextEditingController empESINumber = TextEditingController();
   TextEditingController qualification = TextEditingController();
   TextEditingController reporting = TextEditingController();
+  TextEditingController remarks = TextEditingController();
   TextEditingController presenthouseNo = TextEditingController();
   TextEditingController presentStreet = TextEditingController();
   TextEditingController presentColony = TextEditingController();
@@ -170,25 +172,7 @@ class AdminController extends GetxController {
         }
       },
       currentTime: dob != null ? DateTime.parse(dob.toString()) : DateTime.parse(curDate.toString()),
-      // locale: LocaleType.en,
     );
-    // final picked = await showDatePicker(
-    //   context: context,
-    //   initialDate: dob != null
-    //       ? DateTime.parse(
-    //           dob.toString(),
-    //         )
-    //       : DateTime.parse(
-    //           curDate.toString(),
-    //         ),
-    //   firstDate: DateTime.now().add(Duration(days: -36500)),
-    //   lastDate: DateTime.now(),
-    // );
-
-    // if (picked != null) {
-    //   dtOfBirth.text = DateFormat('dd-MM-yyyy').format(picked).toString();
-    //   dob = DateFormat('yyyy-MM-dd').format(picked).toString();
-    // }
   }
 
   Future<Null> getDateVaccine(BuildContext context) async {
@@ -210,23 +194,6 @@ class AdminController extends GetxController {
       currentTime: dov != null ? DateTime.parse(dov.toString()) : DateTime.parse(curDate.toString()),
       // locale: LocaleType.en,
     );
-    // final picked = await showDatePicker(
-    //   context: context,
-    //   initialDate: dov != null
-    //       ? DateTime.parse(
-    //           dov.toString(),
-    //         )
-    //       : DateTime.parse(
-    //           curDate.toString(),
-    //         ),
-    //   firstDate: DateTime.now().add(Duration(days: -36500)),
-    //   lastDate: DateTime.now(),
-    // );
-
-    // if (picked != null) {
-    //   dtOfVaccine.text = DateFormat('dd-MM-yyyy').format(picked).toString();
-    //   dov = DateFormat('yyyy-MM-dd').format(picked).toString();
-    // }
   }
 
   Future<Null> getFatherDate(BuildContext context) async {
@@ -265,25 +232,7 @@ class AdminController extends GetxController {
         }
       },
       currentTime: setValue != null && setValue.text.isNotEmpty ? DateTime.parse('${setValue.text.toString().split('-')[2]}-${setValue.text.toString().split('-')[1]}-${setValue.text.toString().split('-')[0]}') : DateTime.parse(curDate.toString()),
-      // locale: LocaleType.en,
     );
-    // final picked = await showDatePicker(
-    //   context: context,
-    //   initialDate: setValue != null && setValue.text.isNotEmpty
-    //       ? DateTime.parse(
-    //           '${setValue.text.toString().split('-')[2]}-${setValue.text.toString().split('-')[1]}-${setValue.text.toString().split('-')[0]}',
-    //         )
-    //       : DateTime.parse(
-    //           curDate.toString(),
-    //         ),
-    //   firstDate: DateTime.now().add(Duration(days: -36500)),
-    //   lastDate: DateTime.now(),
-    // );
-
-    // if (picked != null) {
-    //   setValue.text = DateFormat('dd-MM-yyyy').format(picked).toString();
-    //   // dobFamilyVal = DateFormat('yyyy-MM-dd').format(picked).toString();
-    // }
   }
 
   Future<Null> getJoiningDate(BuildContext context) async {
@@ -305,23 +254,6 @@ class AdminController extends GetxController {
       currentTime: doj != null ? DateTime.parse(doj.toString()) : DateTime.parse(curDate.toString()),
       // locale: LocaleType.en,
     );
-    // final picked = await showDatePicker(
-    //   context: context,
-    //   initialDate: doj != null
-    //       ? DateTime.parse(
-    //           doj.toString(),
-    //         )
-    //       : DateTime.parse(
-    //           curDate.toString(),
-    //         ),
-    //   firstDate: DateTime.now().add(Duration(days: -60)),
-    //   lastDate: DateTime.now().add(Duration(days: 120)),
-    // );
-
-    // if (picked != null) {
-    //   dtOfJoin.text = DateFormat('dd-MM-yyyy').format(picked).toString();
-    //   doj = DateFormat('yyyy-MM-dd').format(picked).toString();
-    // }
   }
 
   void addShift(shiftName, startTime, endTime) async {
@@ -473,19 +405,7 @@ class AdminController extends GetxController {
             clientList.add(getClientRes['clientsList'][i]);
           }
           // print('clientsList: $clientList');
-        } else {
-          // Get.snackbar(
-          //   null,
-          //   'Client not found',
-          //   colorText: Colors.white,
-          //   backgroundColor: Colors.black87,
-          //   snackPosition: SnackPosition.BOTTOM,
-          //   margin: EdgeInsets.symmetric(
-          //     horizontal: 8.0,
-          //     vertical: 10.0,
-          //   ),
-          // );
-        }
+        } else {}
       }
     } catch (e) {
       print(e);
@@ -697,15 +617,6 @@ class AdminController extends GetxController {
                     GestureDetector(
                       onTap: () async {
                         FocusScope.of(Get.context).requestFocus(FocusNode());
-                        // famName.removeAt(index);
-                        // famDob.removeAt(index);
-                        // famAge.removeAt(index);
-                        // famAadhar.removeAt(index);
-                        // famRelation.removeAt(index);
-                        // famNominee.removeAt(index);
-                        // familyDetail.removeAt(index);
-                        // famIndex--;
-                        // familyDetail.refresh();
                         var chkFamily = [];
                         chkFamily.addAll(familyDetail);
                         chkFamily.removeWhere((item) => item == null);
