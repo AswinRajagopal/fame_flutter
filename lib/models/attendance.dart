@@ -90,6 +90,7 @@ class Client {
     this.createdDateTime,
     this.updatedDateTime,
     this.id,
+    this.clientShortName,
   });
 
   String name;
@@ -106,6 +107,7 @@ class Client {
   dynamic createdDateTime;
   dynamic updatedDateTime;
   String id;
+  String clientShortName;
 
   factory Client.fromJson(Map<String, dynamic> json) => Client(
         name: json['name'],
@@ -122,6 +124,7 @@ class Client {
         createdDateTime: json['createdDateTime'],
         updatedDateTime: json['updatedDateTime'],
         id: json['id'],
+    clientShortName: json['clientShortName'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -139,6 +142,7 @@ class Client {
         'createdDateTime': createdDateTime,
         'updatedDateTime': updatedDateTime,
         'id': id,
+        'clientShortName': clientShortName,
       };
 }
 
