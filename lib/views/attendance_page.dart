@@ -28,6 +28,7 @@ class _AttendancePageState extends State<AttendancePage> {
   var checkList = [];
   var manpowerList = {};
 
+
   @override
   void initState() {
     date.text = DateFormat('dd-MM-yyyy').format(DateTime.now()).toString();
@@ -176,13 +177,15 @@ class _AttendancePageState extends State<AttendancePage> {
                       hint: 'Select Client',
                       showSelectedItem: true,
                       items: aC.clientList.map((item) {
-                        var val = item.client.name +
-                            ' - ' +
+                        var val = item.client.name;
+                        if(item.client.clientShortName!=null && item.client.clientShortName!='') {
+                          val = val + " (" + item.client.clientShortName + ") ";
+                        }
+                        val = val+ ' - ' +
                             item.client.id.toString();
                         manpowerList[item.client.id.toString()] =
                             json.encode(item.clientManpowerList);
                         print(json.encode(item.clientManpowerList));
-                        // print(manpowerList);
                         return val.toString();
                       }).toList(),
                       onChanged: (value) {
