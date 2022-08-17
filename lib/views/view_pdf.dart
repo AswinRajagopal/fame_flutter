@@ -162,7 +162,6 @@ class _ViewPdf extends State<ViewPdf> {
       DateTime(DateTime.now().year, DateTime.now().month),
       // initialDate: selectedDate ?? widget.initialDate,
       initialDate: DateTime(year, month),
-      locale: Locale('en'),
     ).then((date) {
       failed = false;
       if (date != null) {

@@ -160,7 +160,7 @@ class _DashboardPageState extends State<DashboardPage> {
               borderRadius: 5.0,
             );
             return false;
-          } else {
+          } else if(appFeatures['multipleCheckin']==null || !appFeatures['multipleCheckin']){
             // attendance given
             // dont allow checkin
             Get.snackbar(
@@ -181,8 +181,11 @@ class _DashboardPageState extends State<DashboardPage> {
             );
             return false;
           }
+          return true;
         } else {
-          if (curDate == chkDate) {
+          if (curDate == chkDate &&
+              (appFeatures['multipleCheckin']==null ||
+                  !appFeatures['multipleCheckin'])) {
             Get.snackbar(
               null,
               'You already checked in for today',

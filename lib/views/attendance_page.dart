@@ -181,6 +181,9 @@ class _AttendancePageState extends State<AttendancePage> {
                         if(item.client.clientShortName!=null && item.client.clientShortName!='') {
                           val = val + " (" + item.client.clientShortName + ") ";
                         }
+                        if(val.toString().contains('-')){
+                          val = val.toString().replaceAll('-', '~');
+                        }
                         val = val+ ' - ' +
                             item.client.id.toString();
                         manpowerList[item.client.id.toString()] =
@@ -403,7 +406,7 @@ class _AttendancePageState extends State<AttendancePage> {
                               height: 20.0,
                             ),
                             Obx(() {
-                              if (aC.timings.isNullOrBlank) {
+                              if (aC.timings.isBlank) {
                                 return Container(
                                   height: 180.0,
                                   child: Column(
