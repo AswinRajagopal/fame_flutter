@@ -1,5 +1,4 @@
 import 'package:chips_choice/chips_choice.dart';
-import 'package:fame/connection/remote_services.dart';
 import '../utils/debounce_class.dart';
 import 'package:intl/intl.dart';
 import 'package:time_range_picker/time_range_picker.dart';
@@ -424,19 +423,19 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                     }),
                   ),
                 ),
-                Row(
-                  children: [
-                    Checkbox(value: allShifts, onChanged: _onRememberMeChanged),
-                    Text(
-                      'All Shifts',
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
+                // Row(
+                //   children: [
+                //     Checkbox(value: allShifts, onChanged: _onRememberMeChanged),
+                //     Text(
+                //       'All Shifts',
+                //       style: TextStyle(
+                //         color: Colors.grey[600],
+                //         fontSize: 16.0,
+                //         fontWeight: FontWeight.bold,
+                //       ),
+                //     ),
+                //   ],
+                // ),
               ],
             ),
             Positioned(
