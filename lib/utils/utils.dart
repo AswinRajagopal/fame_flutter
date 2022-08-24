@@ -10,6 +10,7 @@ class AppUtils {
   Color greenColor = HexColor('4DB734');
   Color darkBlueColor = HexColor('3C6BB7');
   Color lightBlueColor = HexColor('54D2DB');
+  Color blueColor=HexColor('4a81db');
   Color orangeColor = HexColor('FF7933');
   static String WHOLEDAY = 'W';
   static String ADMIN = '4';

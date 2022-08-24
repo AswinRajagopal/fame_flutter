@@ -85,7 +85,7 @@ class _TimelineReportState extends State<TimelineReport> {
                       fontSize: 18.0,
                       // fontWeight: FontWeight.bold,
                     ),
-                    hintText: 'Employee Name',
+                    labelText: 'Employee Name',labelStyle: TextStyle(color:Colors.grey[600],fontSize: 18.0),
                   ),
                 ),
                 suggestionsCallback: (pattern) async {

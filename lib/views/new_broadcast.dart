@@ -105,7 +105,7 @@ class _BroadcastState extends State<Broadcast> {
                           hint: 'All Clients',
                           showSelectedItem: true,
                           items: bC.clientList.map((item) {
-                            var sC = item['name'].toString().replaceAll('-', '~') + ' - ' + item['id'];
+                            var sC = item['name'].toString().replaceAll('-', '~')+" (" + item['clientShortName'] + ")" + ' - ' + item['id'];
                             return sC.toString();
                           }).toList(),
                           onChanged: (value) {

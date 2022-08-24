@@ -154,7 +154,26 @@ class _ShortageReportState extends State<ShortageReport> {
                   hint: 'Select Client',
                   showSelectedItem: true,
                   // value: aC.clientList.first.client.id.toString(),
-                  items: clientsData(),
+
+                  items: epC.clientList.map((item) {
+                    var sC = item.client.name;
+                    if (item.client.clientShortName != null &&
+                        item.client.clientShortName != '') {
+                      sC = sC + " (" + item.client.clientShortName + ") ";
+                    }
+                    if (sC.toString().contains('-')) {
+                      sC = sC.toString().replaceAll('-', '~');
+                    }
+
+                    // print('item: ${item.client.id}');
+                    sC = sC + ' - ' + item.client.id.toString();
+
+                    manpowerList[item.client.id.toString()] =
+                        json.encode(item.clientManpowerList);
+                    print(json.encode(item.clientManpowerList));
+                    return sC.toString();
+                  }).toList(),
+
                   onChanged: (value) {
                     var splitIt = value.split('-');
                     if(manpowerList[splitIt[1].trim()] !=null){
@@ -168,33 +187,39 @@ class _ShortageReportState extends State<ShortageReport> {
                       checkList.clear();
                       shift = null;
                       for (var j = 0; j < manpower.length; j++) {
-                        manpower[j]['shiftStartTime'] =
-                        manpower[j]['shiftStartTime']
-                            .split(':')
-                            .first
-                            .length == 1
+
+                        manpower[j]['shiftStartTime'] = manpower[j]
+                                        ['shiftStartTime']
+                                    .split(':')
+                                    .first
+                                    .length ==
+                                1
                             ? '0' + manpower[j]['shiftStartTime']
                             : manpower[j]['shiftStartTime'];
-                        manpower[j]['shiftEndTime'] =
-                        manpower[j]['shiftEndTime']
-                            .split(':')
-                            .first
-                            .length == 1
+                        manpower[j]['shiftEndTime'] = manpower[j]
+                                        ['shiftEndTime']
+                                    .split(':')
+                                    .first
+                                    .length ==
+                                1
                             ? '0' + manpower[j]['shiftEndTime']
                             : manpower[j]['shiftEndTime'];
                         var sSTime = DateFormat('hh:mm')
-                            .format(
-                          DateTime.parse(
-                            '2020-12-20 ' + manpower[j]['shiftStartTime'],
-                          ),
-                        )
-                            .toString() +
+                                .format(
+                                  DateTime.parse(
+                                    '2020-12-20 ' +
+                                        manpower[j]['shiftStartTime'],
+                                  ),
+                                )
+                                .toString() +
                             DateFormat('a')
                                 .format(
-                              DateTime.parse(
-                                '2020-12-20 ' + manpower[j]['shiftStartTime'],
-                              ),
-                            )
+                                  DateTime.parse(
+                                    '2020-12-20 ' +
+                                        manpower[j]['shiftStartTime'],
+                                  ),
+                                )
+
                                 .toString()
                                 .toLowerCase();
                         var sETime = DateFormat('hh:mm')
@@ -234,7 +259,6 @@ class _ShortageReportState extends State<ShortageReport> {
 
                       // print(epC.timings.contains(addTiming));
                       checkList.add('ZZZ');
-                    }
                     }
                   },
                 ),
@@ -294,7 +318,9 @@ class _ShortageReportState extends State<ShortageReport> {
                     itemBuilder: (context, index) {
                       // print(aC.timings);
                       var timing = epC.timings[index];
-                      var shiftTime = timing['shiftStartTime'] + ' - ' + timing['shiftEndTime'];
+                      var shiftTime = timing['shiftStartTime'] +
+                          ' - ' +
+                          timing['shiftEndTime'];
                       return Padding(
                         padding: const EdgeInsets.only(left: 20.0),
                         child: Row(
@@ -313,45 +339,51 @@ class _ShortageReportState extends State<ShortageReport> {
                                 }
                                 setState(() {});
                               },
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(
-                                  vertical: 5.0,
-                                ),
-                                decoration: epC.shift.contains(shiftTime)
-                                    ? BoxDecoration(
-                                        color: HexColor('ccf8d8'),
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(
-                                            5.0,
+                              child:
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(
+                                        vertical: 5.0,
+                                      ),
+                                      decoration: epC.shift.contains(shiftTime)
+                                          ? BoxDecoration(
+                                              color: HexColor('ccf8d8'),
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(
+                                                  5.0,
+                                                ),
+                                              ),
+                                              border: Border.all(
+                                                color: HexColor('ccf8d8'),
+                                              ),
+                                            )
+                                          : BoxDecoration(
+                                              color: Colors.grey[100],
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(
+                                                  5.0,
+                                                ),
+                                              ),
+                                              border: Border.all(
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          shiftTime,
+                                          style: TextStyle(
+                                            color: epC.shift.contains(shiftTime)
+                                                ? HexColor('3f7f33')
+                                                : Colors.grey[700],
+                                            fontSize: 15.0,
+                                            fontWeight:
+                                                epC.shift.contains(shiftTime)
+                                                    ? FontWeight.w900
+                                                    : FontWeight.w400,
                                           ),
-                                        ),
-                                        border: Border.all(
-                                          color: HexColor('ccf8d8'),
-                                        ),
-                                      )
-                                    : BoxDecoration(
-                                        color: Colors.grey[100],
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(
-                                            5.0,
-                                          ),
-                                        ),
-                                        border: Border.all(
-                                          color: Colors.grey,
                                         ),
                                       ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    shiftTime,
-                                    style: TextStyle(
-                                      color: epC.shift.contains(shiftTime) ? HexColor('3f7f33') : Colors.grey[700],
-                                      fontSize: 15.0,
-                                      fontWeight: epC.shift.contains(shiftTime) ? FontWeight.w900 : FontWeight.w400,
                                     ),
-                                  ),
-                                ),
-                              ),
                             ),
                           ],
                         ),
@@ -410,7 +442,7 @@ class _ShortageReportState extends State<ShortageReport> {
                                 ),
                                 borderRadius: 5.0,
                               );
-                            } else if(clientId != null && shift == null){
+                            } else if (clientId != null && shift == null) {
                               Get.snackbar(
                                 null,
                                 'Please select shift',
@@ -428,12 +460,13 @@ class _ShortageReportState extends State<ShortageReport> {
                                 borderRadius: 5.0,
                               );
                             } else {
-                              print(clientId==null?'all':clientId+'');
+                              print(clientId == null ? 'all' : clientId + '');
                               print('date: ${date.text}');
-                              print(shift==null?'all':shift);
+                              print(shift == null ? 'all' : shift);
                               Get.to(ShortageReportDetail(
-                                  clientId==null?'all':clientId,
-                                  selectedDate, shift==null?'all':shift));
+                                  clientId == null ? 'all' : clientId,
+                                  selectedDate,
+                                  shift == null ? 'all' : shift));
                             }
                           },
                           child: Padding(

@@ -49,7 +49,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
   final _debouncer = Debouncer(milliseconds: 500);
   bool allShifts = false;
 
-  void _onRememberMeChanged(bool newValue) => setState(() {
+  void _onAllShifts(bool newValue) => setState(() {
         allShifts = newValue;
 
         if (allShifts == true) {
@@ -423,6 +423,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                     }),
                   ),
                 ),
+
                 // Row(
                 //   children: [
                 //     Checkbox(value: allShifts, onChanged: _onRememberMeChanged),

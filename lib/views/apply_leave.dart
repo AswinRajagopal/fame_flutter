@@ -465,7 +465,8 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                                         fontSize: 18.0,
                                         // fontWeight: FontWeight.bold,
                                       ),
-                                      hintText: 'From Date',
+                                      labelText: 'From Date',labelStyle: TextStyle(color:Colors.grey[600],fontSize: 18.0),
+
                                       suffixIcon: Icon(
                                         Icons.calendar_today,
                                         size: 25.0,
@@ -492,7 +493,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                                         fontSize: 18.0,
                                         // fontWeight: FontWeight.bold,
                                       ),
-                                      hintText: 'To Date',
+                                      labelText: 'To Date',labelStyle: TextStyle(color:Colors.grey[600],fontSize: 18.0),
                                       suffixIcon: Icon(
                                         Icons.calendar_today,
                                         size: 25.0,
@@ -659,6 +660,8 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                             ),
                             child: TextField(
                               controller: reason,
+                              keyboardType: TextInputType.multiline,
+                              maxLines: 4,
                               decoration: InputDecoration(
                                 isDense: true,
                                 contentPadding: EdgeInsets.all(10),
@@ -668,6 +671,9 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                                   // fontWeight: FontWeight.bold,
                                 ),
                                 hintText: 'Reason',
+                                focusedBorder:OutlineInputBorder(
+                                  borderSide: BorderSide(width: 1),
+                                )
                               ),
                             ),
                           ),
