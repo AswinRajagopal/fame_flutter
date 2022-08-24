@@ -1,4 +1,5 @@
 import 'package:fame/utils/utils.dart';
+import 'package:flutter/services.dart';
 
 import '../widgets/ob_top_navigation.dart';
 import 'package:flutter/material.dart';
@@ -122,12 +123,12 @@ class _OBBankState extends State<OBBank> {
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           isDense: true,
-                          contentPadding: EdgeInsets.all(10),
+                          contentPadding: EdgeInsets.all(5),
                           hintStyle: TextStyle(
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          hintText: 'Account No.*',
+                          labelText: 'Account No*',labelStyle: TextStyle(color:Colors.grey[600],fontSize: 18.0),
                         ),
                       ),
                     ),
@@ -138,14 +139,16 @@ class _OBBankState extends State<OBBank> {
                       ),
                       child: TextField(
                         controller: adminC.ifsc,
+                        keyboardType:TextInputType.text,
+                        inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[a-zA-Z|0-9]")), ],
                         decoration: InputDecoration(
                           isDense: true,
-                          contentPadding: EdgeInsets.all(10),
+                          contentPadding: EdgeInsets.all(5),
                           hintStyle: TextStyle(
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          hintText: 'IFSC*',
+                          labelText: 'IFSC*',labelStyle: TextStyle(color:Colors.grey[600],fontSize: 18.0),
                         ),
                       ),
                     ),
@@ -318,6 +321,19 @@ class _OBBankState extends State<OBBank> {
                                   padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
                                 );
+                              }
+                              else if(adminC.accountNo.text.length!=10){
+                                Get.snackbar(
+                                  null,
+                                  'Please enter a valid bank Account Number',
+                                  colorText: Colors.white,
+                                  backgroundColor: Colors.black87,
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+                                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+                                  borderRadius: 5.0,
+                                );
+
                               }else if (AppUtils.checkTextisNull(adminC.ifsc, 'IFSC')) {
                                 Get.snackbar(
                                   null,

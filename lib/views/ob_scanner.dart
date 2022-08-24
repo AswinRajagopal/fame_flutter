@@ -514,7 +514,7 @@ class _OBScannerState extends State<OBScanner> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Aadhar Number',
+                                    'Aadhaar Number',
                                     style: TextStyle(
                                       fontSize: 18.0,
                                       fontWeight: FontWeight.w600,

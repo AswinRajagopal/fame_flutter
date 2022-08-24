@@ -155,8 +155,15 @@ class _ClientWiseAttendanceState extends State<ClientWiseAttendance> {
                   hint: 'Select Client',
                   showSelectedItem: true,
                   items: epC.clientList.map((item) {
-                    var sC =
-                        item.client.name + ' - ' + item.client.id.toString();
+                    print(item);
+                    var sC = item.client.name;
+                    if(item.client.clientShortName!=null && item.client.clientShortName!='') {
+                      sC = sC + " (" + item.client.clientShortName + ") ";
+                    }
+                    if(sC.toString().contains('-')){
+                      sC=sC.toString().replaceAll('-', '~');
+                    }
+                     sC =sC + ' - ' + item.client.id.toString();
                     manpowerList[item.client.id.toString()] =
                         json.encode(item.clientManpowerList);
                     print(json.encode(item.clientManpowerList));

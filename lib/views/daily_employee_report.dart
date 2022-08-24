@@ -149,7 +149,7 @@ class _DailyEmployeeReportState extends State<DailyEmployeeReport> {
                           fontSize: 18.0,
                           // fontWeight: FontWeight.bold,
                         ),
-                        hintText: 'From Date',
+                        labelText: 'From Date',labelStyle: TextStyle(color:Colors.grey[600],fontSize: 18.0),
                         suffixIcon: Icon(
                           Icons.calendar_today,
                           size: 25.0,
@@ -176,7 +176,7 @@ class _DailyEmployeeReportState extends State<DailyEmployeeReport> {
                           fontSize: 18.0,
                           // fontWeight: FontWeight.bold,
                         ),
-                        hintText: 'To Date',
+                        labelText: 'To Date',labelStyle: TextStyle(color:Colors.grey[600],fontSize: 18.0),
                         suffixIcon: Icon(
                           Icons.calendar_today,
                           size: 25.0,
@@ -230,7 +230,7 @@ class _DailyEmployeeReportState extends State<DailyEmployeeReport> {
                       fontSize: 18.0,
                       // fontWeight: FontWeight.bold,
                     ),
-                    hintText: 'Employee Name',
+                    labelText: 'Employee Name',labelStyle: TextStyle(color:Colors.grey[600],fontSize: 18.0),
                   ),
                 ),
                 suggestionsCallback: (pattern) async {
@@ -259,7 +259,7 @@ class _DailyEmployeeReportState extends State<DailyEmployeeReport> {
                 onSuggestionSelected: (suggestion) {
                   print(suggestion);
                   print(suggestion['name']);
-                  empName.text = suggestion['name'].toString().trimRight() + ' - ' + suggestion['empId'];
+                  empName.text = suggestion['name'].toString().trimRight()+ ' - ' + suggestion['empId'];
                   empId = suggestion['empId'];
                 },
               ),

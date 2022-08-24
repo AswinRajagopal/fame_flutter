@@ -1,5 +1,6 @@
 import 'package:checkdigit/checkdigit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -18,6 +19,7 @@ class OBPersonal extends StatefulWidget {
 
 class _OBPersonalState extends State<OBPersonal> {
   final AdminController adminC = Get.put(AdminController());
+  bool _isClicked = false;
 
   @override
   void initState() {
@@ -143,7 +145,7 @@ class _OBPersonalState extends State<OBPersonal> {
                               Get.to(OBScanner());
                             },
                             child: Text(
-                              'Scan Aadhar',
+                              'Scan Aadhaar',
                               style: TextStyle(
                                 fontSize: 18.0,
                                 color: Theme.of(context).primaryColor,
@@ -162,6 +164,11 @@ class _OBPersonalState extends State<OBPersonal> {
                       child: Obx(() {
                         return TextField(
                           controller: adminC.name,
+                          keyboardType: TextInputType.name,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                                RegExp("[a-zA-Z]")),
+                          ],
                           decoration: InputDecoration(
                             enabled: !adminC.disabledName.value,
                             isDense: true,
@@ -170,7 +177,9 @@ class _OBPersonalState extends State<OBPersonal> {
                               color: Colors.grey[600],
                               fontSize: 18.0,
                             ),
-                            hintText: 'Name*',
+                            labelText: 'Name*',
+                            labelStyle: TextStyle(
+                                color: Colors.grey[600], fontSize: 18.0),
                           ),
                         );
                       }),
@@ -183,6 +192,11 @@ class _OBPersonalState extends State<OBPersonal> {
                       child: Obx(() {
                         return TextField(
                           controller: adminC.fatherName,
+                          keyboardType: TextInputType.name,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                                RegExp("[a-zA-Z]")),
+                          ],
                           decoration: InputDecoration(
                             enabled: !adminC.disabledFatherName.value,
                             isDense: true,
@@ -191,7 +205,9 @@ class _OBPersonalState extends State<OBPersonal> {
                               color: Colors.grey[600],
                               fontSize: 18.0,
                             ),
-                            hintText: "Father Name*",
+                            labelText: 'Father Name*',
+                            labelStyle: TextStyle(
+                                color: Colors.grey[600], fontSize: 18.0),
                           ),
                         );
                       }),
@@ -374,7 +390,9 @@ class _OBPersonalState extends State<OBPersonal> {
                               color: Colors.grey[600],
                               fontSize: 18.0,
                             ),
-                            hintText: 'Aadhar Number*',
+                            labelText: 'Aadhaar Number*',
+                            labelStyle: TextStyle(
+                                color: Colors.grey[600], fontSize: 18.0),
                             prefixIcon: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -405,7 +423,9 @@ class _OBPersonalState extends State<OBPersonal> {
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          hintText: 'Date of Birth*',
+                          labelText: 'Date of Birth*',
+                          labelStyle: TextStyle(
+                              color: Colors.grey[600], fontSize: 18.0),
                           prefixIcon: Image.asset(
                             'assets/images/icon_calender.png',
                             color: Colors.grey,
@@ -434,7 +454,9 @@ class _OBPersonalState extends State<OBPersonal> {
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          hintText: 'Mother Tongue',
+                          labelText: 'Mother Tongue',
+                          labelStyle: TextStyle(
+                              color: Colors.grey[600], fontSize: 18.0),
                           prefixIcon: Image.asset(
                             'assets/images/language.png',
                             color: Colors.grey,
@@ -458,7 +480,9 @@ class _OBPersonalState extends State<OBPersonal> {
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          hintText: 'Phone No.*',
+                          labelText: 'Phone No.*',
+                          labelStyle: TextStyle(
+                              color: Colors.grey[600], fontSize: 18.0),
                           prefixIcon: Column(
                             children: [
                               Image.asset(
@@ -486,7 +510,9 @@ class _OBPersonalState extends State<OBPersonal> {
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          hintText: 'ESI Number',
+                          labelText: 'ESI Number',
+                          labelStyle: TextStyle(
+                              color: Colors.grey[600], fontSize: 18.0),
                           prefixIcon: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -515,7 +541,9 @@ class _OBPersonalState extends State<OBPersonal> {
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          hintText: 'UAN Number',
+                          labelText: 'UAN Number',
+                          labelStyle: TextStyle(
+                              color: Colors.grey[600], fontSize: 18.0),
                           prefixIcon: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -544,7 +572,9 @@ class _OBPersonalState extends State<OBPersonal> {
                               color: Colors.grey[600],
                               fontSize: 18.0,
                             ),
-                            hintText: 'Enter Department',
+                            labelText: 'Enter Department',
+                            labelStyle: TextStyle(
+                                color: Colors.grey[600], fontSize: 18.0),
                             prefixIcon: Column(
                               children: [
                                 Image.asset(
@@ -585,69 +615,122 @@ class _OBPersonalState extends State<OBPersonal> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0,
-                        vertical: 10.0,
-                      ),
-                      child: TypeAheadField(
-                        textFieldConfiguration: TextFieldConfiguration(
-                          controller: adminC.clientAu,
-                          decoration: InputDecoration(
-                            isDense: true,
-                            contentPadding: EdgeInsets.all(10),
-                            hintStyle: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: 18.0,
+                      padding: const EdgeInsets.only(left: 280.0, top: 5.0),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Row(
+                          children: [
+                            Checkbox(
+                              value: _isClicked,
+                              onChanged: (value) {
+                                setState(() {
+                                  _isClicked = value;
+                                });
+                              },
                             ),
-                            hintText: 'Enter Client Name*',
-                            prefixIcon: Column(
-                              children: [
-                                Image.asset(
-                                  'assets/images/siteposted.png',
-                                  color: Colors.grey[400],
-                                  scale: 1.8,
-                                ),
-                              ],
+                            Text(
+                              'Manual Client ID',
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
+                          ],
                         ),
-                        suggestionsCallback: (pattern) async {
-                          // print(pattern);
-                          if (pattern.isNotEmpty) {
-                            return await RemoteServices()
-                                .getBranchClientsSugg(pattern);
-                          } else {
-                            adminC.sitePostedTo = null;
-                          }
-                          return null;
-                        },
-                        hideOnEmpty: true,
-                        noItemsFoundBuilder: (context) {
-                          return Text('No client found');
-                        },
-                        itemBuilder: (context, suggestion) {
-                          return ListTile(
-                            title: Text(
-                              suggestion['name'],
-                            ),
-                            subtitle: Text(
-                              suggestion['id'],
-                            ),
-                          );
-                        },
-                        onSuggestionSelected: (suggestion) {
-                          print(suggestion);
-                          print(suggestion['name']);
-                          adminC.client = suggestion['id'];
-                          adminC.clientAu.text =
-                              suggestion['name'].toString().trimRight() +
-                                  ' - ' +
-                                  suggestion['id'];
-                          adminC.sitePostedTo = suggestion['id'];
-                        },
-                        autoFlipDirection: true,
                       ),
                     ),
+                    _isClicked
+                        ? Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: TextFormField(
+                              controller: adminC.clientMu,
+                              decoration: InputDecoration(
+                                  labelText: 'Enter Client Name',
+                                  labelStyle: TextStyle(
+                                      color: Colors.grey[600], fontSize: 18.0),
+                                  prefixIcon: Column(
+                                    children: [
+                                      Image.asset(
+                                        'assets/images/siteposted.png',
+                                        color: Colors.grey[400],
+                                        scale: 1.8,
+                                      ),
+                                    ],
+                                  ),
+                                  hintStyle: TextStyle(
+                                    fontSize: 18.0,
+                                    color: Colors.grey[600],
+                                  )),
+                            ),
+                          )
+                        : Container(
+                            child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 10.0,
+                            ),
+                            child: TypeAheadField(
+                              textFieldConfiguration: TextFieldConfiguration(
+                                controller: adminC.clientAu,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.all(10),
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 18.0,
+                                  ),
+                                  labelText: 'Enter Client Name*',
+                                  labelStyle: TextStyle(
+                                      color: Colors.grey[600], fontSize: 18.0),
+                                  prefixIcon: Column(
+                                    children: [
+                                      Image.asset(
+                                        'assets/images/siteposted.png',
+                                        color: Colors.grey[400],
+                                        scale: 1.8,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              suggestionsCallback: (pattern) async {
+                                // print(pattern);
+                                if (pattern.isNotEmpty) {
+                                  return await RemoteServices()
+                                      .getBranchClientsSugg(pattern);
+                                } else {
+                                  adminC.sitePostedTo = null;
+                                }
+                                return null;
+                              },
+                              hideOnEmpty: true,
+                              noItemsFoundBuilder: (context) {
+                                return Text('No client found');
+                              },
+                              itemBuilder: (context, suggestion) {
+                                return ListTile(
+                                  title: Text(
+                                    suggestion['name'],
+                                  ),
+                                  subtitle: Text(
+                                    suggestion['id'],
+                                  ),
+                                );
+                              },
+                              onSuggestionSelected: (suggestion) {
+                                print(suggestion);
+                                print(suggestion['name']);
+                                adminC.client = suggestion['id'];
+                                adminC.clientAu.text =
+                                    suggestion['name'].toString().trimRight() + " ("+ suggestion['clientShortName'] +")"+
+                                        ' - ' +
+                                        suggestion['id'];
+                                adminC.sitePostedTo = suggestion['id'];
+                              },
+                              autoFlipDirection: true,
+                            ),
+                          )),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 10.0,
@@ -705,7 +788,9 @@ class _OBPersonalState extends State<OBPersonal> {
                               color: Colors.grey[600],
                               fontSize: 18.0,
                             ),
-                            hintText: 'Enter Designation *',
+                            labelText: 'Enter Designation *',
+                            labelStyle: TextStyle(
+                                color: Colors.grey[600], fontSize: 18.0),
                             prefixIcon: Column(
                               children: [
                                 Image.asset(
@@ -740,7 +825,8 @@ class _OBPersonalState extends State<OBPersonal> {
                         },
                         onSuggestionSelected: (suggestion) {
                           adminC.designation = suggestion['designId'];
-                          adminC.desigAu.text = suggestion['design'].toString().trimRight();
+                          adminC.desigAu.text =
+                              suggestion['design'].toString().trimRight();
                         },
                         autoFlipDirection: true,
                       ),
@@ -761,7 +847,9 @@ class _OBPersonalState extends State<OBPersonal> {
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          hintText: 'Date of Joining*',
+                          labelText: 'Date of Joining*',
+                          labelStyle: TextStyle(
+                              color: Colors.grey[600], fontSize: 18.0),
                           prefixIcon: Image.asset(
                             'assets/images/icon_calender.png',
                             color: Colors.grey,
@@ -788,7 +876,9 @@ class _OBPersonalState extends State<OBPersonal> {
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          hintText: 'Qualification',
+                          labelText: 'Qualification',
+                          labelStyle: TextStyle(
+                              color: Colors.grey[600], fontSize: 18.0),
                           prefixIcon: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -817,7 +907,9 @@ class _OBPersonalState extends State<OBPersonal> {
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          hintText: 'Reporting Manager',
+                          labelText: 'Reporting Manager',
+                          labelStyle: TextStyle(
+                              color: Colors.grey[600], fontSize: 18.0),
                           prefixIcon: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -846,7 +938,9 @@ class _OBPersonalState extends State<OBPersonal> {
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          hintText: 'Remarks',
+                          labelText: 'Remarks',
+                          labelStyle: TextStyle(
+                              color: Colors.grey[600], fontSize: 18.0),
                           prefixIcon: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -914,7 +1008,7 @@ class _OBPersonalState extends State<OBPersonal> {
                               } else if (adminC.aadhar.isNullOrBlank) {
                                 Get.snackbar(
                                   null,
-                                  'Please enter Aadhar Number',
+                                  'Please enter Aadhaar Number',
                                   colorText: Colors.white,
                                   backgroundColor: Colors.black87,
                                   snackPosition: SnackPosition.BOTTOM,
@@ -928,7 +1022,7 @@ class _OBPersonalState extends State<OBPersonal> {
                                   .validate(adminC.aadhar.text)) {
                                 Get.snackbar(
                                   null,
-                                  'Please add valid aadhar number',
+                                  'Please add valid aadhaar number',
                                   colorText: Colors.white,
                                   backgroundColor: Colors.black87,
                                   snackPosition: SnackPosition.BOTTOM,
@@ -965,7 +1059,8 @@ class _OBPersonalState extends State<OBPersonal> {
                                       horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
                                 );
-                              } else if (adminC.client == null) {
+                              }
+                              else if (adminC.client == null) {
                                 Get.snackbar(
                                   null,
                                   'Client is not selected',
@@ -978,7 +1073,11 @@ class _OBPersonalState extends State<OBPersonal> {
                                       horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
                                 );
-                              } else if (adminC.designation == null) {
+                              }
+                              else if (!_isClicked) {
+                                adminC.client= adminC.clientMu.text;
+                              }
+                              else if (adminC.designation == null) {
                                 Get.snackbar(
                                   null,
                                   'Designation is not selected',

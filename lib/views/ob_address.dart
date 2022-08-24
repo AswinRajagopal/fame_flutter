@@ -92,7 +92,7 @@ class _OBAddressState extends State<OBAddress> {
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          hintText: 'House No.',
+                          labelText: 'House No.',labelStyle: TextStyle(color:Colors.grey[600],fontSize: 18.0),
                           prefixIcon: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -115,12 +115,12 @@ class _OBAddressState extends State<OBAddress> {
                         controller: adminC.presentStreet,
                         decoration: InputDecoration(
                           isDense: true,
-                          contentPadding: EdgeInsets.all(10),
+                          contentPadding: EdgeInsets.all(5),
                           hintStyle: TextStyle(
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          hintText: 'Street',
+                          labelText: 'Street',labelStyle: TextStyle(color:Colors.grey[600],fontSize: 18.0),
                           prefixIcon: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -143,12 +143,12 @@ class _OBAddressState extends State<OBAddress> {
                         controller: adminC.presentColony,
                         decoration: InputDecoration(
                           isDense: true,
-                          contentPadding: EdgeInsets.all(10),
+                          contentPadding: EdgeInsets.all(5),
                           hintStyle: TextStyle(
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          hintText: 'Colony',
+                          labelText: 'Colony',labelStyle: TextStyle(color:Colors.grey[600],fontSize: 18.0),
                           prefixIcon: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -172,12 +172,12 @@ class _OBAddressState extends State<OBAddress> {
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           isDense: true,
-                          contentPadding: EdgeInsets.all(10),
+                          contentPadding: EdgeInsets.all(5),
                           hintStyle: TextStyle(
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          hintText: 'Pincode',
+                          labelText: 'Pincode',labelStyle: TextStyle(color:Colors.grey[600],fontSize: 18.0),
                           prefixIcon: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -362,7 +362,7 @@ class _OBAddressState extends State<OBAddress> {
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          hintText: 'House No.*',
+                          labelText: 'House No.*',labelStyle: TextStyle(color:Colors.grey[600],fontSize: 18.0),
                           prefixIcon: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -385,12 +385,12 @@ class _OBAddressState extends State<OBAddress> {
                         controller: adminC.permanentStreet,
                         decoration: InputDecoration(
                           isDense: true,
-                          contentPadding: EdgeInsets.all(10),
+                          contentPadding: EdgeInsets.all(5),
                           hintStyle: TextStyle(
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          hintText: 'Street',
+                          labelText: 'Street',labelStyle: TextStyle(color:Colors.grey[600],fontSize: 18.0),
                           prefixIcon: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -413,12 +413,12 @@ class _OBAddressState extends State<OBAddress> {
                         controller: adminC.permanentColony,
                         decoration: InputDecoration(
                           isDense: true,
-                          contentPadding: EdgeInsets.all(10),
+                          contentPadding: EdgeInsets.all(5),
                           hintStyle: TextStyle(
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          hintText: 'Colony',
+                          labelText: 'Colony',labelStyle: TextStyle(color:Colors.grey[600],fontSize: 18.0),
                           prefixIcon: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -442,12 +442,12 @@ class _OBAddressState extends State<OBAddress> {
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           isDense: true,
-                          contentPadding: EdgeInsets.all(10),
+                          contentPadding: EdgeInsets.all(5),
                           hintStyle: TextStyle(
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          hintText: 'Pincode',
+                          labelText: 'Pincode',labelStyle: TextStyle(color:Colors.grey[600],fontSize: 18.0),
                           prefixIcon: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [

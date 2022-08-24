@@ -247,7 +247,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                 color: Colors.grey[600],
                                 fontSize: 18.0,
                               ),
-                              hintText: 'Enter Plan Name',
+                              labelText: 'Enter Plan Name',labelStyle: TextStyle(color:Colors.grey[600],fontSize: 18.0),
                             ),
                           ),
                           suggestionsCallback: (pattern) async {
@@ -290,7 +290,6 @@ class _RoutePlanningState extends State<RoutePlanning> {
                       Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 10.0,
-                          vertical: 10.0,
                         ),
                         child: TypeAheadField(
                           textFieldConfiguration: TextFieldConfiguration(
@@ -303,7 +302,7 @@ class _RoutePlanningState extends State<RoutePlanning> {
                                 fontSize: 18.0,
                                 // fontWeight: FontWeight.bold,
                               ),
-                              hintText: 'Enter Employee Name',
+                              labelText: 'Enter Employee Name',labelStyle: TextStyle(color:Colors.grey[600],fontSize: 18.0),
                             ),
                           ),
                           suggestionsCallback: (pattern) async {
@@ -337,9 +336,12 @@ class _RoutePlanningState extends State<RoutePlanning> {
                           },
                         ),
                       ),
-                      MyTextField(
-                        'Enter Remarks',
-                        remarks,
+                      Padding(
+                        padding: const EdgeInsets.only(top:10.0),
+                        child: MyTextField(
+                          'Enter Remarks',
+                          remarks,
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(

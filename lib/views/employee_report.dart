@@ -99,7 +99,10 @@ class _EmployeeReportState extends State<EmployeeReport> {
                   showSelectedItem: true,
                   items: epC.clientList.map((item) {
                     print(json.encode(item));
-                    var sC = item['name'] + ' - ' + item['id'];
+                    var sC = item['name'] +"("+ item['clientShortName']+")" + ' - ' + item['id'];
+                    if(sC.toString().contains('-')){
+                      sC=sC.toString().replaceAll('-', '~');
+                    }
                     return sC.toString();
                   }).toList(),
                   onChanged: (value) {

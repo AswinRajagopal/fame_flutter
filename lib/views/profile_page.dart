@@ -12,7 +12,6 @@ import 'package:package_info/package_info.dart';
 
 // import '../controllers/profile_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:get/get.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
