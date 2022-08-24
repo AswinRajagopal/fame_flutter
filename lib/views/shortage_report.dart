@@ -59,7 +59,7 @@ class _ShortageReportState extends State<ShortageReport> {
     epC.pr.style(
       backgroundColor: Colors.white,
     );
-    Future.delayed(Duration(milliseconds: 100), epC.getClientTimings);
+    Future.delayed(Duration(milliseconds: 100), epC.getClientTimingsShortage);
     date.text = DateFormat('dd-MM-yyyy').format(curDate).toString();
     selectedDate = DateFormat('yyyy-MM-dd').format(curDate).toString();
     super.initState();
@@ -154,6 +154,7 @@ class _ShortageReportState extends State<ShortageReport> {
                   hint: 'Select Client',
                   showSelectedItem: true,
                   // value: aC.clientList.first.client.id.toString(),
+
                   items: epC.clientList.map((item) {
                     var sC = item.client.name;
                     if (item.client.clientShortName != null &&
@@ -172,8 +173,10 @@ class _ShortageReportState extends State<ShortageReport> {
                     print(json.encode(item.clientManpowerList));
                     return sC.toString();
                   }).toList(),
+
                   onChanged: (value) {
                     var splitIt = value.split('-');
+                    if(manpowerList[splitIt[1].trim()] !=null){
                     var manpower = json.decode(manpowerList[splitIt[1].trim()]);
                     print('value: $manpower');
                     epC.timings.clear();
@@ -184,6 +187,7 @@ class _ShortageReportState extends State<ShortageReport> {
                       checkList.clear();
                       shift = null;
                       for (var j = 0; j < manpower.length; j++) {
+
                         manpower[j]['shiftStartTime'] = manpower[j]
                                         ['shiftStartTime']
                                     .split(':')
@@ -215,21 +219,22 @@ class _ShortageReportState extends State<ShortageReport> {
                                         manpower[j]['shiftStartTime'],
                                   ),
                                 )
+
                                 .toString()
                                 .toLowerCase();
                         var sETime = DateFormat('hh:mm')
-                                .format(
-                                  DateTime.parse(
-                                    '2020-12-20 ' + manpower[j]['shiftEndTime'],
-                                  ),
-                                )
-                                .toString() +
+                            .format(
+                          DateTime.parse(
+                            '2020-12-20 ' + manpower[j]['shiftEndTime'],
+                          ),
+                        )
+                            .toString() +
                             DateFormat('a')
                                 .format(
-                                  DateTime.parse(
-                                    '2020-12-20 ' + manpower[j]['shiftEndTime'],
-                                  ),
-                                )
+                              DateTime.parse(
+                                '2020-12-20 ' + manpower[j]['shiftEndTime'],
+                              ),
+                            )
                                 .toString()
                                 .toLowerCase();
                         var addTiming = {
@@ -277,7 +282,7 @@ class _ShortageReportState extends State<ShortageReport> {
                 ),
               ),
               Obx(() {
-                if (epC.timings.isNullOrBlank) {
+                if (epC.timings.isBlank) {
                   return Container(
                     height: 180.0,
                     child: Column(
@@ -496,5 +501,19 @@ class _ShortageReportState extends State<ShortageReport> {
         }),
       ),
     );
+  }
+
+  List<String> clientsData() {
+    List<String> val = [];
+    val.add('All-all');
+    val.addAll(epC.clientList.map((item) {
+      // print('item: ${item.client.id}');
+      var sC =
+          item.client.name + ' - ' + item.client.id.toString();
+      manpowerList[item.client.id.toString()] =
+          json.encode(item.clientManpowerList);
+      return sC.toString();
+    }).toList());
+    return val;
   }
 }

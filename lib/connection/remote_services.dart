@@ -1339,7 +1339,7 @@ class RemoteServices {
         <String, String>{
           'empId': box.get('empid').toString(),
           'companyId': box.get('companyid').toString(),
-          'clientId':clientId,
+          'clientId': clientId,
           'roleId': 'all',
           'broadcast': broadcast,
         },
@@ -1408,6 +1408,7 @@ class RemoteServices {
           'companyId': box.get('companyid').toString(),
           'clientId': clientId,
           'orderBy': orderBy,
+          'empId': box.get('empid').toString()
         },
       ),
     );
@@ -1428,7 +1429,7 @@ class RemoteServices {
       body: jsonEncode(
         <String, String>{
           'companyId': box.get('companyid').toString(),
-          'clientId': clientId,
+          'empId': box.get('empid').toString(),
           'orderBy': orderBy,
         },
       ),
