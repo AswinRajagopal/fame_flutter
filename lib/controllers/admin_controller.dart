@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -44,8 +45,30 @@ class AdminController extends GetxController {
   final shirtSizes = {'30', '32', '34', '36', '38', '40', '42', '44'};
   final pantSizes = {'26', '28', '30', '32', '34', '36', '38', '40'};
   final shoeSizes = {'6', '7', '8', '9', '10', '11'};
-  final relationShip = {'Father', 'Husband', 'Sister', 'Wife', 'Daughter', 'Uncle', 'Aunty', 'Mother', 'Son', 'Brother', 'Other'};
-  final proofList = {'AadharCard', 'DrivingLicense', 'VoterID', 'RationCard', 'PanCard', 'PassBook', 'ElectricityBill', 'ESICCard', 'Others'};
+  final relationShip = {
+    'Father',
+    'Husband',
+    'Sister',
+    'Wife',
+    'Daughter',
+    'Uncle',
+    'Aunty',
+    'Mother',
+    'Son',
+    'Brother',
+    'Other'
+  };
+  final proofList = {
+    'AadharCard',
+    'DrivingLicense',
+    'VoterID',
+    'RationCard',
+    'PanCard',
+    'PassBook',
+    'ElectricityBill',
+    'ESICCard',
+    'Others'
+  };
 
   // List of Family
   var famIndex = 0.obs;
@@ -93,6 +116,7 @@ class AdminController extends GetxController {
   TextEditingController proofNumber3 = TextEditingController();
   TextEditingController empRemarks = TextEditingController();
   TextEditingController clientAu = TextEditingController();
+  TextEditingController clientMu = TextEditingController();
   TextEditingController desigAu = TextEditingController();
   TextEditingController deptAu = TextEditingController();
   TextEditingController proof1 = TextEditingController();
@@ -138,7 +162,8 @@ class AdminController extends GetxController {
   var idProof2;
   var relFather = 'Father';
   var relFamily;
-  var profileLink = 'https://cdn.pixabay.com/photo/2018/08/28/12/41/avatar-3637425_960_720.png';
+  var profileLink =
+      'https://cdn.pixabay.com/photo/2018/08/28/12/41/avatar-3637425_960_720.png';
   var currentTabIndex = 0;
   bool copyAdd = false;
   bool profileAdd = false;
@@ -169,9 +194,13 @@ class AdminController extends GetxController {
         if (date != null) {
           dtOfBirth.text = DateFormat('dd-MM-yyyy').format(date).toString();
           dob = DateFormat('yyyy-MM-dd').format(date).toString();
+        } else if (DateTime.now().difference(date) < Duration(days: 6570)) {
+          showError('You should be 18 years old to register');
         }
       },
-      currentTime: dob != null ? DateTime.parse(dob.toString()) : DateTime.parse(curDate.toString()),
+      currentTime: dob != null
+          ? DateTime.parse(dob.toString())
+          : DateTime.parse(curDate.toString()),
     );
   }
 
@@ -191,7 +220,9 @@ class AdminController extends GetxController {
           dov = DateFormat('yyyy-MM-dd').format(date).toString();
         }
       },
-      currentTime: dov != null ? DateTime.parse(dov.toString()) : DateTime.parse(curDate.toString()),
+      currentTime: dov != null
+          ? DateTime.parse(dov.toString())
+          : DateTime.parse(curDate.toString()),
       // locale: LocaleType.en,
     );
   }
@@ -216,7 +247,8 @@ class AdminController extends GetxController {
     }
   }
 
-  Future<Null> getFamilyDate(BuildContext context, TextEditingController setValue) async {
+  Future<Null> getFamilyDate(
+      BuildContext context, TextEditingController setValue) async {
     await DatePicker.showDatePicker(
       context,
       showTitleActions: true,
@@ -231,7 +263,10 @@ class AdminController extends GetxController {
           setValue.text = DateFormat('dd-MM-yyyy').format(date).toString();
         }
       },
-      currentTime: setValue != null && setValue.text.isNotEmpty ? DateTime.parse('${setValue.text.toString().split('-')[2]}-${setValue.text.toString().split('-')[1]}-${setValue.text.toString().split('-')[0]}') : DateTime.parse(curDate.toString()),
+      currentTime: setValue != null && setValue.text.isNotEmpty
+          ? DateTime.parse(
+              '${setValue.text.toString().split('-')[2]}-${setValue.text.toString().split('-')[1]}-${setValue.text.toString().split('-')[0]}')
+          : DateTime.parse(curDate.toString()),
     );
   }
 
@@ -251,7 +286,9 @@ class AdminController extends GetxController {
           doj = DateFormat('yyyy-MM-dd').format(date).toString();
         }
       },
-      currentTime: doj != null ? DateTime.parse(doj.toString()) : DateTime.parse(curDate.toString()),
+      currentTime: doj != null
+          ? DateTime.parse(doj.toString())
+          : DateTime.parse(curDate.toString()),
       // locale: LocaleType.en,
     );
   }
@@ -259,7 +296,8 @@ class AdminController extends GetxController {
   void addShift(shiftName, startTime, endTime) async {
     try {
       await pr.show();
-      resAddShift = await RemoteServices().addShift(shiftName, startTime, endTime);
+      resAddShift =
+          await RemoteServices().addShift(shiftName, startTime, endTime);
       if (resAddShift != null) {
         await pr.hide();
         // print('res valid: $res');
@@ -326,7 +364,8 @@ class AdminController extends GetxController {
   void addClient(name, phone, clientId, inchargeId, address, lat, lng) async {
     try {
       await pr.show();
-      resAddClient = await RemoteServices().addClient(name, phone, clientId, inchargeId, address, lat, lng);
+      resAddClient = await RemoteServices()
+          .addClient(name, phone, clientId, inchargeId, address, lat, lng);
       if (resAddClient != null) {
         await pr.hide();
         // print('res valid: $res');
@@ -483,7 +522,8 @@ class AdminController extends GetxController {
         // print('getClientRes valid: $getClientRes');
         if (getShiftRes['success']) {
           for (var i = 0; i < getShiftRes['manpowerReqList'].length; i++) {
-            if (!checkList.contains(getShiftRes['manpowerReqList'][i]['shift'])) {
+            if (!checkList
+                .contains(getShiftRes['manpowerReqList'][i]['shift'])) {
               shiftList.add(getShiftRes['manpowerReqList'][i]);
               checkList.add(getShiftRes['manpowerReqList'][i]['shift']);
             }
@@ -514,10 +554,12 @@ class AdminController extends GetxController {
     }
   }
 
-  void addEmployee(name, address, email, phone, empid, sitePostedTo, gender, dob, design, shift) async {
+  void addEmployee(name, address, email, phone, empid, sitePostedTo, gender,
+      dob, design, shift) async {
     try {
       await pr.show();
-      resAddEmployee = await RemoteServices().addEmployee(name, address, email, phone, empid, sitePostedTo, gender, dob, design, shift);
+      resAddEmployee = await RemoteServices().addEmployee(name, address, email,
+          phone, empid, sitePostedTo, gender, dob, design, shift);
       if (resAddEmployee != null) {
         await pr.hide();
         // print('res valid: $res');
@@ -585,14 +627,19 @@ class AdminController extends GetxController {
     print('index: $index');
     famName.insert(index, TextEditingController(text: data['relName']));
     if (data['dofBirth'] != '') {
-      famDob.insert(index, TextEditingController(text: '${data['dofBirth'].split('-')[2]}-${data['dofBirth'].split('-')[1]}-${data['dofBirth'].split('-')[0]}'));
+      famDob.insert(
+          index,
+          TextEditingController(
+              text:
+                  '${data['dofBirth'].split('-')[2]}-${data['dofBirth'].split('-')[1]}-${data['dofBirth'].split('-')[0]}'));
     } else {
       famDob.insert(index, TextEditingController());
     }
     famAge.insert(index, TextEditingController(text: data['age']));
     famAadhar.insert(index, TextEditingController(text: data['relAadhaarNo']));
     famRelation.insert(index, TextEditingController(text: data['relType']));
-    famPercent.insert(index, TextEditingController(text: data['nomineePercent']));
+    famPercent.insert(
+        index, TextEditingController(text: data['nomineePercent']));
     famNominee.insert(index, data['pfNominee'] == 'N' ? false : true);
 
     familyDetail.insert(
@@ -654,7 +701,9 @@ class AdminController extends GetxController {
                     ),
                   ),
                   isExpanded: false,
-                  value: famRelation[index].text.isEmpty ? null : famRelation[index].text,
+                  value: famRelation[index].text.isEmpty
+                      ? null
+                      : famRelation[index].text,
                   items: relationShip.map((item) {
                     //print('item: $item');
                     return DropdownMenuItem(
@@ -780,6 +829,9 @@ class AdminController extends GetxController {
                 child: TextField(
                   controller: famAge[index],
                   keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp("[0-9]")),
+                  ],
                   decoration: InputDecoration(
                     isDense: true,
                     contentPadding: EdgeInsets.all(10),
@@ -958,7 +1010,9 @@ class AdminController extends GetxController {
                     ),
                   ),
                   isExpanded: false,
-                  value: famRelation[index].text.isEmpty ? null : famRelation[index].text,
+                  value: famRelation[index].text.isEmpty
+                      ? null
+                      : famRelation[index].text,
                   items: relationShip.map((item) {
                     //print('item: $item');
                     return DropdownMenuItem(
@@ -1120,7 +1174,7 @@ class AdminController extends GetxController {
                       color: Colors.grey[600],
                       fontSize: 18.0,
                     ),
-                    hintText: 'Aadhar Number',
+                    hintText: 'Aadhaar Number',
                     prefixIcon: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -1356,17 +1410,37 @@ class AdminController extends GetxController {
     }
   }
 
-  void addEmployeeData(empRelationshipList, proofDetails, aadharFront, aadharBack, passbookFront, passbookBack, proof3Front, proof3Back, profile, empId) async {
+  void addEmployeeData(
+      empRelationshipList,
+      proofDetails,
+      aadharFront,
+      aadharBack,
+      passbookFront,
+      passbookBack,
+      proof3Front,
+      proof3Back,
+      profile,
+      empId) async {
     try {
-      var addNewEmpRel = await RemoteServices().newRecRel(empRelationshipList, empId);
+      var addNewEmpRel =
+          await RemoteServices().newRecRel(empRelationshipList, empId);
 
       if (addNewEmpRel != null) {
         // print('addNewEmp: $addNewEmp');
         if (addNewEmpRel['success']) {
-          var addNewEmpProof = await RemoteServices().newRecProof(proofDetails, empId);
+          var addNewEmpProof =
+              await RemoteServices().newRecProof(proofDetails, empId);
           if (addNewEmpProof != null) {
             if (addNewEmpProof['success']) {
-              var uploadNewEmpProof = await RemoteServices().newRecUploadProof(empId, aadharFront, aadharBack, passbookFront, passbookBack, proof3Front, proof3Back, profile);
+              var uploadNewEmpProof = await RemoteServices().newRecUploadProof(
+                  empId,
+                  aadharFront,
+                  aadharBack,
+                  passbookFront,
+                  passbookBack,
+                  proof3Front,
+                  proof3Back,
+                  profile);
               if (uploadNewEmpProof != null) {
                 if (uploadNewEmpProof['success']) {
                   await pr.hide();
@@ -1377,8 +1451,10 @@ class AdminController extends GetxController {
                     duration: Duration(seconds: 2),
                     backgroundColor: AppUtils().greenColor,
                     snackPosition: SnackPosition.BOTTOM,
-                    margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                    padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+                    margin:
+                        EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
                     borderRadius: 5.0,
                   );
                   // Timer(Duration(seconds: 2), Get.back);
@@ -1427,7 +1503,9 @@ class AdminController extends GetxController {
     await pr.hide();
     Get.snackbar(
       null,
-      msg == '' ? 'Something went wrong! Please try again later' : msg.toString(),
+      msg == ''
+          ? 'Something went wrong! Please try again later'
+          : msg.toString(),
       colorText: Colors.white,
       backgroundColor: Colors.black87,
       snackPosition: SnackPosition.BOTTOM,
@@ -1438,14 +1516,17 @@ class AdminController extends GetxController {
   }
 
   void addEmployeeDataNew() async {
-    var pehouse = permanenthouseNo.text.isEmpty ? '' : '${permanenthouseNo.text}';
-    var pestreet = permanentStreet.text.isEmpty ? '' : '${permanentStreet.text}';
-    var pecolony = permanentColony.text.isEmpty ? '' : '${permanentColony.text}';
-    var peAdd = pehouse +', '+ pestreet +', ' +pecolony;
+    var pehouse =
+        permanenthouseNo.text.isEmpty ? '' : '${permanenthouseNo.text}';
+    var pestreet =
+        permanentStreet.text.isEmpty ? '' : '${permanentStreet.text}';
+    var pecolony =
+        permanentColony.text.isEmpty ? '' : '${permanentColony.text}';
+    var peAdd = pehouse + ', ' + pestreet + ', ' + pecolony;
     var prhouse = presenthouseNo.text.isEmpty ? '' : '${presenthouseNo.text}';
     var prstreet = presentStreet.text.isEmpty ? '' : '${presentStreet.text}';
     var prcolony = presentColony.text.isEmpty ? '' : '${presentColony.text}';
-    var prAdd = prhouse + ', ' + prstreet +', '+ prcolony;
+    var prAdd = prhouse + ', ' + prstreet + ', ' + prcolony;
     var empdetails = {
       'empFName': name.text,
       'aadharScanned': aadharScan,
@@ -1539,7 +1620,8 @@ class AdminController extends GetxController {
       print('empdetails: $empdetails');
       print('empFamilyMembers: $empFamilyMembers');
       print('proofDetails: $proofDetails');
-      addEmployeeData(empFamilyMembers, proofDetails, aadhar1, aadhar2, proof11, proof12, proof21, proof22, profile, empId);
+      addEmployeeData(empFamilyMembers, proofDetails, aadhar1, aadhar2, proof11,
+          proof12, proof21, proof22, profile, empId);
     }
   }
 
@@ -1583,7 +1665,9 @@ class AdminController extends GetxController {
           'relType': famRelation[i].text,
           'age': famAge[i].text,
           'relAadhaarNo': famAadhar[i].text,
-          'dofBirth': famDob[i].text.isEmpty ? '' : '${famDob[i].text.split('-')[2]}-${famDob[i].text.split('-')[1]}-${famDob[i].text.split('-')[0]}',
+          'dofBirth': famDob[i].text.isEmpty
+              ? ''
+              : '${famDob[i].text.split('-')[2]}-${famDob[i].text.split('-')[1]}-${famDob[i].text.split('-')[0]}',
           'nomineePercent': famPercent[i].text,
           'pfNominee': famNominee[i] ? 'Y' : 'N',
           'esiNominee': famNominee[i] ? 'Y' : 'N',
@@ -1617,8 +1701,9 @@ class AdminController extends GetxController {
       'employeeType': '',
       'empFatherName': '',
       'title': '',
-      'unitId': client == null ? '' : client.toString(),
+      'unitId': client == null ? '': client.toString(),
       'unitIdText': clientAu.text,
+      // 'clientMan':clientMu.text,
       'sitePostedTo': sitePostedTo == null ? '' : sitePostedTo.toString(),
       'empBloodGroup': blood == null ? '' : blood.toString(),
       'department': department == null ? '' : department.toString(),
@@ -1673,7 +1758,8 @@ class AdminController extends GetxController {
   void loadEmployeeFromDraft() async {
     if (RemoteServices().box.get('employeeDraft') != null) {
       print(RemoteServices().box.get('employeeDraft'));
-      print('employeeDraft: ${jsonDecode(RemoteServices().box.get('employeeDraft'))}');
+      print(
+          'employeeDraft: ${jsonDecode(RemoteServices().box.get('employeeDraft'))}');
       var draftEmployee = jsonDecode(RemoteServices().box.get('employeeDraft'));
       // personal info
       name.text = draftEmployee['empFName'];
@@ -1681,9 +1767,12 @@ class AdminController extends GetxController {
       aadhar.text = draftEmployee['aadhar'];
       gender = draftEmployee['empSex'];
       mStatus = draftEmployee['empMaritalStatus'];
-      if (draftEmployee['empDtofBirth'] != null && draftEmployee['empDtofBirth'] != '') {
+      if (draftEmployee['empDtofBirth'] != null &&
+          draftEmployee['empDtofBirth'] != '') {
         dob = draftEmployee['empDtofBirth'];
-        dtOfBirth.text = DateFormat('dd-MM-yyyy').format(DateTime.parse(draftEmployee['empDtofBirth'].toString())).toString();
+        dtOfBirth.text = DateFormat('dd-MM-yyyy')
+            .format(DateTime.parse(draftEmployee['empDtofBirth'].toString()))
+            .toString();
       }
       language.text = draftEmployee['motherTongue'];
       empPhone.text = draftEmployee['empPhone'];
@@ -1693,29 +1782,46 @@ class AdminController extends GetxController {
       deptAu.text = draftEmployee['departmentText'];
       client = draftEmployee['unitId'];
       clientAu.text = draftEmployee['unitIdText'];
+      clientMu.text=draftEmployee[''];
       sitePostedTo = draftEmployee['unitId'];
-      if (draftEmployee['empBloodGroup'] != null && draftEmployee['empBloodGroup'] != '') blood = draftEmployee['empBloodGroup'].toString();
+      if (draftEmployee['empBloodGroup'] != null &&
+          draftEmployee['empBloodGroup'] != '')
+        blood = draftEmployee['empBloodGroup'].toString();
       designation = draftEmployee['empDesgn'];
       desigAu.text = draftEmployee['empDesgnText'];
       if (draftEmployee['doj'] != null && draftEmployee['doj'] != '') {
         doj = draftEmployee['doj'];
-        dtOfJoin.text = DateFormat('dd-MM-yyyy').format(DateTime.parse(draftEmployee['doj'].toString())).toString();
+        dtOfJoin.text = DateFormat('dd-MM-yyyy')
+            .format(DateTime.parse(draftEmployee['doj'].toString()))
+            .toString();
       }
       qualification.text = draftEmployee['empQualification'];
       // vaccine info
-      if (draftEmployee['vaccineName'] != null && draftEmployee['vaccineName'] != '') vaccineName = draftEmployee['vaccineName'];
+      if (draftEmployee['vaccineName'] != null &&
+          draftEmployee['vaccineName'] != '')
+        vaccineName = draftEmployee['vaccineName'];
       dose = draftEmployee['vaccineDose'];
-      if (draftEmployee['vaccineDate'] != null && draftEmployee['vaccineDate'] != '') {
+      if (draftEmployee['vaccineDate'] != null &&
+          draftEmployee['vaccineDate'] != '') {
         dov = draftEmployee['vaccineDate'];
-        dtOfVaccine.text = DateFormat('dd-MM-yyyy').format(DateTime.parse(draftEmployee['vaccineDate'].toString())).toString();
+        dtOfVaccine.text = DateFormat('dd-MM-yyyy')
+            .format(DateTime.parse(draftEmployee['vaccineDate'].toString()))
+            .toString();
       }
       // bank & uniform info
-      if (draftEmployee['empbankname'] != null && draftEmployee['empbankname'] != '' && draftEmployee['empbankname'] != 'null') bank = draftEmployee['empbankname'];
+      if (draftEmployee['empbankname'] != null &&
+          draftEmployee['empbankname'] != '' &&
+          draftEmployee['empbankname'] != 'null')
+        bank = draftEmployee['empbankname'];
       accountNo.text = draftEmployee['empBankAcNo'];
       ifsc.text = draftEmployee['empIFSCcode'];
-      if (draftEmployee['shirtSize'] != null && draftEmployee['shirtSize'] != '') shirtSize = draftEmployee['shirtSize'];
-      if (draftEmployee['pantSize'] != null && draftEmployee['pantSize'] != '') pantSize = draftEmployee['pantSize'];
-      if (draftEmployee['shoeSize'] != null && draftEmployee['shoeSize'] != '') shoeSize = draftEmployee['shoeSize'];
+      if (draftEmployee['shirtSize'] != null &&
+          draftEmployee['shirtSize'] != '')
+        shirtSize = draftEmployee['shirtSize'];
+      if (draftEmployee['pantSize'] != null && draftEmployee['pantSize'] != '')
+        pantSize = draftEmployee['pantSize'];
+      if (draftEmployee['shoeSize'] != null && draftEmployee['shoeSize'] != '')
+        shoeSize = draftEmployee['shoeSize'];
       // address info
       // adminC.getCities(int.parse(value), 'present');
       // adminC.getCities(int.parse(value), 'permanent');
@@ -1723,21 +1829,33 @@ class AdminController extends GetxController {
       presentStreet.text = draftEmployee['presentStreet'];
       presentColony.text = draftEmployee['presentColony'];
       presentPincode.text = draftEmployee['presentPincode'];
-      if (draftEmployee['presentState'] != null && draftEmployee['presentState'] != '') presentState = draftEmployee['presentState'];
-      if (draftEmployee['presentState'] != null && draftEmployee['presentState'] != '') {
-        await getCities(int.parse(draftEmployee['presentState']), 'present', showDialogue: false);
+      if (draftEmployee['presentState'] != null &&
+          draftEmployee['presentState'] != '')
+        presentState = draftEmployee['presentState'];
+      if (draftEmployee['presentState'] != null &&
+          draftEmployee['presentState'] != '') {
+        await getCities(int.parse(draftEmployee['presentState']), 'present',
+            showDialogue: false);
       }
-      if (draftEmployee['presentCity'] != null && draftEmployee['presentCity'] != '') presentCity = draftEmployee['presentCity'];
+      if (draftEmployee['presentCity'] != null &&
+          draftEmployee['presentCity'] != '')
+        presentCity = draftEmployee['presentCity'];
       copyAdd = draftEmployee['copyAdd'];
       permanenthouseNo.text = draftEmployee['permanenthouseNo'];
       permanentStreet.text = draftEmployee['permanentStreet'];
       permanentColony.text = draftEmployee['permanentColony'];
       permanentPincode.text = draftEmployee['permanentPincode'];
-      if (draftEmployee['permanentState'] != null && draftEmployee['permanentState'] != '') permanentState = draftEmployee['permanentState'];
-      if (draftEmployee['permanentState'] != null && draftEmployee['permanentState'] != '') {
-        await getCities(int.parse(draftEmployee['permanentState']), 'permanent', showDialogue: false);
+      if (draftEmployee['permanentState'] != null &&
+          draftEmployee['permanentState'] != '')
+        permanentState = draftEmployee['permanentState'];
+      if (draftEmployee['permanentState'] != null &&
+          draftEmployee['permanentState'] != '') {
+        await getCities(int.parse(draftEmployee['permanentState']), 'permanent',
+            showDialogue: false);
       }
-      if (draftEmployee['permanentCity'] != null && draftEmployee['permanentCity'] != '') permanentCity = draftEmployee['permanentCity'];
+      if (draftEmployee['permanentCity'] != null &&
+          draftEmployee['permanentCity'] != '')
+        permanentCity = draftEmployee['permanentCity'];
       // family info
       var familyData = draftEmployee['empFamilyMembers'];
       if (familyData != null && familyData.length > 0) {
@@ -1757,12 +1875,15 @@ class AdminController extends GetxController {
       }
       // photos/proof info
       var proofData = draftEmployee['proofDetails'];
-      if (proofData['idProof'] != null && proofData['idProof'] != '') idProof = proofData['idProof'];
+      if (proofData['idProof'] != null && proofData['idProof'] != '')
+        idProof = proofData['idProof'];
       proofAadharNumber.text = proofData['proofAadharNumber'];
       proofAadharNumberConfirm.text = proofData['proofAadharNumberConfirm'];
-      if (proofData['idProof1'] != null && proofData['idProof1'] != '') idProof1 = proofData['idProof1'];
+      if (proofData['idProof1'] != null && proofData['idProof1'] != '')
+        idProof1 = proofData['idProof1'];
       proofNumber2.text = proofData['proofNumber2'];
-      if (proofData['idProof2'] != null && proofData['idProof2'] != '') idProof2 = proofData['idProof2'];
+      if (proofData['idProof2'] != null && proofData['idProof2'] != '')
+        idProof2 = proofData['idProof2'];
       proofNumber3.text = proofData['proofNumber3'];
       updatingData.refresh();
     }
