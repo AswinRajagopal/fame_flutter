@@ -19,7 +19,7 @@ class OBPersonal extends StatefulWidget {
 
 class _OBPersonalState extends State<OBPersonal> {
   final AdminController adminC = Get.put(AdminController());
-  bool _isClicked = false;
+  bool _isManual = false;
 
   @override
   void initState() {
@@ -621,10 +621,10 @@ class _OBPersonalState extends State<OBPersonal> {
                         child: Row(
                           children: [
                             Checkbox(
-                              value: _isClicked,
+                              value: _isManual,
                               onChanged: (value) {
                                 setState(() {
-                                  _isClicked = value;
+                                  _isManual = value;
                                 });
                               },
                             ),
@@ -640,7 +640,7 @@ class _OBPersonalState extends State<OBPersonal> {
                         ),
                       ),
                     ),
-                    _isClicked
+                    _isManual
                         ? Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: TextFormField(
@@ -976,6 +976,9 @@ class _OBPersonalState extends State<OBPersonal> {
                           RaisedButton(
                             onPressed: () {
                               FocusScope.of(context).requestFocus(FocusNode());
+                              if(_isManual && adminC.clientMu.text.length>0) {
+                                adminC.client = adminC.clientMu.text;
+                              }
                               adminC.step1(false);
                               if (AppUtils.checkTextisNull(
                                   adminC.name, 'Name')) {
@@ -1060,7 +1063,7 @@ class _OBPersonalState extends State<OBPersonal> {
                                   borderRadius: 5.0,
                                 );
                               }
-                              else if (adminC.client == null) {
+                              else if (adminC.client == null && !_isManual) {
                                 Get.snackbar(
                                   null,
                                   'Client is not selected',
@@ -1073,9 +1076,6 @@ class _OBPersonalState extends State<OBPersonal> {
                                       horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
                                 );
-                              }
-                              else if (!_isClicked) {
-                                adminC.client= adminC.clientMu.text;
                               }
                               else if (adminC.designation == null) {
                                 Get.snackbar(

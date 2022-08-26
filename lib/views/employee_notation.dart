@@ -56,7 +56,6 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
           enC.getEmployeeBySearch(widget.date, widget.clientId, widget.time,
               widget.shift, allShifts);
         } else {
-          // TODO: Forget the user
         }
       });
 
@@ -440,7 +439,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
               ],
             ),
             Positioned(
-              top: 180.0,
+              top: 200.0,
               bottom: 10.0,
               left: 0.0,
               right: 0.0,
@@ -545,9 +544,8 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                         SizedBox(
                                           width: 310.0,
                                           child: Text(
-                                            emp['name'].toString().trimRight() +
-                                                ' ' +
-                                                emp['empId'],
+                                              emp['empId']+ " " +emp['name'].toString().trimRight()
+                                               ,
                                             style: TextStyle(
                                               fontSize: 16.0,
                                               fontWeight: FontWeight.bold,

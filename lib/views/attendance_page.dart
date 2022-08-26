@@ -182,10 +182,12 @@ class _AttendancePageState extends State<AttendancePage> {
                           val = val + " (" + item.client.clientShortName + ") ";
                         }
                         if(val.toString().contains('-')){
+
                           val = val.toString().replaceAll('-', '~');
                         }
                         val = val+ ' - ' +
                             item.client.id.toString();
+
                         manpowerList[item.client.id.toString()] =
                             json.encode(item.clientManpowerList);
                         print(json.encode(item.clientManpowerList));
