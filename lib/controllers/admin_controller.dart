@@ -1782,7 +1782,6 @@ class AdminController extends GetxController {
       deptAu.text = draftEmployee['departmentText'];
       client = draftEmployee['unitId'];
       clientAu.text = draftEmployee['unitIdText'];
-      clientMu.text=draftEmployee[''];
       sitePostedTo = draftEmployee['unitId'];
       if (draftEmployee['empBloodGroup'] != null &&
           draftEmployee['empBloodGroup'] != '')
