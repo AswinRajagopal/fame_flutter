@@ -264,7 +264,7 @@ class _OnboardReportDetail extends State<OnboardReportDetail> {
                   ],
                 ),
                 Positioned(
-                  top: 75.0,
+                  top: 70.0,
                   bottom: 10.0,
                   left: 0.0,
                   right: 0.0,
