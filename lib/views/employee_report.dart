@@ -107,7 +107,7 @@ class _EmployeeReportState extends State<EmployeeReport> {
                   }).toList(),
                   onChanged: (value) {
                     var splitIt = value.split('-');
-                    clientId = value[1].trim();
+                    clientId = splitIt[1].trim();
                     setState(() {});
                   },
                 ),
