@@ -176,89 +176,90 @@ class _ShortageReportState extends State<ShortageReport> {
 
                   onChanged: (value) {
                     var splitIt = value.split('-');
-                    if(manpowerList[splitIt[1].trim()] !=null){
-                    var manpower = json.decode(manpowerList[splitIt[1].trim()]);
-                    print('value: $manpower');
-                    epC.timings.clear();
-                    checkList.clear();
-                    if (manpower != null && manpower.length > 0) {
-                      clientId = manpower.first['clientId'];
+                    if(manpowerList[splitIt[1].trim()] !=null) {
+                      var manpower = json.decode(manpowerList[splitIt[1]
+                          .trim()]);
+                      print('value: $manpower');
                       epC.timings.clear();
                       checkList.clear();
-                      shift = null;
-                      for (var j = 0; j < manpower.length; j++) {
+                      if (manpower != null && manpower.length > 0) {
+                        clientId = manpower.first['clientId'];
+                        epC.timings.clear();
+                        checkList.clear();
+                        shift = null;
+                        for (var j = 0; j < manpower.length; j++) {
+                          manpower[j]['shiftStartTime'] = manpower[j]
+                          ['shiftStartTime']
+                              .split(':')
+                              .first
+                              .length ==
+                              1
+                              ? '0' + manpower[j]['shiftStartTime']
+                              : manpower[j]['shiftStartTime'];
+                          manpower[j]['shiftEndTime'] = manpower[j]
+                          ['shiftEndTime']
+                              .split(':')
+                              .first
+                              .length ==
+                              1
+                              ? '0' + manpower[j]['shiftEndTime']
+                              : manpower[j]['shiftEndTime'];
+                          var sSTime = DateFormat('hh:mm')
+                              .format(
+                            DateTime.parse(
+                              '2020-12-20 ' +
+                                  manpower[j]['shiftStartTime'],
+                            ),
+                          )
+                              .toString() +
+                              DateFormat('a')
+                                  .format(
+                                DateTime.parse(
+                                  '2020-12-20 ' +
+                                      manpower[j]['shiftStartTime'],
+                                ),
+                              )
 
-                        manpower[j]['shiftStartTime'] = manpower[j]
-                                        ['shiftStartTime']
-                                    .split(':')
-                                    .first
-                                    .length ==
-                                1
-                            ? '0' + manpower[j]['shiftStartTime']
-                            : manpower[j]['shiftStartTime'];
-                        manpower[j]['shiftEndTime'] = manpower[j]
-                                        ['shiftEndTime']
-                                    .split(':')
-                                    .first
-                                    .length ==
-                                1
-                            ? '0' + manpower[j]['shiftEndTime']
-                            : manpower[j]['shiftEndTime'];
-                        var sSTime = DateFormat('hh:mm')
-                                .format(
-                                  DateTime.parse(
-                                    '2020-12-20 ' +
-                                        manpower[j]['shiftStartTime'],
-                                  ),
-                                )
-                                .toString() +
-                            DateFormat('a')
-                                .format(
-                                  DateTime.parse(
-                                    '2020-12-20 ' +
-                                        manpower[j]['shiftStartTime'],
-                                  ),
-                                )
-
-                                .toString()
-                                .toLowerCase();
-                        var sETime = DateFormat('hh:mm')
-                            .format(
-                          DateTime.parse(
-                            '2020-12-20 ' + manpower[j]['shiftEndTime'],
-                          ),
-                        )
-                            .toString() +
-                            DateFormat('a')
-                                .format(
-                              DateTime.parse(
-                                '2020-12-20 ' + manpower[j]['shiftEndTime'],
-                              ),
-                            )
-                                .toString()
-                                .toLowerCase();
-                        var addTiming = {
-                          'shift': manpower[j]['shift'],
-                          'shiftStartTime': sSTime,
-                          'shiftEndTime': sETime,
-                        };
-                        // print(epC.timings.contains(addTiming));
-                        if (!checkList.contains(manpower[j]['shift'])) {
-                          if (j == 0) {
-                            var addAllTiming = {
-                              'shift': 'ZZZ',
-                              'shiftStartTime': 'All ',
-                              'shiftEndTime': ' Shifts',
-                            };
-                            epC.timings.add(addAllTiming);
+                                  .toString()
+                                  .toLowerCase();
+                          var sETime = DateFormat('hh:mm')
+                              .format(
+                            DateTime.parse(
+                              '2020-12-20 ' + manpower[j]['shiftEndTime'],
+                            ),
+                          )
+                              .toString() +
+                              DateFormat('a')
+                                  .format(
+                                DateTime.parse(
+                                  '2020-12-20 ' + manpower[j]['shiftEndTime'],
+                                ),
+                              )
+                                  .toString()
+                                  .toLowerCase();
+                          var addTiming = {
+                            'shift': manpower[j]['shift'],
+                            'shiftStartTime': sSTime,
+                            'shiftEndTime': sETime,
+                          };
+                          // print(epC.timings.contains(addTiming));
+                          if (!checkList.contains(manpower[j]['shift'])) {
+                            if (j == 0) {
+                              var addAllTiming = {
+                                'shift': 'ZZZ',
+                                'shiftStartTime': 'All ',
+                                'shiftEndTime': ' Shifts',
+                              };
+                              epC.timings.add(addAllTiming);
+                            }
+                            epC.timings.add(addTiming);
+                            checkList.add(manpower[j]['shift']);
                           }
-                          epC.timings.add(addTiming);
-                          checkList.add(manpower[j]['shift']);
                         }
-                      }
 
-                      // print(epC.timings.contains(addTiming));
-                      checkList.add('ZZZ');
+                        // print(epC.timings.contains(addTiming));
+                        checkList.add('ZZZ');
+                      }
                     }
                   },
                 ),

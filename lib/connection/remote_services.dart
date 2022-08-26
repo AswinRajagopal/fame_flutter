@@ -798,6 +798,30 @@ class RemoteServices {
     }
   }
 
+  Future getTransferEmployees(empName) async {
+    // print('empName: $empName');
+    var response = await client.post(
+      '$baseURL/transfer/get_suggest',
+      headers: header,
+      body: jsonEncode(
+        <String, Object>{
+          'companyId': box.get('companyid').toString(),
+          'empId': box.get('empid').toString(),
+          'transfer': true,
+          'empName': empName,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString)['empSuggest'];
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
   Future getUnits(unitName) async {
     // print('empName: $empName');
     var response = await client.post(
@@ -1002,6 +1026,7 @@ class RemoteServices {
           'date': date,
           'clientId': clientId,
           'empName': empName,
+          'allShifts':allShifts
         },
       ),
     );
