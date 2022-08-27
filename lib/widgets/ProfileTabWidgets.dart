@@ -1,8 +1,12 @@
+import 'dart:convert';
+
+import 'package:fame/connection/remote_services.dart';
 import 'package:fame/controllers/profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PersonalInfoTab extends StatelessWidget {
   const PersonalInfoTab({
@@ -208,7 +212,15 @@ class PersonalInfoTab extends StatelessWidget {
                                       width: MediaQuery.of(context).size.width /
                                           1.5,
                                       child: Text(
-    pC.profileRes['empDetails']['dob']!=null ? DateFormat('dd-MM-yyyy').format(DateTime.parse(pC.profileRes['empDetails']['dob'])) ?? 'N/A':'',
+                                        pC.profileRes['empDetails']['dob'] !=
+                                                null
+                                            ? DateFormat('dd-MM-yyyy').format(
+                                                    DateTime.parse(
+                                                        pC.profileRes[
+                                                                'empDetails']
+                                                            ['dob'])) ??
+                                                'N/A'
+                                            : '',
                                         style: TextStyle(
                                             fontFamily: "Sofia",
                                             fontSize: 16,
@@ -277,8 +289,15 @@ class PersonalInfoTab extends StatelessWidget {
                                       width: MediaQuery.of(context).size.width /
                                           1.5,
                                       child: Text(
-
-    pC.profileRes['empDetails']['doj'] != null  ? DateFormat('dd-MM-yyyy').format(DateTime.parse(pC.profileRes['empDetails']['doj'])) ?? 'N/A':'',
+                                        pC.profileRes['empDetails']['doj'] !=
+                                                null
+                                            ? DateFormat('dd-MM-yyyy').format(
+                                                    DateTime.parse(
+                                                        pC.profileRes[
+                                                                'empDetails']
+                                                            ['doj'])) ??
+                                                'N/A'
+                                            : '',
                                         style: TextStyle(
                                             fontFamily: "Sofia",
                                             fontSize: 16,
@@ -499,7 +518,10 @@ class PersonalInfoTab extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      pC.profileRes['empDetails']['address'].toString().replaceAll(',,', ',')??'',
+                                      pC.profileRes['empDetails']['address']
+                                              .toString()
+                                              .replaceAll(',,', ',') ??
+                                          '',
                                       style: TextStyle(
                                           fontFamily: "Sofia",
                                           fontSize: 16,
@@ -534,11 +556,20 @@ class PersonalInfoTab extends StatelessWidget {
 }
 
 class CompilanceInfoTab extends StatelessWidget {
-  const CompilanceInfoTab({
+  CompilanceInfoTab({
     Key key,
     this.pC,
   }) : super(key: key);
   final ProfileController pC;
+  var encEmpId;
+
+  @override
+  void initState() {
+    Codec<String, String> stringToBase64 = utf8.fuse(base64);
+    encEmpId = stringToBase64
+        .encode(RemoteServices().box.get('empid').toString())
+        .toString();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -558,10 +589,18 @@ class CompilanceInfoTab extends StatelessWidget {
                   Column(children: [
                     MaterialButton(
                       onPressed: () {
-                        Get.to(DetailScreen(
-                            'https://androidapp.mydiyosfame.com/empDocs/idcard/' +
-                                pC.profileRes['empDetails']['empId'] +
-                                '.pdf'));
+                        var url = jsonDecode(RemoteServices()
+                                .box
+                                .get('appFeature'))['paySlipUrl']
+                            .toString()
+                            .replaceAll(
+                                'DownloadPayslip.aspx', 'docdownloads.aspx');
+                        url = url +
+                            '?empId=' +
+                            encEmpId.toString() +
+                            '&documentType=' +
+                            'idcard'.toString();
+                        Get.to(DetailScreen(url));
                       },
                       color: Colors.blue,
                       textColor: Colors.white,
@@ -580,10 +619,18 @@ class CompilanceInfoTab extends StatelessWidget {
                   Column(children: [
                     MaterialButton(
                       onPressed: () {
-                        Get.to(DetailScreen(
-                            'https://androidapp.mydiyosfame.com/empDocs/appointment/' +
-                                pC.profileRes['empDetails']['empId'] +
-                                '.pdf'));
+                        var url = jsonDecode(RemoteServices()
+                                .box
+                                .get('appFeature'))['paySlipUrl']
+                            .toString()
+                            .replaceAll(
+                                'DownloadPayslip.aspx', 'docdownloads.aspx');
+                        url = url +
+                            '?empId=' +
+                            encEmpId.toString() +
+                            '&documentType=' +
+                            'appointment'.toString();
+                        Get.to(DetailScreen((url)));
                       },
                       color: Colors.blue,
                       textColor: Colors.white,
@@ -602,11 +649,30 @@ class CompilanceInfoTab extends StatelessWidget {
                   Column(
                     children: [
                       MaterialButton(
-                        onPressed: () {
-                          Get.to(DetailScreen(
-                              'https://androidapp.mydiyosfame.com/empDocs/insurance/' +
-                                  pC.profileRes['empDetails']['empId'] +
-                                  '.pdf'));
+                        onPressed: () async{
+                          print(jsonDecode(RemoteServices()
+                              .box
+                              .get('appFeature'))['insuranceUrl']);
+                          var url= jsonDecode(RemoteServices()
+                              .box
+                              .get('appFeature'))['insuranceUrl'].toString();
+                          if (await canLaunch(url)) {
+                            await launch(url);
+                          } else {
+                            throw 'Could not launch $url';
+                          }
+                          // var url = jsonDecode(RemoteServices()
+                          //         .box
+                          //         .get('appFeature'))['insuranceUrl']
+                          //     .toString()
+                          //     .replaceAll(
+                          //         'DownloadPayslip.aspx', 'docdownloads.aspx');
+                          // url = url +
+                          //     '?empId=' +
+                          //     encEmpId.toString() +
+                          //     '&documentType=' +
+                          //     'insurance'.toString();
+                          // Get.to(DetailScreen(url));
                         },
                         color: Colors.blue,
                         textColor: Colors.white,
@@ -623,13 +689,22 @@ class CompilanceInfoTab extends StatelessWidget {
                   Container(
                     width: 10,
                   ),
-                  Column(children: [
+                  Column(
+                      children: [
                     MaterialButton(
                       onPressed: () {
-                        Get.to(DetailScreen(
-                            'https://androidapp.mydiyosfame.com/empDocs/esi/' +
-                                pC.profileRes['empDetails']['empId'] +
-                                '.pdf'));
+                        var url = jsonDecode(RemoteServices()
+                                .box
+                                .get('appFeature'))['paySlipUrl']
+                            .toString()
+                            .replaceAll(
+                                'DownloadPayslip.aspx', 'docdownloads.aspx');
+                        url = url +
+                            '?empId=' +
+                            encEmpId.toString() +
+                            '&documentType=' +
+                            'esi'.toString();
+                        Get.to(DetailScreen(url));
                       },
                       color: Colors.blue,
                       textColor: Colors.white,
@@ -655,497 +730,538 @@ class CompilanceInfoTab extends StatelessWidget {
           //   text: pC.profileRes['empDetails']['phone'] ?? 'N/A',
           // ),
           // email
-          pC.profileRes['empDetails']['aadhaarid']!="" ? Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Material(
-              elevation: 10,
-              shadowColor: Colors.white60,
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.white,
-              child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Container(
-                    padding: const EdgeInsets.only(
-                        top: 4, left: 4, right: 4, bottom: 4),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+          pC.profileRes['empDetails']['aadhaarid'] != ""
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Material(
+                    elevation: 10,
+                    shadowColor: Colors.white60,
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
+                    child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Container(
+                          padding: const EdgeInsets.only(
+                              top: 4, left: 4, right: 4, bottom: 4),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(
-                                Icons.account_circle_outlined,
-                                size: 21,
-                                color: Colors.grey,
-                              ),
                               Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 6.0,
-                                ),
-                                child: Column(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      "Aadhaar No.",
-                                      style: TextStyle(
-                                          fontFamily: "Sofia",
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          fontWeight: FontWeight.w500),
+                                    Icon(
+                                      Icons.account_circle_outlined,
+                                      size: 21,
+                                      color: Colors.grey,
                                     ),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                    Container(
-                                      width: MediaQuery.of(context).size.width /
-                                          1.5,
-                                      child: Text(
-                                        pC.profileRes['empDetails']
-                                                ['aadhaarid'] ??
-                                            '',
-                                        style: TextStyle(
-                                            fontFamily: "Sofia",
-                                            fontSize: 16,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 6.0,
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 8,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Aadhaar No.",
+                                            style: TextStyle(
+                                                fontFamily: "Sofia",
+                                                fontSize: 16,
+                                                color: Colors.grey,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                1.5,
+                                            child: Text(
+                                              pC.profileRes['empDetails']
+                                                      ['aadhaarid'] ??
+                                                  '',
+                                              style: TextStyle(
+                                                  fontFamily: "Sofia",
+                                                  fontSize: 16,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                      ],
-                    ),
-                  )),
-            ),
-          ) : Container(),
-          pC.profileRes['empDetails']['panNo']!="" ? Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Material(
-              elevation: 10,
-              shadowColor: Colors.white60,
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.white,
-              child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Container(
-                    padding: const EdgeInsets.only(
-                        top: 4, left: 4, right: 4, bottom: 4),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        )),
+                  ),
+                )
+              : Container(),
+          pC.profileRes['empDetails']['panNo'] != ""
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Material(
+                    elevation: 10,
+                    shadowColor: Colors.white60,
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
+                    child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Container(
+                          padding: const EdgeInsets.only(
+                              top: 4, left: 4, right: 4, bottom: 4),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(
-                                Icons.account_balance_wallet_outlined,
-                                size: 21,
-                                color: Colors.grey,
-                              ),
                               Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 6.0,
-                                ),
-                                child: Column(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      "PAN",
-                                      style: TextStyle(
-                                          fontFamily: "Sofia",
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          fontWeight: FontWeight.w500),
+                                    Icon(
+                                      Icons.account_balance_wallet_outlined,
+                                      size: 21,
+                                      color: Colors.grey,
                                     ),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                    Container(
-                                      width: MediaQuery.of(context).size.width /
-                                          1.5,
-                                      child: Text(
-                                        pC.profileRes['empDetails']['panNo']??'',
-                                        style: TextStyle(
-                                            fontFamily: "Sofia",
-                                            fontSize: 16,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 6.0,
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 8,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "PAN",
+                                            style: TextStyle(
+                                                fontFamily: "Sofia",
+                                                fontSize: 16,
+                                                color: Colors.grey,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                1.5,
+                                            child: Text(
+                                              pC.profileRes['empDetails']
+                                                      ['panNo'] ??
+                                                  '',
+                                              style: TextStyle(
+                                                  fontFamily: "Sofia",
+                                                  fontSize: 16,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                      ],
-                    ),
-                  )),
-            ),
-          ) : Container(),
-          pC.profileRes['empDetails']['pfNo'] !="" ? Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Material(
-              elevation: 10,
-              shadowColor: Colors.white60,
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.white,
-              child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Container(
-                    padding: const EdgeInsets.only(
-                        top: 4, left: 4, right: 4, bottom: 4),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        )),
+                  ),
+                )
+              : Container(),
+          pC.profileRes['empDetails']['pfNo'] != ""
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Material(
+                    elevation: 10,
+                    shadowColor: Colors.white60,
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
+                    child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Container(
+                          padding: const EdgeInsets.only(
+                              top: 4, left: 4, right: 4, bottom: 4),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(
-                                Icons.account_circle_outlined,
-                                size: 21,
-                                color: Colors.grey,
-                              ),
                               Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 6.0,
-                                ),
-                                child: Column(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      "PF No.",
-                                      style: TextStyle(
-                                          fontFamily: "Sofia",
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          fontWeight: FontWeight.w500),
+                                    Icon(
+                                      Icons.account_circle_outlined,
+                                      size: 21,
+                                      color: Colors.grey,
                                     ),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                    Container(
-                                      width: MediaQuery.of(context).size.width /
-                                          1.5,
-                                      child: Text(
-                                        pC.profileRes['empDetails']['pfNo']??'',
-                                        style: TextStyle(
-                                            fontFamily: "Sofia",
-                                            fontSize: 16,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 6.0,
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 8,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "PF No.",
+                                            style: TextStyle(
+                                                fontFamily: "Sofia",
+                                                fontSize: 16,
+                                                color: Colors.grey,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                1.5,
+                                            child: Text(
+                                              pC.profileRes['empDetails']
+                                                      ['pfNo'] ??
+                                                  '',
+                                              style: TextStyle(
+                                                  fontFamily: "Sofia",
+                                                  fontSize: 16,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                      ],
-                    ),
-                  )),
-            ),
-          ) : Container(),
-          pC.profileRes['empDetails']['insurancePolicy'] !=null ?Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Material(
-              elevation: 10,
-              shadowColor: Colors.white60,
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.white,
-              child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Container(
-                    padding: const EdgeInsets.only(
-                        top: 4, left: 4, right: 4, bottom: 4),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        )),
+                  ),
+                )
+              : Container(),
+          pC.profileRes['empDetails']['insurancePolicy'] != null
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Material(
+                    elevation: 10,
+                    shadowColor: Colors.white60,
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
+                    child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Container(
+                          padding: const EdgeInsets.only(
+                              top: 4, left: 4, right: 4, bottom: 4),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(
-                                Icons.medical_services_outlined,
-                                size: 21,
-                                color: Colors.grey,
-                              ),
                               Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 6.0,
-                                ),
-                                child: Column(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      "Insurance Policy No.",
-                                      style: TextStyle(
-                                          fontFamily: "Sofia",
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          fontWeight: FontWeight.w500),
+                                    Icon(
+                                      Icons.medical_services_outlined,
+                                      size: 21,
+                                      color: Colors.grey,
                                     ),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                    Container(
-                                      width: MediaQuery.of(context).size.width /
-                                          1.5,
-                                      child: Text(
-                                        pC.profileRes['empDetails']
-                                                ['insurancePolicy'] ??
-                                            '',
-                                        style: TextStyle(
-                                            fontFamily: "Sofia",
-                                            fontSize: 16,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 6.0,
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 8,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Insurance Policy No.",
+                                            style: TextStyle(
+                                                fontFamily: "Sofia",
+                                                fontSize: 16,
+                                                color: Colors.grey,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                1.5,
+                                            child: Text(
+                                              pC.profileRes['empDetails']
+                                                      ['insurancePolicy'] ??
+                                                  '',
+                                              style: TextStyle(
+                                                  fontFamily: "Sofia",
+                                                  fontSize: 16,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                      ],
-                    ),
-                  )),
-            ),
-          ): Container(),
-          pC.profileRes['empDetails']['empUANNumber'] != null ?Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Material(
-              elevation: 10,
-              shadowColor: Colors.white60,
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.white,
-              child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Container(
-                    padding: const EdgeInsets.only(
-                        top: 4, left: 4, right: 4, bottom: 4),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        )),
+                  ),
+                )
+              : Container(),
+          pC.profileRes['empDetails']['empUANNumber'] != null
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Material(
+                    elevation: 10,
+                    shadowColor: Colors.white60,
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
+                    child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Container(
+                          padding: const EdgeInsets.only(
+                              top: 4, left: 4, right: 4, bottom: 4),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(
-                                Icons.food_bank,
-                                size: 21,
-                                color: Colors.grey,
-                              ),
                               Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 6.0,
-                                ),
-                                child: Column(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      "UAN",
-                                      style: TextStyle(
-                                          fontFamily: "Sofia",
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          fontWeight: FontWeight.w500),
+                                    Icon(
+                                      Icons.food_bank,
+                                      size: 21,
+                                      color: Colors.grey,
                                     ),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                    Container(
-                                      width: MediaQuery.of(context).size.width /
-                                          1.5,
-                                      child: Text(
-                                        pC.profileRes['empDetails']
-                                                ['empUANNumber'] ??
-                                            '',
-                                        style: TextStyle(
-                                            fontFamily: "Sofia",
-                                            fontSize: 16,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 6.0,
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 8,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "UAN",
+                                            style: TextStyle(
+                                                fontFamily: "Sofia",
+                                                fontSize: 16,
+                                                color: Colors.grey,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                1.5,
+                                            child: Text(
+                                              pC.profileRes['empDetails']
+                                                      ['empUANNumber'] ??
+                                                  '',
+                                              style: TextStyle(
+                                                  fontFamily: "Sofia",
+                                                  fontSize: 16,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                      ],
-                    ),
-                  )),
-            ),
-          ): Container(),
-          pC.profileRes['empDetails']['esiNo']!="" ?Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Material(
-              elevation: 10,
-              shadowColor: Colors.white60,
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.white,
-              child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Container(
-                    padding: const EdgeInsets.only(
-                        top: 4, left: 4, right: 4, bottom: 4),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        )),
+                  ),
+                )
+              : Container(),
+          pC.profileRes['empDetails']['esiNo'] != ""
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Material(
+                    elevation: 10,
+                    shadowColor: Colors.white60,
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
+                    child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Container(
+                          padding: const EdgeInsets.only(
+                              top: 4, left: 4, right: 4, bottom: 4),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(
-                                Icons.local_hospital_outlined,
-                                size: 21,
-                                color: Colors.grey,
-                              ),
                               Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 6.0,
-                                ),
-                                child: Column(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      "ESI No.",
-                                      style: TextStyle(
-                                          fontFamily: "Sofia",
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          fontWeight: FontWeight.w500),
+                                    Icon(
+                                      Icons.local_hospital_outlined,
+                                      size: 21,
+                                      color: Colors.grey,
                                     ),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                    Container(
-                                      width: MediaQuery.of(context).size.width /
-                                          1.5,
-                                      child: Text(
-                                        pC.profileRes['empDetails']['esiNo']??'',
-                                        style: TextStyle(
-                                            fontFamily: "Sofia",
-                                            fontSize: 16,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 6.0,
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 8,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "ESI No.",
+                                            style: TextStyle(
+                                                fontFamily: "Sofia",
+                                                fontSize: 16,
+                                                color: Colors.grey,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                1.5,
+                                            child: Text(
+                                              pC.profileRes['empDetails']
+                                                      ['esiNo'] ??
+                                                  '',
+                                              style: TextStyle(
+                                                  fontFamily: "Sofia",
+                                                  fontSize: 16,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                      ],
-                    ),
-                  )),
-            ),
-          ): Container(),
-          pC.profileRes['empDetails']['empBankAcNo']!="" ? Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Material(
-              elevation: 10,
-              shadowColor: Colors.white60,
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.white,
-              child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Container(
-                    padding: const EdgeInsets.only(
-                        top: 4, left: 4, right: 4, bottom: 4),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        )),
+                  ),
+                )
+              : Container(),
+          pC.profileRes['empDetails']['empBankAcNo'] != ""
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Material(
+                    elevation: 10,
+                    shadowColor: Colors.white60,
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
+                    child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Container(
+                          padding: const EdgeInsets.only(
+                              top: 4, left: 4, right: 4, bottom: 4),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(
-                                Icons.monetization_on_outlined,
-                                size: 21,
-                                color: Colors.grey,
-                              ),
                               Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 6.0,
-                                ),
-                                child: Column(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      "Bank A/C No.",
-                                      style: TextStyle(
-                                          fontFamily: "Sofia",
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          fontWeight: FontWeight.w500),
+                                    Icon(
+                                      Icons.monetization_on_outlined,
+                                      size: 21,
+                                      color: Colors.grey,
                                     ),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                    Container(
-                                      width: MediaQuery.of(context).size.width /
-                                          1.5,
-                                      child: Text(
-                                        pC.profileRes['empDetails']
-                                                ['empBankAcNo'] ??
-                                            'N/A',
-                                        style: TextStyle(
-                                            fontFamily: "Sofia",
-                                            fontSize: 16,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 6.0,
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 8,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Bank A/C No.",
+                                            style: TextStyle(
+                                                fontFamily: "Sofia",
+                                                fontSize: 16,
+                                                color: Colors.grey,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                1.5,
+                                            child: Text(
+                                              pC.profileRes['empDetails']
+                                                      ['empBankAcNo'] ??
+                                                  'N/A',
+                                              style: TextStyle(
+                                                  fontFamily: "Sofia",
+                                                  fontSize: 16,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                      ],
-                    ),
-                  )),
-            ),
-          ): Container(),
+                        )),
+                  ),
+                )
+              : Container(),
         ],
       ),
     );
@@ -1605,9 +1721,9 @@ class DetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea (
-        child : SfPdfViewer.network(url, key: _pdfViewerKey,
-            onDocumentLoadFailed: (PdfDocumentLoadFailedDetails details) {
+        body: SafeArea(
+            child: SfPdfViewer.network(url, key: _pdfViewerKey,
+                onDocumentLoadFailed: (PdfDocumentLoadFailedDetails details) {
       Get.snackbar(
         null,
         'Document not found for the Employee',

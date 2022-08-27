@@ -44,6 +44,7 @@ class AppFeature {
   bool attendance;
 
   bool autoApproval;
+
   AppFeature({
     this.attendance,
     this.autoApproval,
@@ -61,6 +62,7 @@ class AppFeature {
     this.attendanceDaysPermitted,
     this.checkinLocation,
     this.paySlipUrl,
+    this.insuranceUrl,
     // this.weekOff,
     this.locFetchTimeout,
     this.probationaries,
@@ -74,6 +76,7 @@ class AppFeature {
   });
   String companyId;
   String paySlipUrl;
+  String insuranceUrl;
   String compImg;
   bool gps;
   bool issueTracking;
@@ -119,6 +122,7 @@ class AppFeature {
         diyFace: json['diyFace'],
         autoCheckout: json['autoCheckout'],
         paySlipUrl: json['paySlipUrl'],
+    insuranceUrl:json['insuranceUrl'],
         compImg: json['compImg'],
         faceReregister: json['faceReregister'],
         hubFeature: json['hubFeature'],
@@ -149,6 +153,7 @@ class AppFeature {
         'faceReregister': faceReregister,
         'autoCheckout': autoCheckout,
         'paySlipUrl': paySlipUrl,
+        'insuranceUrl':insuranceUrl,
         'compImg': compImg,
         'hubFeature': hubFeature,
         'appUpdate': appUpdate,
