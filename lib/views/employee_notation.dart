@@ -54,7 +54,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
 
         if (allShifts == true) {
           enC.getEmployeeBySearch(widget.date, widget.clientId, widget.time,
-              widget.shift, allShifts);
+              '', allShifts);
         } else {
         }
       });
@@ -423,19 +423,19 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                   ),
                 ),
 
-                // Row(
-                //   children: [
-                //     Checkbox(value: allShifts, onChanged: _onRememberMeChanged),
-                //     Text(
-                //       'All Shifts',
-                //       style: TextStyle(
-                //         color: Colors.grey[600],
-                //         fontSize: 16.0,
-                //         fontWeight: FontWeight.bold,
-                //       ),
-                //     ),
-                //   ],
-                // ),
+                Row(
+                  children: [
+                    Checkbox(value: allShifts, onChanged: _onAllShifts),
+                    Text(
+                      'All Shifts',
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
             Positioned(
