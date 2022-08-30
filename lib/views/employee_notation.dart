@@ -437,7 +437,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                         Visibility(
                             visible: allShifts,
                             child: Checkbox(
-                                value: allShifts, onChanged: _onAllShifts)),
+                                value: allShifts , onChanged: _onAllShifts)),
                         Padding(
                           padding: const EdgeInsets.all(0),
                           child: FlatButton(
