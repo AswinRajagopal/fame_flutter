@@ -745,6 +745,8 @@ class MyTextField extends StatelessWidget {
       ),
       child: TextField(
         controller: inputController,
+        maxLength: 160,
+        maxLengthEnforced: true,
         decoration: InputDecoration(
           isDense: true,
           contentPadding: EdgeInsets.all(10),

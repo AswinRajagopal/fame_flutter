@@ -164,6 +164,8 @@ class _OBPersonalState extends State<OBPersonal> {
                       child: Obx(() {
                         return TextField(
                           controller: adminC.name,
+                          maxLength: 160,
+                          maxLengthEnforced: true,
                           keyboardType: TextInputType.name,
                           inputFormatters: [
                             FilteringTextInputFormatter.allow(
@@ -192,6 +194,8 @@ class _OBPersonalState extends State<OBPersonal> {
                       child: Obx(() {
                         return TextField(
                           controller: adminC.fatherName,
+                          maxLength: 160,
+                          maxLengthEnforced: true,
                           keyboardType: TextInputType.name,
                           inputFormatters: [
                             FilteringTextInputFormatter.allow(
@@ -645,6 +649,8 @@ class _OBPersonalState extends State<OBPersonal> {
                             padding: const EdgeInsets.all(10.0),
                             child: TextFormField(
                               controller: adminC.clientMu,
+                              maxLength: 160,
+                              maxLengthEnforced: true,
                               decoration: InputDecoration(
                                   labelText: 'Enter Client Name',
                                   labelStyle: TextStyle(
@@ -930,6 +936,8 @@ class _OBPersonalState extends State<OBPersonal> {
                       ),
                       child: TextField(
                         controller: adminC.remarks,
+                        maxLength: 160,
+                        maxLengthEnforced: true,
                         keyboardType: null,
                         decoration: InputDecoration(
                           isDense: true,

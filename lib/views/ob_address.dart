@@ -85,6 +85,8 @@ class _OBAddressState extends State<OBAddress> {
                       ),
                       child: TextField(
                         controller: adminC.presenthouseNo,
+                        maxLength: 160,
+                        maxLengthEnforced: true,
                         decoration: InputDecoration(
                           isDense: true,
                           contentPadding: EdgeInsets.all(10),
@@ -355,6 +357,8 @@ class _OBAddressState extends State<OBAddress> {
                       ),
                       child: TextField(
                         controller: adminC.permanenthouseNo,
+                        maxLength: 160,
+                        maxLengthEnforced: true,
                         decoration: InputDecoration(
                           isDense: true,
                           contentPadding: EdgeInsets.all(10),

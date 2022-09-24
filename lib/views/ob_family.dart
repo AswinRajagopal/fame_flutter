@@ -1,4 +1,3 @@
-import 'package:checkdigit/checkdigit.dart';
 import '../widgets/ob_top_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -25,7 +24,7 @@ class _OBFamilyState extends State<OBFamily> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Family Detail',
+          'Family Details',
         ),
         actions: [
           Column(

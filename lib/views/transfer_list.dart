@@ -123,6 +123,7 @@ class _TransferListState extends State<TransferList> {
                 return TransferListWidget(
                   transfer,
                   index,
+
                   tC.transferList.length,
                   tC,
                 );

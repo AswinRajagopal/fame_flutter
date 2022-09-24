@@ -186,13 +186,13 @@ class _TransferPageState extends State<TransferPage> {
                               suggestion['name'],
                             ),
                             subtitle: Text(
-                              suggestion['empId'],
+                              suggestion['empId']+" "+"(" +suggestion['clientName']+ ")",
                             ),
                           );
                         },
                         onSuggestionSelected: (suggestion) {
                           print(suggestion);
-                          empName.text = suggestion['name'].toString().trimRight() + ' - ' + suggestion['empId'];
+                          empName.text = suggestion['name'].toString().trimRight() + " (" + suggestion['inchargeName'] + ")" + ' - ' + suggestion['empId'];
                           empId.text = suggestion['empId'];
                           inCharge.text = suggestion['inchargeName'];
                           currentUnit.text = suggestion['clientName'];

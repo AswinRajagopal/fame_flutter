@@ -1327,6 +1327,8 @@ class _OBPhotosState extends State<OBPhotos> {
                       ),
                       child: TextField(
                         controller: adminC.empRemarks,
+                        maxLength: 160,
+                        maxLengthEnforced: true,
                         // keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           isDense: true,
