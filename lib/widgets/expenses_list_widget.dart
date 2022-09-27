@@ -25,6 +25,18 @@ class ExpensesListWidget extends StatelessWidget {
         DateFormat('a').format(DateTime.parse(date)).toString().toLowerCase();
   }
 
+  String widgetDate(date) {
+    return DateFormat('dd').format(DateTime.parse(date)).toString() +
+        '-' +
+        DateFormat('MM').format(DateTime.parse(date)).toString() +
+        '-' +
+        DateFormat.y().format(DateTime.parse(date)).toString() +
+        '@ ' +
+        DateFormat('hh:mm').format(DateTime.parse(date)).toString() +
+        '' +
+        DateFormat('a').format(DateTime.parse(date)).toString().toLowerCase();
+  }
+
   var status = 0;
   String getStatus(status) {
     if (status == 0) {
@@ -41,9 +53,9 @@ class ExpensesListWidget extends StatelessWidget {
     var roleId = RemoteServices().box.get('role');
     return GestureDetector(
       onTap: () {
-        if (roleId == AppUtils.ADMIN) {
-          Get.to(ExpensesDetailList(expenses));
-        }
+        // if (roleId == AppUtils.ADMIN) {
+        Get.to(ExpensesDetailList(expenses));
+        // }
       },
       child: Card(
         margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
@@ -61,16 +73,6 @@ class ExpensesListWidget extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      convertDate(expenses['createdOn']),
-                      style: TextStyle(
-                        fontSize: 15.0,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 30.0,
-                    ),
                     Column(children: [
                       Text(
                         expenses['empName'],
@@ -89,7 +91,20 @@ class ExpensesListWidget extends StatelessWidget {
                       )
                     ]),
                     SizedBox(
-                      width: 40.0,
+                      width: 20.0,
+                    ),
+                    Expanded(
+                      child: Text(
+                        expenses['expenseType'],
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15.0,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20.0,
                     ),
                     Column(
                       children: [
@@ -120,7 +135,7 @@ class ExpensesListWidget extends StatelessWidget {
                         )
                       ],
                     ),
-                    SizedBox(width: 30.0),
+                    SizedBox(width: 20.0),
                     Column(children: [
                       IntrinsicWidth(
                         child: Column(
@@ -141,6 +156,41 @@ class ExpensesListWidget extends StatelessWidget {
                 ),
                 SizedBox(
                   width: 10.0,
+                ),
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                    DottedLine(
+                      direction: Axis.horizontal,
+                      lineLength: double.infinity,
+                      lineThickness: 1.0,
+                      dashLength: 4.0,
+                      dashColor: Colors.grey,
+                      dashRadius: 0.0,
+                      dashGapLength: 4.0,
+                      dashGapColor: Colors.transparent,
+                      dashGapRadius: 0.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 20.0,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            widgetDate(expenses['createdOn']),
+                            style: TextStyle(
+                              fontSize: 15.0,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

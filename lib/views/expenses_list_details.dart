@@ -124,7 +124,7 @@ class _ExpensesDetailListState extends State<ExpensesDetailList>{
                           SizedBox(height: 15.0),
                           RowWidget('Amount', expenses['amount'].toString()),
                           SizedBox(height: 15.0),
-                          RowWidget('ExpenseTypeId', expenses['expenseTypeId'].toString()),
+                          RowWidget('ExpenseType', expenses['expenseType'].toString()),
                           SizedBox(height: 15.0),
                           RowWidget('Status', getStatus(expenses['status']),),
                           SizedBox(height: 15.0),
