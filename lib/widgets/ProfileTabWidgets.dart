@@ -564,15 +564,11 @@ class CompilanceInfoTab extends StatelessWidget {
   var encEmpId;
 
   @override
-  void initState() {
+  Widget build(BuildContext context) {
     Codec<String, String> stringToBase64 = utf8.fuse(base64);
     encEmpId = stringToBase64
         .encode(RemoteServices().box.get('empid').toString())
         .toString();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return SingleChildScrollView(
       physics: BouncingScrollPhysics(),
       padding: const EdgeInsets.only(left: 20, right: 20, top: 120, bottom: 40),
@@ -599,7 +595,7 @@ class CompilanceInfoTab extends StatelessWidget {
                             '?empId=' +
                             encEmpId.toString() +
                             '&documentType=' +
-                            'idcard'.toString();
+                            'IDCard';
                         Get.to(DetailScreen(url));
                       },
                       color: Colors.blue,
@@ -629,7 +625,7 @@ class CompilanceInfoTab extends StatelessWidget {
                             '?empId=' +
                             encEmpId.toString() +
                             '&documentType=' +
-                            'appointment'.toString();
+                            'AppointmentLetter'.toString();
                         Get.to(DetailScreen((url)));
                       },
                       color: Colors.blue,
@@ -650,9 +646,6 @@ class CompilanceInfoTab extends StatelessWidget {
                     children: [
                       MaterialButton(
                         onPressed: () async{
-                          print(jsonDecode(RemoteServices()
-                              .box
-                              .get('appFeature'))['insuranceUrl']);
                           var url= jsonDecode(RemoteServices()
                               .box
                               .get('appFeature'))['insuranceUrl'].toString();
@@ -661,18 +654,6 @@ class CompilanceInfoTab extends StatelessWidget {
                           } else {
                             throw 'Could not launch $url';
                           }
-                          // var url = jsonDecode(RemoteServices()
-                          //         .box
-                          //         .get('appFeature'))['insuranceUrl']
-                          //     .toString()
-                          //     .replaceAll(
-                          //         'DownloadPayslip.aspx', 'docdownloads.aspx');
-                          // url = url +
-                          //     '?empId=' +
-                          //     encEmpId.toString() +
-                          //     '&documentType=' +
-                          //     'insurance'.toString();
-                          // Get.to(DetailScreen(url));
                         },
                         color: Colors.blue,
                         textColor: Colors.white,
@@ -703,7 +684,7 @@ class CompilanceInfoTab extends StatelessWidget {
                             '?empId=' +
                             encEmpId.toString() +
                             '&documentType=' +
-                            'esi'.toString();
+                            'ESICCard'.toString();
                         Get.to(DetailScreen(url));
                       },
                       color: Colors.blue,

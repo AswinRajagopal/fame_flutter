@@ -40,9 +40,9 @@ import '../views/welcome_page.dart';
 // import 'package:background_locator/settings/locator_settings.dart' as ls;
 
 class RemoteServices {
-  static var baseURL = 'http://52.66.61.207:8090/v1/api';
+  // static var baseURL = 'http://52.66.61.207:8090/v1/api';
   // static var baseURL = 'http://10.0.19.27:8090/v1/api';
-  // static var baseURL = 'http://androidapp.mydiyosfame.com:8090/v1/api';
+  static var baseURL = 'http://androidapp.mydiyosfame.com:8090/v1/api';
   // static var baseURL = 'http://192.168.0.247:8090/v1/api';
   // static var baseURL = 'http://172.20.10.4:8090/v1/api'  ;
   // static var baseURL = 'http://10.0.52.40:8090/v1/api'  ;
@@ -797,6 +797,30 @@ class RemoteServices {
     }
   }
 
+  Future getTransferEmployees(empName) async {
+    // print('empName: $empName');
+    var response = await client.post(
+      '$baseURL/transfer/get_suggest',
+      headers: header,
+      body: jsonEncode(
+        <String, Object>{
+          'companyId': box.get('companyid').toString(),
+          'empId': box.get('empid').toString(),
+          'transfer': true,
+          'empName': empName,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString)['empSuggest'];
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
   Future getUnits(unitName) async {
     // print('empName: $empName');
     var response = await client.post(
@@ -1001,6 +1025,7 @@ class RemoteServices {
           'date': date,
           'clientId': clientId,
           'empName': empName,
+          'allShifts':allShifts
         },
       ),
     );
@@ -1465,7 +1490,7 @@ class RemoteServices {
         <String, String>{
           'empId': box.get('empid').toString(),
           'companyId': box.get('companyid').toString(),
-          'clientId':clientId,
+          'clientId': clientId,
           'roleId': 'all',
           'broadcast': broadcast,
         },
@@ -1534,6 +1559,7 @@ class RemoteServices {
           'companyId': box.get('companyid').toString(),
           'clientId': clientId,
           'orderBy': orderBy,
+          'empId': box.get('empid').toString()
         },
       ),
     );
@@ -1554,7 +1580,7 @@ class RemoteServices {
       body: jsonEncode(
         <String, String>{
           'companyId': box.get('companyid').toString(),
-          'clientId': clientId,
+          'empId': box.get('empid').toString(),
           'orderBy': orderBy,
         },
       ),
