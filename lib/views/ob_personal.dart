@@ -167,7 +167,7 @@ class _OBPersonalState extends State<OBPersonal> {
                           keyboardType: TextInputType.name,
                           inputFormatters: [
                             FilteringTextInputFormatter.allow(
-                                RegExp("[a-zA-Z]")),
+                                RegExp("[a-z -. A-Z]")),
                           ],
                           decoration: InputDecoration(
                             enabled: !adminC.disabledName.value,
@@ -195,7 +195,7 @@ class _OBPersonalState extends State<OBPersonal> {
                           keyboardType: TextInputType.name,
                           inputFormatters: [
                             FilteringTextInputFormatter.allow(
-                                RegExp("[a-zA-Z]")),
+                                RegExp("[a-z -. A-Z]")),
                           ],
                           decoration: InputDecoration(
                             enabled: !adminC.disabledFatherName.value,
