@@ -57,6 +57,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
           enC.getEmployeeBySearch(widget.date, widget.clientId, widget.time,
               widget.shift, allShifts);
         } else {}
+
       });
 
   @override
@@ -423,6 +424,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                 SizedBox(
                   height: 10.0,
                 ),
+
                 Row(
                     children: [
                   Container(

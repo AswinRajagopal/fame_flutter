@@ -322,7 +322,7 @@ class _OBBankState extends State<OBBank> {
                                   borderRadius: 5.0,
                                 );
                               }
-                              else if(adminC.accountNo.text.length!=10){
+                              else if(adminC.accountNo.text.length<8){
                                 Get.snackbar(
                                   null,
                                   'Please enter a valid bank Account Number',

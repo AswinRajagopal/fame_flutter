@@ -73,6 +73,7 @@ class AppFeature {
     this.compImg,
     this.faceReregister,
     this.checkin,
+    this.multipleCheckin,
   });
   String companyId;
   String paySlipUrl;
@@ -93,6 +94,7 @@ class AppFeature {
   // String weekOff;
   bool locFetchTimeout;
   bool probationaries;
+  bool multipleCheckin;
   bool diyFace;
   bool autoCheckout;
   bool hubFeature;
@@ -128,6 +130,7 @@ class AppFeature {
         hubFeature: json['hubFeature'],
         appUpdate: json['appUpdate'],
         checkin: json['checkin'],
+        multipleCheckin: json['multipleCheckin'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -158,6 +161,7 @@ class AppFeature {
         'hubFeature': hubFeature,
         'appUpdate': appUpdate,
         'checkin': checkin,
+        'multipleCheckin': multipleCheckin,
       };
 }
 
