@@ -172,6 +172,7 @@ class EmployeeReportController extends GetxController {
         isLoading(false);
         // print('getClientRes valid: $getClientRes');
         if (getClientRes['success']) {
+          print(clientList);
           for (var i = 0; i < getClientRes['clientsList'].length; i++) {
             clientList.add(getClientRes['clientsList'][i]);
           }

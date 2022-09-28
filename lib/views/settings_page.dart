@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:fame/views/expense_manager.dart';
+import 'package:fame/views/view_expenses.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:in_app_review/in_app_review.dart';
@@ -141,6 +143,15 @@ class _SettingsPageState extends State<SettingsPage> {
               child: ListContainer(
                 'assets/images/msgic.png',
                 'Broadcast Messages',
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Get.to(ViewExpense());
+              },
+              child: ListContainer(
+                'assets/images/expense.png',
+                'Expense Management',
               ),
             ),
             GestureDetector(

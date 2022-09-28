@@ -23,10 +23,6 @@ class ProfileController extends GetxController {
     isDisposed = true;
   }
 
-  // void init() {
-  //   print('init custom');
-  //   getEmpDetails();
-  // }
 
   void getEmpDetails() async {
     try {

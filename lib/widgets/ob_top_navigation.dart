@@ -187,7 +187,7 @@ class _OBTopNavigationState extends State<OBTopNavigation> {
               ),
               child: Center(
                 child: Text(
-                  'Family Detail',
+                  'Family Details',
                   style: TextStyle(
                     fontSize: 20.0,
                     color: widget.page == 'family' ? Colors.white : Theme.of(context).primaryColor,

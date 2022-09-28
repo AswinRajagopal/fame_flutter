@@ -126,6 +126,8 @@ class _BroadcastState extends State<Broadcast> {
                           alignment: Alignment.topLeft,
                           child: TextField(
                             controller: message,
+                            maxLength: 160,
+                            maxLengthEnforced: true,
                             maxLines: 4,
                             keyboardType: TextInputType.multiline,
                             decoration: InputDecoration(

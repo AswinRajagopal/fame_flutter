@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:fame/controllers/policy_doc_controller.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../controllers/broadcast_controller.dart';
 import 'package:get/get.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:path/path.dart' as path;
@@ -230,10 +229,12 @@ class MyTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 10.0,
-        vertical: 10.0,
+        vertical: 15.0,
       ),
       child: TextField(
         controller: inputController,
+        maxLength: 160,
+        maxLengthEnforced: true,
         decoration: InputDecoration(
           isDense: true,
           contentPadding: EdgeInsets.all(10),

@@ -1081,6 +1081,8 @@ class AdminController extends GetxController {
                 ),
                 child: TextField(
                   controller: famName[index],
+                  maxLength: 160,
+                  maxLengthEnforced: true,
                   decoration: InputDecoration(
                     isDense: true,
                     contentPadding: EdgeInsets.all(10),

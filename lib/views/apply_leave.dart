@@ -660,6 +660,8 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                             ),
                             child: TextField(
                               controller: reason,
+                              maxLength: 160,
+                              maxLengthEnforced: true,
                               keyboardType: TextInputType.multiline,
                               maxLines: 4,
                               decoration: InputDecoration(
