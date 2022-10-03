@@ -563,9 +563,7 @@ class _ExpensesState extends State<Expenses> {
                               if (expenseTypeId == null) {
                                 expenseTypeId = '2';
                               }
-                              print(empId);
-                              print(amount.text);
-                              expC.newExpenses(amount.text, expenseTypeId,remarks.text);
+                              expC.newExpenses(amount.text, expenseTypeId,remarks.text, attachment);
                             }
                           },
                           child: Padding(

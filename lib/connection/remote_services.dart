@@ -1458,14 +1458,14 @@ class RemoteServices {
     }
   }
 
-  Future newExpenses(File imageFile, amount, remarks) async {
+  Future newExpenses(File imageFile, amount,expenseTypeId, remarks) async {
     var dio = mydio.Dio();
 
     var formData = mydio.FormData.fromMap({
       'companyId': box.get('companyid').toString(),
       'empId': box.get('empid').toString(),
       'amount': amount,
-      'expenseTypeId': '2',
+      'expenseTypeId': expenseTypeId,
       'remarks':remarks,
       'attachment1': await mydio.MultipartFile.fromFile(
         imageFile.path,
@@ -1486,7 +1486,8 @@ class RemoteServices {
     );
     if (response.statusCode == 200) {
       var jsonString = response.data;
-      return checkinFromJson(jsonEncode(jsonString));
+      print(jsonString);
+      return json.decode(jsonString);
     } else {
       return null;
     }
