@@ -266,8 +266,6 @@ class RemoteServices {
     var formData = mydio.FormData.fromMap({
       'companyID': box.get('companyid'),
       'empID': box.get('empid'),
-      // 'companyID': '6',
-      // 'empID': 'dem000008',
       'access_key': accessKey,
       'image': await mydio.MultipartFile.fromFile(
         imageFile.path,
@@ -288,6 +286,7 @@ class RemoteServices {
       return null;
     }
   }
+
 
   Future<Dashboard> getDashboardDetails() async {
     print('getDashboardDetails');
@@ -1459,25 +1458,36 @@ class RemoteServices {
     }
   }
 
-  Future newExpenses(amount, expenseTypeId) async {
-    var response = await client.post(
-      '$baseURL/expense/expense_emp',
-      headers: header,
-      body: jsonEncode(
-        <String, String>{
-          'empId': box.get('empid').toString(),
-          'companyId': box.get('companyid').toString(),
-          'amount':amount,
-          'expenseTypeId':expenseTypeId,
-        },
+  Future newExpenses(File imageFile, amount, remarks) async {
+    var dio = mydio.Dio();
+
+    var formData = mydio.FormData.fromMap({
+      'companyId': box.get('companyid').toString(),
+      'empId': box.get('empid').toString(),
+      'amount': amount,
+      'expenseTypeId': '2',
+      'remarks':remarks,
+      'attachment1': await mydio.MultipartFile.fromFile(
+        imageFile.path,
+        filename: 'image1.jpg',
       ),
+      'attachment2': await mydio.MultipartFile.fromFile(
+        imageFile.path,
+        filename: 'image2.jpg',
+      ),
+      'attachment3': await mydio.MultipartFile.fromFile(
+        imageFile.path,
+        filename: 'image3.jpg',
+      ),
+    });
+    var response = await dio.post(
+      '$baseURL/expense/expense_emp',
+      data: formData,
     );
-    print("res+ $response.statusCode");
     if (response.statusCode == 200) {
-      var jsonString = response.body;
-      return json.decode(jsonString);
+      var jsonString = response.data;
+      return checkinFromJson(jsonEncode(jsonString));
     } else {
-      //show error message
       return null;
     }
   }

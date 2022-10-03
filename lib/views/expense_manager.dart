@@ -561,11 +561,11 @@ class _ExpensesState extends State<Expenses> {
                               );
                             } else {
                               if (expenseTypeId == null) {
-                                expenseTypeId = '3';
+                                expenseTypeId = '2';
                               }
                               print(empId);
                               print(amount.text);
-                              expC.newExpenses(amount.text, expenseTypeId);
+                              expC.newExpenses(amount.text, expenseTypeId,remarks.text);
                             }
                           },
                           child: Padding(

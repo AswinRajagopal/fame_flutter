@@ -100,7 +100,7 @@ class _ViewExpenseState extends State<ViewExpense> {
                                   new Text('10,000',
                                       style: new TextStyle(
                                           fontSize: 40.0, color: Colors.black)),
-                                  Text('Advance Balance',
+                                  Text('Expenses This Month',
                                       style: new TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontFamily: 'Roboto',
@@ -112,10 +112,10 @@ class _ViewExpenseState extends State<ViewExpense> {
                                   thickness: 2,
                                 ),
                                 Column(children: [
-                                  new Text('10,500 ',
+                                  new Text("10,500",
                                       style: new TextStyle(
                                           fontSize: 40.0, color: Colors.black)),
-                                  Text('Total Expense',
+                                  Text('Advance This Month',
                                       style: new TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontFamily: 'Roboto',

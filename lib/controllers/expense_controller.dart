@@ -20,10 +20,10 @@ class ExpenseController extends GetxController {
     Future.delayed(Duration(milliseconds: 100));
   }
 
-  void newExpenses(amount, expenseTypeId) async {
+  void newExpenses(amount,expenseTypeId,remarks) async {
     try {
       await pr.show();
-      var ExpenseRes = await RemoteServices().newExpenses(amount, expenseTypeId);
+      var ExpenseRes = await RemoteServices().newExpenses(amount,expenseTypeId,remarks);
       if (ExpenseRes != null) {
         await pr.hide();
         print('ExpenseRes valid: ${ExpenseRes['success']}');
@@ -277,7 +277,7 @@ class ExpenseController extends GetxController {
 
    void getNewEmpAdv(amount) async {
      try {
-       // await pr.show();
+       await pr.show();
        var newEmpAdv = await RemoteServices().getNewEmpAdv(amount);
        if (newEmpAdv != null) {
          await pr.hide();
@@ -298,6 +298,9 @@ class ExpenseController extends GetxController {
                vertical: 18.0,
              ),
              borderRadius: 5.0,
+             duration: Duration(
+               seconds: 2,
+             ),
            );
            Timer(Duration(seconds: 2), Get.back);
          } else {
