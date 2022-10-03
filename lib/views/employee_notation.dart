@@ -1,5 +1,4 @@
 import 'package:chips_choice/chips_choice.dart';
-import 'package:fame/models/employee_notations.dart';
 import '../utils/debounce_class.dart';
 import 'package:intl/intl.dart';
 import 'package:time_range_picker/time_range_picker.dart';
@@ -55,8 +54,9 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
 
         if (allShifts == true) {
           enC.getEmployeeBySearch(widget.date, widget.clientId, widget.time,
-              widget.shift, allShifts);
-        } else {}
+              '', allShifts);
+        } else {
+        }
       });
 
   @override
@@ -188,12 +188,14 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
     setState(() {});
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppUtils().greyScaffoldBg,
       appBar: AppBar(
         title: appBarTitle,
+
         actions: <Widget>[
           IconButton(
             icon: actionIcon,
@@ -420,47 +422,20 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                     }),
                   ),
                 ),
-                SizedBox(
-                  height: 10.0,
-                ),
+
                 Row(
-                    children: [
-                  Container(
-                    margin: EdgeInsets.all(5.0),
-                    width: 150,
-                    height: 50,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5.0)),
-                    child: Row(
-                      children: [
-                        Visibility(
-                            visible: allShifts,
-                            child: Checkbox(
-                                value: allShifts , onChanged: _onAllShifts)),
-                        Padding(
-                          padding: const EdgeInsets.all(0),
-                          child: FlatButton(
-                            splashColor: Colors.grey[100],
-                            color: Colors.white,
-                            textColor: Colors.black,
-                            child: Text(
-                              'All Shifts',
-                              style: TextStyle(fontSize: 16.0,fontWeight:FontWeight.bold),
-                            ),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5.0)),
-                            onPressed: () {
-                              setState(() {
-                                _onAllShifts(allShifts = true);
-                              });
-                            },
-                          ),
-                        ),
-                      ],
+                  children: [
+                    Checkbox(value: allShifts, onChanged: _onAllShifts),
+                    Text(
+                      'All Shifts',
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                ]),
+                  ],
+                ),
               ],
             ),
             Positioned(
@@ -569,11 +544,8 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                         SizedBox(
                                           width: 310.0,
                                           child: Text(
-                                            emp['empId'] +
-                                                " " +
-                                                emp['name']
-                                                    .toString()
-                                                    .trimRight(),
+                                              emp['empId']+ " " +emp['name'].toString().trimRight()
+                                               ,
                                             style: TextStyle(
                                               fontSize: 16.0,
                                               fontWeight: FontWeight.bold,

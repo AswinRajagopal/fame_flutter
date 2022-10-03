@@ -120,8 +120,6 @@ class _OBBankState extends State<OBBank> {
                       ),
                       child: TextField(
                         controller: adminC.accountNo,
-                        maxLength: 160,
-                        maxLengthEnforced: true,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           isDense: true,
@@ -141,8 +139,6 @@ class _OBBankState extends State<OBBank> {
                       ),
                       child: TextField(
                         controller: adminC.ifsc,
-                        maxLength: 160,
-                        maxLengthEnforced: true,
                         keyboardType:TextInputType.text,
                         inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[a-zA-Z|0-9]")), ],
                         decoration: InputDecoration(
@@ -326,7 +322,19 @@ class _OBBankState extends State<OBBank> {
                                   borderRadius: 5.0,
                                 );
                               }
-                             else if (AppUtils.checkTextisNull(adminC.ifsc, 'IFSC')) {
+                              else if(adminC.accountNo.text.length<8){
+                                Get.snackbar(
+                                  null,
+                                  'Please enter a valid bank Account Number',
+                                  colorText: Colors.white,
+                                  backgroundColor: Colors.black87,
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+                                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+                                  borderRadius: 5.0,
+                                );
+
+                              }else if (AppUtils.checkTextisNull(adminC.ifsc, 'IFSC')) {
                                 Get.snackbar(
                                   null,
                                   'Please provide IFSC',

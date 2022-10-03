@@ -170,7 +170,7 @@ class _TransferPageState extends State<TransferPage> {
                         suggestionsCallback: (pattern) async {
                           // print(pattern);
                           if (pattern.isNotEmpty) {
-                            return await RemoteServices().getEmployees(pattern);
+                            return await RemoteServices().getTransferEmployees(pattern);
                           } else {
                             employeeId = null;
                           }
@@ -186,13 +186,13 @@ class _TransferPageState extends State<TransferPage> {
                               suggestion['name'],
                             ),
                             subtitle: Text(
-                              suggestion['empId']+" "+"(" +suggestion['clientName']+ ")",
+                              suggestion['empId'],
                             ),
                           );
                         },
                         onSuggestionSelected: (suggestion) {
-                          print(suggestion);
-                          empName.text = suggestion['name'].toString().trimRight() + " (" + suggestion['inchargeName'] + ")" + ' - ' + suggestion['empId'];
+                          // print(suggestion);
+                          empName.text = suggestion['name'].toString().trimRight() + ' - ' + suggestion['empId'];
                           empId.text = suggestion['empId'];
                           inCharge.text = suggestion['inchargeName'];
                           currentUnit.text = suggestion['clientName'];

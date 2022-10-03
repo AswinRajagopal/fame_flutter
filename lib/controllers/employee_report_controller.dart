@@ -105,6 +105,62 @@ class EmployeeReportController extends GetxController {
     }
   }
 
+  void getClientTimingsShortage() async {
+    try {
+      isLoading(true);
+      await pr.show();
+      res = await RemoteServices().getClientTimings();
+      if (res != null) {
+        isLoading(false);
+        await pr.hide();
+        // print('res valid: $res');
+        if (res.success) {
+          for (var i = 0; i < res.clientsandManpowerArrList.length; i++) {
+            clientList.add(res.clientsandManpowerArrList[i]);
+          }
+          // print('clientList: $clientList');
+        } else {
+          Get.snackbar(
+            null,
+            'Client not found',
+            colorText: Colors.white,
+            backgroundColor: Colors.black87,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
+          );
+        }
+      }
+    } catch (e) {
+      print(e);
+      isLoading(false);
+      await pr.hide();
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
+      );
+    }
+  }
+
   void getClient() async {
     clientList.clear();
     try {
@@ -316,7 +372,7 @@ class EmployeeReportController extends GetxController {
       getTimelineRes = await RemoteServices().getTimelineReport(empId, searchDate, type: type);
       if (getTimelineRes != null) {
         if (getTimelineRes['success']) {
-          // print('getTimelineRes: $getTimelineRes');
+          print('getTimelineRes: $getTimelineRes');
           // print('type: $type');
           if (type != null && type == 'visit') {
             for (var i = 0; i < getTimelineRes['pitstopList'].length; i++) {
@@ -326,7 +382,7 @@ class EmployeeReportController extends GetxController {
               pitstop['datetime'] = DateFormat('dd').format(DateTime.parse(date)).toString() + '-' + DateFormat('MM').format(DateTime.parse(date)).toString() + '-' + DateFormat.y().format(DateTime.parse(date)).toString() + ', ' + DateFormat('hh:mm').format(DateTime.parse(date)).toString() + '' + DateFormat('a').format(DateTime.parse(date)).toString().toLowerCase();
               if (pitstop['checkinLat'] == null || pitstop['checkinLat'] == '' || pitstop['checkinLng'] == null || pitstop['checkinLng'] == '') {
                 pitstop['address'] = 'N/A';
-              } else {
+              } else if (pitstop['address'] == null || pitstop['address'].toString().length==0) {
                 try {
                   var placemark = await placemarkFromCoordinates(
                     double.parse(pitstop['checkinLat']),
@@ -352,7 +408,7 @@ class EmployeeReportController extends GetxController {
               pitstop['datetime'] = DateFormat('dd').format(DateTime.parse(date)).toString() + '-' + DateFormat('MM').format(DateTime.parse(date)).toString() + '-' + DateFormat.y().format(DateTime.parse(date)).toString() + ', ' + DateFormat('hh:mm').format(DateTime.parse(date)).toString() + '' + DateFormat('a').format(DateTime.parse(date)).toString().toLowerCase();
               if (pitstop['lat'] == null || pitstop['lat'] == '' || pitstop['lng'] == null || pitstop['lng'] == '') {
                 pitstop['address'] = 'N/A';
-              } else {
+              } else if (pitstop['address'] == null || pitstop['address'].toString().length==0){
                 try {
                   var placemark = await placemarkFromCoordinates(
                     double.parse(pitstop['lat']),
@@ -438,7 +494,7 @@ class EmployeeReportController extends GetxController {
       getTimelineRes = await RemoteServices().getTimelineReport(empId, searchDate, type: type);
       if (getTimelineRes != null) {
         if (getTimelineRes['success']) {
-          // print('getTimelineRes: $getTimelineRes');
+          print('getTimelineRes: $getTimelineRes');
           // print('type: $type');
           if (type != null && type == 'timeline') {
             for (var i = 0; i < getTimelineRes['empTimelineList'].length; i++) {
@@ -451,7 +507,7 @@ class EmployeeReportController extends GetxController {
                 pitstop['address'] = 'N/A';
                 pitstop['checkinLat'] = '';
                 pitstop['checkinLng'] = '';
-              } else {
+              } else if (pitstop['address'] == null || pitstop['address'].toString().length==0){
                 pitstop['checkinLat'] = pitstop['lat'];
                 pitstop['checkinLng'] = pitstop['lng'];
                 var placemark = await placemarkFromCoordinates(
@@ -461,7 +517,7 @@ class EmployeeReportController extends GetxController {
                 var first = placemark.first;
                 // print(first);
                 var address = '${first.street}, ${first.thoroughfare}, ${first.subLocality}, ${first.locality}, ${first.administrativeArea}, ${first.postalCode}, ${first.country}';
-                if (address.isNullOrBlank) {
+                if (address.isBlank) {
                   pitstop['address'] = address;
                 } else {
                   pitstop['address'] = address;
@@ -485,7 +541,7 @@ class EmployeeReportController extends GetxController {
               pitstop['datetime'] = DateFormat('dd').format(DateTime.parse(date)).toString() + '-' + DateFormat('MM').format(DateTime.parse(date)).toString() + '-' + DateFormat.y().format(DateTime.parse(date)).toString() + ', ' + DateFormat('hh:mm').format(DateTime.parse(date)).toString() + '' + DateFormat('a').format(DateTime.parse(date)).toString().toLowerCase();
               if (pitstop['checkinLat'] == null || pitstop['checkinLat'] == '' || pitstop['checkinLng'] == null || pitstop['checkinLng'] == '') {
                 pitstop['address'] = 'N/A';
-              } else {
+              } else if (pitstop['address'] == null || pitstop['address'].toString().length==0){
                 var placemark = await placemarkFromCoordinates(
                   double.parse(pitstop['checkinLat']),
                   double.parse(pitstop['checkinLng']),
