@@ -97,7 +97,9 @@ class _ViewExpenseState extends State<ViewExpense> {
                             child: Row(
                               children: <Widget>[
                                 Column(children: [
-                                  new Text('10,000',
+                                  new Text(expC.expDet!=null &&
+                                      expC.expDet['totalExpenses']['expense'].toString()!='null'?
+                                  expC.expDet['totalExpenses']['expense'].toString():'-',
                                       style: new TextStyle(
                                           fontSize: 40.0, color: Colors.black)),
                                   Text('Expenses This Month',
@@ -112,7 +114,9 @@ class _ViewExpenseState extends State<ViewExpense> {
                                   thickness: 2,
                                 ),
                                 Column(children: [
-                                  new Text("10,500",
+                                  new Text(expC.expDet!=null &&
+                                      expC.expDet['totalExpenses']['advance'].toString()!='null'?
+                                  expC.expDet['totalExpenses']['advance'].toString():'-',
                                       style: new TextStyle(
                                           fontSize: 40.0, color: Colors.black)),
                                   Text('Advance This Month',

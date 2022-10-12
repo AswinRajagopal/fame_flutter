@@ -9,6 +9,7 @@ import 'package:progress_dialog/progress_dialog.dart';
 class ExpenseController extends GetxController {
   var isLoading = true.obs;
   var res;
+  var expDet;
   ProgressDialog pr;
   List exp = [].obs;
   List purpose=[].obs;
@@ -99,7 +100,6 @@ class ExpenseController extends GetxController {
         isLoading(false);
         await pr.hide();
         if (res['success']) {
-          print(res['expenseType'] );
           if (res['expenseType'] != null) {
             for (var i = 0; i < res['expenseType'].length; i++) {
               exp.add(res['expenseType'][i]);
@@ -158,6 +158,7 @@ class ExpenseController extends GetxController {
         isLoading(false);
         await pr.hide();
         if (res['success']) {
+          expDet = res;
           print('expensesTypeRes valid: $res');
           if (res['expenseList'] != null) {
             for (var i = 0; i < res['expenseList'].length; i++) {
