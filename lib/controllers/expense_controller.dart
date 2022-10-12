@@ -20,10 +20,11 @@ class ExpenseController extends GetxController {
     Future.delayed(Duration(milliseconds: 100));
   }
 
-  void newExpenses(amount,expenseTypeId,remarks, imageFile) async {
+  void newExpenses(amount,expenseTypeId,remarks, imageFile, imageFile2, imageFile3) async {
     try {
       await pr.show();
-      var ExpenseRes = await RemoteServices().newExpenses(imageFile, amount,expenseTypeId,remarks);
+      var ExpenseRes = await RemoteServices().newExpenses(imageFile, amount,
+          expenseTypeId,remarks, imageFile2, imageFile3);
       if (ExpenseRes != null) {
         await pr.hide();
         print('ExpenseRes valid: ${ExpenseRes['success']}');

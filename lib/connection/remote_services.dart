@@ -1458,7 +1458,8 @@ class RemoteServices {
     }
   }
 
-  Future newExpenses(File imageFile, amount,expenseTypeId, remarks) async {
+  Future newExpenses(File imageFile, amount,expenseTypeId, remarks,
+      File image1, File image2) async {
     var dio = mydio.Dio();
 
     var formData = mydio.FormData.fromMap({
@@ -1471,14 +1472,14 @@ class RemoteServices {
         imageFile.path,
         filename: 'image1.jpg',
       ),
-      'attachment2': await mydio.MultipartFile.fromFile(
-        imageFile.path,
+      'attachment2': image1!=null ? await mydio.MultipartFile.fromFile(
+        image1.path,
         filename: 'image2.jpg',
-      ),
-      'attachment3': await mydio.MultipartFile.fromFile(
-        imageFile.path,
+      ):null,
+      'attachment3': image2!=null ? await mydio.MultipartFile.fromFile(
+        image2.path,
         filename: 'image3.jpg',
-      ),
+      ) : null,
     });
     var response = await dio.post(
       '$baseURL/expense/expense_emp',
@@ -1486,8 +1487,8 @@ class RemoteServices {
     );
     if (response.statusCode == 200) {
       var jsonString = response.data;
-      print(jsonString);
-      return json.decode(jsonString);
+      // print(jsonString);
+      return jsonString;
     } else {
       return null;
     }

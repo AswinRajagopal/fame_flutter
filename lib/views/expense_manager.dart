@@ -35,7 +35,7 @@ class _ExpensesState extends State<Expenses> {
   final TextEditingController remarks = TextEditingController();
   var empId;
   var expenseTypeId;
-  File attachment;
+  File attachment, attachment2, attachment3;
   var passDate;
 
   var details;
@@ -290,12 +290,16 @@ class _ExpensesState extends State<Expenses> {
                                   hint: 'Expenses Type',
                                   showSelectedItem: true,
                                   items: expC.exp.map((item) {
-                                    print(item['expenseType']);
-                                    print("items " + item['expenseType']);
                                     var sC = item['expenseType'].toString();
                                     return sC.toString();
                                   }).toList(),
                                   onChanged: (value) {
+                                    for(var e in expC.exp){
+                                      if(e['expenseType']==value){
+                                        expenseTypeId = e['expenseTypeId'];
+                                        break;
+                                      }
+                                    }
                                     setState(() {});
                                   }),
                             ),
@@ -427,7 +431,7 @@ class _ExpensesState extends State<Expenses> {
                                   imageQuality: 50,
                                 );
                                 if (pickedFile != null) {
-                                  attachment =  new File(pickedFile.path);
+                                  attachment2 =  new File(pickedFile.path);
                                   attachOne.text = path.basename(pickedFile.path);
                                   setState(() {});
                                 } else {
@@ -480,7 +484,7 @@ class _ExpensesState extends State<Expenses> {
                                   imageQuality: 50,
                                 );
                                 if (pickedFile != null) {
-                                  attachment =  new File(pickedFile.path);
+                                  attachment3 =  new File(pickedFile.path);
                                   attachTwo.text = path.basename(pickedFile.path);
                                   setState(() {});
                                 } else {
@@ -498,13 +502,7 @@ class _ExpensesState extends State<Expenses> {
                           onPressed: () async {
                             print('Submit');
                             FocusScope.of(context).requestFocus(FocusNode());
-                            var base64String = '';
-                            if (attachment != null) {
-                              final bytes =
-                              await File(attachment.path).readAsBytes();
-                              // print(base64.encode(bytes));
-                              base64String = base64.encode(bytes);
-                            } else {
+                            if (attachment == null) {
                               Get.snackbar(
                                 null,
                                 'Please provide Attachment',
@@ -545,7 +543,7 @@ class _ExpensesState extends State<Expenses> {
                             } else if (expC.exp.isEmpty) {
                               Get.snackbar(
                                 null,
-                                'Please select atleast one Expense Type',
+                                'Please select at least one Expense Type',
                                 colorText: Colors.white,
                                 backgroundColor: Colors.black87,
                                 snackPosition: SnackPosition.BOTTOM,
@@ -560,10 +558,8 @@ class _ExpensesState extends State<Expenses> {
                                 borderRadius: 5.0,
                               );
                             } else {
-                              if (expenseTypeId == null) {
-                                expenseTypeId = '2';
-                              }
-                              expC.newExpenses(amount.text, expenseTypeId,remarks.text, attachment);
+                              expC.newExpenses(amount.text, expenseTypeId,
+                                  remarks.text, attachment, attachment2, attachment3);
                             }
                           },
                           child: Padding(
