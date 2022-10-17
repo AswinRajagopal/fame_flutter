@@ -428,6 +428,7 @@ class _AttachImgState extends State<AttachImg> {
                   keyboardType: TextInputType.multiline,
                   maxLines: 8,
                   maxLength: 160,
+                  maxLengthEnforced: true,
                   controller: remarks,
                   onChanged: (value) {
                     setState(() {
