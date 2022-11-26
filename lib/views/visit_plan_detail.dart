@@ -1,11 +1,17 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:ui';
+import 'dart:io' as Io;
 
+import 'package:dio/dio.dart';
 import 'package:fame/connection/remote_services.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'visit_plan_route.dart';
 
 import '../utils/utils.dart';
 import 'package:timelines/timelines.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 
 import '../controllers/employee_report_controller.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +20,9 @@ import 'package:progress_dialog/progress_dialog.dart';
 
 class VisitPlanDetail extends StatefulWidget {
   final String empId;
-  final String date;
-  VisitPlanDetail(this.empId, this.date);
+  final String fDate;
+  final String tDate;
+  VisitPlanDetail(this.empId, this.fDate, this.tDate);
 
   @override
   _VisitPlanDetailState createState() => _VisitPlanDetailState();
@@ -58,7 +65,7 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
       backgroundColor: Colors.white,
     );
     Future.delayed(Duration(milliseconds: 100), () {
-      epC.getTimelineReport(widget.empId, widget.date, type: 'visit');
+      epC.getPitstopByFromToDate(widget.empId, widget.fDate, widget.tDate);
     });
     super.initState();
   }
@@ -76,6 +83,18 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
         title: Text(
           'Visit Plan',
         ),
+        actions: <Widget>[
+          IconButton(
+              icon: const Icon(
+                Icons.download_sharp,
+                color: Colors.white,
+                semanticLabel: 'pdf',
+              ),
+              onPressed: () {
+                RemoteServices().getVisitDownloads(
+                    widget.empId, widget.fDate, widget.tDate);
+              })
+        ],
       ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -83,8 +102,7 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
         children: [
           FloatingActionButton(
             onPressed: () {
-              // Get.offAll(ApplyLeave());
-              Get.to(VisitPlanRoute(widget.empId, widget.date));
+              Get.to(VisitPlanRoute(widget.empId, widget.fDate));
             },
             child: Icon(
               Icons.location_on,
@@ -96,9 +114,9 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
       ),
       body: SafeArea(
         child: Obx(() {
-          if (epC.isLoadingTimeline.value) {
+          if (epC.isLoadingFromToDate.value) {
             return Column();
-          } else if (epC.pitsStops.isNullOrBlank) {
+          } else if (epC.datePitsStop.isNullOrBlank) {
             return Container(
               height: MediaQuery.of(context).size.height / 1.2,
               child: Padding(
@@ -143,7 +161,7 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
                         nodePosition: 0.01,
                       ),
                       builder: TimelineTileBuilder.connected(
-                        itemCount: epC.pitsStops.length,
+                        itemCount: epC.datePitsStop.length,
                         connectorBuilder: (context, index, type) {
                           return DashedLineConnector(
                             dash: 6.0,
@@ -163,7 +181,7 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
                           return index == 0 ? 0.30 : 0.08;
                         },
                         contentsBuilder: (context, index) {
-                          var pitstop = epC.pitsStops[index];
+                          var pitstop = epC.datePitsStop[index];
                           return TimelineTile(
                             nodeAlign: TimelineNodeAlign.basic,
                             // mainAxisExtent: 200.0,
@@ -194,7 +212,7 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
                                   elevation: 5.0,
                                   margin: EdgeInsets.only(
                                     left: 10.0,
-                                    bottom: index == epC.pitsStops.length - 1
+                                    bottom: index == epC.datePitsStop.length - 1
                                         ? 50.0
                                         : 20.0,
                                     top: index == 0 ? 50.0 : 0.0,
@@ -343,6 +361,52 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
               fit: BoxFit.cover,
             ),
           ),
+          Row(
+            children: [
+              GestureDetector(
+                  onTap: () async {
+                    var pitstop = epC.datePitsStop[0];
+                    if (pitstop['attachment']) {
+                      var getPitstopAttachment = await RemoteServices()
+                          .getPitstopAttch(pitstop['pitstopId'].toString());
+                      var img;
+                      img = getPitstopAttachment['pitstopAttachment']
+                          ['pitstopImage'];
+                      img = img.contains('data:image');
+
+                      var file = Io.File('data:image');
+                      var image = base64.decode(file.toString());
+                      new Image.network('$image');
+
+                      await GallerySaver.saveImage(image.toString());
+                      if (image != null) {
+                        Get.snackbar(
+                          null,
+                          'Image downloaded successfully',
+                          colorText: Colors.white,
+                          backgroundColor: Colors.black87,
+                          snackPosition: SnackPosition.BOTTOM,
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 10.0,
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12.0,
+                            vertical: 18.0,
+                          ),
+                          borderRadius: 5.0,
+                        );
+                      }
+                    }
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Icon(
+                      Icons.download_rounded,
+                    ),
+                  ))
+            ],
+          )
         ],
       ),
     );

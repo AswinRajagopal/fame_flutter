@@ -408,7 +408,7 @@ class _AttendancePageState extends State<AttendancePage> {
                               height: 20.0,
                             ),
                             Obx(() {
-                              if (aC.timings.isBlank) {
+                              if (aC.timings.isNullOrBlank) {
                                 return Container(
                                   height: 180.0,
                                   child: Column(

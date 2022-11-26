@@ -283,7 +283,7 @@ class _ShortageReportState extends State<ShortageReport> {
                 ),
               ),
               Obx(() {
-                if (epC.timings.isBlank) {
+                if (epC.timings.isNullOrBlank) {
                   return Container(
                     height: 180.0,
                     child: Column(

@@ -18,16 +18,20 @@ class VisitPlan extends StatefulWidget {
 
 class _VisitPlanState extends State<VisitPlan> {
   final EmployeeReportController epC = Get.put(EmployeeReportController());
-  TextEditingController date = TextEditingController();
+  TextEditingController frmDate = TextEditingController();
+  TextEditingController toDate = TextEditingController();
   TextEditingController empName = TextEditingController();
   var empId;
-  var sDate;
+  var fDate;
+  var tDate;
 
   @override
   void initState() {
     super.initState();
-    date.text = DateFormat('dd-MM-yyyy').format(curDate).toString();
-    sDate = DateFormat('yyyy-MM-dd').format(curDate).toString();
+    frmDate.text = DateFormat('dd-MM-yyyy').format(curDate).toString();
+    toDate.text = DateFormat('dd-MM-yyyy').format(curDate).toString();
+    fDate = DateFormat('yyyy-MM-dd').format(curDate).toString();
+    tDate = DateFormat('yyyy-MM-dd').format(curDate).toString();
     if (widget.user != null) {
       empId = RemoteServices().box.get('empid');
     }
@@ -40,26 +44,48 @@ class _VisitPlanState extends State<VisitPlan> {
 
   final DateTime curDate = DateTime.now();
 
-  Future<Null> getDate(BuildContext context) async {
+  Future<Null> fromDate(BuildContext context) async {
     final picked = await showDatePicker(
       context: context,
-      initialDate: sDate == null
+      initialDate: fDate == null
           ? curDate
           : DateTime.parse(
-              sDate.toString(),
+              fDate.toString(),
             ),
-      firstDate: DateTime.now().add(Duration(days: -365)),
+      firstDate: DateTime.now().add(Duration(days: -365*2)),
       lastDate: DateTime.now(),
     );
 
     if (picked != null) {
-      print('Date selected ${date.toString()}');
+      print('Date selected ${frmDate.toString()}');
       setState(() {
-        date.text = DateFormat('dd-MM-yyyy').format(picked).toString();
-        sDate = DateFormat('yyyy-MM-dd').format(picked).toString();
+        frmDate.text = DateFormat('dd-MM-yyyy').format(picked).toString();
+        fDate = DateFormat('yyyy-MM-dd').format(picked).toString();
       });
     }
   }
+
+  Future<Null> lastDate(BuildContext context) async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: tDate == null
+          ? curDate
+          : DateTime.parse(
+        tDate.toString(),
+      ),
+      firstDate: DateTime.now().add(Duration(days: -365*2)),
+      lastDate: DateTime.now(),
+    );
+
+    if (picked != null) {
+      print('Date selected ${tDate.toString()}');
+      setState(() {
+        toDate.text = DateFormat('dd-MM-yyyy').format(picked).toString();
+        tDate = DateFormat('yyyy-MM-dd').format(picked).toString();
+      });
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -127,12 +153,20 @@ class _VisitPlanState extends State<VisitPlan> {
               ),
             ),
             Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Row(
+                children: [
+                  Text('From Date')
+                ],
+              ),
+            ),
+            Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 10.0,
                 vertical: 5.0,
               ),
               child: TextField(
-                controller: date,
+                controller: frmDate,
                 decoration: InputDecoration(
                   isDense: true,
                   contentPadding: EdgeInsets.all(10),
@@ -150,7 +184,43 @@ class _VisitPlanState extends State<VisitPlan> {
                 readOnly: true,
                 keyboardType: null,
                 onTap: () {
-                  getDate(context);
+                  fromDate(context);
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Row(
+                children: [
+                  Text('To Date')
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10.0,
+                vertical: 5.0,
+              ),
+              child: TextField(
+                controller: toDate,
+                decoration: InputDecoration(
+                  isDense: true,
+                  contentPadding: EdgeInsets.all(10),
+                  hintStyle: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  hintText: 'Select Date',
+                  suffixIcon: Icon(
+                    Icons.calendar_today,
+                    size: 25.0,
+                  ),
+                ),
+                readOnly: true,
+                keyboardType: null,
+                onTap: () {
+                  lastDate(context);
                 },
               ),
             ),
@@ -187,7 +257,7 @@ class _VisitPlanState extends State<VisitPlan> {
                       RaisedButton(
                         onPressed: () {
                           FocusScope.of(context).requestFocus(FocusNode());
-                          if (empId == null || sDate == null || sDate == '') {
+                          if (empId == null || fDate == null || fDate == ''||tDate == null || tDate == '') {
                             Get.snackbar(
                               null,
                               'Please select employee and date',
@@ -206,8 +276,9 @@ class _VisitPlanState extends State<VisitPlan> {
                             );
                           } else {
                             print('empId: $empId');
-                            print('date: ${date.text}');
-                            Get.to(VisitPlanDetail(empId, sDate));
+                            print('fromdate: ${frmDate.text}');
+                            print('todate:${toDate.text}');
+                            Get.to(VisitPlanDetail(empId, fDate, tDate));
                           }
                         },
                         child: Padding(

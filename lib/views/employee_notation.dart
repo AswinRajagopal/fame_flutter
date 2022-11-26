@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:chips_choice/chips_choice.dart';
+import 'package:fame/connection/remote_services.dart';
+import 'package:fame/controllers/attendance_controller.dart';
 import 'package:fame/models/employee_notations.dart';
 import '../utils/debounce_class.dart';
 import 'package:intl/intl.dart';
@@ -33,6 +37,7 @@ class EmployeeNotation extends StatefulWidget {
 }
 
 class _EmployeeNotationState extends State<EmployeeNotation> {
+  final AttendanceController aC = Get.put(AttendanceController());
   final EmployeeNotationsController enC =
       Get.put(EmployeeNotationsController());
   TextEditingController cRemark = TextEditingController();
@@ -57,7 +62,6 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
           enC.getEmployeeBySearch(widget.date, widget.clientId, widget.time,
               widget.shift, allShifts);
         } else {}
-
       });
 
   @override
@@ -424,45 +428,162 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                 SizedBox(
                   height: 10.0,
                 ),
-
                 Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                  Container(
-                    margin: EdgeInsets.all(5.0),
-                    width: 150,
-                    height: 50,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5.0)),
-                    child: Row(
-                      children: [
-                        Visibility(
-                            visible: allShifts,
-                            child: Checkbox(
-                                value: allShifts , onChanged: _onAllShifts)),
-                        Padding(
-                          padding: const EdgeInsets.all(0),
-                          child: FlatButton(
-                            splashColor: Colors.grey[100],
+                      Container(
+                        margin: EdgeInsets.all(5.0),
+                        width: 150,
+                        height: 50,
+                        decoration: BoxDecoration(
                             color: Colors.white,
-                            textColor: Colors.black,
-                            child: Text(
-                              'All Shifts',
-                              style: TextStyle(fontSize: 16.0,fontWeight:FontWeight.bold),
+                            borderRadius: BorderRadius.circular(5.0)),
+                        child: Row(
+                          children: [
+                            Visibility(
+                                visible: allShifts,
+                                child: Checkbox(
+                                    value: allShifts, onChanged: _onAllShifts)),
+                            Padding(
+                              padding: const EdgeInsets.all(0),
+                              child: FlatButton(
+                                splashColor: Colors.grey[100],
+                                color: Colors.white,
+                                textColor: Colors.black,
+                                child: Text(
+                                  'All Shifts',
+                                  style: TextStyle(
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5.0)),
+                                onPressed: () {
+                                  setState(() {
+                                    _onAllShifts(allShifts = true);
+                                  });
+                                },
+                              ),
                             ),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5.0)),
-                            onPressed: () {
-                              setState(() {
-                                _onAllShifts(allShifts = true);
-                              });
-                            },
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: 130.0,
+                      ),
+                      Container(
+                        width: 150,
+                        height: 50,
+                        child: RaisedButton(
+                          color: Colors.grey,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(5.0),
+                          ),
+                          onPressed: () async {
+                            ProgressDialog pr;
+                            try {
+                              pr = ProgressDialog(
+                                context,
+                                type: ProgressDialogType.Normal,
+                                isDismissible: false,
+                                showLogs: false,
+                                customBody: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0,
+                                    vertical: 15.0,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      CircularProgressIndicator(),
+                                      SizedBox(
+                                        width: 20.0,
+                                      ),
+                                      Text(
+                                        'Processing please wait...',
+                                        style: TextStyle(
+                                          fontSize: 18.0,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                              pr.style(
+                                backgroundColor: Colors.white,
+                              );
+                              await pr.show();
+                              var bulkRes =
+                                  await RemoteServices().getBulkAttendance(widget.shift,widget.clientId);
+                              print('res:$bulkRes');
+                              if (bulkRes != null) {
+                                await pr.hide();
+                                print(
+                                    'bulkRes valid: ${bulkRes['success']}');
+                                if (bulkRes['success']) {
+                                  aC.pr = ProgressDialog(
+                                    context,
+                                    type: ProgressDialogType.Normal,
+                                    isDismissible: false,
+                                    showLogs: false,
+                                    customBody: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 20.0,
+                                        vertical: 15.0,
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          CircularProgressIndicator(),
+                                          SizedBox(
+                                            width: 20.0,
+                                          ),
+                                          Text(
+                                            'Processing please wait...',
+                                            style: TextStyle(
+                                              fontSize: 18.0,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                  Future.delayed(Duration(milliseconds: 100), aC.getClientTimings);
+                                } else {}
+                              }
+                            } catch (e) {
+                              print(e);
+                              await pr.hide();
+                              Get.snackbar(
+                                null,
+                                'Something went wrong! Please try again later',
+                                colorText: Colors.white,
+                                backgroundColor: Colors.black87,
+                                snackPosition: SnackPosition.BOTTOM,
+                                margin: EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                  vertical: 10.0,
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 12.0,
+                                  vertical: 18.0,
+                                ),
+                                borderRadius: 5.0,
+                              );
+                            }
+                          },
+                          child: Text(
+                            'All Present',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold),
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                ]),
+                      )
+                    ]),
               ],
             ),
             Positioned(

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
@@ -361,9 +362,8 @@ class _AttachImgState extends State<AttachImg> {
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.all(5.0),
                   ),
-
                   items: mpC.activityList.map((item) {
-                    //print('item: $item');
+                    print('item: $item');
                     return DropdownMenuItem(
                       child: Text(
                         item['activityName'],
@@ -375,7 +375,7 @@ class _AttachImgState extends State<AttachImg> {
                     FocusScope.of(context).requestFocus(FocusNode());
                     activity = value;
                     setState(() {});
-                  },
+                    },
                 ),
               ),
               Padding(
@@ -392,7 +392,7 @@ class _AttachImgState extends State<AttachImg> {
                       color: Colors.grey[600],
                       fontSize: 18.0,
                     ),
-                    hintText: 'Attachment',
+                    hintText: 'Attachment*',
                     suffixIcon: Image.asset(
                       'assets/images/uplode_proof.png',
                       scale: 2.2,
@@ -524,22 +524,6 @@ class _AttachImgState extends State<AttachImg> {
                               // print(base64.encode(bytes));
                               base64String = base64.encode(bytes);
                             } else {
-                              Get.snackbar(
-                                null,
-                                'Please provide Attachment',
-                                colorText: Colors.white,
-                                backgroundColor: Colors.black87,
-                                snackPosition: SnackPosition.BOTTOM,
-                                margin: EdgeInsets.symmetric(
-                                  horizontal: 8.0,
-                                  vertical: 10.0,
-                                ),
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 12.0,
-                                  vertical: 18.0,
-                                ),
-                                borderRadius: 5.0,
-                              );
                             }
                             if (clientText.text == null ||
                                 remarks.text == null ||
@@ -560,7 +544,8 @@ class _AttachImgState extends State<AttachImg> {
                                 ),
                                 borderRadius: 5.0,
                               );
-                            } else {
+                            }
+                            else{
                               FocusScope.of(context).requestFocus(FocusNode());
                               await mpC.pr.show();
                               var pinVisit = await RemoteServices().pinMyVisit(

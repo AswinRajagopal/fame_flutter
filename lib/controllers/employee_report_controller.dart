@@ -15,6 +15,7 @@ class EmployeeReportController extends GetxController {
   var isLoadingEmpReport = true.obs;
   var isLoadingEmpDetail = true.obs;
   var isLoadingTimeline = true.obs;
+  var isLoadingFromToDate=true.obs;
   var isLoadingPitstopAttach = true.obs;
   var isLoadingLocation = true.obs;
   var isLoadingShortage = true.obs;
@@ -41,13 +42,15 @@ class EmployeeReportController extends GetxController {
   var getClientRepRes;
   var getPitstopAttachment;
   var getTimelineRes;
+  var getPitstopByFromToDateRes;
   var getLocationRes;
   var shortageRes;
   var oB = AppUtils.NAME;
   final List pitsStops = [].obs;
+  final List datePitsStop=[].obs;
   final List pitsStopsRoute = [].obs;
   double totalDistance = 0;
-  var added =0,approved=0,rejected = 0,pending=0;
+  var added = 0, approved = 0, rejected = 0, pending = 0;
 
   void getClientTimings() async {
     try {
@@ -273,17 +276,18 @@ class EmployeeReportController extends GetxController {
     isLoadingEmpReport(true);
     try {
       await pr.show();
-      getEmpReportRes = await RemoteServices().getOnboardEmpList(clientId, orderBy);
+      getEmpReportRes =
+          await RemoteServices().getOnboardEmpList(clientId, orderBy);
       if (getEmpReportRes != null) {
         await pr.hide();
         isLoadingEmpReport(false);
         // print('getEmpReportRes valid: $getEmpReportRes');
         if (getEmpReportRes['success']) {
           added = getEmpReportRes['empList'].length;
-          for(int i =0;i<added;i++) {
+          for (int i = 0; i < added; i++) {
             if (getEmpReportRes['empList'][i]['empstatus'] == '2') {
               rejected++;
-            }else if(getEmpReportRes['empList'][i]['empstatus'] == '0'){
+            } else if (getEmpReportRes['empList'][i]['empstatus'] == '0') {
               pending++;
             }
           }
@@ -369,7 +373,8 @@ class EmployeeReportController extends GetxController {
     pitsStops.clear();
     try {
       await pr.show();
-      getTimelineRes = await RemoteServices().getTimelineReport(empId, searchDate, type: type);
+      getTimelineRes = await RemoteServices()
+          .getTimelineReport(empId, searchDate, type: type);
       if (getTimelineRes != null) {
         if (getTimelineRes['success']) {
           print('getTimelineRes: $getTimelineRes');
@@ -379,10 +384,27 @@ class EmployeeReportController extends GetxController {
               var pitstop = getTimelineRes['pitstopList'][i];
               var date = pitstop['updatedOn'];
 
-              pitstop['datetime'] = DateFormat('dd').format(DateTime.parse(date)).toString() + '-' + DateFormat('MM').format(DateTime.parse(date)).toString() + '-' + DateFormat.y().format(DateTime.parse(date)).toString() + ', ' + DateFormat('hh:mm').format(DateTime.parse(date)).toString() + '' + DateFormat('a').format(DateTime.parse(date)).toString().toLowerCase();
-              if (pitstop['checkinLat'] == null || pitstop['checkinLat'] == '' || pitstop['checkinLng'] == null || pitstop['checkinLng'] == '') {
+              pitstop['datetime'] = DateFormat('dd')
+                      .format(DateTime.parse(date))
+                      .toString() +
+                  '-' +
+                  DateFormat('MM').format(DateTime.parse(date)).toString() +
+                  '-' +
+                  DateFormat.y().format(DateTime.parse(date)).toString() +
+                  ', ' +
+                  DateFormat('hh:mm').format(DateTime.parse(date)).toString() +
+                  '' +
+                  DateFormat('a')
+                      .format(DateTime.parse(date))
+                      .toString()
+                      .toLowerCase();
+              if (pitstop['checkinLat'] == null ||
+                  pitstop['checkinLat'] == '' ||
+                  pitstop['checkinLng'] == null ||
+                  pitstop['checkinLng'] == '') {
                 pitstop['address'] = 'N/A';
-              } else if (pitstop['address'] == null || pitstop['address'].toString().length==0) {
+              } else if (pitstop['address'] == null ||
+                  pitstop['address'].toString().length == 0) {
                 try {
                   var placemark = await placemarkFromCoordinates(
                     double.parse(pitstop['checkinLat']),
@@ -391,10 +413,13 @@ class EmployeeReportController extends GetxController {
                   var first = placemark.first;
                   // print(first);
 
-                  var address = '${first.street}, ${first.thoroughfare}, ${first.subLocality}, ${first.locality}, ${first.administrativeArea}, ${first.postalCode}, ${first.country}';
+                  var address =
+                      '${first.street}, ${first.thoroughfare}, ${first.subLocality}, ${first.locality}, ${first.administrativeArea}, ${first.postalCode}, ${first.country}';
                   pitstop['address'] = address;
                 } on Exception catch (_) {
-                  var address = await new RemoteServices().getAddressFromLatLng(double.parse(pitstop['checkinLat']), double.parse(pitstop['checkinLng']));
+                  var address = await new RemoteServices().getAddressFromLatLng(
+                      double.parse(pitstop['checkinLat']),
+                      double.parse(pitstop['checkinLng']));
                   pitstop['address'] = address;
                 }
               }
@@ -405,10 +430,27 @@ class EmployeeReportController extends GetxController {
               var pitstop = getTimelineRes['empTimelineList'][i];
               var date = pitstop['timeStamp'];
 
-              pitstop['datetime'] = DateFormat('dd').format(DateTime.parse(date)).toString() + '-' + DateFormat('MM').format(DateTime.parse(date)).toString() + '-' + DateFormat.y().format(DateTime.parse(date)).toString() + ', ' + DateFormat('hh:mm').format(DateTime.parse(date)).toString() + '' + DateFormat('a').format(DateTime.parse(date)).toString().toLowerCase();
-              if (pitstop['lat'] == null || pitstop['lat'] == '' || pitstop['lng'] == null || pitstop['lng'] == '') {
+              pitstop['datetime'] = DateFormat('dd')
+                      .format(DateTime.parse(date))
+                      .toString() +
+                  '-' +
+                  DateFormat('MM').format(DateTime.parse(date)).toString() +
+                  '-' +
+                  DateFormat.y().format(DateTime.parse(date)).toString() +
+                  ', ' +
+                  DateFormat('hh:mm').format(DateTime.parse(date)).toString() +
+                  '' +
+                  DateFormat('a')
+                      .format(DateTime.parse(date))
+                      .toString()
+                      .toLowerCase();
+              if (pitstop['lat'] == null ||
+                  pitstop['lat'] == '' ||
+                  pitstop['lng'] == null ||
+                  pitstop['lng'] == '') {
                 pitstop['address'] = 'N/A';
-              } else if (pitstop['address'] == null || pitstop['address'].toString().length==0){
+              } else if (pitstop['address'] == null ||
+                  pitstop['address'].toString().length == 0) {
                 try {
                   var placemark = await placemarkFromCoordinates(
                     double.parse(pitstop['lat']),
@@ -416,10 +458,13 @@ class EmployeeReportController extends GetxController {
                   );
                   var first = placemark.first;
                   // print(first);
-                  var address = '${first.street}, ${first.thoroughfare}, ${first.subLocality}, ${first.locality}, ${first.administrativeArea}, ${first.postalCode}, ${first.country}';
+                  var address =
+                      '${first.street}, ${first.thoroughfare}, ${first.subLocality}, ${first.locality}, ${first.administrativeArea}, ${first.postalCode}, ${first.country}';
                   pitstop['address'] = address;
                 } on Exception catch (_) {
-                  var address = await new RemoteServices().getAddressFromLatLng(double.parse(pitstop['lat']), double.parse(pitstop['lng']));
+                  var address = await new RemoteServices().getAddressFromLatLng(
+                      double.parse(pitstop['lat']),
+                      double.parse(pitstop['lng']));
                   pitstop['address'] = address;
                 }
               }
@@ -432,17 +477,6 @@ class EmployeeReportController extends GetxController {
         } else {
           isLoadingTimeline(false);
           await pr.hide();
-          // Get.snackbar(
-          //   null,
-          //   'Timeline report not found',
-          //   colorText: Colors.white,
-          //   backgroundColor: Colors.black87,
-          //   snackPosition: SnackPosition.BOTTOM,
-          //   margin: EdgeInsets.symmetric(
-          //     horizontal: 8.0,
-          //     vertical: 10.0,
-          //   ),
-          // );
         }
       }
     } catch (e) {
@@ -467,6 +501,139 @@ class EmployeeReportController extends GetxController {
       );
     }
   }
+
+  void getPitstopByFromToDate(empId, fromDate, toDate) async {
+    isLoadingFromToDate(true);
+    datePitsStop.clear();
+    try {
+      await pr.show();
+      getPitstopByFromToDateRes= await RemoteServices()
+          .getPitstopByFromToDate(empId, fromDate, toDate);
+      if (getPitstopByFromToDateRes != null) {
+        if (getPitstopByFromToDateRes['success']) {
+          print('getpitstopfromdatetodateres: $getPitstopByFromToDateRes');
+          if (getPitstopByFromToDateRes != null) {
+            for (var i = 0; i < getPitstopByFromToDateRes['pitstopList'].length; i++) {
+              var pitstop = getPitstopByFromToDateRes['pitstopList'][i];
+              var date = pitstop['updatedOn'];
+              pitstop['datetime'] = DateFormat('dd')
+                      .format(DateTime.parse(date))
+                      .toString() +
+                  '-' +
+                  DateFormat('MM').format(DateTime.parse(date)).toString() +
+                  '-' +
+                  DateFormat.y().format(DateTime.parse(date)).toString() +
+                  ', ' +
+                  DateFormat('hh:mm').format(DateTime.parse(date)).toString() +
+                  '' +
+                  DateFormat('a')
+                      .format(DateTime.parse(date))
+                      .toString()
+                      .toLowerCase();
+              if (pitstop['checkinLat'] == null ||
+                  pitstop['checkinLat'] == '' ||
+                  pitstop['checkinLng'] == null ||
+                  pitstop['checkinLng'] == '') {
+                pitstop['address'] = 'N/A';
+              } else if (pitstop['address'] == null ||
+                  pitstop['address'].toString().length == 0) {
+                try {
+                  var placemark = await placemarkFromCoordinates(
+                    double.parse(pitstop['checkinLat']),
+                    double.parse(pitstop['checkinLng']),
+                  );
+                  var first = placemark.first;
+                  // print(first);
+
+                  var address =
+                      '${first.street}, ${first.thoroughfare}, ${first.subLocality}, ${first.locality}, ${first.administrativeArea}, ${first.postalCode}, ${first.country}';
+                  pitstop['address'] = address;
+                } on Exception catch (_) {
+                  var address = await new RemoteServices().getAddressFromLatLng(
+                      double.parse(pitstop['checkinLat']),
+                      double.parse(pitstop['checkinLng']));
+                  pitstop['address'] = address;
+                }
+              }
+              datePitsStop.add(pitstop);
+            }
+          } else {
+            for (var i = 0; i < getPitstopByFromToDateRes['empTimelineList'].length; i++) {
+              var pitstop = getPitstopByFromToDateRes['empTimelineList'][i];
+              var date = pitstop['timeStamp'];
+
+              pitstop['datetime'] = DateFormat('dd')
+                      .format(DateTime.parse(date))
+                      .toString() +
+                  '-' +
+                  DateFormat('MM').format(DateTime.parse(date)).toString() +
+                  '-' +
+                  DateFormat.y().format(DateTime.parse(date)).toString() +
+                  ', ' +
+                  DateFormat('hh:mm').format(DateTime.parse(date)).toString() +
+                  '' +
+                  DateFormat('a')
+                      .format(DateTime.parse(date))
+                      .toString()
+                      .toLowerCase();
+              if (pitstop['lat'] == null ||
+                  pitstop['lat'] == '' ||
+                  pitstop['lng'] == null ||
+                  pitstop['lng'] == '') {
+                pitstop['address'] = 'N/A';
+              } else if (pitstop['address'] == null ||
+                  pitstop['address'].toString().length == 0) {
+                try {
+                  var placemark = await placemarkFromCoordinates(
+                    double.parse(pitstop['lat']),
+                    double.parse(pitstop['lng']),
+                  );
+                  var first = placemark.first;
+                  // print(first);
+                  var address =
+                      '${first.street}, ${first.thoroughfare}, ${first.subLocality}, ${first.locality}, ${first.administrativeArea}, ${first.postalCode}, ${first.country}';
+                  pitstop['address'] = address;
+                } on Exception catch (_) {
+                  var address = await new RemoteServices().getAddressFromLatLng(
+                      double.parse(pitstop['lat']),
+                      double.parse(pitstop['lng']));
+                  pitstop['address'] = address;
+                }
+              }
+              datePitsStop.add(pitstop);
+            }
+            // pitsStops.sort((a,b)=> DateTime.parse(b['timeStamp']).isAfter(DateTime.parse(b['timeStamp']))?1:-1);
+          }
+          isLoadingFromToDate(false);
+          await pr.hide();
+        } else {
+          isLoadingFromToDate(false);
+          await pr.hide();
+        }
+      }
+    } catch (e) {
+      print(e);
+      isLoadingFromToDate(false);
+      await pr.hide();
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
+      );
+    }
+  }
+
   Future getPitstopAtt(pitstopId) async {
     // isLoadingTimeline(true);
     pitsStops.clear();
@@ -475,7 +642,7 @@ class EmployeeReportController extends GetxController {
       getPitstopAttachment = await RemoteServices().getPitstopAttch(pitstopId);
       if (getPitstopAttachment != null) {
         if (getPitstopAttachment['success']) {
-          print("pitstop : "+getPitstopAttachment);
+          print("pitstop : " + getPitstopAttachment);
           return getPitstopAttachment;
         }
       }
@@ -491,7 +658,8 @@ class EmployeeReportController extends GetxController {
     totalDistance = 0;
     try {
       await pr.show();
-      getTimelineRes = await RemoteServices().getTimelineReport(empId, searchDate, type: type);
+      getTimelineRes = await RemoteServices()
+          .getTimelineReport(empId, searchDate, type: type);
       if (getTimelineRes != null) {
         if (getTimelineRes['success']) {
           print('getTimelineRes: $getTimelineRes');
@@ -502,12 +670,29 @@ class EmployeeReportController extends GetxController {
               pitstop['pitstopId'] = pitstop['emptlnId'];
               var date = pitstop['timeStamp'];
 
-              pitstop['datetime'] = DateFormat('dd').format(DateTime.parse(date)).toString() + '-' + DateFormat('MM').format(DateTime.parse(date)).toString() + '-' + DateFormat.y().format(DateTime.parse(date)).toString() + ', ' + DateFormat('hh:mm').format(DateTime.parse(date)).toString() + '' + DateFormat('a').format(DateTime.parse(date)).toString().toLowerCase();
-              if (pitstop['lat'] == null || pitstop['lat'] == '' || pitstop['lng'] == null || pitstop['lng'] == '') {
+              pitstop['datetime'] = DateFormat('dd')
+                      .format(DateTime.parse(date))
+                      .toString() +
+                  '-' +
+                  DateFormat('MM').format(DateTime.parse(date)).toString() +
+                  '-' +
+                  DateFormat.y().format(DateTime.parse(date)).toString() +
+                  ', ' +
+                  DateFormat('hh:mm').format(DateTime.parse(date)).toString() +
+                  '' +
+                  DateFormat('a')
+                      .format(DateTime.parse(date))
+                      .toString()
+                      .toLowerCase();
+              if (pitstop['lat'] == null ||
+                  pitstop['lat'] == '' ||
+                  pitstop['lng'] == null ||
+                  pitstop['lng'] == '') {
                 pitstop['address'] = 'N/A';
                 pitstop['checkinLat'] = '';
                 pitstop['checkinLng'] = '';
-              } else if (pitstop['address'] == null || pitstop['address'].toString().length==0){
+              } else if (pitstop['address'] == null ||
+                  pitstop['address'].toString().length == 0) {
                 pitstop['checkinLat'] = pitstop['lat'];
                 pitstop['checkinLng'] = pitstop['lng'];
                 var placemark = await placemarkFromCoordinates(
@@ -516,8 +701,9 @@ class EmployeeReportController extends GetxController {
                 );
                 var first = placemark.first;
                 // print(first);
-                var address = '${first.street}, ${first.thoroughfare}, ${first.subLocality}, ${first.locality}, ${first.administrativeArea}, ${first.postalCode}, ${first.country}';
-                if (address.isBlank) {
+                var address =
+                    '${first.street}, ${first.thoroughfare}, ${first.subLocality}, ${first.locality}, ${first.administrativeArea}, ${first.postalCode}, ${first.country}';
+                if (address.isNullOrBlank) {
                   pitstop['address'] = address;
                 } else {
                   pitstop['address'] = address;
@@ -527,8 +713,10 @@ class EmployeeReportController extends GetxController {
             }
             for (var d = 0; d < pitsStopsRoute.length - 1; d++) {
               totalDistance += await Locationpath().getDistance(
-                LatLng(double.parse(pitsStopsRoute[d]['lat']), double.parse(pitsStopsRoute[d]['lng'])),
-                LatLng(double.parse(pitsStopsRoute[d + 1]['lat']), double.parse(pitsStopsRoute[d + 1]['lng'])),
+                LatLng(double.parse(pitsStopsRoute[d]['lat']),
+                    double.parse(pitsStopsRoute[d]['lng'])),
+                LatLng(double.parse(pitsStopsRoute[d + 1]['lat']),
+                    double.parse(pitsStopsRoute[d + 1]['lng'])),
               );
             }
             isLoadingTimeline(false);
@@ -538,25 +726,45 @@ class EmployeeReportController extends GetxController {
               var pitstop = getTimelineRes['pitstopList'][i];
               var date = pitstop['updatedOn'];
 
-              pitstop['datetime'] = DateFormat('dd').format(DateTime.parse(date)).toString() + '-' + DateFormat('MM').format(DateTime.parse(date)).toString() + '-' + DateFormat.y().format(DateTime.parse(date)).toString() + ', ' + DateFormat('hh:mm').format(DateTime.parse(date)).toString() + '' + DateFormat('a').format(DateTime.parse(date)).toString().toLowerCase();
-              if (pitstop['checkinLat'] == null || pitstop['checkinLat'] == '' || pitstop['checkinLng'] == null || pitstop['checkinLng'] == '') {
+              pitstop['datetime'] = DateFormat('dd')
+                      .format(DateTime.parse(date))
+                      .toString() +
+                  '-' +
+                  DateFormat('MM').format(DateTime.parse(date)).toString() +
+                  '-' +
+                  DateFormat.y().format(DateTime.parse(date)).toString() +
+                  ', ' +
+                  DateFormat('hh:mm').format(DateTime.parse(date)).toString() +
+                  '' +
+                  DateFormat('a')
+                      .format(DateTime.parse(date))
+                      .toString()
+                      .toLowerCase();
+              if (pitstop['checkinLat'] == null ||
+                  pitstop['checkinLat'] == '' ||
+                  pitstop['checkinLng'] == null ||
+                  pitstop['checkinLng'] == '') {
                 pitstop['address'] = 'N/A';
-              } else if (pitstop['address'] == null || pitstop['address'].toString().length==0){
+              } else if (pitstop['address'] == null ||
+                  pitstop['address'].toString().length == 0) {
                 var placemark = await placemarkFromCoordinates(
                   double.parse(pitstop['checkinLat']),
                   double.parse(pitstop['checkinLng']),
                 );
                 var first = placemark.first;
                 // print(first);
-                var address = '${first.street}, ${first.thoroughfare}, ${first.subLocality}, ${first.locality}, ${first.administrativeArea}, ${first.postalCode}, ${first.country}';
+                var address =
+                    '${first.street}, ${first.thoroughfare}, ${first.subLocality}, ${first.locality}, ${first.administrativeArea}, ${first.postalCode}, ${first.country}';
                 pitstop['address'] = address;
               }
               pitsStopsRoute.add(pitstop);
             }
             for (var d = 0; d < pitsStopsRoute.length - 1; d++) {
               totalDistance += await Locationpath().getDistance(
-                LatLng(double.parse(pitsStopsRoute[d]['checkinLat']), double.parse(pitsStopsRoute[d]['checkinLng'])),
-                LatLng(double.parse(pitsStopsRoute[d + 1]['checkinLat']), double.parse(pitsStopsRoute[d + 1]['checkinLng'])),
+                LatLng(double.parse(pitsStopsRoute[d]['checkinLat']),
+                    double.parse(pitsStopsRoute[d]['checkinLng'])),
+                LatLng(double.parse(pitsStopsRoute[d + 1]['checkinLat']),
+                    double.parse(pitsStopsRoute[d + 1]['checkinLng'])),
               );
             }
             isLoadingTimeline(false);
@@ -615,7 +823,14 @@ class EmployeeReportController extends GetxController {
             var location = getLocationRes['empDetailsTlnList'][i];
             var date = location['timeStamp'];
 
-            location['datetime'] = DateFormat('dd-MM-yyyy hh:mm').format(DateTime.parse(date)).toString() + '' + DateFormat('a').format(DateTime.parse(date)).toString().toLowerCase();
+            location['datetime'] = DateFormat('dd-MM-yyyy hh:mm')
+                    .format(DateTime.parse(date))
+                    .toString() +
+                '' +
+                DateFormat('a')
+                    .format(DateTime.parse(date))
+                    .toString()
+                    .toLowerCase();
             locations.add(location);
           }
           isLoadingLocation(false);
@@ -664,27 +879,67 @@ class EmployeeReportController extends GetxController {
     dailySearch.clear();
     try {
       await pr.show();
-      getEmpDetailRepRes = await RemoteServices().getDailyEmployeeReport(empId, fdate, tdate, orderBy);
+      getEmpDetailRepRes = await RemoteServices()
+          .getDailyEmployeeReport(empId, fdate, tdate, orderBy);
       if (getEmpDetailRepRes != null) {
         // print('getEmpReportRes valid: $getEmpReportRes');
         if (getEmpDetailRepRes['success']) {
           print('getEmpDetailRepRes: $getEmpDetailRepRes');
-          for (var i = 0; i < getEmpDetailRepRes['empDailyAttView'].length; i++) {
+          for (var i = 0;
+              i < getEmpDetailRepRes['empDailyAttView'].length;
+              i++) {
             var daily = getEmpDetailRepRes['empDailyAttView'][i];
             var chkIn = daily['checkInDateTime'];
             var chkout = daily['checkOutDateTime'];
 
-            if (chkIn == null || chkout == null || chkIn == '' || chkout == '') {
+            if (chkIn == null ||
+                chkout == null ||
+                chkIn == '' ||
+                chkout == '') {
               if (chkIn != null && chkIn != '') {
-                daily['date'] = DateFormat('dd').format(DateTime.parse(chkIn)).toString() + ' ' + DateFormat.MMM().format(DateTime.parse(chkIn)).toString() + ' ' + DateFormat.y().format(DateTime.parse(chkIn)).toString();
-                daily['time'] = DateFormat('hh:mm').format(DateTime.parse(chkIn)).toString() + '' + DateFormat('a').format(DateTime.parse(chkIn)).toString().toLowerCase();
+                daily['date'] = DateFormat('dd')
+                        .format(DateTime.parse(chkIn))
+                        .toString() +
+                    ' ' +
+                    DateFormat.MMM().format(DateTime.parse(chkIn)).toString() +
+                    ' ' +
+                    DateFormat.y().format(DateTime.parse(chkIn)).toString();
+                daily['time'] = DateFormat('hh:mm')
+                        .format(DateTime.parse(chkIn))
+                        .toString() +
+                    '' +
+                    DateFormat('a')
+                        .format(DateTime.parse(chkIn))
+                        .toString()
+                        .toLowerCase();
               } else {
                 daily['date'] = 'N/A';
                 daily['time'] = 'N/A';
               }
             } else {
-              daily['date'] = DateFormat('dd').format(DateTime.parse(chkIn)).toString() + ' ' + DateFormat.MMM().format(DateTime.parse(chkIn)).toString() + ' ' + DateFormat.y().format(DateTime.parse(chkIn)).toString();
-              daily['time'] = DateFormat('hh:mm').format(DateTime.parse(chkIn)).toString() + '' + DateFormat('a').format(DateTime.parse(chkIn)).toString().toLowerCase() + ' to ' + DateFormat('hh:mm').format(DateTime.parse(chkout)).toString() + '' + DateFormat('a').format(DateTime.parse(chkout)).toString().toLowerCase();
+              daily['date'] = DateFormat('dd')
+                      .format(DateTime.parse(chkIn))
+                      .toString() +
+                  ' ' +
+                  DateFormat.MMM().format(DateTime.parse(chkIn)).toString() +
+                  ' ' +
+                  DateFormat.y().format(DateTime.parse(chkIn)).toString();
+              daily['time'] =
+                  DateFormat('hh:mm').format(DateTime.parse(chkIn)).toString() +
+                      '' +
+                      DateFormat('a')
+                          .format(DateTime.parse(chkIn))
+                          .toString()
+                          .toLowerCase() +
+                      ' to ' +
+                      DateFormat('hh:mm')
+                          .format(DateTime.parse(chkout))
+                          .toString() +
+                      '' +
+                      DateFormat('a')
+                          .format(DateTime.parse(chkout))
+                          .toString()
+                          .toLowerCase();
             }
 
             dailySearch.add(daily);
@@ -735,7 +990,8 @@ class EmployeeReportController extends GetxController {
     clientReport.clear();
     try {
       await pr.show();
-      getClientRepRes = await RemoteServices().getClientReport(clientId, date, shift, orderBy);
+      getClientRepRes = await RemoteServices()
+          .getClientReport(clientId, date, shift, orderBy);
       if (getClientRepRes != null) {
         // print('getEmpReportRes valid: $getEmpReportRes');
         if (getClientRepRes['success']) {
@@ -752,14 +1008,39 @@ class EmployeeReportController extends GetxController {
             var chkIn = client['checkInDateTime'];
             var chkout = client['checkOutDateTime'];
 
-            if (chkIn == null || chkout == null || chkIn == '' || chkout == '') {
+            if (chkIn == null ||
+                chkout == null ||
+                chkIn == '' ||
+                chkout == '') {
               if (chkIn != null && chkIn != '') {
-                client['showtime'] = DateFormat('hh:mm').format(DateTime.parse(chkIn)).toString() + '' + DateFormat('a').format(DateTime.parse(chkIn)).toString().toLowerCase();
+                client['showtime'] = DateFormat('hh:mm')
+                        .format(DateTime.parse(chkIn))
+                        .toString() +
+                    '' +
+                    DateFormat('a')
+                        .format(DateTime.parse(chkIn))
+                        .toString()
+                        .toLowerCase();
               } else {
                 client['showtime'] = 'N/A';
               }
             } else {
-              client['showtime'] = DateFormat('hh:mm').format(DateTime.parse(chkIn)).toString() + '' + DateFormat('a').format(DateTime.parse(chkIn)).toString().toLowerCase() + ' to ' + DateFormat('hh:mm').format(DateTime.parse(chkout)).toString() + '' + DateFormat('a').format(DateTime.parse(chkout)).toString().toLowerCase();
+              client['showtime'] =
+                  DateFormat('hh:mm').format(DateTime.parse(chkIn)).toString() +
+                      '' +
+                      DateFormat('a')
+                          .format(DateTime.parse(chkIn))
+                          .toString()
+                          .toLowerCase() +
+                      ' to ' +
+                      DateFormat('hh:mm')
+                          .format(DateTime.parse(chkout))
+                          .toString() +
+                      '' +
+                      DateFormat('a')
+                          .format(DateTime.parse(chkout))
+                          .toString()
+                          .toLowerCase();
             }
 
             clientReport.add(client);
@@ -810,7 +1091,8 @@ class EmployeeReportController extends GetxController {
     shortageReport.clear();
     try {
       await pr.show();
-      shortageRes = await RemoteServices().getShortageReport(clientId, date, shift);
+      shortageRes =
+          await RemoteServices().getShortageReport(clientId, date, shift);
       if (shortageRes != null) {
         // print('getEmpReportRes valid: $getEmpReportRes');
         isLoadingShortage(false);
