@@ -428,7 +428,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 // backgroundImage:AssetImage('assets/images/person_male.png'),
                                 backgroundImage : img == null ?
                                 NetworkImage(
-                                  url,
+                                   url==null?'https://cdn.pixabay.com/photo/2018/08/28/12/41/avatar-3637425_960_720.png':url,
                                   // fit: BoxFit.cover,
                                 )
                                     : MemoryImage(
