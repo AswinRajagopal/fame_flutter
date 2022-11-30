@@ -83,9 +83,7 @@ class RemoteServices {
         print('Settings registered: $settings');
       },
     );
-    // _firebaseMessaging.autoInitEnabled().then((value) {
-    //   print('auto Init - $value');
-    // });
+
     return pushCode;
   }
 
@@ -175,8 +173,6 @@ class RemoteServices {
   }
 
   Future getChangePass(currentPass, newPass) async {
-    print(box.get('empid'));
-    print(box.get('companyid'));
     var response = await client.post(
       '$baseURL/user/change_pass',
       headers: header,
@@ -189,10 +185,8 @@ class RemoteServices {
         },
       ),
     );
-    // print(response.body);
     if (response.statusCode == 200) {
       var jsonString = response.body;
-      // return profileFromJson(jsonString);
       return jsonDecode(jsonString);
     } else {
       //show error message
@@ -201,10 +195,6 @@ class RemoteServices {
   }
 
   Future getBulkAttendance(shift, clientId) async {
-    print(box.get('empid'));
-    print(box.get('companyid'));
-    print(box.get('shift'));
-    print(box.get('clientId'));
     var response = await client.post(
       '$baseURL/attendance/bulkatt_shift_client',
       headers: header,
@@ -229,9 +219,6 @@ class RemoteServices {
   }
 
   Future getEmpDetails() async {
-    print('getEmpDetails');
-    print(box.get('empid'));
-    print(box.get('companyid'));
     var response = await client.post(
       '$baseURL/user/profile',
       headers: header,
@@ -316,8 +303,6 @@ class RemoteServices {
   }
 
   Future<Checkin> checkinProcess(File imageFile) async {
-    // print('companyid: ${box.get('companyid')}');
-    // print('empid: ${box.get('empid')}');
     var dio = mydio.Dio();
 
     var formData = mydio.FormData.fromMap({
@@ -334,8 +319,6 @@ class RemoteServices {
       data: formData,
     );
 
-    // print(response.data);
-    // developer.log('jsonString: ${response.data.toString()}');
     if (response.statusCode == 200) {
       var jsonString = response.data;
       return checkinFromJson(jsonEncode(jsonString));
@@ -345,9 +328,6 @@ class RemoteServices {
   }
 
   Future<Dashboard> getDashboardDetails() async {
-    print('getDashboardDetails');
-    print(box.get('empid'));
-    print(box.get('companyid'));
     var response = await client.post(
       '$baseURL/attendance/dashboard_flut',
       headers: header,
@@ -376,8 +356,6 @@ class RemoteServices {
 
   Future getDbDetails() async {
     var pushCode = await setFirebaseNotification();
-    // print('getDashboardDetails');
-    // print(box.get('empid'));
     print(box.get('companyid'));
     var response = await client.post(
       '$baseURL/attendance/dashboard_flut',
@@ -390,13 +368,8 @@ class RemoteServices {
         },
       ),
     );
-    // print(response.statusCode);
     if (response.statusCode == 200) {
       var jsonString = response.body;
-      // print(response.body.runtimeType);
-      // print(response.body);
-      // print(jsonDecode(response.body)['empdetails']);
-      // developer.log('jsonString: ${jsonString.toString()}');
       return jsonDecode(jsonString);
     } else {
       //show error message
@@ -405,10 +378,7 @@ class RemoteServices {
   }
 
   Future<EmpRPlan> getEmprPlan() async {
-    // print('getEmprPlan');
-    // print(box.get('empid'));
-    // print(box.get('companyid'));
-    // print(box.get('role'));
+
     var response = await client.post(
       '$baseURL/location/get_emp_rplan',
       headers: header,
@@ -432,9 +402,7 @@ class RemoteServices {
   }
 
   Future<DbCalendar> getEmpCalendar(month) async {
-    // print('getEmpCalendar');
-    // print(box.get('empid'));
-    // print(box.get('companyid'));
+
     var response = await client.post(
       '$baseURL/attendance/emp_calendar',
       headers: header,
@@ -449,8 +417,6 @@ class RemoteServices {
     // print(response.statusCode);
     if (response.statusCode == 200) {
       var jsonString = response.body;
-      // print(response.body.runtimeType);
-      // developer.log('jsonString: ${jsonString.toString()}');
       return dbCalendarFromJson(jsonString);
     } else {
       //show error message
@@ -459,9 +425,6 @@ class RemoteServices {
   }
 
   Future getEmpCalendarNew(month) async {
-    // print('getEmpCalendar');
-    // print(box.get('empid'));
-    // print(box.get('companyid'));
     var response = await client.post(
       '$baseURL/attendance/emp_calendar',
       headers: header,
@@ -555,8 +518,7 @@ class RemoteServices {
   }
 
   Future<FaceReg> registerFace(File imageFile, endPoint) async {
-    // print('companyid: ${box.get('companyid')}');
-    // print('empid: ${box.get('empid')}');
+
     var dio = mydio.Dio();
 
     var formData = mydio.FormData.fromMap({
@@ -576,8 +538,7 @@ class RemoteServices {
       data: formData,
     );
 
-    // print(response.data);
-    // developer.log('jsonString: ${response.data.toString()}');
+
     if (response.statusCode == 200) {
       var jsonString = response.data;
       return faceRegFromJson(jsonEncode(jsonString));
@@ -587,8 +548,7 @@ class RemoteServices {
   }
 
   Future uploadPolicyDoc(File imageFile, name) async {
-    // print('companyid: ${box.get('companyid')}');
-    // print('empid: ${box.get('empid')}');
+
     var dio = mydio.Dio();
 
     var formData = mydio.FormData.fromMap({
@@ -605,8 +565,6 @@ class RemoteServices {
       data: formData,
     );
 
-    // print(response.data);
-    // developer.log('jsonString: ${response.data.toString()}');
     if (response.statusCode == 200) {
       var jsonString = response.data;
       return jsonString;
@@ -831,7 +789,6 @@ class RemoteServices {
   }
 
   Future getEmployees(empName) async {
-    // print('empName: $empName');
     var response = await client.post(
       '$baseURL/transfer/get_suggest',
       headers: header,
@@ -854,7 +811,6 @@ class RemoteServices {
   }
 
   Future getTransferEmployees(empName) async {
-    // print('empName: $empName');
     var response = await client.post(
       '$baseURL/transfer/get_suggest',
       headers: header,
@@ -878,7 +834,6 @@ class RemoteServices {
   }
 
   Future getUnits(unitName) async {
-    // print('empName: $empName');
     var response = await client.post(
       '$baseURL/transfer/get_unit_suggest',
       headers: header,
@@ -922,16 +877,6 @@ class RemoteServices {
   }
 
   Future aprRejLeave(id, status) async {
-    print(
-      jsonEncode(
-        <String, String>{
-          'companyId': box.get('companyid').toString(),
-          'approvedBy': box.get('empid').toString(),
-          'status': status,
-          'id': id,
-        },
-      ),
-    );
     var response = await client.post(
       '$baseURL/leave/approve_leave',
       headers: header,
@@ -955,15 +900,6 @@ class RemoteServices {
   }
 
   Future<Attendance> getClientTimings() async {
-    print(
-      jsonEncode(
-        <String, dynamic>{
-          'empId': box.get('empid').toString(),
-          'companyId': box.get('companyid').toString(),
-          'roleId': box.get('role').toString(),
-        },
-      ),
-    );
     var response = await client.post(
       '$baseURL/attendance/clients_timing',
       headers: header,
@@ -1025,18 +961,6 @@ class RemoteServices {
   }
 
   Future getNotationsBySearch(date, clientId, empName) async {
-    // var dt = date.toString().split('-')[2] + '-' + date.toString().split('-')[1] + '-' + date.toString().split('-')[0];
-    print(
-      jsonEncode(
-        <String, dynamic>{
-          'empId': box.get('empid').toString(),
-          'companyId': box.get('companyid').toString(),
-          'date': date,
-          'clientId': clientId,
-          'empName': empName,
-        },
-      ),
-    );
     var response = await client.post(
       '$baseURL/attendance/get_att_suggest',
       headers: header,
@@ -1064,18 +988,6 @@ class RemoteServices {
 
   Future getEmployeeBySearch(date, clientId, empName, allShifts) async {
     // var dt = date.toString().split('-')[2] + '-' + date.toString().split('-')[1] + '-' + date.toString().split('-')[0];
-    print(
-      jsonEncode(
-        <String, dynamic>{
-          'empId': box.get('empid').toString(),
-          'companyId': box.get('companyid').toString(),
-          'date': date,
-          'clientId': clientId,
-          'empName': empName,
-          'allShifts': allShifts,
-        },
-      ),
-    );
     var response = await client.post(
       '$baseURL/attendance/get_att_suggest',
       headers: header,
@@ -1118,26 +1030,6 @@ class RemoteServices {
     var fullDt = date.toString().split('-');
     var dt = fullDt[2];
     var month = fullDt[1] + fullDt[0].substring(2);
-    print(
-      jsonEncode(
-        <String, dynamic>{
-          'companyId': box.get('companyid').toString(),
-          'inchargeId': box.get('empid').toString(),
-          'date': dt,
-          'shift': shift,
-          'clientId': clientId,
-          'alies': alies,
-          'empId': empId,
-          'designation': designation,
-          'remarks': remarks,
-          'startTime': startTime.toString(),
-          'endTime': endTime.toString(),
-          'month': month,
-          'extraName': extraName ?? '',
-          'extraParam': extraParam ?? '',
-        },
-      ),
-    );
     var response = await client.post(
       '$baseURL/attendance/incharge_attendance',
       headers: header,
@@ -1200,8 +1092,6 @@ class RemoteServices {
       empRemarks,
       empId,
       attachment}) async {
-    // print('companyid: ${box.get('companyid')}');
-    // print('empid: ${box.get('empid')}');
     var response = await client.post(
       '$baseURL/location/update_pitstops',
       headers: header,
@@ -1235,8 +1125,6 @@ class RemoteServices {
       address,
       clientID,
       activity}) async {
-    // print('companyid: ${box.get('companyid')}');
-    // print('empid: ${box.get('empid')}');
     var response = await client.post(
       '$baseURL/location/update_pitstops',
       headers: header,
@@ -1315,16 +1203,6 @@ class RemoteServices {
   }
 
   Future aprRejTransfer(empId, clientId, orderId, status) async {
-    // print('status: $status');
-    // print(jsonEncode(
-    //     <String, dynamic>{
-    //       'companyId': box.get('companyid').toString(),
-    //       'rejected': status == '0' ? true : false,
-    //       'orderId': orderId,
-    //       'empId': empId,
-    //       'clientId': clientId,
-    //     },
-    //   ),);
     var response = await client.post(
       '$baseURL/transfer/approve_transfer',
       headers: header,
@@ -1757,7 +1635,6 @@ class RemoteServices {
 
     var tempDir = await getApplicationDocumentsDirectory();
     String fullPath = tempDir.path + "/myVisit.pdf";
-    print(fullPath);
     var response = await dio.download(
       '$baseURL/location/pitstops_by_empId',fullPath,
       options: Options(
@@ -1772,7 +1649,6 @@ class RemoteServices {
               )
       );
     if (response.statusCode == 200) {
-      print("after download");
       Share.shareFiles([fullPath]);
     } else {
       return null;
@@ -1780,12 +1656,6 @@ class RemoteServices {
   }
 
   Future getPitstopByFromToDate(empId,fromDate, toDate) async {
-    print({
-      "companyId": box.get('companyid').toString(),
-      "fromDate": fromDate,
-      "toDate": toDate,
-      "empId": empId
-    });
     var response = await client.post(
       '$baseURL/location/pitstops_by_date',
       headers: header,
@@ -1856,17 +1726,6 @@ class RemoteServices {
   }
 
   Future getClientReport(clientId, date, shift, orderBy) async {
-    print(
-      jsonEncode(
-        <String, String>{
-          'companyId': box.get('companyid').toString(),
-          'clientId': clientId,
-          'date': date,
-          'shift': shift,
-          'orderBy': orderBy,
-        },
-      ),
-    );
     var response = await client.post(
       '$baseURL/attendance/daily_emp_report',
       headers: header,
@@ -2168,7 +2027,6 @@ class RemoteServices {
   }
 
   Future getClientsSugg(unitName) async {
-    // print('empName: $empName');
     var response = await client.post(
       '$baseURL/transfer/get_unit_suggest',
       headers: header,
@@ -2191,7 +2049,6 @@ class RemoteServices {
   }
 
   Future getBranchClientsSugg(unitName) async {
-    // print('empName: $empName');
     var response = await client.post(
       '$baseURL/transfer/get_unit_suggest',
       headers: header,
@@ -2237,7 +2094,6 @@ class RemoteServices {
   }
 
   Future getDeptSugg(unitName) async {
-    // print('empName: $empName');
     var response = await client.post(
       '$baseURL/company/get_departments',
       headers: header,
@@ -2333,7 +2189,6 @@ class RemoteServices {
   }
 
   Future getRPlanSugg(rplanName) async {
-    // print('empName: $empName');
     var response = await client.post(
       '$baseURL/location/get_rplan_sugg',
       headers: header,
@@ -2394,25 +2249,6 @@ class RemoteServices {
     }
   }
 
-  // Future getVaccineType() async {
-  //   var response = await client.post(
-  //     '$baseURL/company/get_recdata',
-  //     headers: header,
-  //     body: jsonEncode(
-  //       <String, String>{
-  //         'companyId': box.get('companyid').toString(),
-  //       },
-  //     ),
-  //   );
-  //   print(response.statusCode);
-  //   if (response.statusCode == 200) {
-  //     var jsonString = response.body;
-  //     return json.decode(jsonString);
-  //   } else {
-  //     //show error message
-  //     return null;
-  //   }
-  // }
 
   Future getCities(stateId) async {
     var response = await client.post(
@@ -2471,7 +2307,6 @@ class RemoteServices {
     );
 
     print(response.statusCode);
-    // developer.log('newRecRel: ${response.body.toString()}');
     if (response.statusCode == 200) {
       var jsonString = response.body;
       return json.decode(jsonString);
@@ -2494,7 +2329,6 @@ class RemoteServices {
       ),
     );
     print(response.statusCode);
-    // developer.log('newRecProof: ${response.body.toString()}');
     if (response.statusCode == 200) {
       var jsonString = response.body;
       return json.decode(jsonString);
@@ -2514,7 +2348,6 @@ class RemoteServices {
       File proof3Back,
       File profile) async {
     var dio = mydio.Dio();
-    // ignore: avoid_init_to_null
     var proof3backvar = null,
         proof3frontvar = null,
         profilevar = null,
@@ -2575,7 +2408,6 @@ class RemoteServices {
     // print(response.data);
     if (response.statusCode == 200) {
       var jsonString = response.data;
-      // developer.log('newRecUploadProof: ${response.data.toString()}');
       return jsonString;
     } else {
       return null;
@@ -2583,7 +2415,6 @@ class RemoteServices {
   }
 
   Future aprRejRoutePlan(id, status) async {
-    // print('empName: $empName');
     var response = await client.post(
       '$baseURL/location/update_rplan',
       headers: header,
@@ -2607,7 +2438,6 @@ class RemoteServices {
   }
 
   Future getAadharData(aadharNo) async {
-    // print('empName: $empName');
     var dio = mydio.Dio();
 
     var formData = mydio.FormData.fromMap({
@@ -2618,8 +2448,6 @@ class RemoteServices {
       data: formData,
     );
 
-    // print(response.data);
-    // developer.log('jsonString: ${response.data.toString()}');
     if (response.statusCode == 200) {
       var jsonString = response.data;
       return jsonString;
