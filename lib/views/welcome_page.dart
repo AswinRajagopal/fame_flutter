@@ -69,19 +69,20 @@ class _WelcomePageState extends State<WelcomePage> {
                         child: Text(
                           'SIGNUP',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Theme.of(context).primaryColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 16.0,
                           ),
                         ),
                       ),
-                      color: Theme.of(context).primaryColor,
+                      color: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(
                           25.0,
                         ),
                         side: BorderSide(
                           color: Theme.of(context).primaryColor,
+                          width: 2.0,
                         ),
                       ),
                     ),
@@ -100,20 +101,19 @@ class _WelcomePageState extends State<WelcomePage> {
                         child: Text(
                           'LOGIN',
                           style: TextStyle(
-                            color: Theme.of(context).primaryColor,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 16.0,
                           ),
                         ),
                       ),
-                      color: Colors.white,
+                      color: Theme.of(context).primaryColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(
                           25.0,
                         ),
                         side: BorderSide(
                           color: Theme.of(context).primaryColor,
-                          width: 2.0,
                         ),
                       ),
                     ),

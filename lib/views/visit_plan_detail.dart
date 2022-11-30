@@ -1,32 +1,40 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+import 'dart:ui';
+import 'dart:io' as Io;
 
+import 'package:dio/dio.dart';
 import 'package:fame/connection/remote_services.dart';
+import 'package:fame/controllers/visit_plan_controller.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share/share.dart';
 
 import 'visit_plan_route.dart';
 
 import '../utils/utils.dart';
 import 'package:timelines/timelines.dart';
 
-import '../controllers/employee_report_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
 class VisitPlanDetail extends StatefulWidget {
   final String empId;
-  final String date;
-  VisitPlanDetail(this.empId, this.date);
+  final String fDate;
+  final String tDate;
+  VisitPlanDetail(this.empId, this.fDate, this.tDate);
 
   @override
   _VisitPlanDetailState createState() => _VisitPlanDetailState();
 }
 
 class _VisitPlanDetailState extends State<VisitPlanDetail> {
-  final EmployeeReportController epC = Get.put(EmployeeReportController());
+  final VisitPlanController vpC = Get.put(VisitPlanController());
 
   @override
   void initState() {
-    epC.pr = ProgressDialog(
+    vpC.pr = ProgressDialog(
       context,
       type: ProgressDialogType.Normal,
       isDismissible: false,
@@ -54,11 +62,11 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
         ),
       ),
     );
-    epC.pr.style(
+    vpC.pr.style(
       backgroundColor: Colors.white,
     );
     Future.delayed(Duration(milliseconds: 100), () {
-      epC.getTimelineReport(widget.empId, widget.date, type: 'visit');
+      vpC.getPitstopByFromToDate(widget.empId, widget.fDate, widget.tDate);
     });
     super.initState();
   }
@@ -76,6 +84,18 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
         title: Text(
           'Visit Plan',
         ),
+        actions: <Widget>[
+          IconButton(
+              icon: const Icon(
+                Icons.download_sharp,
+                color: Colors.white,
+                semanticLabel: 'pdf',
+              ),
+              onPressed: () {
+                RemoteServices().getVisitDownloads(
+                    widget.empId, widget.fDate, widget.tDate);
+              })
+        ],
       ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -83,8 +103,7 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
         children: [
           FloatingActionButton(
             onPressed: () {
-              // Get.offAll(ApplyLeave());
-              Get.to(VisitPlanRoute(widget.empId, widget.date));
+              Get.to(VisitPlanRoute(widget.empId, widget.fDate));
             },
             child: Icon(
               Icons.location_on,
@@ -96,9 +115,9 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
       ),
       body: SafeArea(
         child: Obx(() {
-          if (epC.isLoadingTimeline.value) {
+          if (vpC.isLoadingFromToDate.value) {
             return Column();
-          } else if (epC.pitsStops.isNullOrBlank) {
+          } else if (vpC.datePitsStop.isNullOrBlank) {
             return Container(
               height: MediaQuery.of(context).size.height / 1.2,
               child: Padding(
@@ -143,7 +162,7 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
                         nodePosition: 0.01,
                       ),
                       builder: TimelineTileBuilder.connected(
-                        itemCount: epC.pitsStops.length,
+                        itemCount: vpC.datePitsStop.length,
                         connectorBuilder: (context, index, type) {
                           return DashedLineConnector(
                             dash: 6.0,
@@ -163,7 +182,7 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
                           return index == 0 ? 0.30 : 0.08;
                         },
                         contentsBuilder: (context, index) {
-                          var pitstop = epC.pitsStops[index];
+                          var pitstop = vpC.datePitsStop[index];
                           return TimelineTile(
                             nodeAlign: TimelineNodeAlign.basic,
                             // mainAxisExtent: 200.0,
@@ -179,6 +198,8 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
                                     var img;
                                     if (getPitstopAttachment['success'] !=
                                         null) {
+                                      var url = getPitstopAttachment['imgUrl'];
+                                      print("url:$url");
                                       img = getPitstopAttachment[
                                           'pitstopAttachment']['pitstopImage'];
                                       img = img.contains('data:image')
@@ -186,7 +207,8 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
                                           : img;
                                       await showDialog(
                                           context: context,
-                                          builder: (_) => imageDialog(img));
+                                          builder: (_) =>
+                                              imageDialog(img, url));
                                     }
                                   }
                                 },
@@ -194,7 +216,7 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
                                   elevation: 5.0,
                                   margin: EdgeInsets.only(
                                     left: 10.0,
-                                    bottom: index == epC.pitsStops.length - 1
+                                    bottom: index == vpC.datePitsStop.length - 1
                                         ? 50.0
                                         : 20.0,
                                     top: index == 0 ? 50.0 : 0.0,
@@ -310,10 +332,9 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
     );
   }
 
-  Widget imageDialog(img) {
+  Widget imageDialog(img, url) {
+    Dio dio = Dio();
     return Dialog(
-      // backgroundColor: Colors.transparent,
-      // elevation: 0,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -336,13 +357,39 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
           Container(
             width: 400,
             height: 400,
-            child: Image.memory(
-              base64.decode(
-                img.replaceAll('\n', ''),
-              ),
-              fit: BoxFit.cover,
-            ),
+            child: img == null
+                ? NetworkImage(url // fit: BoxFit.cover,
+                    )
+                : Image.memory(
+                    base64.decode(
+                      img.replaceAll('\n', ''),
+                    ),
+                    fit: BoxFit.cover,
+                  ),
           ),
+          Row(
+            children: [
+              GestureDetector(
+                  onTap: () async {
+                    print(url);
+                    final encodedStr = img;
+                    Uint8List bytes = base64.decode(encodedStr);
+                    String dir =
+                        (await getApplicationDocumentsDirectory()).path;
+                    File file = File("$dir/" +
+                        DateTime.now().millisecondsSinceEpoch.toString() +
+                        ".jpeg");
+                    await file.writeAsBytes(bytes);
+                    Share.shareFiles([file.path]);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Icon(
+                      Icons.download_rounded,
+                    ),
+                  ))
+            ],
+          )
         ],
       ),
     );

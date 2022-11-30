@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:fame/views/change_password.dart';
 import 'package:fame/views/expense_manager.dart';
 import 'package:fame/views/view_expenses.dart';
 import 'package:flutter/material.dart';
@@ -179,6 +180,15 @@ class _SettingsPageState extends State<SettingsPage> {
               child: ListContainer(
                 'assets/images/employee_report.png',
                 'Policy Documents',
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Get.to(ChangePassword());
+              },
+              child: ListContainer(
+                'assets/images/changepassword.png',
+                'Change Password',
               ),
             ),
             GestureDetector(
