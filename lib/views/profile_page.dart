@@ -318,8 +318,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   if (pC.profileRes['profileImage'] != null) {
                     img = pC.profileRes['profileImage']['image'];
                     img = img.contains('data:image') ? img.split(',').last : img;
-                    print('img.length: ${img.length}');
-                    print("url:$url");
+
                   }
                   else{
                     url=pC.profileRes['imageUrl'];
@@ -426,15 +425,19 @@ class _ProfilePageState extends State<ProfilePage> {
                                 }                              },
                               child: CircleAvatar(
                                 // backgroundImage:AssetImage('assets/images/person_male.png'),
-                                backgroundImage : img == null ?
+                                backgroundImage : url != null ?
                                 NetworkImage(
-                                   url==null?'https://cdn.pixabay.com/photo/2018/08/28/12/41/avatar-3637425_960_720.png':url,
+                                   url,
                                   // fit: BoxFit.cover,
-                                )
-                                    : MemoryImage(
-                                  base64.decode(
-                                    img.replaceAll('\n', ''),
-                                  )
+                                ): img !=null?
+                                MemoryImage(
+                                    base64.decode(
+                                      img.replaceAll('\n', ''),
+                                    )
+                                ):
+                                NetworkImage(
+                                   'https://cdn.pixabay.com/photo/2018/08/28/12/41/avatar-3637425_960_720.png',
+                                  // fit: BoxFit.cover,
                                 ),
                                 radius: 60.0,
                               ),
