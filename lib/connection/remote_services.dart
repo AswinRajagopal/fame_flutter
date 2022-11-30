@@ -1754,13 +1754,7 @@ class RemoteServices {
 
   Future getVisitDownloads(empId, fromDate, toDate) async {
     Dio dio = Dio();
-    print(jsonEncode(
-      <String, String>{
-        "fromDate": fromDate,
-        "toDate": toDate,
-        "empId": empId
-      },
-    ));
+
     var tempDir = await getApplicationDocumentsDirectory();
     String fullPath = tempDir.path + "/myVisit.pdf";
     print(fullPath);
@@ -1777,19 +1771,8 @@ class RemoteServices {
                 },
               )
       );
-    // var response = await dio.post('$baseURL/location/pitstops_by_empId',
-    //     data: jsonEncode(
-    //       <String, String>{
-    //         "fromDate": fromDate,
-    //         "toDate": toDate,
-    //         "empId": empId
-    //       },
-    //     ),
-    //     options: Options(headers: header));
-
-    // print(response.statusCode);
     if (response.statusCode == 200) {
-      print("after dpwnload");
+      print("after download");
       Share.shareFiles([fullPath]);
     } else {
       return null;
@@ -1808,7 +1791,7 @@ class RemoteServices {
       headers: header,
       body: jsonEncode(
         <String, String>{
-          "companyId":box.get('companyId').toString(),
+          "companyId":box.get('companyid').toString(),
           "fromDate": fromDate,
           "toDate": toDate,
           "empId": empId
@@ -2045,78 +2028,6 @@ class RemoteServices {
     }
   }
 
-  void saveLocationLogNew() async {
-    // var isolateName = 'LocatorIsolate';
-    // var port = ReceivePort();
-    // IsolateNameServer.registerPortWithName(port.sendPort, isolateName);
-    // port.listen((dynamic data) {
-    //   // do something with data
-    // });
-    // await initPlatformState();
-    // startLocationService();
-    // FlutterBackgroundLocation.getLocationUpdates((location) async {
-    //   var response = await client.get(
-    //     'http://192.168.29.239/flutter_test/api.php?callapi=1&process=addLocationTrack&lat=${location.latitude.toString()}&lng=${location.longitude.toString()}',
-    //     headers: header,
-    //   );
-    //   print(response.statusCode);
-    // });
-  }
-
-  // void startLocationService() {
-  //   var data = {'countInit': 1};
-  //   Geolocator.requestPermission();
-  //   bgl.BackgroundLocator.registerLocationUpdate(
-  //     callback,
-  //     // initCallback: LocationCallbackHandler.initCallback,
-  //     initDataCallback: data,
-  //     disposeCallback: disposeCallback,
-  //     autoStop: false,
-  //     iosSettings: ios.IOSSettings(
-  //       accuracy: ls.LocationAccuracy.NAVIGATION,
-  //       // distanceFilter: 0,
-  //     ),
-  //     androidSettings: android.AndroidSettings(
-  //       accuracy: ls.LocationAccuracy.NAVIGATION,
-  //       interval: 15,
-  //       client: android.LocationClient.google,
-  //       androidNotificationSettings: AndroidNotificationSettings(
-  //         notificationChannelName: 'Location tracking',
-  //         notificationTitle: 'FaME',
-  //         notificationMsg: 'Tracking location in background',
-  //         notificationBigMsg: 'Background location is on to keep the app up-tp-date with your location. This is required for main features to work properly when the app is not running.',
-  //         notificationIcon: 'ic_notification',
-  //         // notificationIconColor: Colors.grey,
-  //         // notificationTapCallback: LocationCallbackHandler.notificationCallback,
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  // static Future<void> callback(LocationDto locationDto) async {
-  //   // var myLocationCallbackRepository = LocationServiceRepository();
-  //   // await myLocationCallbackRepository.callback(locationDto);
-  //   print('custom print: callback: ${await Battery().batteryLevel}');
-  //   var currDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()).toString();
-  //   // final level = await Battery().batteryLevel;
-  //   var level = 69;
-  //   var response = await http.Client().get(
-  //     'http://192.168.29.239/flutter_test/api.php?callapi=1&process=addLocationTrack&lat=${locationDto.latitude.toString()}&lng=${locationDto.longitude.toString()}&battery=${level.toString()}&dt=${currDate.toString()}',
-  //     headers: <String, String>{
-  //       'Content-Type': 'application/json; charset=UTF-8',
-  //     },
-  //   );
-  //   print(response.statusCode);
-  // }
-
-  // static Future<void> disposeCallback() async {
-  //   // var myLocationCallbackRepository = LocationServiceRepository();
-  //   // await myLocationCallbackRepository.dispose();
-  // }
-
-  // Future<void> initPlatformState() async {
-  //   await bgl.BackgroundLocator.initialize();
-  // }
 
   void saveLocationLog({lat, lng, cancel}) async {
     int timeInterval = jsonDecode(

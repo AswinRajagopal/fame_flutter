@@ -1,3 +1,5 @@
+import 'package:fame/controllers/visit_plan_controller.dart';
+
 import 'visit_plan_detail.dart';
 
 import '../connection/remote_services.dart';
@@ -9,7 +11,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class VisitPlan extends StatefulWidget {
-  final String user;
+  String user;
   VisitPlan({this.user});
 
   @override
@@ -17,13 +19,23 @@ class VisitPlan extends StatefulWidget {
 }
 
 class _VisitPlanState extends State<VisitPlan> {
-  final EmployeeReportController epC = Get.put(EmployeeReportController());
+  // final EmployeeReportController epC = Get.put(EmployeeReportController());
+  final VisitPlanController vpC = Get.put(VisitPlanController());
   TextEditingController frmDate = TextEditingController();
   TextEditingController toDate = TextEditingController();
   TextEditingController empName = TextEditingController();
   var empId;
   var fDate;
   var tDate;
+
+  bool allEmployees = false;
+
+  void _allEmployees(bool newValue) => setState(() {
+    allEmployees = newValue;
+    if (allEmployees == true) {
+      vpC.getPitstopByFromToDate(empId, fDate, tDate);
+    } else {}
+  });
 
   @override
   void initState() {
@@ -52,7 +64,7 @@ class _VisitPlanState extends State<VisitPlan> {
           : DateTime.parse(
               fDate.toString(),
             ),
-      firstDate: DateTime.now().add(Duration(days: -365*2)),
+      firstDate: DateTime.now().add(Duration(days: -365 * 2)),
       lastDate: DateTime.now(),
     );
 
@@ -71,9 +83,9 @@ class _VisitPlanState extends State<VisitPlan> {
       initialDate: tDate == null
           ? curDate
           : DateTime.parse(
-        tDate.toString(),
-      ),
-      firstDate: DateTime.now().add(Duration(days: -365*2)),
+              tDate.toString(),
+            ),
+      firstDate: DateTime.now().add(Duration(days: -365 * 2)),
       lastDate: DateTime.now(),
     );
 
@@ -85,7 +97,6 @@ class _VisitPlanState extends State<VisitPlan> {
       });
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +157,9 @@ class _VisitPlanState extends State<VisitPlan> {
                   onSuggestionSelected: (suggestion) {
                     print(suggestion);
                     print(suggestion['name']);
-                    empName.text = suggestion['name'].toString().trimRight() + ' - ' + suggestion['empId'];
+                    empName.text = suggestion['name'].toString().trimRight() +
+                        ' - ' +
+                        suggestion['empId'];
                     empId = suggestion['empId'];
                   },
                 ),
@@ -155,9 +168,7 @@ class _VisitPlanState extends State<VisitPlan> {
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: Row(
-                children: [
-                  Text('From Date')
-                ],
+                children: [Text('From Date')],
               ),
             ),
             Padding(
@@ -191,9 +202,7 @@ class _VisitPlanState extends State<VisitPlan> {
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: Row(
-                children: [
-                  Text('To Date')
-                ],
+                children: [Text('To Date')],
               ),
             ),
             Padding(
@@ -224,6 +233,27 @@ class _VisitPlanState extends State<VisitPlan> {
                 },
               ),
             ),
+        SizedBox(
+          height:10.0 ,
+        ),
+        Visibility(
+          visible: widget.user != null ? false : true,
+            child:Row(children: [
+              Container(
+                width: 150.0,
+                height: 50.0,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(
+                          5.0) //                 <--- border radius here
+                      ),
+                ),
+                child: Row(children: [
+                  Checkbox(value: allEmployees, onChanged: _allEmployees),
+                  Text('AllEmployees')
+                ]),
+              ),
+            ]),),
             Flexible(
               child: Align(
                 alignment: Alignment.bottomCenter,
@@ -257,7 +287,10 @@ class _VisitPlanState extends State<VisitPlan> {
                       RaisedButton(
                         onPressed: () {
                           FocusScope.of(context).requestFocus(FocusNode());
-                          if (empId == null || fDate == null || fDate == ''||tDate == null || tDate == '') {
+                          if (fDate == null ||
+                              fDate == '' ||
+                              tDate == null ||
+                              tDate == '') {
                             Get.snackbar(
                               null,
                               'Please select employee and date',
@@ -274,7 +307,8 @@ class _VisitPlanState extends State<VisitPlan> {
                               ),
                               borderRadius: 5.0,
                             );
-                          } else {
+                          }
+                          else {
                             print('empId: $empId');
                             print('fromdate: ${frmDate.text}');
                             print('todate:${toDate.text}');
