@@ -60,7 +60,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
 
         if (allShifts == true) {
           enC.getEmployeeBySearch(widget.date, widget.clientId, widget.time,
-              widget.shift, allShifts);
+              '', allShifts);
         } else {}
       });
 
@@ -517,7 +517,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                               var bulkRes =
                                   await RemoteServices().getBulkAttendance(widget.shift,widget.clientId);
                               print('res:$bulkRes');
-                              if (bulkRes != null) {
+                              if ( bulkRes != null ) {
                                 await pr.hide();
                                 print(
                                     'bulkRes valid: ${bulkRes['success']}');
@@ -551,7 +551,8 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                     ),
                                   );
                                   Future.delayed(Duration(milliseconds: 100), aC.getClientTimings);
-                                } else {}
+                                } else {
+                                }
                               }
                             } catch (e) {
                               print(e);
@@ -987,16 +988,6 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                             padding: 60,
                                                           );
                                                           if (result != null) {
-                                                            // print(result
-                                                            //     .startTime
-                                                            //     .hour);
-                                                            // print(result
-                                                            //     .startTime
-                                                            //     .minute);
-                                                            // print(result
-                                                            //     .endTime.hour);
-                                                            // print(result.endTime
-                                                            //     .minute);
                                                             var sth = result
                                                                 .startTime.hour;
                                                             var stm = result
@@ -1045,8 +1036,6 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                                               '',
                                                               stDt,
                                                               endDt,
-                                                              // extraName: 'OverTime',
-                                                              // extraParam: emp['overTime'],
                                                             );
                                                             if (atRes) {
                                                               emp['attendanceAlias'] =

@@ -26,7 +26,7 @@ class GrieListWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Sent From : ${grievance['createdBy']}',
+                  'Sent From : ${grievance['empName']}',
                   style: TextStyle(
                     fontSize: 15.0,
                     fontWeight: FontWeight.w900,
