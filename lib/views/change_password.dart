@@ -32,8 +32,9 @@ class _ChangePasswordState extends State<ChangePassword> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              SizedBox(height: 10.0,),
               Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.symmetric(horizontal:20.0,vertical: 5.0),
                 child: Card(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5.0),
@@ -73,7 +74,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.symmetric(horizontal:20.0,vertical: 5.0),
                 child: Card(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5.0),
@@ -113,7 +114,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.symmetric(horizontal:20.0,vertical: 5.0),
                 child: Card(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5.0),
