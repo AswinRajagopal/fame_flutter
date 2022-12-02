@@ -304,7 +304,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ],
                 ),
               ),
-              // profilw block with tab options
+              // profile block with tab options
 
               Obx(() {
                 if (pC.isLoading.value) {
@@ -314,10 +314,14 @@ class _ProfilePageState extends State<ProfilePage> {
                   );
                 } else {
                   var img;
+                  var url;
                   if (pC.profileRes['profileImage'] != null) {
                     img = pC.profileRes['profileImage']['image'];
                     img = img.contains('data:image') ? img.split(',').last : img;
-                    print('img.length: ${img.length}');
+
+                  }
+                  else{
+                    url=pC.profileRes['imageUrl'];
                   }
 
                   return // body
@@ -421,15 +425,19 @@ class _ProfilePageState extends State<ProfilePage> {
                                 }                              },
                               child: CircleAvatar(
                                 // backgroundImage:AssetImage('assets/images/person_male.png'),
-                                backgroundImage : img == null ?
+                                backgroundImage : url != null ?
                                 NetworkImage(
-                                  'https://cdn.pixabay.com/photo/2018/08/28/12/41/avatar-3637425_960_720.png',
+                                   url,
                                   // fit: BoxFit.cover,
-                                )
-                                    : MemoryImage(
-                                  base64.decode(
-                                    img.replaceAll('\n', ''),
-                                  )
+                                ): img !=null?
+                                MemoryImage(
+                                    base64.decode(
+                                      img.replaceAll('\n', ''),
+                                    )
+                                ):
+                                NetworkImage(
+                                   'https://cdn.pixabay.com/photo/2018/08/28/12/41/avatar-3637425_960_720.png',
+                                  // fit: BoxFit.cover,
                                 ),
                                 radius: 60.0,
                               ),
