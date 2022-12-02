@@ -103,7 +103,7 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
         children: [
           FloatingActionButton(
             onPressed: () {
-              Get.to(VisitPlanRoute(widget.empId, widget.fDate));
+              // Get.to(VisitPlanRoute(widget.empId, widget.fDate));
             },
             child: Icon(
               Icons.location_on,
