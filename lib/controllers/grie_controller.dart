@@ -22,8 +22,9 @@ class GrieController extends GetxController {
         isLoading(false);
         await pr.hide();
         if (res['success']) {
-          if (res['grievanceList'] != null) {
-            if(res['grievanceList'].length==0){
+          if (res['grievanceJoinList'] != null) {
+            if(res['grievanceJoinList'].length==0){
+              print(res['grievanceJoinList']);
               Get.snackbar(
                 null,
                 'No Grievance Found',
@@ -41,8 +42,8 @@ class GrieController extends GetxController {
                 borderRadius: 5.0,
               );
             }
-            for (var i = 0; i < res['grievanceList'].length; i++) {
-              grieList.add(res['grievanceList'][i]);
+            for (var i = 0; i < res['grievanceJoinList'].length; i++) {
+              grieList.add(res['grievanceJoinList'][i]);
             }
           }
         } else {
