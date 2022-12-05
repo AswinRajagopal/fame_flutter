@@ -46,16 +46,19 @@
         <meta-data  android:name="firebase_crashlytics_collection_enabled"
                     android:value="false" />
 
-        <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
+        <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver"
+            android:exported="false">
           <intent-filter>
               <action android:name="android.intent.action.BOOT_COMPLETED"></action>
           </intent-filter>
         </receiver>
-        <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
+        <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver"
+            android:exported="false" />
 
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
@@ -95,10 +98,12 @@
                   android:exported="true"
                   android:foregroundServiceType = "location"/>
 
-        <service android:name=".BackgroundService" android:foregroundServiceType="location"/>
+        <service android:name=".BackgroundService" android:foregroundServiceType="location"
+            android:exported="false"/>
         
         <receiver android:name="rekab.app.background_locator.BootBroadcastReceiver"
-                  android:enabled="true">
+                  android:enabled="true"
+            android:exported="true">
                   <intent-filter>
                     <action android:name="android.intent.action.BOOT_COMPLETED"/>
                   </intent-filter>
