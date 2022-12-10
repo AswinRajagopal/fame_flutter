@@ -82,7 +82,7 @@ class _GrievanceReport extends State<PolicyDocs> {
               children: [
                 FloatingActionButton(
                   onPressed: () {
-                    Get.to(NewPolicyDoc());
+                    Get.off(NewPolicyDoc());
                   },
                   child: Icon(
                     Icons.add,

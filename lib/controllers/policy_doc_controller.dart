@@ -93,7 +93,7 @@ class PolicyDocController extends GetxController {
             borderRadius: 5.0,
           );
           Timer(Duration(seconds: 2), () {
-            Get.to(PolicyDocs());
+            Get.off(PolicyDocs());
           });
         } else {
           showError();
