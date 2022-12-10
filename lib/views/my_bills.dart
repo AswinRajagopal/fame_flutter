@@ -14,15 +14,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart' as path;
 
-class Expenses extends StatefulWidget {
+class MyBills extends StatefulWidget {
   final String details;
-  Expenses({this.details});
+  MyBills({this.details});
 
   @override
-  _ExpensesState createState() => _ExpensesState(this.details);
+  _MyBillState createState() => _MyBillState(this.details);
 }
 
-class _ExpensesState extends State<Expenses> {
+class _MyBillState extends State<MyBills> {
   final ExpenseController expC = Get.put(ExpenseController());
   CameraController controller;
   final TextEditingController date = TextEditingController();
@@ -35,11 +35,12 @@ class _ExpensesState extends State<Expenses> {
   final TextEditingController remarks = TextEditingController();
   var empId;
   var expenseTypeId;
+  var expenseEmpId;
   File attachment, attachment2, attachment3;
   var passDate;
 
   var details;
-  _ExpensesState(this. details);
+  _MyBillState(this.details);
 
   @override
   void initState() {
@@ -147,7 +148,7 @@ class _ExpensesState extends State<Expenses> {
                         child: Row(
                           children: [
                             Text(
-                              'Add Expense',
+                              'My Bills',
                               style: TextStyle(
                                   fontSize: 20.0, fontWeight: FontWeight.bold),
                             )
@@ -177,7 +178,9 @@ class _ExpensesState extends State<Expenses> {
                                       alignment: Alignment.centerLeft,
                                       child: Text(
                                         date.text,
-                                        style: TextStyle(fontSize: 18.0,color: Colors.black54),
+                                        style: TextStyle(
+                                            fontSize: 18.0,
+                                            color: Colors.black54),
                                       ),
                                     ),
                                   ),
@@ -201,8 +204,13 @@ class _ExpensesState extends State<Expenses> {
                                     child: Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        RemoteServices().box.get('empid').toString(),
-                                        style: TextStyle(fontSize: 18.0,color: Colors.black54),
+                                        RemoteServices()
+                                            .box
+                                            .get('empid')
+                                            .toString(),
+                                        style: TextStyle(
+                                            fontSize: 18.0,
+                                            color: Colors.black54),
                                       ),
                                     ),
                                   ),
@@ -231,7 +239,8 @@ class _ExpensesState extends State<Expenses> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   RemoteServices().box.get('empName'),
-                                  style: TextStyle(fontSize: 18.0,color: Colors.black54),
+                                  style: TextStyle(
+                                      fontSize: 18.0, color: Colors.black54),
                                 ),
                               ),
                             ),
@@ -294,8 +303,8 @@ class _ExpensesState extends State<Expenses> {
                                     return sC.toString();
                                   }).toList(),
                                   onChanged: (value) {
-                                    for(var e in expC.exp){
-                                      if(e['expenseType']==value){
+                                    for (var e in expC.exp) {
+                                      if (e['expenseType'] == value) {
                                         expenseTypeId = e['expenseTypeId'];
                                         break;
                                       }
@@ -310,7 +319,8 @@ class _ExpensesState extends State<Expenses> {
                         height: 10.0,
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 5.0),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 5.0),
                         child: Card(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5.0),
@@ -378,7 +388,7 @@ class _ExpensesState extends State<Expenses> {
                                   imageQuality: 50,
                                 );
                                 if (pickedFile != null) {
-                                  attachment =  new File(pickedFile.path);
+                                  attachment = new File(pickedFile.path);
                                   attach.text = path.basename(pickedFile.path);
                                   setState(() {});
                                 } else {
@@ -431,8 +441,9 @@ class _ExpensesState extends State<Expenses> {
                                   imageQuality: 50,
                                 );
                                 if (pickedFile != null) {
-                                  attachment2 =  new File(pickedFile.path);
-                                  attachOne.text = path.basename(pickedFile.path);
+                                  attachment2 = new File(pickedFile.path);
+                                  attachOne.text =
+                                      path.basename(pickedFile.path);
                                   setState(() {});
                                 } else {
                                   print('No image selected.');
@@ -484,8 +495,9 @@ class _ExpensesState extends State<Expenses> {
                                   imageQuality: 50,
                                 );
                                 if (pickedFile != null) {
-                                  attachment3 =  new File(pickedFile.path);
-                                  attachTwo.text = path.basename(pickedFile.path);
+                                  attachment3 = new File(pickedFile.path);
+                                  attachTwo.text =
+                                      path.basename(pickedFile.path);
                                   setState(() {});
                                 } else {
                                   print('No image selected.');
@@ -497,7 +509,8 @@ class _ExpensesState extends State<Expenses> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20.0,vertical: 5.0),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 5.0),
                         child: RaisedButton(
                           onPressed: () async {
                             print('Submit');
@@ -558,8 +571,7 @@ class _ExpensesState extends State<Expenses> {
                                 borderRadius: 5.0,
                               );
                             } else {
-                              expC.newExpenses(amount.text, expenseTypeId,
-                                  remarks.text, attachment, attachment2, attachment3);
+                              expC.newExpBills(amount.text, expenseTypeId, remarks.text, attachment, attachment2, attachment3);
                             }
                           },
                           child: Padding(
@@ -568,7 +580,7 @@ class _ExpensesState extends State<Expenses> {
                               horizontal: 40.0,
                             ),
                             child: Text(
-                              'Submit',
+                              'Claim',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -576,15 +588,14 @@ class _ExpensesState extends State<Expenses> {
                               ),
                             ),
                           ),
-                            color:AppUtils().blueColor,
+                          color: AppUtils().blueColor,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             side: BorderSide(
-                              color:AppUtils().blueColor,
+                              color: AppUtils().blueColor,
                             ),
                           ),
                         ),
-
                       )
                     ],
                   ),

@@ -1,7 +1,9 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:fame/controllers/expense_controller.dart';
 import 'package:fame/views/expense_manager.dart';
+import 'package:fame/views/my_bills.dart';
 import 'package:fame/views/request_advance_expense.dart';
+import 'package:fame/views/view_bills.dart';
 import 'package:fame/widgets/expenses_list_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,6 +21,7 @@ class _ViewExpenseState extends State<ViewExpense> {
   var expenseId;
   var roleId;
   bool _isVisible = true;
+  var expenseTypeId;
 
   @override
   void initState() {
@@ -56,7 +59,6 @@ class _ViewExpenseState extends State<ViewExpense> {
     Future.delayed(Duration(milliseconds: 100), () {
       expC.getEmpExpenses();
     });
-    expenseId = RemoteServices().box.get('expenseTypeId').toString();
     super.initState();
   }
 
@@ -67,7 +69,6 @@ class _ViewExpenseState extends State<ViewExpense> {
 
   @override
   Widget build(BuildContext context) {
-    var expenses = expC.empExpList;
     var roleId = RemoteServices().box.get('role');
     return Scaffold(
       backgroundColor: AppUtils().greyScaffoldBg,
@@ -97,9 +98,18 @@ class _ViewExpenseState extends State<ViewExpense> {
                             child: Row(
                               children: <Widget>[
                                 Column(children: [
-                                  new Text(expC.expDet!=null &&
-                                      expC.expDet['totalExpenses']['expense'].toString()!='null'?
-                                  expC.expDet['totalExpenses']['expense'].toString():'-',
+                                  new Text(
+                                      expC.expDet != null &&
+                                              expC.expDet['totalExpenses'] !=
+                                                  null &&
+                                              expC.expDet['totalExpenses']
+                                                          ['expense']
+                                                      .toString() !=
+                                                  'null'
+                                          ? expC.expDet['totalExpenses']
+                                                  ['expense']
+                                              .toString()
+                                          : '-',
                                       style: new TextStyle(
                                           fontSize: 40.0, color: Colors.black)),
                                   Text('Expenses This Month',
@@ -114,9 +124,18 @@ class _ViewExpenseState extends State<ViewExpense> {
                                   thickness: 2,
                                 ),
                                 Column(children: [
-                                  new Text(expC.expDet!=null &&
-                                      expC.expDet['totalExpenses']['advance'].toString()!='null'?
-                                  expC.expDet['totalExpenses']['advance'].toString():'-',
+                                  new Text(
+                                      expC.expDet != null &&
+                                              expC.expDet['totalExpenses'] !=
+                                                  null &&
+                                              expC.expDet['totalExpenses']
+                                                          ['advance']
+                                                      .toString() !=
+                                                  'null'
+                                          ? expC.expDet['totalExpenses']
+                                                  ['advance']
+                                              .toString()
+                                          : '-',
                                       style: new TextStyle(
                                           fontSize: 40.0, color: Colors.black)),
                                   Text('Advance This Month',
@@ -214,7 +233,45 @@ class _ViewExpenseState extends State<ViewExpense> {
             ),
           ),
           SizedBox(
-            height: 20.0,
+            height: 15.0,
+          ),
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 32.0, vertical: 10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                RaisedButton(
+                  onPressed: () async {
+                    Get.to(ViewBills());
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 15.0,
+                      horizontal: 20.0,
+                    ),
+                    child: Text(
+                      'My Bills',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20.0,
+                      ),
+                    ),
+                  ),
+                  color: Colors.green,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                    side: BorderSide(
+                      color: Colors.green,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height:15.0,
           ),
           Row(
             children: [
@@ -253,6 +310,12 @@ class _ViewExpenseState extends State<ViewExpense> {
                               return sC.toString();
                             }).toList(),
                             onChanged: (value) {
+                              for (var e in expC.exp) {
+                                if (e['expenseType'] == value) {
+                                  expenseTypeId = e['expenseTypeId'];
+                                  break;
+                                }
+                              }
                               setState(() {});
                             }),
                       ),
@@ -303,7 +366,8 @@ class _ViewExpenseState extends State<ViewExpense> {
                     itemBuilder: (context, index) {
                       print(expC.empExpList[index]);
                       var expense = expC.empExpList[index];
-                      return ExpensesListWidget(expense);
+                      return ExpensesListWidget(
+                          expense, index, expC.empExpList.length, expC);
                     },
                   );
                 }

@@ -199,7 +199,10 @@ class _RequestExpenseState extends State<RequestExpense> {
                                     child: Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        expC.empExpList[0]['empId'].toString(),
+                                        RemoteServices()
+                                            .box
+                                            .get('empid')
+                                            .toString(),
                                         style: TextStyle(
                                             fontSize: 18.0,
                                             color: Colors.black54),
@@ -344,6 +347,12 @@ class _RequestExpenseState extends State<RequestExpense> {
                                         return sC.toString();
                                       }).toList(),
                                       onChanged: (value) {
+                                        for(var e in expC.exp){
+                                          if(e['expenseType']==value){
+                                            expenseTypeId = e['expenseTypeId'];
+                                            break;
+                                          }
+                                        }
                                         setState(() {});
                                       }),
                                 ),
@@ -430,10 +439,6 @@ class _RequestExpenseState extends State<RequestExpense> {
                                 borderRadius: 5.0,
                               );
                             } else {
-                              Get.to(ViewExpense());
-                              if (expenseTypeId == null) {
-                                expenseTypeId = '2';
-                              }
                               print(empId);
                               print(amount.text);
                               expC.getNewEmpAdv(amount.text);
@@ -465,114 +470,6 @@ class _RequestExpenseState extends State<RequestExpense> {
                     ],
                   ),
                 ),
-                // Flexible(
-                //   child: Align(
-                //     alignment: Alignment.bottomCenter,
-                //     child: Container(
-                //       height: 70.0,
-                //       decoration: BoxDecoration(
-                //         color: Colors.white,
-                //         border: Border(
-                //           top: BorderSide(
-                //             color: Colors.grey[300],
-                //             width: 1,
-                //           ),
-                //         ),
-                //       ),
-                //       child: Row(
-                //         mainAxisAlignment: MainAxisAlignment.spaceAround,
-                //         children: [
-                //           FlatButton(
-                //             onPressed: () {
-                //               print('Cancel');
-                //               Get.back();
-                //             },
-                //             child: Text(
-                //               'Cancel',
-                //               style: TextStyle(
-                //                 color: Theme.of(context).primaryColor,
-                //                 fontWeight: FontWeight.bold,
-                //                 fontSize: 20.0,
-                //               ),
-                //             ),
-                //           ),
-                //           RaisedButton(
-                //             onPressed: () async {
-                //               print('Submit');
-                //               FocusScope.of(context).requestFocus(FocusNode());
-                //               if (amount.text == null ||
-                //                   amount.text == '' ||
-                //                   remarks.text == null ||
-                //                   remarks.text == '') {
-                //                 Get.snackbar(
-                //                   null,
-                //                   'Please provide all the details',
-                //                   colorText: Colors.white,
-                //                   backgroundColor: Colors.black87,
-                //                   snackPosition: SnackPosition.BOTTOM,
-                //                   margin: EdgeInsets.symmetric(
-                //                     horizontal: 8.0,
-                //                     vertical: 10.0,
-                //                   ),
-                //                   padding: EdgeInsets.symmetric(
-                //                     horizontal: 12.0,
-                //                     vertical: 18.0,
-                //                   ),
-                //                   borderRadius: 5.0,
-                //                 );
-                //               } else if (expC.exp.isEmpty) {
-                //                 Get.snackbar(
-                //                   null,
-                //                   'Please select atleast one Expense Type',
-                //                   colorText: Colors.white,
-                //                   backgroundColor: Colors.black87,
-                //                   snackPosition: SnackPosition.BOTTOM,
-                //                   margin: EdgeInsets.symmetric(
-                //                     horizontal: 8.0,
-                //                     vertical: 10.0,
-                //                   ),
-                //                   padding: EdgeInsets.symmetric(
-                //                     horizontal: 12.0,
-                //                     vertical: 18.0,
-                //                   ),
-                //                   borderRadius: 5.0,
-                //                 );
-                //               } else {
-                //                 if (expenseTypeId == null) {
-                //                   expenseTypeId = '3';
-                //                 }
-                //                 print(empId);
-                //                 print(amount.text);
-                //                 expC.newExpenses(amount.text, expenseTypeId);
-                //               }
-                //             },
-                //             child: Padding(
-                //               padding: const EdgeInsets.symmetric(
-                //                 vertical: 12.0,
-                //                 horizontal: 40.0,
-                //               ),
-                //               child: Text(
-                //                 'Submit',
-                //                 style: TextStyle(
-                //                   color: Colors.white,
-                //                   fontWeight: FontWeight.bold,
-                //                   fontSize: 20.0,
-                //                 ),
-                //               ),
-                //             ),
-                //             color: Colors.black87,
-                //             shape: RoundedRectangleBorder(
-                //               borderRadius: BorderRadius.circular(5.0),
-                //               side: BorderSide(
-                //                 color: Colors.black87,
-                //               ),
-                //             ),
-                //           ),
-                //         ],
-                //       ),
-                //     ),
-                //   ),
-                // ),
               ],
             ),
           ),

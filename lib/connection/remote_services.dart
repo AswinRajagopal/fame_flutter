@@ -378,7 +378,6 @@ class RemoteServices {
   }
 
   Future<EmpRPlan> getEmprPlan() async {
-
     var response = await client.post(
       '$baseURL/location/get_emp_rplan',
       headers: header,
@@ -402,7 +401,6 @@ class RemoteServices {
   }
 
   Future<DbCalendar> getEmpCalendar(month) async {
-
     var response = await client.post(
       '$baseURL/attendance/emp_calendar',
       headers: header,
@@ -518,7 +516,6 @@ class RemoteServices {
   }
 
   Future<FaceReg> registerFace(File imageFile, endPoint) async {
-
     var dio = mydio.Dio();
 
     var formData = mydio.FormData.fromMap({
@@ -538,7 +535,6 @@ class RemoteServices {
       data: formData,
     );
 
-
     if (response.statusCode == 200) {
       var jsonString = response.data;
       return faceRegFromJson(jsonEncode(jsonString));
@@ -548,7 +544,6 @@ class RemoteServices {
   }
 
   Future uploadPolicyDoc(File imageFile, name) async {
-
     var dio = mydio.Dio();
 
     var formData = mydio.FormData.fromMap({
@@ -1226,15 +1221,25 @@ class RemoteServices {
     }
   }
 
-  Future aprRejExpense(status) async {
+  Future aprRejExpense(empId, empExpenseId, status) async {
+    print(
+      jsonEncode(
+        <String, dynamic>{
+          "companyId": box.get('companyid').toString(),
+          "empId": empId,
+          "empExpenseId": empExpenseId,
+          'rejected': status == '0' ? true : false,
+        },
+      ),
+    );
     var response = await client.post(
       '$baseURL/expense/update_expenses',
       headers: header,
       body: jsonEncode(
         <String, dynamic>{
           "companyId": box.get('companyid').toString(),
-          "empId": box.get('empid').toString(),
-          "empExpenseId": "2",
+          "empId": empId,
+          "empExpenseId": empExpenseId,
           'pending': status == '0' ? true : false,
         },
       ),
@@ -1324,15 +1329,13 @@ class RemoteServices {
     }
   }
 
-   Future getExpAttachments() async {
-    var response=await client.post(
-      '$baseURL/expense/exp_attachments',
-      headers:header,
-      body: jsonEncode({
-        "companyId": box.get('companyid').toString(),
-        "expenseEmpId": '97'
-      })
-    );
+  Future getExpAttachments(expenseEmpId) async {
+    var response = await client.post('$baseURL/expense/exp_attachments',
+        headers: header,
+        body: jsonEncode({
+          "companyId": box.get('companyid').toString(),
+          "expenseEmpId": expenseEmpId
+        }));
     print(response.statusCode);
     print(response.body);
     if (response.statusCode == 200) {
@@ -1341,7 +1344,7 @@ class RemoteServices {
     } else {
       return null;
     }
-   }
+  }
 
   Future getExpenses() async {
     var response = await client.post(
@@ -1466,6 +1469,46 @@ class RemoteServices {
     }
   }
 
+  Future newExpBills(File imageFile, amount, expenseTypeId,
+      remarks, File image1, File image2) async {
+    var dio = mydio.Dio();
+
+    var formData = mydio.FormData.fromMap({
+      'companyId': box.get('companyid').toString(),
+      'empId': box.get('empid').toString(),
+      'amount': amount,
+      'expenseTypeId': expenseTypeId,
+      'remarks': remarks,
+      'attachment1': await mydio.MultipartFile.fromFile(
+        imageFile.path,
+        filename: 'image1.jpg',
+      ),
+      'attachment2': image1 != null
+          ? await mydio.MultipartFile.fromFile(
+              image1.path,
+              filename: 'image2.jpg',
+            )
+          : null,
+      'attachment3': image2 != null
+          ? await mydio.MultipartFile.fromFile(
+              image2.path,
+              filename: 'image3.jpg',
+            )
+          : null,
+    });
+    var response = await dio.post(
+      '$baseURL/expense/new_exp_bills',
+      data: formData,
+    );
+    if (response.statusCode == 200) {
+      var jsonString = response.data;
+      // print(jsonString);
+      return jsonString;
+    } else {
+      return null;
+    }
+  }
+
   Future newBroadcast(clientId, broadcast) async {
     var response = await client.post(
       '$baseURL/broadcast/new_broadcast',
@@ -1478,6 +1521,49 @@ class RemoteServices {
           'roleId': 'all',
           'broadcast': broadcast,
         },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future getBillsByStatus() async {
+    var response = await client.post(
+      '$baseURL/expense/get_exp_bills',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          "companyId":box.get('companyid').toString(),
+          "status": "1"
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future updateExpBills()async{
+    var response = await client.post(
+      '$baseURL/expense/update_bills',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          "companyId":"6",
+          "status" : "2",
+          "empExpenseId": "85"
+        }
       ),
     );
     print(response.statusCode);
@@ -1654,19 +1740,19 @@ class RemoteServices {
 
     var tempDir = await getApplicationDocumentsDirectory();
     String fullPath = tempDir.path + "/myVisit.pdf";
-    var response = await dio.download(
-      '$baseURL/location/pitstops_by_empId',fullPath,
-      options: Options(
-        headers:header,
-        method: 'POST',),
-        data: jsonEncode(
-                <String, String>{
-                  "fromDate": fromDate,
-                  "toDate": toDate,
-                  "empId": empId
-                },
-              )
-      );
+    var response =
+        await dio.download('$baseURL/location/pitstops_by_empId', fullPath,
+            options: Options(
+              headers: header,
+              method: 'POST',
+            ),
+            data: jsonEncode(
+              <String, String>{
+                "fromDate": fromDate,
+                "toDate": toDate,
+                "empId": empId
+              },
+            ));
     if (response.statusCode == 200) {
       Share.shareFiles([fullPath]);
     } else {
@@ -1674,13 +1760,13 @@ class RemoteServices {
     }
   }
 
-  Future getPitstopByFromToDate(empId,fromDate, toDate) async {
+  Future getPitstopByFromToDate(empId, fromDate, toDate) async {
     var response = await client.post(
       '$baseURL/location/pitstops_by_date',
       headers: header,
       body: jsonEncode(
         <String, String>{
-          "companyId":box.get('companyid').toString(),
+          "companyId": box.get('companyid').toString(),
           "fromDate": fromDate,
           "toDate": toDate,
           "empId": empId
@@ -1905,7 +1991,6 @@ class RemoteServices {
       return null;
     }
   }
-
 
   void saveLocationLog({lat, lng, cancel}) async {
     int timeInterval = jsonDecode(
@@ -2267,7 +2352,6 @@ class RemoteServices {
       return null;
     }
   }
-
 
   Future getCities(stateId) async {
     var response = await client.post(

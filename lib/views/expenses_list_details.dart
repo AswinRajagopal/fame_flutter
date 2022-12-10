@@ -14,18 +14,23 @@ import 'package:progress_dialog/progress_dialog.dart';
 
 class ExpensesDetailList extends StatefulWidget {
   var expenses;
-  ExpensesDetailList(this.expenses);
+  final int length;
+  final int index;
+  final ExpenseController expC;
+  ExpensesDetailList(this.expenses,this.index, this.length,this.expC,);
 
   @override
   _ExpensesDetailListState createState() =>
-      _ExpensesDetailListState(this.expenses);
+      _ExpensesDetailListState(this.expenses,this.index, this.length,this.expC,);
 }
 
 class _ExpensesDetailListState extends State<ExpensesDetailList> {
   final ExpenseController expC = Get.put(ExpenseController());
   TextEditingController expense = TextEditingController();
   var expenses;
-  _ExpensesDetailListState(this.expenses);
+  final int length;
+  final int index;
+  _ExpensesDetailListState(this.expenses,this.index, this.length, ExpenseController expC,);
   var expenseEmpId;
 
   String convertDate(date) {
@@ -80,7 +85,7 @@ class _ExpensesDetailListState extends State<ExpensesDetailList> {
       backgroundColor: Colors.white,
     );
     Future.delayed(Duration(milliseconds: 100), () {
-      expC.getExpAttachments();
+      expC.getExpAttachments(expenses['expenseEmpId']);
     });
     super.initState();
   }
@@ -184,7 +189,7 @@ class _ExpensesDetailListState extends State<ExpensesDetailList> {
                           SizedBox(height: 15.0),
                           Row(
                             children: [
-                              GestureDetector(
+                              expC.attachment.length==1?GestureDetector(
                                 onTap: () async {
                                   var pitstop = expC.attachment[0];
                                   if (pitstop!=null) {
@@ -201,18 +206,17 @@ class _ExpensesDetailListState extends State<ExpensesDetailList> {
                                         width: 1, color: Colors.white),
                                     borderRadius: BorderRadius.circular(10),
                                     image: DecorationImage(
-                                        image: expC.attachment[0] != null
-                                            ? NetworkImage(
-                                                expC.attachment[0].toString())
-                                            : (Container()),
+                                        image:
+                                             NetworkImage(
+                                                expC.attachment[0].toString()),
                                         fit: BoxFit.cover), //<-- SEE HERE
                                   ),
                                 ),
-                              ),
+                              ):Container(),
                               SizedBox(
                                 width: 15.0,
                               ),
-                              GestureDetector(
+                              expC.attachment.length ==2?GestureDetector(
                                 onTap: () async {
                                   var pitstop = expC.attachment[1];
                                   if (pitstop!=null) {
@@ -229,18 +233,17 @@ class _ExpensesDetailListState extends State<ExpensesDetailList> {
                                         Border.all(width: 1, color: Colors.white),
                                     borderRadius: BorderRadius.circular(10),
                                     image: DecorationImage(
-                                        image: expC.attachment[1] != null
-                                            ? NetworkImage(
-                                                expC.attachment[1].toString())
-                                            : (Container()),
+                                        image:
+                                            NetworkImage(
+                                                expC.attachment[1].toString()),
                                         fit: BoxFit.cover), //<-- SEE HERE
                                   ),
                                 ),
-                              ),
+                              ):Container(),
                               SizedBox(
                                 width: 15.0,
                               ),
-                              GestureDetector(
+                              expC.attachment.length == 3 ? GestureDetector(
                                 onTap: () async {
                                   var pitstop = expC.attachment[2];
                                   if (pitstop!=null) {
@@ -257,14 +260,12 @@ class _ExpensesDetailListState extends State<ExpensesDetailList> {
                                         Border.all(width: 1, color: Colors.white),
                                     borderRadius: BorderRadius.circular(10),
                                     image: DecorationImage(
-                                        image: expC.attachment[2] != null
-                                            ? NetworkImage(
-                                                expC.attachment[2].toString())
-                                            : (Container()),
+                                        image: NetworkImage(
+                                                expC.attachment[2].toString()),
                                         fit: BoxFit.cover), //<-- SEE HERE
                                   ),
                                 ),
-                              )
+                              ):Container(),
                             ],
                           ),
                           roleId == AppUtils.ADMIN
@@ -294,7 +295,8 @@ class _ExpensesDetailListState extends State<ExpensesDetailList> {
                                         children: [
                                           RaisedButton(
                                             onPressed: () {
-                                              expC.aprRejExpense('2');
+                                              expC.aprRejExpense(expenses['empId'],expenses['expenseEmpId'],'0');
+                                              // expenses['status']=getStatus(expenses['status']);
                                             },
                                             child: Text(
                                               'Reject',
@@ -375,7 +377,7 @@ class _ExpensesDetailListState extends State<ExpensesDetailList> {
                                                   onConfirm: () async {
                                                     expenses['amount'] =
                                                         expense.text.toString();
-                                                    expC.aprRejExpense('1');
+                                                    expC.aprRejExpense(expenses['empId'],expenses['expenseEmpId'],'1');
                                                     var expRes =
                                                         await RemoteServices()
                                                             .sendFeedback(

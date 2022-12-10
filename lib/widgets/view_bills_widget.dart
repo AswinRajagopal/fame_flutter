@@ -1,20 +1,13 @@
 import 'package:dotted_line/dotted_line.dart';
-import 'package:fame/connection/remote_services.dart';
-import 'package:fame/controllers/expense_controller.dart';
-import 'package:fame/utils/utils.dart';
-import 'package:fame/views/expenses_list_details.dart';
+import 'package:fame/views/view_bills_details.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 
-class ExpensesListWidget extends StatelessWidget {
-  final expenses;
-  final int length;
-  final int index;
-  final ExpenseController expC;
-  ExpensesListWidget(this.expenses,this.index, this.length,this.expC,);
-  final TextEditingController expense = TextEditingController();
+
+class BillsListWidget extends StatelessWidget {
+  final billsList;
+  BillsListWidget(this.billsList);
 
   String convertDate(date) {
     return DateFormat('dd').format(DateTime.parse(date)).toString() +
@@ -50,11 +43,12 @@ class ExpensesListWidget extends StatelessWidget {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(ExpensesDetailList(this.expenses,this.index, this.length,this.expC,));
+        Get.to(ViewBillsDetailList(this.billsList));
       },
       child: Card(
         margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
@@ -74,7 +68,7 @@ class ExpensesListWidget extends StatelessWidget {
                   children: [
                     Column(children: [
                       Text(
-                        expenses['empName'],
+                        billsList['empExpenseId'].toString(),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 15.0,
@@ -82,7 +76,7 @@ class ExpensesListWidget extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        expenses['empId'],
+                        billsList['empId'],
                         style: TextStyle(
                           fontSize: 15.0,
                           color: Colors.grey,
@@ -94,7 +88,7 @@ class ExpensesListWidget extends StatelessWidget {
                     ),
                     Expanded(
                       child: Text(
-                        expenses['expenseType'],
+                        billsList['remarks'],
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 15.0,
@@ -112,22 +106,22 @@ class ExpensesListWidget extends StatelessWidget {
                           height: 30.0,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            color: expenses['status'] == 0
+                            color: billsList['status'] == 0
                                 ? Colors.blue[100]
                                 : Colors.yellow[100],
                             border: Border.all(
-                              color: expenses['status'] == 0
+                              color: billsList['status'] == 0
                                   ? Colors.blue[100]
-                                  : Colors.yellow[100], // Set border color
+                                  : Colors.yellow[100],
                             ), // Set border width
                             borderRadius: BorderRadius.all(Radius.circular(
                                 2.0)), // Set rounded corner radius
                           ),
                           child: Text(
-                            getStatus(expenses['status']),
+                            getStatus(billsList['status']),
                             style: TextStyle(
                                 color:
-                                    expenses['status']==0 ? Colors.blue : Colors.yellow,
+                                billsList['status']==0 ? Colors.blue : Colors.yellow,
                                 fontSize: 12.0,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -140,7 +134,7 @@ class ExpensesListWidget extends StatelessWidget {
                         child: Column(
                           children: [
                             Text(
-                              expenses['amount'].toString(),
+                              billsList['amount'].toString(),
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 25.0,
@@ -180,7 +174,7 @@ class ExpensesListWidget extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            widgetDate(expenses['createdOn']),
+                            widgetDate(billsList['createdOn']),
                             style: TextStyle(
                               fontSize: 15.0,
                               color: Colors.grey,
