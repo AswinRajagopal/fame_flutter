@@ -58,7 +58,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
   void _onAllShifts(bool newValue) => setState(() {
         allShifts = newValue;
 
-        if (allShifts == true) {
+        if (allShifts==true) {
           enC.getEmployeeBySearch(widget.date, widget.clientId, widget.time,
               '', allShifts);
         } else {}
@@ -522,7 +522,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                 print(
                                     'bulkRes valid: ${bulkRes['success']}');
                                 if (bulkRes['success']) {
-                                  aC.pr = ProgressDialog(
+                                  enC.pr = ProgressDialog(
                                     context,
                                     type: ProgressDialogType.Normal,
                                     isDismissible: false,
@@ -550,7 +550,11 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                       ),
                                     ),
                                   );
-                                  Future.delayed(Duration(milliseconds: 100), aC.getClientTimings);
+                                  Future.delayed(Duration(milliseconds: 100), ()=>enC.getNotations(    widget.date,
+                                    widget.shift,
+                                    widget.clientId,
+                                    AppUtils.NAME,
+                                    widget.status,));
                                 } else {
                                 }
                               }
