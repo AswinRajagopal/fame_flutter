@@ -54,13 +54,15 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
   Widget appBarTitle;
   final _debouncer = Debouncer(milliseconds: 500);
   bool allShifts = false;
+  bool allPresent = true;
 
   void _onAllShifts(bool newValue) => setState(() {
         allShifts = newValue;
 
-        if (allShifts==true) {
-          enC.getEmployeeBySearch(widget.date, widget.clientId, widget.time,
-              '', allShifts);
+        if (allShifts == true) {
+          allPresent = false;
+          enC.getEmployeeBySearch(
+              widget.date, widget.clientId, widget.time, '', allShifts);
         } else {}
       });
 
@@ -471,120 +473,128 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                       SizedBox(
                         width: 130.0,
                       ),
-                      Container(
-                        width: 150,
-                        height: 50,
-                        child: RaisedButton(
-                          color: Colors.grey,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(5.0),
-                          ),
-                          onPressed: () async {
-                            ProgressDialog pr;
-                            try {
-                              pr = ProgressDialog(
-                                context,
-                                type: ProgressDialogType.Normal,
-                                isDismissible: false,
-                                showLogs: false,
-                                customBody: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 20.0,
-                                    vertical: 15.0,
+                      Visibility(
+                        visible: allPresent,
+                        child: Container(
+                          width: 150,
+                          height: 50,
+                          child: RaisedButton(
+                            color: Colors.grey,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(5.0),
+                            ),
+                            onPressed: () async {
+                              ProgressDialog pr;
+                              try {
+                                pr = ProgressDialog(
+                                  context,
+                                  type: ProgressDialogType.Normal,
+                                  isDismissible: false,
+                                  showLogs: false,
+                                  customBody: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 20.0,
+                                      vertical: 15.0,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        CircularProgressIndicator(),
+                                        SizedBox(
+                                          width: 20.0,
+                                        ),
+                                        Text(
+                                          'Processing please wait...',
+                                          style: TextStyle(
+                                            fontSize: 18.0,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      CircularProgressIndicator(),
-                                      SizedBox(
-                                        width: 20.0,
-                                      ),
-                                      Text(
-                                        'Processing please wait...',
-                                        style: TextStyle(
-                                          fontSize: 18.0,
-                                          color: Colors.black,
+                                );
+                                pr.style(
+                                  backgroundColor: Colors.white,
+                                );
+                                await pr.show();
+                                var bulkRes = await RemoteServices()
+                                    .getBulkAttendance(
+                                        widget.shift, widget.clientId);
+                                print('res:$bulkRes');
+                                if (bulkRes != null) {
+                                  await pr.hide();
+                                  print('bulkRes valid: ${bulkRes['success']}');
+                                  if (bulkRes['success']) {
+                                    enC.pr = ProgressDialog(
+                                      context,
+                                      type: ProgressDialogType.Normal,
+                                      isDismissible: false,
+                                      showLogs: false,
+                                      customBody: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 20.0,
+                                          vertical: 15.0,
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            CircularProgressIndicator(),
+                                            SizedBox(
+                                              width: 20.0,
+                                            ),
+                                            Text(
+                                              'Processing please wait...',
+                                              style: TextStyle(
+                                                fontSize: 18.0,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                              pr.style(
-                                backgroundColor: Colors.white,
-                              );
-                              await pr.show();
-                              var bulkRes =
-                                  await RemoteServices().getBulkAttendance(widget.shift,widget.clientId);
-                              print('res:$bulkRes');
-                              if ( bulkRes != null ) {
-                                await pr.hide();
-                                print(
-                                    'bulkRes valid: ${bulkRes['success']}');
-                                if (bulkRes['success']) {
-                                  enC.pr = ProgressDialog(
-                                    context,
-                                    type: ProgressDialogType.Normal,
-                                    isDismissible: false,
-                                    showLogs: false,
-                                    customBody: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 20.0,
-                                        vertical: 15.0,
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        children: [
-                                          CircularProgressIndicator(),
-                                          SizedBox(
-                                            width: 20.0,
-                                          ),
-                                          Text(
-                                            'Processing please wait...',
-                                            style: TextStyle(
-                                              fontSize: 18.0,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                  Future.delayed(Duration(milliseconds: 100), ()=>enC.getNotations(    widget.date,
-                                    widget.shift,
-                                    widget.clientId,
-                                    AppUtils.NAME,
-                                    widget.status,));
-                                } else {
+                                    );
+                                    Future.delayed(
+                                        Duration(milliseconds: 100),
+                                        () => enC.getNotations(
+                                              widget.date,
+                                              widget.shift,
+                                              widget.clientId,
+                                              AppUtils.NAME,
+                                              widget.status,
+                                            ));
+                                  } else {}
                                 }
+                              } catch (e) {
+                                print(e);
+                                await pr.hide();
+                                Get.snackbar(
+                                  null,
+                                  'Something went wrong! Please try again later',
+                                  colorText: Colors.white,
+                                  backgroundColor: Colors.black87,
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  margin: EdgeInsets.symmetric(
+                                    horizontal: 8.0,
+                                    vertical: 10.0,
+                                  ),
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 12.0,
+                                    vertical: 18.0,
+                                  ),
+                                  borderRadius: 5.0,
+                                );
                               }
-                            } catch (e) {
-                              print(e);
-                              await pr.hide();
-                              Get.snackbar(
-                                null,
-                                'Something went wrong! Please try again later',
-                                colorText: Colors.white,
-                                backgroundColor: Colors.black87,
-                                snackPosition: SnackPosition.BOTTOM,
-                                margin: EdgeInsets.symmetric(
-                                  horizontal: 8.0,
-                                  vertical: 10.0,
-                                ),
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 12.0,
-                                  vertical: 18.0,
-                                ),
-                                borderRadius: 5.0,
-                              );
-                            }
-                          },
-                          child: Text(
-                            'All Present',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold),
+                            },
+                            child: Text(
+                              'All Present',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
                       )
