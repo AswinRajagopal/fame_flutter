@@ -58,10 +58,19 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
   void _onAllShifts(bool newValue) => setState(() {
         allShifts = newValue;
 
-        if (allShifts == true) {
+        if (allShifts) {
           enC.getEmployeeBySearch(widget.date, widget.clientId, widget.time,
-              '', allShifts);
-        } else {}
+              '', true);
+        } else {
+          enC.searchList.clear();
+          enC.getNotations(
+            widget.date,
+            widget.shift,
+            widget.clientId,
+            AppUtils.NAME,
+            widget.status,
+          );
+        }
       });
 
   @override
@@ -441,7 +450,6 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                         child: Row(
                           children: [
                             Visibility(
-                                visible: allShifts,
                                 child: Checkbox(
                                     value: allShifts, onChanged: _onAllShifts)),
                             Padding(
@@ -458,11 +466,6 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
                                 ),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5.0)),
-                                onPressed: () {
-                                  setState(() {
-                                    _onAllShifts(allShifts = true);
-                                  });
-                                },
                               ),
                             ),
                           ],
