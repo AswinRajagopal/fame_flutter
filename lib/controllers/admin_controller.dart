@@ -59,7 +59,7 @@ class AdminController extends GetxController {
     'Other'
   };
   final proofList = {
-    'AadharCard',
+    'AadhaarCard',
     'DrivingLicense',
     'VoterID',
     'RationCard',

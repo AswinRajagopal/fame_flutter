@@ -68,6 +68,8 @@ class VisitPlanController extends GetxController {
                 }
               }
               datePitsStop.add(pitstop);
+              datePitsStop.sort((a,b)=>
+              (DateTime.parse(a['updatedOn']).isAfter( DateTime.parse(b['updatedOn'])))?0:1);
             }
           }
           else {
