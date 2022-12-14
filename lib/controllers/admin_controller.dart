@@ -158,7 +158,7 @@ class AdminController extends GetxController {
   var dobFatherVal;
   var dobFamilyVal = '1999-01-01';
   var idProof1;
-  var idProof = 'AadharCard';
+  var idProof = 'AadhaarCard';
   var idProof2;
   var relFather = 'Father';
   var relFamily;
