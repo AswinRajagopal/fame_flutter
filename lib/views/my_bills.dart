@@ -35,7 +35,6 @@ class _MyBillState extends State<MyBills> {
   final TextEditingController remarks = TextEditingController();
   var empId;
   var expenseTypeId;
-  var expenseEmpId;
   File attachment, attachment2, attachment3;
   var passDate;
 

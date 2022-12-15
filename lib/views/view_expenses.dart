@@ -5,6 +5,7 @@ import 'package:fame/views/my_bills.dart';
 import 'package:fame/views/request_advance_expense.dart';
 import 'package:fame/views/view_bills.dart';
 import 'package:fame/widgets/expenses_list_widget.dart';
+import 'package:fame/widgets/rejected_expense_list_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -22,6 +23,8 @@ class _ViewExpenseState extends State<ViewExpense> {
   var roleId;
   bool _isVisible = true;
   var expenseTypeId;
+  bool _isRejectedList = false;
+  bool _approvedList = false;
 
   @override
   void initState() {
@@ -198,7 +201,37 @@ class _ViewExpenseState extends State<ViewExpense> {
                                   ),
                                 ),
                               ])
-                            : Spacer(),
+                            : Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  RaisedButton(
+                                    onPressed: () async {
+                                      Get.to(ViewBills());
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 15.0,
+                                        horizontal: 45.0,
+                                      ),
+                                      child: Text(
+                                        'My Bills',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20.0,
+                                        ),
+                                      ),
+                                    ),
+                                    color: AppUtils().blueColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      side: BorderSide(
+                                        color: AppUtils().blueColor,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                         RaisedButton(
                           onPressed: () async {
                             Get.to(Expenses());
@@ -235,44 +268,6 @@ class _ViewExpenseState extends State<ViewExpense> {
           SizedBox(
             height: 15.0,
           ),
-          Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 32.0, vertical: 10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                RaisedButton(
-                  onPressed: () async {
-                    Get.to(ViewBills());
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 15.0,
-                      horizontal: 20.0,
-                    ),
-                    child: Text(
-                      'My Bills',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20.0,
-                      ),
-                    ),
-                  ),
-                  color: Colors.green,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                    side: BorderSide(
-                      color: Colors.green,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            height:15.0,
-          ),
           Row(
             children: [
               Flexible(
@@ -292,32 +287,48 @@ class _ViewExpenseState extends State<ViewExpense> {
                         width: 50,
                       ),
                       Flexible(
-                        child: DropdownSearch(
-                            mode: Mode.MENU,
-                            showSearchBox: true,
-                            isFilteredOnline: true,
-                            dropDownButton: const Icon(
-                              Icons.keyboard_arrow_down,
-                              color: Colors.grey,
-                              size: 18.0,
-                            ),
-                            hint: 'All',
-                            showSelectedItem: true,
-                            items: expC.exp.map((item) {
-                              print(item['expenseType']);
-                              print("items" + item['expenseType']);
-                              var sC = item['expenseType'].toString();
-                              return sC.toString();
-                            }).toList(),
+                        child: Container(
+                          child: DropdownButton(
+                            items: [
+                              DropdownMenuItem(
+                                child: Row(
+                                  children: <Widget>[
+                                    Checkbox(
+                                      value: _isRejectedList,
+                                      onChanged: (value) {
+                                        expC.getEmpExpense('2');
+                                        setState(() {
+                                          _isRejectedList = value;
+                                        });
+                                      },
+                                    ),
+                                    Text('Rejected List'),
+                                  ],
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                child: Row(
+                                  children: <Widget>[
+                                    Checkbox(
+                                      value: _approvedList,
+                                      onChanged: (value) {
+                                        expC.getEmpExpense('1');
+                                        setState(() {
+                                          _approvedList = value;
+                                        });
+                                      },
+                                    ),
+                                    Text('Approved List'),
+                                  ],
+                                ),
+                              )
+                            ],
                             onChanged: (value) {
-                              for (var e in expC.exp) {
-                                if (e['expenseType'] == value) {
-                                  expenseTypeId = e['expenseTypeId'];
-                                  break;
-                                }
-                              }
                               setState(() {});
-                            }),
+                            },
+                            hint: Text('All'),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -328,52 +339,127 @@ class _ViewExpenseState extends State<ViewExpense> {
           SizedBox(
             height: 15.0,
           ),
-          Expanded(
-            child: Scrollbar(
-              radius: Radius.circular(
-                10.0,
-              ),
-              thickness: 5.0,
-              child: Obx(() {
-                if (expC.isLoading.value) {
-                  return Column();
-                } else {
-                  if (expC.empExpList.isEmpty || expC.empExpList.isNull) {
-                    return Container(
-                      height: MediaQuery.of(context).size.height / 1.2,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Center(
-                            child: Text(
-                              'No Expenses List found',
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                // fontWeight: FontWeight.bold,
-                              ),
+          // Padding(
+          //   padding: const EdgeInsets.only(left: 280.0, top: 5.0),
+          //   child: Align(
+          //     alignment: Alignment.centerLeft,
+          //     child: Row(
+          //       children: [
+          //         Checkbox(
+          //           value: _isRejectedList,
+          //           onChanged: (value) {
+          //             expC.getEmpExpense();
+          //             setState(() {
+          //               _isRejectedList = value;
+          //             });
+          //           },
+          //         ),
+          //         Text(
+          //           'Rejected List',
+          //           style: TextStyle(
+          //             color: Colors.black,
+          //             fontSize: 18.0,
+          //             fontWeight: FontWeight.bold,
+          //           ),
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
+          _isRejectedList
+              ? Expanded(
+                  child: Scrollbar(
+                    radius: Radius.circular(
+                      10.0,
+                    ),
+                    thickness: 5.0,
+                    child: Obx(() {
+                      if (expC.isLoading.value) {
+                        return Column();
+                      } else {
+                        if (expC.rejectedList.isEmpty ||
+                            expC.rejectedList.isNull) {
+                          return Container(
+                            height: MediaQuery.of(context).size.height / 1.2,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Center(
+                                  child: Text(
+                                    'No Rejected Expenses List found',
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      // fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    primary: true,
-                    physics: ScrollPhysics(),
-                    itemCount: expC.empExpList.length,
-                    itemBuilder: (context, index) {
-                      print(expC.empExpList[index]);
-                      var expense = expC.empExpList[index];
-                      return ExpensesListWidget(
-                          expense, index, expC.empExpList.length, expC);
-                    },
-                  );
-                }
-              }),
-            ),
-          ),
+                          );
+                        }
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          primary: true,
+                          physics: ScrollPhysics(),
+                          itemCount: expC.rejectedList.length,
+                          itemBuilder: (context, index) {
+                            print(expC.rejectedList[index]);
+                            var rejectedExp = expC.rejectedList[index];
+                            return RejectedListWidget(rejectedExp, index,
+                                expC.rejectedList.length, expC);
+                          },
+                        );
+                      }
+                    }),
+                  ),
+                )
+              : Expanded(
+                  child: Scrollbar(
+                    radius: Radius.circular(
+                      10.0,
+                    ),
+                    thickness: 5.0,
+                    child: Obx(() {
+                      if (expC.isLoading.value) {
+                        return Column();
+                      } else {
+                        if (expC.empExpList.isEmpty || expC.empExpList.isNull) {
+                          return Container(
+                            height: MediaQuery.of(context).size.height / 1.2,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Center(
+                                  child: Text(
+                                    'No Expenses List found',
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      // fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          primary: true,
+                          physics: ScrollPhysics(),
+                          itemCount: expC.empExpList.length,
+                          itemBuilder: (context, index) {
+                            print(expC.empExpList[index]);
+                            var expense = expC.empExpList[index];
+                            return ExpensesListWidget(
+                                expense, index, expC.empExpList.length, expC);
+                          },
+                        );
+                      }
+                    }),
+                  ),
+                ),
         ],
       ),
     );

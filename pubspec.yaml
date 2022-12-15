@@ -91,6 +91,7 @@ dependencies:
   checkdigit: ^0.2.0
   autocomplete_textfield: ^1.7.3
   connectivity: ^2.0.2
+  custom_check_box: ^0.0.2
   # workmanager: ^0.2.3
   # location: ^3.2.4
   # background_location: ^0.3.1

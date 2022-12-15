@@ -1329,6 +1329,24 @@ class RemoteServices {
     }
   }
 
+  Future getEmpExpense(status)async{
+    var response = await client.post('$baseURL/expense/get_emp_expenses',
+        headers: header,
+        body: jsonEncode(<String, String>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          "status" : status.toString()
+        }));
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      return null;
+    }
+  }
+
   Future getExpAttachments(expenseEmpId) async {
     var response = await client.post('$baseURL/expense/exp_attachments',
         headers: header,
@@ -1540,7 +1558,7 @@ class RemoteServices {
       body: jsonEncode(
         <String, String>{
           "companyId":box.get('companyid').toString(),
-          "status": "1"
+          'empId': box.get('empid').toString(),
         },
       ),
     );

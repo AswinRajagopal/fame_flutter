@@ -1,13 +1,20 @@
-import 'package:custom_check_box/custom_check_box.dart';
 import 'package:dotted_line/dotted_line.dart';
-import 'package:fame/views/view_bills_details.dart';
+import 'package:fame/connection/remote_services.dart';
+import 'package:fame/controllers/expense_controller.dart';
+import 'package:fame/utils/utils.dart';
+import 'package:fame/views/expenses_list_details.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 
-class BillsListWidget extends StatelessWidget {
-  final billsList;
-  BillsListWidget(this.billsList);
+class RejectedListWidget extends StatelessWidget {
+  final rejectedExp;
+  final int length;
+  final int index;
+  final ExpenseController expC;
+  RejectedListWidget(this.rejectedExp,this.index, this.length,this.expC,);
+  final TextEditingController expense = TextEditingController();
 
   String convertDate(date) {
     return DateFormat('dd').format(DateTime.parse(date)).toString() +
@@ -43,16 +50,14 @@ class BillsListWidget extends StatelessWidget {
     }
   }
 
-  bool _isChecked = false;
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(ViewBillsDetailList(this.billsList));
+        Get.to(ExpensesDetailList(this.rejectedExp,this.index, this.length,this.expC,));
       },
       child: Card(
-        margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0,bottom: 20.0),
+        margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
         child: Container(
           color: Colors.white,
           margin: EdgeInsets.symmetric(vertical: 5.0),
@@ -69,7 +74,7 @@ class BillsListWidget extends StatelessWidget {
                   children: [
                     Column(children: [
                       Text(
-                        billsList['empExpenseId'].toString(),
+                        rejectedExp['empName'],
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 15.0,
@@ -77,7 +82,7 @@ class BillsListWidget extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        billsList['empId'],
+                        rejectedExp['empId'],
                         style: TextStyle(
                           fontSize: 15.0,
                           color: Colors.grey,
@@ -89,7 +94,7 @@ class BillsListWidget extends StatelessWidget {
                     ),
                     Expanded(
                       child: Text(
-                        billsList['remarks'],
+                        rejectedExp['expenseType'],
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 15.0,
@@ -107,23 +112,22 @@ class BillsListWidget extends StatelessWidget {
                           height: 30.0,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            color: billsList['status'] == 1
+                            color: rejectedExp['status'] == 0
                                 ? Colors.yellow[100]
                                 : Colors.red[100],
                             border: Border.all(
-                              color: billsList['status'] == 1
+                              color: rejectedExp['status'] == 0
                                   ? Colors.yellow[100]
-                                  : Colors.red[100],
+                                  : Colors.red[100], // Set border color
                             ), // Set border width
                             borderRadius: BorderRadius.all(Radius.circular(
                                 2.0)), // Set rounded corner radius
                           ),
                           child: Text(
-                            getStatus(billsList['status']),
+                            getStatus(rejectedExp['status']),
                             style: TextStyle(
-                                color: billsList['status'] == 1
-                                    ? Colors.yellow
-                                    : Colors.red,
+                                color:
+                                rejectedExp['status']==0 ? Colors.yellow : Colors.red,
                                 fontSize: 12.0,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -136,7 +140,7 @@ class BillsListWidget extends StatelessWidget {
                         child: Column(
                           children: [
                             Text(
-                              billsList['amount'].toString(),
+                              rejectedExp['amount'].toString(),
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 25.0,
@@ -173,27 +177,14 @@ class BillsListWidget extends StatelessWidget {
                         top: 20.0,
                       ),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            widgetDate(billsList['createdOn']),
+                            widgetDate(rejectedExp['createdOn']),
                             style: TextStyle(
                               fontSize: 15.0,
                               color: Colors.grey,
                             ),
-                          ),
-                          Spacer(),
-                          CustomCheckBox(
-                            value: _isChecked,
-                            shouldShowBorder: true,
-                            borderColor: Colors.blue,
-                            checkedFillColor: Colors.blue,
-                            borderRadius: 8,
-                            borderWidth: 1,
-                            checkBoxSize: 22,
-                            onChanged: (val) {
-                              _isChecked=val;
-                            },
                           ),
                         ],
                       ),

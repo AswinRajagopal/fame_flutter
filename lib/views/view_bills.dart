@@ -21,6 +21,8 @@ class _ViewBillsState extends State<ViewBills> {
   // var roleId = RemoteServices().box.get('role');
   var roleId;
 
+  var status = '1';
+
   @override
   void initState() {
     expC.pr = ProgressDialog(
@@ -56,7 +58,7 @@ class _ViewBillsState extends State<ViewBills> {
     );
     Future.delayed(
       Duration(milliseconds: 100),
-      expC.getBillsByStatus,
+      () => expC.getBillsByStatus(),
     );
     roleId = RemoteServices().box.get('role');
     super.initState();
@@ -76,7 +78,7 @@ class _ViewBillsState extends State<ViewBills> {
           'My Bills List',
         ),
       ),
-      floatingActionButton:Column(
+      floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
@@ -92,50 +94,53 @@ class _ViewBillsState extends State<ViewBills> {
           ),
         ],
       ),
-      body: SafeArea(
-        child: Scrollbar(
-          radius: Radius.circular(
-            10.0,
-          ),
-          thickness: 5.0,
-          child: Obx(() {
-            if (expC.isLoading.value) {
-              return Column();
-            } else {
-              if (expC.expenseBillsList.isEmpty || expC.expenseBillsList.isNull) {
-                return Container(
-                  height: MediaQuery.of(context).size.height / 1.2,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Center(
-                        child: Text(
-                          'No Bills found',
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            // fontWeight: FontWeight.bold,
+      body: Column(children: [
+        Expanded(
+          child: Scrollbar(
+            radius: Radius.circular(
+              10.0,
+            ),
+            thickness: 5.0,
+            child: Obx(() {
+              if (expC.isLoading.value) {
+                return Column();
+              } else {
+                if (expC.expenseBillsList.isEmpty ||
+                    expC.expenseBillsList.isNull) {
+                  return Container(
+                    height: MediaQuery.of(context).size.height / 1.2,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Center(
+                          child: Text(
+                            'No Bills found',
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              // fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+                  );
+                }
+                return ListView.builder(
+                  shrinkWrap: true,
+                  primary: true,
+                  physics: ScrollPhysics(),
+                  itemCount: expC.expenseBillsList.length,
+                  itemBuilder: (context, index) {
+                    var billsList = expC.expenseBillsList[index];
+                    return BillsListWidget(billsList);
+                  },
                 );
               }
-              return ListView.builder(
-                shrinkWrap: true,
-                primary: true,
-                physics: ScrollPhysics(),
-                itemCount: expC.expenseBillsList.length,
-                itemBuilder: (context, index) {
-                  var billsList = expC.expenseBillsList[index];
-                  return BillsListWidget(billsList);
-                },
-              );
-            }
-          }),
+            }),
+          ),
         ),
-      ),
+      ]),
     );
   }
 }

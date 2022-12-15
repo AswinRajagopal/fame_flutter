@@ -15,6 +15,7 @@ class ExpenseController extends GetxController {
   List exp = [].obs;
   List purpose = [].obs;
   List empExpList = [].obs;
+  List rejectedList = [].obs;
   List attachment = [].obs;
   List expenseBillsList = [].obs;
 
@@ -24,8 +25,7 @@ class ExpenseController extends GetxController {
     Future.delayed(Duration(milliseconds: 100));
   }
 
-  void newExpenses(
-      amount, expenseTypeId, remarks, imageFile, imageFile2, imageFile3) async {
+  void newExpenses(amount, expenseTypeId, remarks, imageFile, imageFile2, imageFile3) async {
     try {
       await pr.show();
       var ExpenseRes = await RemoteServices().newExpenses(
@@ -415,6 +415,65 @@ class ExpenseController extends GetxController {
     }
   }
 
+  void getEmpExpense(status) async {
+    try {
+      rejectedList = [];
+      isLoading(true);
+      await pr.show();
+      res = await RemoteServices().getEmpExpense(status);
+      if (res != null) {
+        isLoading(false);
+        await pr.hide();
+        if (res['success']) {
+          expDet = res;
+          print('rejApr valid: $res');
+          if (res['rejectedList'] != null) {
+            for (var i = 0; i < res['rejectedList'].length; i++) {
+              rejectedList.add(res['rejectedList'][i]);
+            }
+          }
+        } else {
+          Get.snackbar(
+            null,
+            'Something went wrong! Please try again later',
+            colorText: Colors.white,
+            backgroundColor: Colors.black87,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
+          );
+        }
+      }
+    } catch (e) {
+      print(e);
+      isLoading(false);
+      await pr.hide();
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
+      );
+    }
+  }
+
   void getExpAttachments(expenseEmpId) async {
     try {
       isLoading(true);
@@ -473,16 +532,15 @@ class ExpenseController extends GetxController {
     }
   }
 
- void newExpBills(
-       amount, expenseTypeId, remarks,imageFile, imageFile2, imageFile3) async {
+  void newExpBills(amount, expenseTypeId, remarks, imageFile, imageFile2, imageFile3) async {
     try {
       await pr.show();
-      var newExpBillsRes = await RemoteServices().newExpBills(
-          amount, expenseTypeId, remarks,imageFile, imageFile2, imageFile3);
-      if (newExpBillsRes != null) {
+      var ExpenseBillRes = await RemoteServices().newExpBills(
+          imageFile, amount, expenseTypeId, remarks, imageFile2, imageFile3);
+      if (ExpenseBillRes != null) {
         await pr.hide();
-        print('newExpBillsRes valid: ${newExpBillsRes['success']}');
-        if (newExpBillsRes['success']) {
+        print('ExpenseRes valid: ${ExpenseBillRes['success']}');
+        if (ExpenseBillRes['success']) {
           Get.snackbar(
             null,
             'Bills sent successfully',
@@ -524,7 +582,6 @@ class ExpenseController extends GetxController {
       }
     } catch (e) {
       print(e);
-      isLoading(false);
       await pr.hide();
       Get.snackbar(
         null,

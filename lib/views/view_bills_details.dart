@@ -47,6 +47,11 @@ class _ViewBillsDetailListState extends State<ViewBillsDetailList> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var roleId = RemoteServices().box.get('role');
     return Scaffold(
