@@ -7,6 +7,7 @@ import 'package:fame/controllers/expense_controller.dart';
 import 'package:flutter/rendering.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:number_to_character/number_to_character.dart';
 import '../connection/remote_services.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import '../utils/utils.dart';
@@ -37,6 +38,8 @@ class _ExpensesState extends State<Expenses> {
   var expenseTypeId;
   File attachment, attachment2, attachment3;
   var passDate;
+  var amountInWords;
+
 
   var details;
   _ExpensesState(this. details);
@@ -104,6 +107,19 @@ class _ExpensesState extends State<Expenses> {
       });
     }
   }
+
+  Future<Null> getWord(BuildContext context) {
+    var converter = NumberToCharacterConverter('en');
+    var amtInWords = int.parse(amount.text);
+    if (amtInWords != null) {
+      print(amtInWords);
+      setState(() {
+        amountInWords = converter.convertInt(amtInWords);
+      });
+    }
+    print(converter);
+  }
+
 
   @override
   void dispose() {
@@ -310,6 +326,34 @@ class _ExpensesState extends State<Expenses> {
                         height: 10.0,
                       ),
                       Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 25.0, vertical: 5.0),
+                        child: Row(
+                          children: [Text('Amount In Words:',style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                          ),)],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 25.0, vertical: 5.0),
+                        child: Row(
+                          children: [
+                            Text(
+                              amount.text == null
+                                  ? amountInWords
+                                  : "Amount",
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 18.0,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 5.0),
                         child: Card(
                           shape: RoundedRectangleBorder(
@@ -363,10 +407,25 @@ class _ExpensesState extends State<Expenses> {
                                 ),
                                 hintText: 'Attachment',
                                 suffixIcon: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Image.asset(
-                                    'assets/images/uplode_proof.png',
-                                    scale: 2.2,
+                                  padding: const EdgeInsets.only(top:10.0),
+                                  child: GestureDetector(
+                                    onTap: ()async{
+                                      var pickedFile = await ImagePicker().getImage(
+                                        source: ImageSource.camera,
+                                        imageQuality: 50,
+                                      );
+                                      if (pickedFile != null) {
+                                        attachment2 =  new File(pickedFile.path);
+                                        attachOne.text = path.basename(pickedFile.path);
+                                        setState(() {});
+                                      } else {
+                                        print('No image selected.');
+                                        setState(() {});
+                                      }
+                                    },
+                                    child: Icon(
+                                      Icons.add_circle,color:AppUtils().blueColor,size: 40.0,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -390,112 +449,200 @@ class _ExpensesState extends State<Expenses> {
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0,
-                          vertical: 15.0,
-                        ),
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              side: BorderSide(color: Colors.black38)),
+                      Row(
+                        children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal:25.0,vertical: 10.0),
                           child: Container(
-                            height: 60,
-                            child: TextField(
-                              controller: attachOne,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                isDense: true,
-                                contentPadding: EdgeInsets.only(
-                                  left: 10,
-                                  top: 18,
-                                ),
-                                hintStyle: TextStyle(
-                                  color: Colors.grey[600],
-                                  fontSize: 18.0,
-                                ),
-                                hintText: 'Attachment',
-                                suffixIcon: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Image.asset(
-                                    'assets/images/uplode_proof.png',
-                                    scale: 2.2,
-                                  ),
-                                ),
-                              ),
-                              readOnly: true,
-                              keyboardType: null,
-                              onTap: () async {
-                                var pickedFile = await ImagePicker().getImage(
-                                  source: ImageSource.camera,
-                                  imageQuality: 50,
-                                );
-                                if (pickedFile != null) {
-                                  attachment2 =  new File(pickedFile.path);
-                                  attachOne.text = path.basename(pickedFile.path);
-                                  setState(() {});
-                                } else {
-                                  print('No image selected.');
-                                  setState(() {});
-                                }
-                              },
+                          alignment: Alignment.center,
+                          width: 150,
+                          height:50.0,
+                          decoration: BoxDecoration(
+                            borderRadius:
+                            BorderRadius.circular(5.0),
+                            color: Colors.white,
+                            border: Border.all(
+                              color: Colors.black54,
+                              width: 1,
                             ),
                           ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0,
-                          vertical: 15.0,
-                        ),
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              side: BorderSide(color: Colors.black38)),
-                          child: Container(
-                            height: 60,
-                            child: TextField(
-                              controller: attachTwo,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                isDense: true,
-                                contentPadding: EdgeInsets.only(
-                                  left: 10,
-                                  top: 18,
-                                ),
-                                hintStyle: TextStyle(
-                                  color: Colors.grey[600],
-                                  fontSize: 18.0,
-                                ),
-                                hintText: 'Attachment',
-                                suffixIcon: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Image.asset(
-                                    'assets/images/uplode_proof.png',
-                                    scale: 2.2,
-                                  ),
-                                ),
-                              ),
-                              readOnly: true,
-                              keyboardType: null,
-                              onTap: () async {
-                                var pickedFile = await ImagePicker().getImage(
-                                  source: ImageSource.camera,
-                                  imageQuality: 50,
-                                );
-                                if (pickedFile != null) {
-                                  attachment3 =  new File(pickedFile.path);
-                                  attachTwo.text = path.basename(pickedFile.path);
-                                  setState(() {});
-                                } else {
-                                  print('No image selected.');
-                                  setState(() {});
-                                }
-                              },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              attachment == null? "No Attachment":attach.text,
+                              style: TextStyle(
+                                  fontSize:15.0,
+                                  color: Colors.black,fontWeight:FontWeight.bold),
                             ),
                           ),
-                        ),
                       ),
+                        ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10.0),
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: 150,
+                              height:50.0,
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                BorderRadius.circular(5.0),
+                                color: Colors.white,
+                                border: Border.all(
+                                  color: Colors.black54,
+                                  width: 1,
+                                ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  attachment2 == null? "No Attachment":attachOne.text,
+                                  style: TextStyle(
+                                      fontSize:15.0,
+                                      color: Colors.black,fontWeight:FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal:25.0,vertical: 10.0),
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: 150,
+                              height:50.0,
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                BorderRadius.circular(5.0),
+                                color: Colors.white,
+                                border: Border.all(
+                                  color: Colors.black54,
+                                  width: 1,
+                                ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  attachment3 == null? "No Attachment":attachTwo.text,
+                                  style: TextStyle(
+                                      fontSize:15.0,
+                                      color: Colors.black,fontWeight:FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+
+
+                      // Padding(
+                      //   padding: const EdgeInsets.symmetric(
+                      //     horizontal: 20.0,
+                      //     vertical: 15.0,
+                      //   ),
+                      //   child: Card(
+                      //     shape: RoundedRectangleBorder(
+                      //         borderRadius: BorderRadius.circular(5.0),
+                      //         side: BorderSide(color: Colors.black38)),
+                      //     child: Container(
+                      //       height: 60,
+                      //       child: TextField(
+                      //         controller: attachOne,
+                      //         decoration: InputDecoration(
+                      //           border: InputBorder.none,
+                      //           isDense: true,
+                      //           contentPadding: EdgeInsets.only(
+                      //             left: 10,
+                      //             top: 18,
+                      //           ),
+                      //           hintStyle: TextStyle(
+                      //             color: Colors.grey[600],
+                      //             fontSize: 18.0,
+                      //           ),
+                      //           hintText: 'Attachment',
+                      //           suffixIcon: Padding(
+                      //             padding: const EdgeInsets.all(8.0),
+                      //             child: Image.asset(
+                      //               'assets/images/uplode_proof.png',
+                      //               scale: 2.2,
+                      //             ),
+                      //           ),
+                      //         ),
+                      //         readOnly: true,
+                      //         keyboardType: null,
+                      //         onTap: () async {
+                      //           var pickedFile = await ImagePicker().getImage(
+                      //             source: ImageSource.camera,
+                      //             imageQuality: 50,
+                      //           );
+                      //           if (pickedFile != null) {
+                      //             attachment2 =  new File(pickedFile.path);
+                      //             attachOne.text = path.basename(pickedFile.path);
+                      //             setState(() {});
+                      //           } else {
+                      //             print('No image selected.');
+                      //             setState(() {});
+                      //           }
+                      //         },
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                      // Padding(
+                      //   padding: const EdgeInsets.symmetric(
+                      //     horizontal: 20.0,
+                      //     vertical: 15.0,
+                      //   ),
+                      //   child: Card(
+                      //     shape: RoundedRectangleBorder(
+                      //         borderRadius: BorderRadius.circular(5.0),
+                      //         side: BorderSide(color: Colors.black38)),
+                      //     child: Container(
+                      //       height: 60,
+                      //       child: TextField(
+                      //         controller: attachTwo,
+                      //         decoration: InputDecoration(
+                      //           border: InputBorder.none,
+                      //           isDense: true,
+                      //           contentPadding: EdgeInsets.only(
+                      //             left: 10,
+                      //             top: 18,
+                      //           ),
+                      //           hintStyle: TextStyle(
+                      //             color: Colors.grey[600],
+                      //             fontSize: 18.0,
+                      //           ),
+                      //           hintText: 'Attachment',
+                      //           suffixIcon: Padding(
+                      //             padding: const EdgeInsets.all(8.0),
+                      //             child: Image.asset(
+                      //               'assets/images/uplode_proof.png',
+                      //               scale: 2.2,
+                      //             ),
+                      //           ),
+                      //         ),
+                      //         readOnly: true,
+                      //         keyboardType: null,
+                      //         onTap: () async {
+                      //           var pickedFile = await ImagePicker().getImage(
+                      //             source: ImageSource.camera,
+                      //             imageQuality: 50,
+                      //           );
+                      //           if (pickedFile != null) {
+                      //             attachment3 =  new File(pickedFile.path);
+                      //             attachTwo.text = path.basename(pickedFile.path);
+                      //             setState(() {});
+                      //           } else {
+                      //             print('No image selected.');
+                      //             setState(() {});
+                      //           }
+                      //         },
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20.0,vertical: 5.0),
                         child: RaisedButton(
@@ -558,8 +705,7 @@ class _ExpensesState extends State<Expenses> {
                                 borderRadius: 5.0,
                               );
                             } else {
-                              expC.newExpenses(amount.text, expenseTypeId,
-                                  remarks.text, attachment, attachment2, attachment3);
+                              expC.newExpenses(amount.text, expenseTypeId, remarks.text, attachment, attachment2, attachment3);
                             }
                           },
                           child: Padding(

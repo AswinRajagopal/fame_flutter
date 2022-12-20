@@ -1335,7 +1335,7 @@ class RemoteServices {
         body: jsonEncode(<String, String>{
           'empId': box.get('empid').toString(),
           'companyId': box.get('companyid').toString(),
-          "status" : status.toString()
+          "status" : status
         }));
     print(response.statusCode);
     print(response.body);
@@ -1353,6 +1353,23 @@ class RemoteServices {
         body: jsonEncode({
           "companyId": box.get('companyid').toString(),
           "expenseEmpId": expenseEmpId
+        }));
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      return null;
+    }
+  }
+
+  Future getBillAttachments(expenseBillId) async {
+    var response = await client.post('$baseURL/expense/exp_attachments',
+        headers: header,
+        body: jsonEncode({
+          "companyId": box.get('companyid').toString(),
+          "expenseBillId": expenseBillId
         }));
     print(response.statusCode);
     print(response.body);
@@ -1490,7 +1507,7 @@ class RemoteServices {
   Future newExpBills(File imageFile, amount, expenseTypeId,
       remarks, File image1, File image2) async {
     var dio = mydio.Dio();
-
+    print(imageFile.path);
     var formData = mydio.FormData.fromMap({
       'companyId': box.get('companyid').toString(),
       'empId': box.get('empid').toString(),
@@ -1582,6 +1599,33 @@ class RemoteServices {
           "status" : "2",
           "empExpenseId": "85"
         }
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future getBillsToExpense(bills) async {
+    print( jsonEncode(
+        <String, String>{
+          "companyId":box.get('companyid').toString(),
+          "bills": bills
+        }
+    ),);
+    var response = await client.post(
+      '$baseURL/expense/bills_to_expense',
+      headers: header,
+      body: jsonEncode(
+          <String, String>{
+            "companyId":box.get('companyid').toString(),
+            "bills": bills
+          }
       ),
     );
     print(response.statusCode);

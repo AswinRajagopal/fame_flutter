@@ -47,6 +47,45 @@ class _ViewBillsDetailListState extends State<ViewBillsDetailList> {
   }
 
   @override
+  void initState() {
+    expC.pr = ProgressDialog(
+      context,
+      type: ProgressDialogType.Normal,
+      isDismissible: false,
+      showLogs: false,
+      customBody: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20.0,
+          vertical: 15.0,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(
+              width: 20.0,
+            ),
+            Text(
+              'Processing please wait...',
+              style: TextStyle(
+                fontSize: 18.0,
+                color: Colors.black,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+    expC.pr.style(
+      backgroundColor: Colors.white,
+    );
+    Future.delayed(Duration(milliseconds: 100), () {
+      expC.getBillAttachments(billsList['expenseBillId']);
+    });
+    super.initState();
+  }
+
+  @override
   void dispose() {
     super.dispose();
   }
@@ -148,6 +187,87 @@ class _ViewBillsDetailListState extends State<ViewBillsDetailList> {
                           RowWidget(
                               'CreatedOn', convertDate(billsList['createdOn'])),
                           SizedBox(height: 15.0),
+                          Row(
+                            children: [
+                              expC.billAttachment.length==1?GestureDetector(
+                                onTap: () async {
+                                  var pitstop = expC.billAttachment[0];
+                                  if (pitstop!=null) {
+                                    await showDialog(
+                                        context: context,
+                                        builder: (_) => imageDialog(pitstop));
+                                  }
+                                },
+                                child: Container(
+                                  width: 100.0,
+                                  height: 150.0,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width: 1, color: Colors.white),
+                                    borderRadius: BorderRadius.circular(10),
+                                    image: DecorationImage(
+                                        image:
+                                        NetworkImage(
+                                            expC.billAttachment[0].toString()),
+                                        fit: BoxFit.cover), //<-- SEE HERE
+                                  ),
+                                ),
+                              ):Container(),
+                              SizedBox(
+                                width: 15.0,
+                              ),
+                              expC.billAttachment.length ==2?GestureDetector(
+                                onTap: () async {
+                                  var pitstop = expC.billAttachment[1];
+                                  if (pitstop!=null) {
+                                    await showDialog(
+                                        context: context,
+                                        builder: (_) => imageDialog(pitstop));
+                                  }
+                                },
+                                child: Container(
+                                  width: 100.0,
+                                  height: 150.0,
+                                  decoration: BoxDecoration(
+                                    border:
+                                    Border.all(width: 1, color: Colors.white),
+                                    borderRadius: BorderRadius.circular(10),
+                                    image: DecorationImage(
+                                        image:
+                                        NetworkImage(
+                                            expC.billAttachment[1].toString()),
+                                        fit: BoxFit.cover), //<-- SEE HERE
+                                  ),
+                                ),
+                              ):Container(),
+                              SizedBox(
+                                width: 15.0,
+                              ),
+                              expC.billAttachment.length == 3 ? GestureDetector(
+                                onTap: () async {
+                                  var pitstop = expC.billAttachment[2];
+                                  if (pitstop!=null) {
+                                    await showDialog(
+                                        context: context,
+                                        builder: (_) => imageDialog(pitstop));
+                                  }
+                                },
+                                child: Container(
+                                  width: 100.0,
+                                  height: 150.0,
+                                  decoration: BoxDecoration(
+                                    border:
+                                    Border.all(width: 1, color: Colors.white),
+                                    borderRadius: BorderRadius.circular(10),
+                                    image: DecorationImage(
+                                        image: NetworkImage(
+                                            expC.billAttachment[2].toString()),
+                                        fit: BoxFit.cover), //<-- SEE HERE
+                                  ),
+                                ),
+                              ):Container(),
+                            ],
+                          ),
                           roleId == AppUtils.ADMIN
                               ? Column(
                             children: [

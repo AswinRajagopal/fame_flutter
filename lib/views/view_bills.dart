@@ -18,10 +18,9 @@ class ViewBills extends StatefulWidget {
 
 class _ViewBillsState extends State<ViewBills> {
   final ExpenseController expC = Get.put(ExpenseController());
-  // var roleId = RemoteServices().box.get('role');
   var roleId;
 
-  var status = '1';
+
 
   @override
   void initState() {
@@ -133,13 +132,43 @@ class _ViewBillsState extends State<ViewBills> {
                   itemCount: expC.expenseBillsList.length,
                   itemBuilder: (context, index) {
                     var billsList = expC.expenseBillsList[index];
-                    return BillsListWidget(billsList);
+                    return BillsListWidget(billsList,expC);
                   },
                 );
               }
             }),
           ),
         ),
+        Obx((){
+          return Visibility(
+            visible: expC.selectedBills.length>0,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 50.0,
+                    child: RaisedButton(
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(5.0),
+                      ),
+                      onPressed: () {
+                        expC.getBillsToExpense();
+                      },
+                      color: AppUtils().blueColor,
+                      child: Text(
+                        'Send For Approval',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );}
+        )
       ]),
     );
   }

@@ -34,7 +34,7 @@ class RejectedListWidget extends StatelessWidget {
         DateFormat('MM').format(DateTime.parse(date)).toString() +
         '-' +
         DateFormat.y().format(DateTime.parse(date)).toString() +
-        '@ ' +
+        ' @ ' +
         DateFormat('hh:mm').format(DateTime.parse(date)).toString() +
         '' +
         DateFormat('a').format(DateTime.parse(date)).toString().toLowerCase();
@@ -139,12 +139,15 @@ class RejectedListWidget extends StatelessWidget {
                       IntrinsicWidth(
                         child: Column(
                           children: [
-                            Text(
-                              rejectedExp['amount'].toString(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 25.0,
-                                color: Colors.red,
+                            Container(
+                              width: 100,
+                              child: Text(
+                                rejectedExp['amount'].toString(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25.0,
+                                  color: Colors.red,
+                                ),
                               ),
                             ),
                           ],

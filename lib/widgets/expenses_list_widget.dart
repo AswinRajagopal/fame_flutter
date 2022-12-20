@@ -34,7 +34,7 @@ class ExpensesListWidget extends StatelessWidget {
         DateFormat('MM').format(DateTime.parse(date)).toString() +
         '-' +
         DateFormat.y().format(DateTime.parse(date)).toString() +
-        '@ ' +
+        ' @ ' +
         DateFormat('hh:mm').format(DateTime.parse(date)).toString() +
         '' +
         DateFormat('a').format(DateTime.parse(date)).toString().toLowerCase();
@@ -134,17 +134,20 @@ class ExpensesListWidget extends StatelessWidget {
                         )
                       ],
                     ),
-                    SizedBox(width: 20.0),
+                    SizedBox(width: 30.0),
                     Column(children: [
                       IntrinsicWidth(
                         child: Column(
                           children: [
-                            Text(
-                              expenses['amount'].toString(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 25.0,
-                                color: Colors.red,
+                            Container(
+                              width:100,
+                              child: Text(
+                                expenses['amount'].toString(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25.0,
+                                  color: Colors.red,
+                                ),
                               ),
                             ),
                           ],

@@ -8,6 +8,7 @@ import 'package:fame/views/view_expenses.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:intl/intl.dart';
+import 'package:number_to_character/number_to_character.dart';
 import '../connection/remote_services.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import '../utils/utils.dart';
@@ -35,6 +36,8 @@ class _RequestExpenseState extends State<RequestExpense> {
   var expenseTypeId;
   var passDate;
   var employeeId;
+  var amountInWords;
+
 
   @override
   void initState() {
@@ -100,6 +103,19 @@ class _RequestExpenseState extends State<RequestExpense> {
       });
     }
   }
+
+  Future<Null> getWord(BuildContext context) {
+    var converter = NumberToCharacterConverter('en');
+    var amtInWords = int.parse(amount.text);
+    if (amtInWords != null) {
+      print(amtInWords);
+      setState(() {
+        amountInWords = converter.convertInt(amtInWords);
+      });
+    }
+    print(converter);
+  }
+
 
   @override
   void dispose() {
@@ -363,6 +379,34 @@ class _RequestExpenseState extends State<RequestExpense> {
                       ),
                       SizedBox(
                         height: 10.0,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 25.0, vertical: 5.0),
+                        child: Row(
+                          children: [Text('Amount In Words:',style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                          ),)],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 25.0, vertical: 5.0),
+                        child: Row(
+                          children: [
+                            Text(
+                              amount.text == null
+                                  ? amountInWords
+                                  : "Amount",
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 18.0,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(

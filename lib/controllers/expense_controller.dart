@@ -11,12 +11,14 @@ class ExpenseController extends GetxController {
   var isLoading = true.obs;
   var res;
   var expDet;
+  var selectedBills = [].obs;
   ProgressDialog pr;
   List exp = [].obs;
   List purpose = [].obs;
   List empExpList = [].obs;
   List rejectedList = [].obs;
   List attachment = [].obs;
+  List billAttachment=[].obs;
   List expenseBillsList = [].obs;
 
   @override
@@ -484,9 +486,9 @@ class ExpenseController extends GetxController {
         await pr.hide();
         if (res['success']) {
           print('expattach valid: $res');
-          if (res['attachments'] != null) {
-            for (var i = 0; i < res['attachments'].length; i++) {
-              attachment.add(res['attachments'][i]);
+          if (res['expAttachments'] != null) {
+            for (var i = 0; i < res['expAttachments'].length; i++) {
+              attachment.add(res['expAttachments'][i]);
             }
             print("expattach:$attachment");
           }
@@ -531,6 +533,65 @@ class ExpenseController extends GetxController {
       );
     }
   }
+
+  void getBillAttachments(expenseBillId) async {
+    try {
+      isLoading(true);
+      await pr.show();
+      res = await RemoteServices().getBillAttachments(expenseBillId);
+      if (res != null) {
+        isLoading(false);
+        await pr.hide();
+        if (res['success']) {
+          print('billAttach valid: $res');
+          if (res['expenseBillUrl'] != null) {
+            for (var i = 0; i < res['expenseBillUrl'].length; i++) {
+              billAttachment.add(res['expenseBillUrl'][i]);
+            }
+            // print("billAttach:$billAttachment");
+          }
+        } else {
+          Get.snackbar(
+            null,
+            'Something went wrong! Please try again later',
+            colorText: Colors.white,
+            backgroundColor: Colors.black87,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
+          );
+        }
+      }
+    } catch (e) {
+      print(e);
+      isLoading(false);
+      await pr.hide();
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
+      );
+    }
+  }
+
 
   void newExpBills(amount, expenseTypeId, remarks, imageFile, imageFile2, imageFile3) async {
     try {
@@ -602,7 +663,7 @@ class ExpenseController extends GetxController {
     }
   }
 
-  Future<void> getBillsByStatus() async {
+  void getBillsByStatus() async {
     try {
       isLoading(true);
       await pr.show();
@@ -640,6 +701,76 @@ class ExpenseController extends GetxController {
     } catch (e) {
       print(e);
       isLoading(false);
+      await pr.hide();
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
+      );
+    }
+  }
+
+  void getBillsToExpense() async {
+    try {
+      await pr.show();
+      String bills = selectedBills.join(',');
+      var billsToExpRes = await RemoteServices().getBillsToExpense(bills);
+      if (billsToExpRes != null) {
+        await pr.hide();
+        print('billsToExpRes valid: ${billsToExpRes['success']}');
+        if (billsToExpRes['success']) {
+          Get.snackbar(
+            null,
+            'Bills sent successfully',
+            colorText: Colors.white,
+            backgroundColor: AppUtils().greenColor,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
+            duration: Duration(
+              seconds: 2,
+            ),
+          );
+          Timer(Duration(seconds: 2), Get.back);
+        } else {
+          Get.snackbar(
+            null,
+            'Bills send failed',
+            colorText: Colors.white,
+            backgroundColor: Colors.black87,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
+          );
+        }
+      }
+    } catch (e) {
+      print(e);
       await pr.hide();
       Get.snackbar(
         null,

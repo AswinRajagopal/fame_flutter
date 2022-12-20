@@ -21,10 +21,10 @@ class _ViewExpenseState extends State<ViewExpense> {
   final ExpenseController expC = Get.put(ExpenseController());
   var expenseId;
   var roleId;
-  bool _isVisible = true;
   var expenseTypeId;
   bool _isRejectedList = false;
-  bool _approvedList = false;
+  bool _firstValue = false;
+  bool _secValue = false;
 
   @override
   void initState() {
@@ -268,104 +268,86 @@ class _ViewExpenseState extends State<ViewExpense> {
           SizedBox(
             height: 15.0,
           ),
-          Row(
-            children: [
-              Flexible(
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Flexible(
-                        child: Text(
-                          'Transactions',
-                          style: TextStyle(
-                              fontSize: 20.0, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 50,
-                      ),
-                      Flexible(
-                        child: Container(
-                          child: DropdownButton(
-                            items: [
-                              DropdownMenuItem(
-                                child: Row(
-                                  children: <Widget>[
-                                    Checkbox(
-                                      value: _isRejectedList,
-                                      onChanged: (value) {
-                                        expC.getEmpExpense('2');
-                                        setState(() {
-                                          _isRejectedList = value;
-                                        });
-                                      },
-                                    ),
-                                    Text('Rejected List'),
-                                  ],
-                                ),
-                              ),
-                              DropdownMenuItem(
-                                child: Row(
-                                  children: <Widget>[
-                                    Checkbox(
-                                      value: _approvedList,
-                                      onChanged: (value) {
-                                        expC.getEmpExpense('1');
-                                        setState(() {
-                                          _approvedList = value;
-                                        });
-                                      },
-                                    ),
-                                    Text('Approved List'),
-                                  ],
-                                ),
-                              )
-                            ],
-                            onChanged: (value) {
-                              setState(() {});
-                            },
-                            hint: Text('All'),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            child: Row(
+              children: [
+                Flexible(
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            'Transactions',
+                            style: TextStyle(
+                                fontSize: 20.0, fontWeight: FontWeight.bold),
                           ),
                         ),
-                      ),
-                    ],
+                        Spacer(),
+                        Container(
+                          child: Row(
+                            children: <Widget>[
+                              DropdownButton(
+                                items: [
+                                  DropdownMenuItem(
+                                    child: Row(
+                                        children: <Widget>[
+                                      Checkbox(
+                                        value: _isRejectedList,
+                                        onChanged: (value) {
+                                          expC.getEmpExpense('2');
+                                          setState(() {
+                                            _isRejectedList = value;
+                                          });
+                                        },
+                                      ),
+                                      Text(
+                                        'Rejected List',
+                                        style: TextStyle(fontSize: 16.0),
+                                      ),
+                                    ]),
+                                  ),
+                                  DropdownMenuItem(
+                                    child: Row(
+                                      children: <Widget>[
+                                        Checkbox(
+                                          onChanged: (bool value) {},
+                                          value: _firstValue,
+                                        ),
+                                        Text('Expenses'),
+                                      ],
+                                    ),
+                                  ),
+                                  DropdownMenuItem(
+                                    child: Row(
+                                      children: <Widget>[
+                                        Checkbox(
+                                          onChanged: (bool value) {},
+                                          value: _secValue,
+                                        ),
+                                        Text('Advance'),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                                onChanged: (value) {},
+                                hint: Text('Select value'),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           SizedBox(
             height: 15.0,
           ),
-          // Padding(
-          //   padding: const EdgeInsets.only(left: 280.0, top: 5.0),
-          //   child: Align(
-          //     alignment: Alignment.centerLeft,
-          //     child: Row(
-          //       children: [
-          //         Checkbox(
-          //           value: _isRejectedList,
-          //           onChanged: (value) {
-          //             expC.getEmpExpense();
-          //             setState(() {
-          //               _isRejectedList = value;
-          //             });
-          //           },
-          //         ),
-          //         Text(
-          //           'Rejected List',
-          //           style: TextStyle(
-          //             color: Colors.black,
-          //             fontSize: 18.0,
-          //             fontWeight: FontWeight.bold,
-          //           ),
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          // ),
           _isRejectedList
               ? Expanded(
                   child: Scrollbar(
