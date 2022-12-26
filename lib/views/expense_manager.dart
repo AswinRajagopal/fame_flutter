@@ -38,11 +38,10 @@ class _ExpensesState extends State<Expenses> {
   var expenseTypeId;
   File attachment, attachment2, attachment3;
   var passDate;
-  var amountInWords;
-
+  var amountInWords = '';
 
   var details;
-  _ExpensesState(this. details);
+  _ExpensesState(this.details);
 
   @override
   void initState() {
@@ -108,18 +107,16 @@ class _ExpensesState extends State<Expenses> {
     }
   }
 
-  Future<Null> getWord(BuildContext context) {
+  Future<Null> getWord(amount) {
     var converter = NumberToCharacterConverter('en');
-    var amtInWords = int.parse(amount.text);
+    var amtInWords = int.parse(amount);
     if (amtInWords != null) {
-      print(amtInWords);
       setState(() {
         amountInWords = converter.convertInt(amtInWords);
+        print(amountInWords);
       });
     }
-    print(converter);
   }
-
 
   @override
   void dispose() {
@@ -193,7 +190,9 @@ class _ExpensesState extends State<Expenses> {
                                       alignment: Alignment.centerLeft,
                                       child: Text(
                                         date.text,
-                                        style: TextStyle(fontSize: 18.0,color: Colors.black54),
+                                        style: TextStyle(
+                                            fontSize: 18.0,
+                                            color: Colors.black54),
                                       ),
                                     ),
                                   ),
@@ -217,8 +216,13 @@ class _ExpensesState extends State<Expenses> {
                                     child: Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        RemoteServices().box.get('empid').toString(),
-                                        style: TextStyle(fontSize: 18.0,color: Colors.black54),
+                                        RemoteServices()
+                                            .box
+                                            .get('empid')
+                                            .toString(),
+                                        style: TextStyle(
+                                            fontSize: 18.0,
+                                            color: Colors.black54),
                                       ),
                                     ),
                                   ),
@@ -247,7 +251,8 @@ class _ExpensesState extends State<Expenses> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   RemoteServices().box.get('empName'),
-                                  style: TextStyle(fontSize: 18.0,color: Colors.black54),
+                                  style: TextStyle(
+                                      fontSize: 18.0, color: Colors.black54),
                                 ),
                               ),
                             ),
@@ -286,6 +291,10 @@ class _ExpensesState extends State<Expenses> {
                                           color: Colors.grey[600],
                                           fontSize: 18.0),
                                     ),
+                                    onChanged: (val) {
+                                      print('inside on changed');
+                                      getWord(amount.text);
+                                    },
                                   ),
                                 ),
                               ),
@@ -310,8 +319,8 @@ class _ExpensesState extends State<Expenses> {
                                     return sC.toString();
                                   }).toList(),
                                   onChanged: (value) {
-                                    for(var e in expC.exp){
-                                      if(e['expenseType']==value){
+                                    for (var e in expC.exp) {
+                                      if (e['expenseType'] == value) {
                                         expenseTypeId = e['expenseTypeId'];
                                         break;
                                       }
@@ -329,11 +338,16 @@ class _ExpensesState extends State<Expenses> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 25.0, vertical: 5.0),
                         child: Row(
-                          children: [Text('Amount In Words:',style: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                          ),)],
+                          children: [
+                            Text(
+                              'Amount In Words:',
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          ],
                         ),
                       ),
                       Padding(
@@ -342,9 +356,7 @@ class _ExpensesState extends State<Expenses> {
                         child: Row(
                           children: [
                             Text(
-                              amount.text == null
-                                  ? amountInWords
-                                  : "Amount",
+                              amountInWords,
                               style: TextStyle(
                                 color: Colors.grey[600],
                                 fontSize: 18.0,
@@ -354,7 +366,8 @@ class _ExpensesState extends State<Expenses> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 5.0),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 5.0),
                         child: Card(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5.0),
@@ -407,16 +420,18 @@ class _ExpensesState extends State<Expenses> {
                                 ),
                                 hintText: 'Attachment',
                                 suffixIcon: Padding(
-                                  padding: const EdgeInsets.only(top:10.0),
+                                  padding: const EdgeInsets.only(top: 10.0),
                                   child: GestureDetector(
-                                    onTap: ()async{
-                                      var pickedFile = await ImagePicker().getImage(
+                                    onTap: () async {
+                                      var pickedFile =
+                                          await ImagePicker().getImage(
                                         source: ImageSource.camera,
                                         imageQuality: 50,
                                       );
                                       if (pickedFile != null) {
-                                        attachment2 =  new File(pickedFile.path);
-                                        attachOne.text = path.basename(pickedFile.path);
+                                        attachment2 = new File(pickedFile.path);
+                                        attachOne.text =
+                                            path.basename(pickedFile.path);
                                         setState(() {});
                                       } else {
                                         print('No image selected.');
@@ -424,7 +439,9 @@ class _ExpensesState extends State<Expenses> {
                                       }
                                     },
                                     child: Icon(
-                                      Icons.add_circle,color:AppUtils().blueColor,size: 40.0,
+                                      Icons.add_circle,
+                                      color: AppUtils().blueColor,
+                                      size: 40.0,
                                     ),
                                   ),
                                 ),
@@ -437,7 +454,7 @@ class _ExpensesState extends State<Expenses> {
                                   imageQuality: 50,
                                 );
                                 if (pickedFile != null) {
-                                  attachment =  new File(pickedFile.path);
+                                  attachment = new File(pickedFile.path);
                                   attach.text = path.basename(pickedFile.path);
                                   setState(() {});
                                 } else {
@@ -451,41 +468,15 @@ class _ExpensesState extends State<Expenses> {
                       ),
                       Row(
                         children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal:25.0,vertical: 10.0),
-                          child: Container(
-                          alignment: Alignment.center,
-                          width: 150,
-                          height:50.0,
-                          decoration: BoxDecoration(
-                            borderRadius:
-                            BorderRadius.circular(5.0),
-                            color: Colors.white,
-                            border: Border.all(
-                              color: Colors.black54,
-                              width: 1,
-                            ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              attachment == null? "No Attachment":attach.text,
-                              style: TextStyle(
-                                  fontSize:15.0,
-                                  color: Colors.black,fontWeight:FontWeight.bold),
-                            ),
-                          ),
-                      ),
-                        ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10.0),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 25.0, vertical: 10.0),
                             child: Container(
                               alignment: Alignment.center,
                               width: 150,
-                              height:50.0,
+                              height: 50.0,
                               decoration: BoxDecoration(
-                                borderRadius:
-                                BorderRadius.circular(5.0),
+                                borderRadius: BorderRadius.circular(5.0),
                                 color: Colors.white,
                                 border: Border.all(
                                   color: Colors.black54,
@@ -495,10 +486,41 @@ class _ExpensesState extends State<Expenses> {
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
-                                  attachment2 == null? "No Attachment":attachOne.text,
+                                  attachment == null
+                                      ? "No Attachment"
+                                      : attach.text,
                                   style: TextStyle(
-                                      fontSize:15.0,
-                                      color: Colors.black,fontWeight:FontWeight.bold),
+                                      fontSize: 15.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10.0),
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: 150,
+                              height: 50.0,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5.0),
+                                color: Colors.white,
+                                border: Border.all(
+                                  color: Colors.black54,
+                                  width: 1,
+                                ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  attachment2 == null
+                                      ? "No Attachment"
+                                      : attachOne.text,
+                                  style: TextStyle(
+                                      fontSize: 15.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ),
                             ),
@@ -508,14 +530,14 @@ class _ExpensesState extends State<Expenses> {
                       Row(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal:25.0,vertical: 10.0),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 25.0, vertical: 10.0),
                             child: Container(
                               alignment: Alignment.center,
                               width: 150,
-                              height:50.0,
+                              height: 50.0,
                               decoration: BoxDecoration(
-                                borderRadius:
-                                BorderRadius.circular(5.0),
+                                borderRadius: BorderRadius.circular(5.0),
                                 color: Colors.white,
                                 border: Border.all(
                                   color: Colors.black54,
@@ -525,17 +547,19 @@ class _ExpensesState extends State<Expenses> {
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
-                                  attachment3 == null? "No Attachment":attachTwo.text,
+                                  attachment3 == null
+                                      ? "No Attachment"
+                                      : attachTwo.text,
                                   style: TextStyle(
-                                      fontSize:15.0,
-                                      color: Colors.black,fontWeight:FontWeight.bold),
+                                      fontSize: 15.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ),
                             ),
                           )
                         ],
                       ),
-
 
                       // Padding(
                       //   padding: const EdgeInsets.symmetric(
@@ -644,7 +668,8 @@ class _ExpensesState extends State<Expenses> {
                       //   ),
                       // ),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20.0,vertical: 5.0),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 5.0),
                         child: RaisedButton(
                           onPressed: () async {
                             print('Submit');
@@ -705,7 +730,13 @@ class _ExpensesState extends State<Expenses> {
                                 borderRadius: 5.0,
                               );
                             } else {
-                              expC.newExpenses(amount.text, expenseTypeId, remarks.text, attachment, attachment2, attachment3);
+                              expC.newExpenses(
+                                  amount.text,
+                                  expenseTypeId,
+                                  remarks.text,
+                                  attachment,
+                                  attachment2,
+                                  attachment3);
                             }
                           },
                           child: Padding(
@@ -722,15 +753,14 @@ class _ExpensesState extends State<Expenses> {
                               ),
                             ),
                           ),
-                            color:AppUtils().blueColor,
+                          color: AppUtils().blueColor,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             side: BorderSide(
-                              color:AppUtils().blueColor,
+                              color: AppUtils().blueColor,
                             ),
                           ),
                         ),
-
                       )
                     ],
                   ),

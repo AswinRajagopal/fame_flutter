@@ -4,6 +4,7 @@ import 'package:fame/views/expense_manager.dart';
 import 'package:fame/views/my_bills.dart';
 import 'package:fame/views/request_advance_expense.dart';
 import 'package:fame/views/view_bills.dart';
+import 'package:fame/widgets/advance_list_widget.dart';
 import 'package:fame/widgets/expenses_list_widget.dart';
 import 'package:fame/widgets/rejected_expense_list_widget.dart';
 import 'package:flutter/material.dart';
@@ -23,8 +24,11 @@ class _ViewExpenseState extends State<ViewExpense> {
   var roleId;
   var expenseTypeId;
   bool _isRejectedList = false;
-  bool _firstValue = false;
-  bool _secValue = false;
+  bool _expense = false;
+  bool _advance = false;
+  String _chosenValue;
+
+  // List of items in our dropdown menu
 
   @override
   void initState() {
@@ -112,7 +116,7 @@ class _ViewExpenseState extends State<ViewExpense> {
                                           ? expC.expDet['totalExpenses']
                                                   ['expense']
                                               .toString()
-                                          : '-',
+                                          :'11801.0',
                                       style: new TextStyle(
                                           fontSize: 40.0, color: Colors.black)),
                                   Text('Expenses This Month',
@@ -138,7 +142,7 @@ class _ViewExpenseState extends State<ViewExpense> {
                                           ? expC.expDet['totalExpenses']
                                                   ['advance']
                                               .toString()
-                                          : '-',
+                                          :'1000.0',
                                       style: new TextStyle(
                                           fontSize: 40.0, color: Colors.black)),
                                   Text('Advance This Month',
@@ -288,53 +292,77 @@ class _ViewExpenseState extends State<ViewExpense> {
                         Spacer(),
                         Container(
                           child: Row(
-                            children: <Widget>[
-                              DropdownButton(
-                                items: [
-                                  DropdownMenuItem(
-                                    child: Row(
-                                        children: <Widget>[
-                                      Checkbox(
-                                        value: _isRejectedList,
-                                        onChanged: (value) {
-                                          expC.getEmpExpense('2');
-                                          setState(() {
-                                            _isRejectedList = value;
-                                          });
-                                        },
-                                      ),
-                                      Text(
-                                        'Rejected List',
-                                        style: TextStyle(fontSize: 16.0),
-                                      ),
-                                    ]),
-                                  ),
-                                  DropdownMenuItem(
-                                    child: Row(
-                                      children: <Widget>[
-                                        Checkbox(
-                                          onChanged: (bool value) {},
-                                          value: _firstValue,
-                                        ),
-                                        Text('Expenses'),
-                                      ],
+                            children: [
+                              DropdownButton<String>(
+                                focusColor: Colors.white,
+                                value: _chosenValue,
+                                elevation: 5,
+                                underline: Container(
+                                  decoration: ShapeDecoration(
+                                    shape: RoundedRectangleBorder(
+                                      side: BorderSide(width: 1.0, style: BorderStyle.solid),
+                                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
                                     ),
                                   ),
-                                  DropdownMenuItem(
-                                    child: Row(
-                                      children: <Widget>[
-                                        Checkbox(
-                                          onChanged: (bool value) {},
-                                          value: _secValue,
+                                ),
+                                style: TextStyle(color: Colors.white),
+                                iconEnabledColor: Colors.black,
+                                items: <String>[
+                                  'All',
+                                  'Rejected List',
+                                  'Approved List',
+                                  'Expenses',
+                                  'Advance',
+                                ].map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(
+                                        value,
+                                        style: TextStyle(
+                                            color: Colors.black,
                                         ),
-                                        Text('Advance'),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                                onChanged: (value) {},
-                                hint: Text('Select value'),
-                              )
+                                      ));
+                                }).toList(),
+                                hint: Text(
+                                  "All",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14,),
+                                ),
+                                onChanged: (String value) {
+                                  setState(() {
+                                    _chosenValue = value;
+                                    if (_chosenValue == 'Rejected List') {
+                                      expC.getEmpExpense('2');
+                                      _isRejectedList = true;
+                                      _advance = false;
+                                      _expense = false;
+                                    } else if (_chosenValue == 'Expenses') {
+                                      expC.getEmpExpenses();
+                                      _expense = true;
+                                      _advance = false;
+                                      _isRejectedList = false;
+                                    } else {
+                                      if (_chosenValue == 'Advance') {
+                                        expC.getExpAdv();
+                                        _advance = true;
+                                        _expense = false;
+                                        _isRejectedList = false;
+                                      }else if(_chosenValue == 'All'){
+                                        expC.getEmpExpenses();
+                                        _expense = true;
+                                        _advance = false;
+                                        _isRejectedList = false;
+                                      }else{
+                                        expC.getEmpExpense('1');
+                                        _isRejectedList = true;
+                                        _advance = false;
+                                        _expense = false;
+                                      }
+                                    }
+                                  });
+                                },
+                              ),
                             ],
                           ),
                         ),
@@ -396,52 +424,155 @@ class _ViewExpenseState extends State<ViewExpense> {
                     }),
                   ),
                 )
-              : Expanded(
-                  child: Scrollbar(
-                    radius: Radius.circular(
-                      10.0,
-                    ),
-                    thickness: 5.0,
-                    child: Obx(() {
-                      if (expC.isLoading.value) {
-                        return Column();
-                      } else {
-                        if (expC.empExpList.isEmpty || expC.empExpList.isNull) {
-                          return Container(
-                            height: MediaQuery.of(context).size.height / 1.2,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Center(
-                                  child: Text(
-                                    'No Expenses List found',
-                                    style: TextStyle(
-                                      fontSize: 18.0,
-                                      // fontWeight: FontWeight.bold,
+              : _expense
+                  ? Expanded(
+                      child: Scrollbar(
+                        radius: Radius.circular(
+                          10.0,
+                        ),
+                        thickness: 5.0,
+                        child: Obx(() {
+                          if (expC.isLoading.value) {
+                            return Column();
+                          } else {
+                            if (expC.empExpList.isEmpty ||
+                                expC.empExpList.isNull) {
+                              return Container(
+                                height:
+                                    MediaQuery.of(context).size.height / 1.2,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Center(
+                                      child: Text(
+                                        'No Expenses List found',
+                                        style: TextStyle(
+                                          fontSize: 18.0,
+                                          // fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 ),
-                              ],
+                              );
+                            }
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              primary: true,
+                              physics: ScrollPhysics(),
+                              itemCount: expC.empExpList.length,
+                              itemBuilder: (context, index) {
+                                print(expC.empExpList[index]);
+                                var expense = expC.empExpList[index];
+                                return ExpensesListWidget(expense, index,
+                                    expC.empExpList.length, expC);
+                              },
+                            );
+                          }
+                        }),
+                      ),
+                    )
+                  : _advance
+                      ? Expanded(
+                          child: Scrollbar(
+                            radius: Radius.circular(
+                              10.0,
                             ),
-                          );
-                        }
-                        return ListView.builder(
-                          shrinkWrap: true,
-                          primary: true,
-                          physics: ScrollPhysics(),
-                          itemCount: expC.empExpList.length,
-                          itemBuilder: (context, index) {
-                            print(expC.empExpList[index]);
-                            var expense = expC.empExpList[index];
-                            return ExpensesListWidget(
-                                expense, index, expC.empExpList.length, expC);
-                          },
-                        );
-                      }
-                    }),
-                  ),
-                ),
+                            thickness: 5.0,
+                            child: Obx(() {
+                              if (expC.isLoading.value) {
+                                return Column();
+                              } else {
+                                if (expC.empExpAdvanceList.isEmpty ||
+                                    expC.empExpAdvanceList.isNull) {
+                                  return Container(
+                                    height: MediaQuery.of(context).size.height /
+                                        1.2,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Center(
+                                          child: Text(
+                                            'No Advance List found',
+                                            style: TextStyle(
+                                              fontSize: 18.0,
+                                              // fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }
+                                return ListView.builder(
+                                  shrinkWrap: true,
+                                  primary: true,
+                                  physics: ScrollPhysics(),
+                                  itemCount: expC.empExpAdvanceList.length,
+                                  itemBuilder: (context, index) {
+                                    print(expC.empExpAdvanceList[index]);
+                                    var advance = expC.empExpAdvanceList[index];
+                                    return AdvanceListWidget(advance);
+                                  },
+                                );
+                              }
+                            }),
+                          ),
+                        )
+                      : Expanded(
+                          child: Scrollbar(
+                            radius: Radius.circular(
+                              10.0,
+                            ),
+                            thickness: 5.0,
+                            child: Obx(() {
+                              if (expC.isLoading.value) {
+                                return Column();
+                              } else {
+                                if (expC.empExpList.isEmpty ||
+                                    expC.empExpList.isNull) {
+                                  return Container(
+                                    height: MediaQuery.of(context).size.height /
+                                        1.2,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Center(
+                                          child: Text(
+                                            'No Expenses List found',
+                                            style: TextStyle(
+                                              fontSize: 18.0,
+                                              // fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }
+                                return ListView.builder(
+                                  shrinkWrap: true,
+                                  primary: true,
+                                  physics: ScrollPhysics(),
+                                  itemCount: expC.empExpList.length,
+                                  itemBuilder: (context, index) {
+                                    print(expC.empExpList[index]);
+                                    var expense = expC.empExpList[index];
+                                    return ExpensesListWidget(expense, index,
+                                        expC.empExpList.length, expC);
+                                  },
+                                );
+                              }
+                            }),
+                          ),
+                        ),
         ],
       ),
     );

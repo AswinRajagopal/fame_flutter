@@ -12,6 +12,8 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
+import 'edit_bills.dart';
+
 class ViewBillsDetailList extends StatefulWidget {
   var billsList;
   ViewBillsDetailList(this.billsList);
@@ -144,206 +146,213 @@ class _ViewBillsDetailListState extends State<ViewBillsDetailList> {
                 SizedBox(
                   height: 20.0,
                 ),
-                Card(
-                  elevation: 5.0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(
-                        10.0,
-                      ),
+                GestureDetector(
+                  onTap: (){
+                    Get.to(EditBills(billsList));
+                  },
+                  child: Card(
+                    elevation: 5.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0,
-                        vertical: 25.0,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(
+                          10.0,
+                        ),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          RowWidget('ExpenseBillId', billsList['expenseBillId'].toString()),
-                          SizedBox(height: 15.0),
-                          RowWidget('EmpExpenseId',
-                              billsList['empExpenseId'].toString()),
-                          SizedBox(height: 15.0),
-                          RowWidget('EmpId', billsList['empId'].toString()),
-                          SizedBox(height: 15.0),
-                          RowWidget('Amount', billsList['amount'].toString()),
-                          SizedBox(height: 15.0),
-                          RowWidget('Remarks',
-                              billsList['remarks'].toString()),
-                          SizedBox(height: 15.0),
-                          RowWidget(
-                            'Status',
-                            getStatus(billsList['status']),
-                          ),
-                          SizedBox(height: 15.0),
-                          RowWidget(
-                              'UpdatedOn', convertDate(billsList['updatedOn'])),
-                          SizedBox(height: 15.0),
-                          RowWidget(
-                              'CreatedOn', convertDate(billsList['createdOn'])),
-                          SizedBox(height: 15.0),
-                          Row(
-                            children: [
-                              expC.billAttachment.length==1?GestureDetector(
-                                onTap: () async {
-                                  var pitstop = expC.billAttachment[0];
-                                  if (pitstop!=null) {
-                                    await showDialog(
-                                        context: context,
-                                        builder: (_) => imageDialog(pitstop));
-                                  }
-                                },
-                                child: Container(
-                                  width: 100.0,
-                                  height: 150.0,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        width: 1, color: Colors.white),
-                                    borderRadius: BorderRadius.circular(10),
-                                    image: DecorationImage(
-                                        image:
-                                        NetworkImage(
-                                            expC.billAttachment[0].toString()),
-                                        fit: BoxFit.cover), //<-- SEE HERE
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0,
+                          vertical: 25.0,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            RowWidget('ExpenseBillId', billsList['expenseBillId'].toString()),
+                            SizedBox(height: 15.0),
+                            RowWidget('EmpExpenseId',
+                                billsList['empExpenseId'].toString()),
+                            SizedBox(height: 15.0),
+                            RowWidget('ExpenseTypeId', billsList['expenseTypeId'].toString()),
+                            SizedBox(height: 15.0),
+                            RowWidget('EmpId', billsList['empId'].toString()),
+                            SizedBox(height: 15.0),
+                            RowWidget('Amount', billsList['amount'].toString()),
+                            SizedBox(height: 15.0),
+                            RowWidget('Remarks',
+                                billsList['remarks'].toString()),
+                            SizedBox(height: 15.0),
+                            RowWidget(
+                              'Status',
+                              getStatus(billsList['status']),
+                            ),
+                            SizedBox(height: 15.0),
+                            RowWidget(
+                                'UpdatedOn', convertDate(billsList['updatedOn'])),
+                            SizedBox(height: 15.0),
+                            RowWidget(
+                                'CreatedOn', convertDate(billsList['createdOn'])),
+                            SizedBox(height: 15.0),
+                            Row(
+                              children: [
+                                expC.billAttachment.length==1?GestureDetector(
+                                  onTap: () async {
+                                    var pitstop = expC.billAttachment[0];
+                                    if (pitstop!=null) {
+                                      await showDialog(
+                                          context: context,
+                                          builder: (_) => imageDialog(pitstop));
+                                    }
+                                  },
+                                  child: Container(
+                                    width: 100.0,
+                                    height: 150.0,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          width: 1, color: Colors.white),
+                                      borderRadius: BorderRadius.circular(10),
+                                      image: DecorationImage(
+                                          image:
+                                          NetworkImage(
+                                              expC.billAttachment[0].toString()),
+                                          fit: BoxFit.cover), //<-- SEE HERE
+                                    ),
+                                  ),
+                                ):Container(),
+                                SizedBox(
+                                  width: 15.0,
+                                ),
+                                expC.billAttachment.length ==2?GestureDetector(
+                                  onTap: () async {
+                                    var pitstop = expC.billAttachment[1];
+                                    if (pitstop!=null) {
+                                      await showDialog(
+                                          context: context,
+                                          builder: (_) => imageDialog(pitstop));
+                                    }
+                                  },
+                                  child: Container(
+                                    width: 100.0,
+                                    height: 150.0,
+                                    decoration: BoxDecoration(
+                                      border:
+                                      Border.all(width: 1, color: Colors.white),
+                                      borderRadius: BorderRadius.circular(10),
+                                      image: DecorationImage(
+                                          image:
+                                          NetworkImage(
+                                              expC.billAttachment[1].toString()),
+                                          fit: BoxFit.cover), //<-- SEE HERE
+                                    ),
+                                  ),
+                                ):Container(),
+                                SizedBox(
+                                  width: 15.0,
+                                ),
+                                expC.billAttachment.length == 3 ? GestureDetector(
+                                  onTap: () async {
+                                    var pitstop = expC.billAttachment[2];
+                                    if (pitstop!=null) {
+                                      await showDialog(
+                                          context: context,
+                                          builder: (_) => imageDialog(pitstop));
+                                    }
+                                  },
+                                  child: Container(
+                                    width: 100.0,
+                                    height: 150.0,
+                                    decoration: BoxDecoration(
+                                      border:
+                                      Border.all(width: 1, color: Colors.white),
+                                      borderRadius: BorderRadius.circular(10),
+                                      image: DecorationImage(
+                                          image: NetworkImage(
+                                              expC.billAttachment[2].toString()),
+                                          fit: BoxFit.cover), //<-- SEE HERE
+                                    ),
+                                  ),
+                                ):Container(),
+                              ],
+                            ),
+                            roleId == AppUtils.ADMIN
+                                ? Column(
+                              children: [
+                                SizedBox(
+                                  height: 15.0,
+                                ),
+                                DottedLine(
+                                  direction: Axis.horizontal,
+                                  lineLength: double.infinity,
+                                  lineThickness: 1.0,
+                                  dashLength: 4.0,
+                                  dashColor: Colors.grey,
+                                  dashRadius: 0.0,
+                                  dashGapLength: 4.0,
+                                  dashGapColor: Colors.transparent,
+                                  dashGapRadius: 0.0,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 20.0,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.end,
+                                    children: [
+                                      RaisedButton(
+                                        onPressed: () {
+                                          // expenses['status']=getStatus(expenses['status']);
+                                        },
+                                        child: Text(
+                                          'Reject',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16.0,
+                                          ),
+                                        ),
+                                        color: Colors.red,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(5.0),
+                                          side: BorderSide(
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 30.0,
+                                      ),
+                                      RaisedButton(
+                                        onPressed: () async {
+                                        },
+                                        child: Text(
+                                          'Accept',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16.0,
+                                          ),
+                                        ),
+                                        color: AppUtils().blueColor,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(5.0),
+                                          side: BorderSide(
+                                            color: AppUtils().blueColor,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ):Container(),
-                              SizedBox(
-                                width: 15.0,
-                              ),
-                              expC.billAttachment.length ==2?GestureDetector(
-                                onTap: () async {
-                                  var pitstop = expC.billAttachment[1];
-                                  if (pitstop!=null) {
-                                    await showDialog(
-                                        context: context,
-                                        builder: (_) => imageDialog(pitstop));
-                                  }
-                                },
-                                child: Container(
-                                  width: 100.0,
-                                  height: 150.0,
-                                  decoration: BoxDecoration(
-                                    border:
-                                    Border.all(width: 1, color: Colors.white),
-                                    borderRadius: BorderRadius.circular(10),
-                                    image: DecorationImage(
-                                        image:
-                                        NetworkImage(
-                                            expC.billAttachment[1].toString()),
-                                        fit: BoxFit.cover), //<-- SEE HERE
-                                  ),
-                                ),
-                              ):Container(),
-                              SizedBox(
-                                width: 15.0,
-                              ),
-                              expC.billAttachment.length == 3 ? GestureDetector(
-                                onTap: () async {
-                                  var pitstop = expC.billAttachment[2];
-                                  if (pitstop!=null) {
-                                    await showDialog(
-                                        context: context,
-                                        builder: (_) => imageDialog(pitstop));
-                                  }
-                                },
-                                child: Container(
-                                  width: 100.0,
-                                  height: 150.0,
-                                  decoration: BoxDecoration(
-                                    border:
-                                    Border.all(width: 1, color: Colors.white),
-                                    borderRadius: BorderRadius.circular(10),
-                                    image: DecorationImage(
-                                        image: NetworkImage(
-                                            expC.billAttachment[2].toString()),
-                                        fit: BoxFit.cover), //<-- SEE HERE
-                                  ),
-                                ),
-                              ):Container(),
-                            ],
-                          ),
-                          roleId == AppUtils.ADMIN
-                              ? Column(
-                            children: [
-                              SizedBox(
-                                height: 15.0,
-                              ),
-                              DottedLine(
-                                direction: Axis.horizontal,
-                                lineLength: double.infinity,
-                                lineThickness: 1.0,
-                                dashLength: 4.0,
-                                dashColor: Colors.grey,
-                                dashRadius: 0.0,
-                                dashGapLength: 4.0,
-                                dashGapColor: Colors.transparent,
-                                dashGapRadius: 0.0,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 20.0,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.end,
-                                  children: [
-                                    RaisedButton(
-                                      onPressed: () {
-                                        // expenses['status']=getStatus(expenses['status']);
-                                      },
-                                      child: Text(
-                                        'Reject',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16.0,
-                                        ),
-                                      ),
-                                      color: Colors.red,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(5.0),
-                                        side: BorderSide(
-                                          color: Colors.red,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 30.0,
-                                    ),
-                                    RaisedButton(
-                                      onPressed: () async {
-                                      },
-                                      child: Text(
-                                        'Accept',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16.0,
-                                        ),
-                                      ),
-                                      color: AppUtils().blueColor,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(5.0),
-                                        side: BorderSide(
-                                          color: AppUtils().blueColor,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          )
-                              : Column(),
-                        ],
+                              ],
+                            )
+                                : Column(),
+                          ],
+                        ),
                       ),
                     ),
                   ),

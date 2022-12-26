@@ -15,33 +15,33 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart' as path;
 
-class MyBills extends StatefulWidget {
-  final String details;
-  MyBills({this.details});
+class EditBills extends StatefulWidget {
+  var billsList;
+  EditBills(this.billsList);
 
   @override
-  _MyBillState createState() => _MyBillState(this.details);
+  _EditBillState createState() => _EditBillState(this.billsList);
 }
 
-class _MyBillState extends State<MyBills> {
+class _EditBillState extends State<EditBills> {
   final ExpenseController expC = Get.put(ExpenseController());
   CameraController controller;
   final TextEditingController date = TextEditingController();
   final TextEditingController name = TextEditingController();
   final TextEditingController amount = TextEditingController();
-  final TextEditingController attach = TextEditingController();
-  final TextEditingController attachOne = TextEditingController();
-  final TextEditingController attachTwo = TextEditingController();
+  TextEditingController attach = TextEditingController();
+  TextEditingController attachOne = TextEditingController();
+  TextEditingController attachTwo = TextEditingController();
   final TextEditingController expense = TextEditingController();
   final TextEditingController remarks = TextEditingController();
   var empId;
   var expenseTypeId;
   File attachment, attachment2, attachment3;
   var passDate;
-  var amountInWords='';
+  var amountInWords=' ';
 
-  var details;
-  _MyBillState(this.details);
+  var billsList;
+  _EditBillState(this.billsList);
 
   @override
   void initState() {
@@ -82,6 +82,15 @@ class _MyBillState extends State<MyBills> {
       Duration(milliseconds: 100),
       expC.getExpenses,
     );
+
+    if(billsList!=null) {
+      amount.text = billsList['amount'].toString();
+      remarks.text = billsList['remarks'].toString();
+      attach.text=billsList['attachment'];
+      attachOne.text=billsList['attachment'];
+      attachTwo.text=billsList['attachment'];
+    }
+
     super.initState();
   }
 
@@ -94,7 +103,7 @@ class _MyBillState extends State<MyBills> {
         passDate.toString(),
       ),
       firstDate:
-          DateTime.now().add(Duration(days: -(attendanceDaysPermitted - 1))),
+      DateTime.now().add(Duration(days: -(attendanceDaysPermitted - 1))),
       lastDate: DateTime.now(),
     );
 
@@ -160,7 +169,7 @@ class _MyBillState extends State<MyBills> {
                         child: Row(
                           children: [
                             Text(
-                              'My Bills',
+                              'Edit Bills',
                               style: TextStyle(
                                   fontSize: 20.0, fontWeight: FontWeight.bold),
                             )
@@ -291,10 +300,10 @@ class _MyBillState extends State<MyBills> {
                                           color: Colors.grey[600],
                                           fontSize: 18.0),
                                     ),
-                                    onChanged: (val){
-                                      print('inside on changed');
-                                      getWord(amount.text);
-                                    },
+                                      onChanged: (val){
+                                        print('inside on changed');
+                                        getWord(amount.text);
+                                      },
                                   ),
                                 ),
                               ),
@@ -348,7 +357,7 @@ class _MyBillState extends State<MyBills> {
                         child: Row(
                           children: [
                             Text(
-                             amountInWords,
+                              amountInWords,
                               style: TextStyle(
                                 color: Colors.grey[600],
                                 fontSize: 18.0,
@@ -778,9 +787,10 @@ class _MyBillState extends State<MyBills> {
                                 borderRadius: 5.0,
                               );
                             } else {
-                              expC.newExpBills(
+                              expC.editExpBills(
                                   amount.text,
                                   expenseTypeId,
+                                  billsList['expenseBillId'],
                                   remarks.text,
                                   attachment,
                                   attachment2,

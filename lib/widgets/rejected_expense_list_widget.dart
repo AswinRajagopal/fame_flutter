@@ -112,11 +112,11 @@ class RejectedListWidget extends StatelessWidget {
                           height: 30.0,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            color: rejectedExp['status'] == 0
+                            color: rejectedExp['status'] == 1
                                 ? Colors.yellow[100]
                                 : Colors.red[100],
                             border: Border.all(
-                              color: rejectedExp['status'] == 0
+                              color: rejectedExp['status'] == 1
                                   ? Colors.yellow[100]
                                   : Colors.red[100], // Set border color
                             ), // Set border width
@@ -127,7 +127,7 @@ class RejectedListWidget extends StatelessWidget {
                             getStatus(rejectedExp['status']),
                             style: TextStyle(
                                 color:
-                                rejectedExp['status']==0 ? Colors.yellow : Colors.red,
+                                rejectedExp['status']==1 ? Colors.yellow : Colors.red,
                                 fontSize: 12.0,
                                 fontWeight: FontWeight.bold),
                           ),

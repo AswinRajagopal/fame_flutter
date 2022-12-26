@@ -1221,14 +1221,16 @@ class RemoteServices {
     }
   }
 
-  Future aprRejExpense(empId, empExpenseId, status) async {
+  Future aprRejExpense(adminRemarks,amount,empId, expenseEmpId, status) async {
     print(
       jsonEncode(
         <String, dynamic>{
           "companyId": box.get('companyid').toString(),
-          "empId": empId,
-          "empExpenseId": empExpenseId,
-          'rejected': status == '0' ? true : false,
+          "adminRemarks":adminRemarks.toString(),
+          "amount": amount.toString(),
+          "empId": empId.toString(),
+          "expenseEmpId": expenseEmpId.toString(),
+          "status": status,
         },
       ),
     );
@@ -1238,9 +1240,11 @@ class RemoteServices {
       body: jsonEncode(
         <String, dynamic>{
           "companyId": box.get('companyid').toString(),
-          "empId": empId,
-          "empExpenseId": empExpenseId,
-          'pending': status == '0' ? true : false,
+          "adminRemarks":adminRemarks.toString(),
+          "amount": amount.toString(),
+          "empId": empId.toString(),
+          "expenseEmpId": expenseEmpId.toString(),
+          "status": status.toString(),
         },
       ),
     );
@@ -1329,13 +1333,13 @@ class RemoteServices {
     }
   }
 
-  Future getEmpExpense(status)async{
+  Future getEmpExpense(status) async {
     var response = await client.post('$baseURL/expense/get_emp_expenses',
         headers: header,
         body: jsonEncode(<String, String>{
           'empId': box.get('empid').toString(),
           'companyId': box.get('companyid').toString(),
-          "status" : status
+          "status": status
         }));
     print(response.statusCode);
     print(response.body);
@@ -1504,10 +1508,10 @@ class RemoteServices {
     }
   }
 
-  Future newExpBills(File imageFile, amount, expenseTypeId,
-      remarks, File image1, File image2) async {
+  Future newExpBills(File imageFile, amount, expenseTypeId, remarks,
+      File image1, File image2) async {
     var dio = mydio.Dio();
-    print(imageFile.path);
+
     var formData = mydio.FormData.fromMap({
       'companyId': box.get('companyid').toString(),
       'empId': box.get('empid').toString(),
@@ -1544,6 +1548,45 @@ class RemoteServices {
     }
   }
 
+  Future editExpBills(amount, expenseTypeId, expenseBillId, remarks,
+      File imageFile, File image1, File image2) async {
+    var dio = mydio.Dio();
+    var formData = mydio.FormData.fromMap({
+      'companyId': box.get('companyid').toString(),
+      'empId': box.get('empid').toString(),
+      'amount': amount,
+      'expenseTypeId': expenseTypeId,
+      'expenseBillId': expenseBillId,
+      'remarks': remarks,
+      'attachment1': await mydio.MultipartFile.fromFile(
+        imageFile.path,
+        filename: 'image1.jpg',
+      ),
+      'attachment2': image1 != null
+          ? await mydio.MultipartFile.fromFile(
+              image1.path,
+              filename: 'image2.jpg',
+            )
+          : null,
+      'attachment3': image2 != null
+          ? await mydio.MultipartFile.fromFile(
+              image2.path,
+              filename: 'image3.jpg',
+            )
+          : null,
+    });
+    var response = await dio.post(
+      '$baseURL/expense/edit_exp_bills',
+      data: formData,
+    );
+    if (response.statusCode == 200) {
+      var jsonString = response.data;
+      return jsonString;
+    } else {
+      return null;
+    }
+  }
+
   Future newBroadcast(clientId, broadcast) async {
     var response = await client.post(
       '$baseURL/broadcast/new_broadcast',
@@ -1574,7 +1617,7 @@ class RemoteServices {
       headers: header,
       body: jsonEncode(
         <String, String>{
-          "companyId":box.get('companyid').toString(),
+          "companyId": box.get('companyid').toString(),
           'empId': box.get('empid').toString(),
         },
       ),
@@ -1589,17 +1632,15 @@ class RemoteServices {
     }
   }
 
-  Future updateExpBills()async{
+  Future updateExpBills() async {
     var response = await client.post(
       '$baseURL/expense/update_bills',
       headers: header,
-      body: jsonEncode(
-        <String, String>{
-          "companyId":"6",
-          "status" : "2",
-          "empExpenseId": "85"
-        }
-      ),
+      body: jsonEncode(<String, String>{
+        "companyId": "6",
+        "status": "2",
+        "empExpenseId": "85"
+      }),
     );
     print(response.statusCode);
     if (response.statusCode == 200) {
@@ -1612,21 +1653,32 @@ class RemoteServices {
   }
 
   Future getBillsToExpense(bills) async {
-    print( jsonEncode(
-        <String, String>{
-          "companyId":box.get('companyid').toString(),
-          "bills": bills
-        }
-    ),);
     var response = await client.post(
       '$baseURL/expense/bills_to_expense',
       headers: header,
-      body: jsonEncode(
-          <String, String>{
-            "companyId":box.get('companyid').toString(),
-            "bills": bills
-          }
-      ),
+      body: jsonEncode(<String, String>{
+        "companyId": box.get('companyid').toString(),
+        "bills": bills
+      }),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future getExpAdvBalance(empId) async {
+    var response = await client.post(
+      '$baseURL/expense/adv_exp_bal',
+      headers: header,
+      body: jsonEncode(<String, String>{
+        "companyId": box.get('companyid').toString(),
+        'empId': empId,
+      }),
     );
     print(response.statusCode);
     if (response.statusCode == 200) {

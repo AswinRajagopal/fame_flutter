@@ -36,8 +36,8 @@ class _RequestExpenseState extends State<RequestExpense> {
   var expenseTypeId;
   var passDate;
   var employeeId;
-  var amountInWords;
-
+  var amountInWords = '';
+  var empBalance;
 
   @override
   void initState() {
@@ -104,18 +104,16 @@ class _RequestExpenseState extends State<RequestExpense> {
     }
   }
 
-  Future<Null> getWord(BuildContext context) {
+  Future<Null> getWord(amount) {
     var converter = NumberToCharacterConverter('en');
-    var amtInWords = int.parse(amount.text);
+    var amtInWords = int.parse(amount);
     if (amtInWords != null) {
-      print(amtInWords);
       setState(() {
         amountInWords = converter.convertInt(amtInWords);
+        print(amountInWords);
       });
     }
-    print(converter);
   }
-
 
   @override
   void dispose() {
@@ -231,71 +229,104 @@ class _RequestExpenseState extends State<RequestExpense> {
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0,
-                          vertical: 10.0,
-                        ),
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              side: BorderSide(color: Colors.black38)),
-                          child: Container(
-                            height: 60.0,
-                            child: TypeAheadField(
-                              textFieldConfiguration: TextFieldConfiguration(
-                                controller: empName,
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  isDense: true,
-                                  contentPadding: EdgeInsets.all(10),
-                                  hintStyle: TextStyle(
-                                    color: Colors.grey[600],
-                                    fontSize: 18.0,
-                                    // fontWeight: FontWeight.bold,
+                         Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20.0,
+                            vertical: 10.0,
+                          ),
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                side: BorderSide(color: Colors.black38)),
+                            child: Container(
+                              height: 60.0,
+                              child: TypeAheadField(
+                                textFieldConfiguration: TextFieldConfiguration(
+                                  controller: empName,
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.all(10),
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontSize: 18.0,
+                                      // fontWeight: FontWeight.bold,
+                                    ),
+                                    labelText: 'Enter Employee Name',
                                   ),
-                                  labelText: 'Enter Employee Name',
                                 ),
+                                suggestionsCallback: (pattern) async {
+                                  // print(pattern);
+                                  if (pattern.isNotEmpty) {
+                                    return await RemoteServices()
+                                        .getEmployees(pattern);
+                                  } else {
+                                    employeeId = null;
+                                  }
+                                  return null;
+                                },
+                                hideOnEmpty: true,
+                                noItemsFoundBuilder: (context) {
+                                  return Text('No employee found');
+                                },
+                                itemBuilder: (context, suggestion) {
+                                  return ListTile(
+                                    title: Text(
+                                      suggestion['name'],
+                                    ),
+                                    subtitle: Text(
+                                      suggestion['empId'] +
+                                          " " +
+                                          "(" +
+                                          suggestion['clientName'] +
+                                          ")",
+                                      semanticsLabel: expC.balance!=null?
+                                      expC.balance:'',
+                                    ),
+                                  );
+                                },
+                                onSuggestionSelected: (suggestion) {
+                                  print(suggestion);
+                                  empName.text =
+                                      suggestion['name'].toString().trimRight() +
+                                          "-" +
+                                          suggestion['empId'];
+                                  empId = suggestion['empId'];
+                                  employeeId = suggestion['empId'];
+                                  expC.getExpAdvBalance(empId);
+                                },
                               ),
-                              suggestionsCallback: (pattern) async {
-                                // print(pattern);
-                                if (pattern.isNotEmpty) {
-                                  return await RemoteServices()
-                                      .getEmployees(pattern);
-                                } else {
-                                  employeeId = null;
-                                }
-                                return null;
-                              },
-                              hideOnEmpty: true,
-                              noItemsFoundBuilder: (context) {
-                                return Text('No employee found');
-                              },
-                              itemBuilder: (context, suggestion) {
-                                return ListTile(
-                                  title: Text(
-                                    suggestion['name'],
-                                  ),
-                                  subtitle: Text(
-                                    suggestion['empId'] +
-                                        " " +
-                                        "(" +
-                                        suggestion['clientName'] +
-                                        ")",
-                                  ),
-                                );
-                              },
-                              onSuggestionSelected: (suggestion) {
-                                print(suggestion);
-                                empName.text =
-                                    suggestion['name'].toString().trimRight() +
-                                        "-" +
-                                        suggestion['empId'];
-                                empId.text = suggestion['empId'];
-                                employeeId = suggestion['empId'];
-                              },
                             ),
                           ),
+                        ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 25.0, vertical: 5.0),
+                        child: Row(
+                          children: [
+                            Text(
+                              'Employee Balance Amount:',
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 25.0,
+                          vertical: 5.0,
+                        ),
+                        child: Row(
+                          children: [
+                            Text(
+                              expC.balance!=null?
+                              expC.balance:'N/A',
+                            )
+                          ],
                         ),
                       ),
                       Padding(
@@ -330,6 +361,10 @@ class _RequestExpenseState extends State<RequestExpense> {
                                           color: Colors.grey[600],
                                           fontSize: 18.0),
                                     ),
+                                    onChanged: (val) {
+                                      print('inside on changed');
+                                      getWord(amount.text);
+                                    },
                                   ),
                                 ),
                               ),
@@ -363,8 +398,8 @@ class _RequestExpenseState extends State<RequestExpense> {
                                         return sC.toString();
                                       }).toList(),
                                       onChanged: (value) {
-                                        for(var e in expC.exp){
-                                          if(e['expenseType']==value){
+                                        for (var e in expC.exp) {
+                                          if (e['expenseType'] == value) {
                                             expenseTypeId = e['expenseTypeId'];
                                             break;
                                           }
@@ -384,11 +419,16 @@ class _RequestExpenseState extends State<RequestExpense> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 25.0, vertical: 5.0),
                         child: Row(
-                          children: [Text('Amount In Words:',style: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                          ),)],
+                          children: [
+                            Text(
+                              'Amount In Words:',
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          ],
                         ),
                       ),
                       Padding(
@@ -396,13 +436,13 @@ class _RequestExpenseState extends State<RequestExpense> {
                             horizontal: 25.0, vertical: 5.0),
                         child: Row(
                           children: [
-                            Text(
-                              amount.text == null
-                                  ? amountInWords
-                                  : "Amount",
-                              style: TextStyle(
-                                color: Colors.grey[600],
-                                fontSize: 18.0,
+                            Expanded(
+                              child: Text(
+                                amountInWords,
+                                style: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 18.0,
+                                ),
                               ),
                             ),
                           ],
