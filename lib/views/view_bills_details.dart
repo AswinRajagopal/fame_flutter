@@ -39,9 +39,9 @@ class _ViewBillsDetailListState extends State<ViewBillsDetailList> {
   }
 
   String getStatus(status) {
-    if (status == 0) {
+    if (status == '0') {
       return 'Pending';
-    } else if (status == 1) {
+    } else if (status == '1') {
       return 'Approved';
     } else {
       return 'Rejected';

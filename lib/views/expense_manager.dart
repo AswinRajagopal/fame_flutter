@@ -112,7 +112,7 @@ class _ExpensesState extends State<Expenses> {
     var amtInWords = int.parse(amount);
     if (amtInWords != null) {
       setState(() {
-        amountInWords = converter.convertInt(amtInWords);
+        amountInWords = converter.convertInt(amtInWords).capitalizeFirst;
         print(amountInWords);
       });
     }
@@ -355,11 +355,13 @@ class _ExpensesState extends State<Expenses> {
                             horizontal: 25.0, vertical: 5.0),
                         child: Row(
                           children: [
-                            Text(
-                              amountInWords,
-                              style: TextStyle(
-                                color: Colors.grey[600],
-                                fontSize: 18.0,
+                            Expanded(
+                              child: Text(
+                                amountInWords != null ? amountInWords : '',
+                                style: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 18.0,
+                                ),
                               ),
                             ),
                           ],
@@ -399,165 +401,371 @@ class _ExpensesState extends State<Expenses> {
                           horizontal: 20.0,
                           vertical: 15.0,
                         ),
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              side: BorderSide(color: Colors.black38)),
-                          child: Container(
-                            height: 60,
-                            child: TextField(
-                              controller: attach,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                isDense: true,
-                                contentPadding: EdgeInsets.only(
-                                  left: 10,
-                                  top: 18,
-                                ),
-                                hintStyle: TextStyle(
-                                  color: Colors.grey[600],
-                                  fontSize: 18.0,
-                                ),
-                                hintText: 'Attachment',
-                                suffixIcon: Padding(
-                                  padding: const EdgeInsets.only(top: 10.0),
-                                  child: GestureDetector(
-                                    onTap: () async {
-                                      var pickedFile =
-                                          await ImagePicker().getImage(
-                                        source: ImageSource.camera,
-                                        imageQuality: 50,
-                                      );
-                                      if (pickedFile != null) {
-                                        attachment2 = new File(pickedFile.path);
-                                        attachOne.text =
-                                            path.basename(pickedFile.path);
-                                        setState(() {});
-                                      } else {
-                                        print('No image selected.');
-                                        setState(() {});
-                                      }
-                                    },
-                                    child: Icon(
-                                      Icons.add_circle,
-                                      color: AppUtils().blueColor,
-                                      size: 40.0,
+                        child: Row(children: [
+                          Flexible(
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  side: BorderSide(color: Colors.black38)),
+                              child: Container(
+                                width: 400,
+                                height: 60,
+                                child: TextField(
+                                  controller: attach,
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.only(
+                                      left: 10,
+                                      top: 18,
+                                    ),
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontSize: 18.0,
+                                    ),
+                                    hintText: 'Attachment',
+                                    suffixIcon: Padding(
+                                      padding: const EdgeInsets.only(top: 10.0),
                                     ),
                                   ),
+                                  readOnly: true,
+                                  keyboardType: null,
+                                  onTap: () async {
+                                    await Get.bottomSheet(
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 15.0,
+                                          vertical: 15.0,
+                                        ),
+                                        child: ListView(
+                                          shrinkWrap: true,
+                                          physics: ScrollPhysics(),
+                                          children: [
+                                            Text(
+                                              'Please choose from...',
+                                              style: TextStyle(
+                                                fontSize: 20.0,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 15.0,
+                                            ),
+                                            Row(
+                                              children: [
+                                                TextButton(
+                                                  onPressed: () async {
+                                                    Get.back();
+                                                    var pickedFile =
+                                                        await ImagePicker()
+                                                            .getImage(
+                                                      source:
+                                                          ImageSource.camera,
+                                                      imageQuality: 50,
+                                                    );
+                                                    if (pickedFile != null) {
+                                                      attachment = new File(
+                                                          pickedFile.path);
+                                                      attach.text =
+                                                          path.basename(
+                                                              pickedFile.path);
+                                                      setState(() {});
+                                                    } else {
+                                                      print(
+                                                          'No image selected.');
+                                                      setState(() {});
+                                                    }
+                                                  },
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.camera,
+                                                        size: 30.0,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 10.0,
+                                                      ),
+                                                      Text(
+                                                        'Camera',
+                                                        style: TextStyle(
+                                                          fontSize: 20.0,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .primaryColor,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Spacer(),
+                                                TextButton(
+                                                  onPressed: () async {
+                                                    Get.back();
+                                                    var pickedFile =
+                                                        await ImagePicker()
+                                                            .getImage(
+                                                      source:
+                                                          ImageSource.gallery,
+                                                      imageQuality: 50,
+                                                    );
+                                                    if (pickedFile != null) {
+                                                      attachment = new File(
+                                                          pickedFile.path);
+                                                      attach.text =
+                                                          path.basename(
+                                                              pickedFile.path);
+                                                      setState(() {});
+                                                    } else {
+                                                      print(
+                                                          'No image selected.');
+                                                      setState(() {});
+                                                    }
+                                                  },
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.image,
+                                                        size: 30.0,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 10.0,
+                                                      ),
+                                                      Text(
+                                                        'Gallery',
+                                                        style: TextStyle(
+                                                          fontSize: 20.0,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .primaryColor,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      isDismissible: true,
+                                      backgroundColor: Colors.white,
+                                    );
+                                  },
                                 ),
                               ),
-                              readOnly: true,
-                              keyboardType: null,
-                              onTap: () async {
-                                var pickedFile = await ImagePicker().getImage(
-                                  source: ImageSource.camera,
-                                  imageQuality: 50,
-                                );
-                                if (pickedFile != null) {
-                                  attachment = new File(pickedFile.path);
-                                  attach.text = path.basename(pickedFile.path);
-                                  setState(() {});
-                                } else {
-                                  print('No image selected.');
-                                  setState(() {});
-                                }
-                              },
                             ),
                           ),
-                        ),
+                          GestureDetector(
+                            onTap: () async {
+                              await Get.bottomSheet(
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 15.0,
+                                    vertical: 15.0,
+                                  ),
+                                  child: ListView(
+                                    shrinkWrap: true,
+                                    physics: ScrollPhysics(),
+                                    children: [
+                                      Text(
+                                        'Please choose from...',
+                                        style: TextStyle(
+                                          fontSize: 20.0,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 15.0,
+                                      ),
+                                      Row(
+                                        children: [
+                                          TextButton(
+                                            onPressed: () async {
+                                              Get.back();
+                                              var pickedFile =
+                                                  await ImagePicker().getImage(
+                                                source: ImageSource.camera,
+                                                imageQuality: 50,
+                                              );
+                                              if (pickedFile != null) {
+                                                attachment2 =
+                                                    new File(pickedFile.path);
+                                                attachOne.text = path
+                                                    .basename(pickedFile.path);
+                                                setState(() {});
+                                              } else {
+                                                print('No image selected.');
+                                                setState(() {});
+                                              }
+                                            },
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.camera,
+                                                  size: 30.0,
+                                                ),
+                                                SizedBox(
+                                                  width: 10.0,
+                                                ),
+                                                Text(
+                                                  'Camera',
+                                                  style: TextStyle(
+                                                    fontSize: 20.0,
+                                                    color: Theme.of(context)
+                                                        .primaryColor,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Spacer(),
+                                          TextButton(
+                                            onPressed: () async {
+                                              Get.back();
+                                              var pickedFile =
+                                                  await ImagePicker().getImage(
+                                                source: ImageSource.gallery,
+                                                imageQuality: 50,
+                                              );
+                                              if (pickedFile != null) {
+                                                attachment2 =
+                                                    new File(pickedFile.path);
+                                                attachOne.text = path
+                                                    .basename(pickedFile.path);
+                                                setState(() {});
+                                              } else {
+                                                print('No image selected.');
+                                                setState(() {});
+                                              }
+                                            },
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.image,
+                                                  size: 30.0,
+                                                ),
+                                                SizedBox(
+                                                  width: 10.0,
+                                                ),
+                                                Text(
+                                                  'Gallery',
+                                                  style: TextStyle(
+                                                    fontSize: 20.0,
+                                                    color: Theme.of(context)
+                                                        .primaryColor,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                isDismissible: true,
+                                backgroundColor: Colors.white,
+                              );
+                            },
+                            child: Icon(
+                              Icons.add_circle,
+                              color: AppUtils().blueColor,
+                              size: 40.0,
+                            ),
+                          ),
+                        ]),
                       ),
                       Row(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 25.0, vertical: 10.0),
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: 150,
-                              height: 50.0,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5.0),
-                                color: Colors.white,
-                                border: Border.all(
-                                  color: Colors.black54,
+                          attachment != null
+                              ? Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 25.0, vertical: 10.0),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    width: 150,
+                                    height: 50.0,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      color: Colors.white,
+                                      border: Border.all(
+                                        color: Colors.black54,
                                   width: 1,
                                 ),
                               ),
                               child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  attachment == null
-                                      ? "No Attachment"
-                                      : attach.text,
-                                  style: TextStyle(
-                                      fontSize: 15.0,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10.0),
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: 150,
-                              height: 50.0,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5.0),
-                                color: Colors.white,
-                                border: Border.all(
-                                  color: Colors.black54,
-                                  width: 1,
-                                ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  attachment2 == null
-                                      ? "No Attachment"
-                                      : attachOne.text,
-                                  style: TextStyle(
-                                      fontSize: 15.0,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 25.0, vertical: 10.0),
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: 150,
-                              height: 50.0,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5.0),
-                                color: Colors.white,
-                                border: Border.all(
-                                  color: Colors.black54,
-                                  width: 1,
-                                ),
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        attach.text,
+                                        style: TextStyle(
+                                            fontSize: 15.0,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Column(),
+                          attachment2 != null
+                              ? Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10.0),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    width: 150,
+                                    height: 50.0,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      color: Colors.white,
+                                      border: Border.all(
+                                        color: Colors.black54,
+                                        width: 1,
+                                      ),
                               ),
                               child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  attachment3 == null
-                                      ? "No Attachment"
-                                      : attachTwo.text,
-                                  style: TextStyle(
-                                      fontSize: 15.0,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                          )
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        attachOne.text,
+                                        style: TextStyle(
+                                            fontSize: 15.0,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Column(),
+                          attachment3 != null
+                              ? Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10.0),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    width: 150,
+                                    height: 50.0,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      color: Colors.white,
+                                      border: Border.all(
+                                        color: Colors.black54,
+                                        width: 1,
+                                      ),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        attachTwo.text,
+                                        style: TextStyle(
+                                            fontSize: 15.0,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Column(),
                         ],
                       ),
 

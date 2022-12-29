@@ -109,7 +109,7 @@ class _RequestExpenseState extends State<RequestExpense> {
     var amtInWords = int.parse(amount);
     if (amtInWords != null) {
       setState(() {
-        amountInWords = converter.convertInt(amtInWords);
+        amountInWords = converter.convertInt(amtInWords).capitalizeFirst;
         print(amountInWords);
       });
     }

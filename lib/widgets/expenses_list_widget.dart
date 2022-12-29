@@ -107,31 +107,73 @@ class ExpensesListWidget extends StatelessWidget {
                     ),
                     Column(
                       children: [
-                        Container(
-                          width: 70.0,
-                          height: 30.0,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: expenses['status'] == 0
-                                ? Colors.blue[100]
-                                : Colors.yellow[100],
-                            border: Border.all(
-                              color: expenses['status'] == 0
-                                  ? Colors.blue[100]
-                                  : Colors.yellow[100], // Set border color
-                            ), // Set border width
-                            borderRadius: BorderRadius.all(Radius.circular(
-                                2.0)), // Set rounded corner radius
-                          ),
-                          child: Text(
-                            getStatus(expenses['status']),
-                            style: TextStyle(
-                                color:
-                                    expenses['status']==0 ? Colors.blue : Colors.yellow,
-                                fontSize: 12.0,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        )
+                        expenses['status'] == 0
+                            ? Container(
+                                width: 70.0,
+                                height: 30.0,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: Colors.blue[100],
+                                  border: Border.all(
+                                    color: Colors.blue[100], // Set border color
+                                  ), // Set border width
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(
+                                          2.0)), // Set rounded corner radius
+                                ),
+                                child: Text(
+                                  getStatus(expenses['status']),
+                                  style: TextStyle(
+                                      color: Colors.blue,
+                                      fontSize: 12.0,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              )
+                            : expenses['status'] == 1
+                                ? Container(
+                                    width: 70.0,
+                                    height: 30.0,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: Colors.yellow[100],
+                                      border: Border.all(
+                                        color: Colors
+                                            .yellow[100], // Set border color
+                                      ), // Set border width
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(
+                                              2.0)), // Set rounded corner radius
+                                    ),
+                                    child: Text(
+                                      getStatus(expenses['status']),
+                                      style: TextStyle(
+                                          color: Colors.yellow,
+                                          fontSize: 12.0,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  )
+                                : Container(
+                                    width: 70.0,
+                                    height: 30.0,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: Colors.red[100],
+                                      border: Border.all(
+                                        color:
+                                            Colors.red[100], // Set border color
+                                      ), // Set border width
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(
+                                              2.0)), // Set rounded corner radius
+                                    ),
+                                    child: Text(
+                                      getStatus(expenses['status']),
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontSize: 12.0,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
                       ],
                     ),
                     SizedBox(width: 30.0),
