@@ -111,6 +111,7 @@ dependencies:
   month_picker_dialog:
   flutter_downloader: ^1.5.2
   gallery_saver: ^2.0.3
+  firebase_auth: any
 # flutter_icons:
 #   image_path: "assets/images/icon.png"
 #   android: true

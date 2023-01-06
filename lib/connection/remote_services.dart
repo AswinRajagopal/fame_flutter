@@ -12,8 +12,10 @@ import 'package:connectivity/connectivity.dart';
 // import 'package:background_locator/settings/locator_settings.dart';
 import 'package:dio/dio.dart' as mydio;
 import 'package:dio/dio.dart';
+import 'package:fame/utils/utils.dart';
 // import 'package:fame/connection/location_service_repository.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -87,6 +89,66 @@ class RemoteServices {
     return pushCode;
   }
 
+  Future<bool> checkInternet() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+
+    if (connectivityResult == ConnectivityResult.mobile) {
+      return true;
+    } else if (connectivityResult == ConnectivityResult.wifi) {
+      return true;
+    } else if (connectivityResult == ConnectivityResult.none) {
+      Get.snackbar(
+        AppUtils.snackbarTitle,
+        'Please connect to working internet connection',
+        colorText: AppUtils.snackbarTextColor,
+        backgroundColor: AppUtils.snackbarbackgroundColor,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+        padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+        borderRadius: 5.0,
+      );
+      return false;
+    }
+    return false;
+  }
+
+  void showResponseCodeMsg({errorCode}) {
+    if (errorCode != null && errorCode == 500) {
+      Get.snackbar(
+        AppUtils.snackbarTitle,
+        'Internal Server Error',
+        colorText: AppUtils.snackbarTextColor,
+        backgroundColor: AppUtils.snackbarbackgroundColor,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+        padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+        borderRadius: 5.0,
+      );
+    } else if (errorCode != null && errorCode == 404) {
+      Get.snackbar(
+        AppUtils.snackbarTitle,
+        'Services Not Found',
+        colorText: AppUtils.snackbarTextColor,
+        backgroundColor: AppUtils.snackbarbackgroundColor,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+        padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+        borderRadius: 5.0,
+      );
+    } else {
+      Get.snackbar(
+        AppUtils.snackbarTitle,
+        AppUtils.snackbarErrorMessage,
+        colorText: AppUtils.snackbarTextColor,
+        backgroundColor: AppUtils.snackbarbackgroundColor,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+        padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+        borderRadius: 5.0,
+      );
+    }
+  }
+
   void logout() async {
     await _fbm.deleteInstanceID();
     developer.log('logout');
@@ -110,6 +172,55 @@ class RemoteServices {
     }
     // ignore: unawaited_futures
     Get.offAll(WelcomePage());
+  }
+
+  Future validateMobile(mobile) async {
+    if (await checkInternet()) {
+      var request = http.MultipartRequest(
+        'POST',
+        Uri.parse('$baseURL/user/verify_phone'),
+      );
+      request.fields.addAll({
+        'phoneNumber': mobile.toString(),
+      });
+
+      var response = await request.send();
+      await RemoteServices().loginUsingPhoneNo(mobile);
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        var jsonString = await response.stream.bytesToString();
+        return json.decode(jsonString);
+      } else if (response.statusCode == 500) {
+        print('validateMobile');
+        showResponseCodeMsg(errorCode: 500);
+        return null;
+      } else {
+        //show error message
+        showResponseCodeMsg(errorCode: response.statusCode);
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
+
+  Future<Login> loginUsingPhoneNo(phoneNo) async {
+    var pushCode = await setFirebaseNotification();
+    var response = await client.post(
+      '$baseURL/user/login',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{"phoneNumber": phoneNo.toString()},
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return loginFromJson(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
   }
 
   Future<Login> login(username, empid, password) async {
