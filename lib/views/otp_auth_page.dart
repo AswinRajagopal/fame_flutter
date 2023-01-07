@@ -1,6 +1,7 @@
 import 'package:fame/controllers/otp_login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 import '../utils/utils.dart';
 import '../widgets/custom_vertical_divider.dart';
@@ -18,8 +19,37 @@ class _OtpAuthState extends State<OtpAuth> {
 
   @override
   void initState() {
-    super.initState();
     prefix.text = '+91';
+    olC.pr = ProgressDialog(
+      context,
+      type: ProgressDialogType.Normal,
+      isDismissible: false,
+      showLogs: false,
+      customBody: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20.0,
+          vertical: 15.0,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(
+              width: 20.0,
+            ),
+            Text(
+              'Processing please wait...',
+              style: TextStyle(
+                fontSize: 18.0,
+                color: Colors.black,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+    super.initState();
+
   }
 
   @override
@@ -281,7 +311,7 @@ class _OtpAuthState extends State<OtpAuth> {
                             borderRadius: 5.0,
                           );
                         } else {
-                          olC.validateMobile(mobile.text);
+                          olC.verifyPhone(prefix.text+mobile.text);
                         }
                       },
                     ),
