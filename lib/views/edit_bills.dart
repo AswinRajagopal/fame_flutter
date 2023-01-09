@@ -4,44 +4,46 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:fame/controllers/expense_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:number_to_character/number_to_character.dart';
-import '../connection/remote_services.dart';
-import 'package:progress_dialog/progress_dialog.dart';
-import '../utils/utils.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:path/path.dart' as path;
+import 'package:progress_dialog/progress_dialog.dart';
 
-class Expenses extends StatefulWidget {
-  final String details;
-  Expenses({this.details});
+import '../connection/remote_services.dart';
+import '../utils/utils.dart';
+
+class EditBills extends StatefulWidget {
+  var billsList;
+
+  EditBills(this.billsList);
 
   @override
-  _ExpensesState createState() => _ExpensesState(this.details);
+  _EditBillState createState() => _EditBillState(this.billsList);
 }
 
-class _ExpensesState extends State<Expenses> {
+class _EditBillState extends State<EditBills> {
   final ExpenseController expC = Get.put(ExpenseController());
   CameraController controller;
   final TextEditingController date = TextEditingController();
   final TextEditingController name = TextEditingController();
   final TextEditingController amount = TextEditingController();
-  final TextEditingController attach = TextEditingController();
-  final TextEditingController attachOne = TextEditingController();
-  final TextEditingController attachTwo = TextEditingController();
+  TextEditingController attach = TextEditingController();
+  TextEditingController attachOne = TextEditingController();
+  TextEditingController attachTwo = TextEditingController();
   final TextEditingController expense = TextEditingController();
   final TextEditingController remarks = TextEditingController();
   var empId;
   var expenseTypeId;
   File attachment, attachment2, attachment3;
   var passDate;
-  var amountInWords = '';
+  var amountInWords=' ';
 
-  var details;
-  _ExpensesState(this.details);
+  var billsList;
+  _EditBillState(this.billsList);
 
   @override
   void initState() {
@@ -82,6 +84,15 @@ class _ExpensesState extends State<Expenses> {
       Duration(milliseconds: 100),
       expC.getExpenses,
     );
+
+    if(billsList!=null) {
+      amount.text = billsList['amount'].toString();
+      remarks.text = billsList['remarks'].toString();
+      attach.text=billsList['attachment'];
+      attachOne.text=billsList['attachment'];
+      attachTwo.text=billsList['attachment'];
+    }
+
     super.initState();
   }
 
@@ -94,7 +105,7 @@ class _ExpensesState extends State<Expenses> {
         passDate.toString(),
       ),
       firstDate:
-          DateTime.now().add(Duration(days: -(attendanceDaysPermitted - 1))),
+      DateTime.now().add(Duration(days: -(attendanceDaysPermitted - 1))),
       lastDate: DateTime.now(),
     );
 
@@ -112,7 +123,7 @@ class _ExpensesState extends State<Expenses> {
     var amtInWords = int.parse(amount);
     if (amtInWords != null) {
       setState(() {
-        amountInWords = converter.convertInt(amtInWords).capitalizeFirst;
+        amountInWords = converter.convertInt(amtInWords);
         print(amountInWords);
       });
     }
@@ -160,7 +171,7 @@ class _ExpensesState extends State<Expenses> {
                         child: Row(
                           children: [
                             Text(
-                              'Add Expense',
+                              'Edit Bills',
                               style: TextStyle(
                                   fontSize: 20.0, fontWeight: FontWeight.bold),
                             )
@@ -291,10 +302,10 @@ class _ExpensesState extends State<Expenses> {
                                           color: Colors.grey[600],
                                           fontSize: 18.0),
                                     ),
-                                    onChanged: (val) {
-                                      print('inside on changed');
-                                      getWord(amount.text);
-                                    },
+                                      onChanged: (val){
+                                        print('inside on changed');
+                                        getWord(amount.text);
+                                      },
                                   ),
                                 ),
                               ),
@@ -331,23 +342,15 @@ class _ExpensesState extends State<Expenses> {
                           ],
                         ),
                       ),
-                      SizedBox(
-                        height: 10.0,
-                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 25.0, vertical: 5.0),
                         child: Row(
-                          children: [
-                            Text(
-                              'Amount In Words:',
-                              style: TextStyle(
-                                color: Colors.grey[600],
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            )
-                          ],
+                          children: [Text('Amount In Words:',style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                          ),)],
                         ),
                       ),
                       Padding(
@@ -355,13 +358,11 @@ class _ExpensesState extends State<Expenses> {
                             horizontal: 25.0, vertical: 5.0),
                         child: Row(
                           children: [
-                            Expanded(
-                              child: Text(
-                                amountInWords != null ? amountInWords : '',
-                                style: TextStyle(
-                                  color: Colors.grey[600],
-                                  fontSize: 18.0,
-                                ),
+                            Text(
+                              amountInWords,
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 18.0,
                               ),
                             ),
                           ],
@@ -396,6 +397,7 @@ class _ExpensesState extends State<Expenses> {
                           ),
                         ),
                       ),
+
                       Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 20.0,
@@ -674,7 +676,7 @@ class _ExpensesState extends State<Expenses> {
                               color: AppUtils().blueColor,
                               size: 40.0,
                             ),
-                          ),
+                          )
                         ]),
                       ),
                       Row(
@@ -692,10 +694,10 @@ class _ExpensesState extends State<Expenses> {
                                       color: Colors.white,
                                       border: Border.all(
                                         color: Colors.black54,
-                                  width: 1,
-                                ),
-                              ),
-                              child: Padding(
+                                        width: 1,
+                                      ),
+                                    ),
+                                    child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
                                         attach.text,
@@ -723,8 +725,8 @@ class _ExpensesState extends State<Expenses> {
                                         color: Colors.black54,
                                         width: 1,
                                       ),
-                              ),
-                              child: Padding(
+                                    ),
+                                    child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
                                         attachOne.text,
@@ -781,6 +783,59 @@ class _ExpensesState extends State<Expenses> {
                       //     child: Container(
                       //       height: 60,
                       //       child: TextField(
+                      //         controller: attach,
+                      //         decoration: InputDecoration(
+                      //           border: InputBorder.none,
+                      //           isDense: true,
+                      //           contentPadding: EdgeInsets.only(
+                      //             left: 10,
+                      //             top: 18,
+                      //           ),
+                      //           hintStyle: TextStyle(
+                      //             color: Colors.grey[600],
+                      //             fontSize: 18.0,
+                      //           ),
+                      //           hintText: 'Attachment',
+                      //           suffixIcon: Padding(
+                      //             padding: const EdgeInsets.all(8.0),
+                      //             child: Image.asset(
+                      //               'assets/images/uplode_proof.png',
+                      //               scale: 2.2,
+                      //             ),
+                      //           ),
+                      //         ),
+                      //         readOnly: true,
+                      //         keyboardType: null,
+                      //         onTap: () async {
+                      //           var pickedFile = await ImagePicker().getImage(
+                      //             source: ImageSource.camera,
+                      //             imageQuality: 50,
+                      //           );
+                      //           if (pickedFile != null) {
+                      //             attachment = new File(pickedFile.path);
+                      //             attach.text = path.basename(pickedFile.path);
+                      //             setState(() {});
+                      //           } else {
+                      //             print('No image selected.');
+                      //             setState(() {});
+                      //           }
+                      //         },
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                      // Padding(
+                      //   padding: const EdgeInsets.symmetric(
+                      //     horizontal: 20.0,
+                      //     vertical: 15.0,
+                      //   ),
+                      //   child: Card(
+                      //     shape: RoundedRectangleBorder(
+                      //         borderRadius: BorderRadius.circular(5.0),
+                      //         side: BorderSide(color: Colors.black38)),
+                      //     child: Container(
+                      //       height: 60,
+                      //       child: TextField(
                       //         controller: attachOne,
                       //         decoration: InputDecoration(
                       //           border: InputBorder.none,
@@ -810,8 +865,9 @@ class _ExpensesState extends State<Expenses> {
                       //             imageQuality: 50,
                       //           );
                       //           if (pickedFile != null) {
-                      //             attachment2 =  new File(pickedFile.path);
-                      //             attachOne.text = path.basename(pickedFile.path);
+                      //             attachment2 = new File(pickedFile.path);
+                      //             attachOne.text =
+                      //                 path.basename(pickedFile.path);
                       //             setState(() {});
                       //           } else {
                       //             print('No image selected.');
@@ -863,8 +919,9 @@ class _ExpensesState extends State<Expenses> {
                       //             imageQuality: 50,
                       //           );
                       //           if (pickedFile != null) {
-                      //             attachment3 =  new File(pickedFile.path);
-                      //             attachTwo.text = path.basename(pickedFile.path);
+                      //             attachment3 = new File(pickedFile.path);
+                      //             attachTwo.text =
+                      //                 path.basename(pickedFile.path);
                       //             setState(() {});
                       //           } else {
                       //             print('No image selected.');
@@ -938,9 +995,10 @@ class _ExpensesState extends State<Expenses> {
                                 borderRadius: 5.0,
                               );
                             } else {
-                              expC.newExpenses(
+                              expC.editExpBills(
                                   amount.text,
                                   expenseTypeId,
+                                  billsList['expenseBillId'],
                                   remarks.text,
                                   attachment,
                                   attachment2,
@@ -953,7 +1011,7 @@ class _ExpensesState extends State<Expenses> {
                               horizontal: 40.0,
                             ),
                             child: Text(
-                              'Submit',
+                              'Save',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,

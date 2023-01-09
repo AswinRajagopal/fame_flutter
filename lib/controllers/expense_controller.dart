@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:fame/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -10,11 +11,17 @@ class ExpenseController extends GetxController {
   var isLoading = true.obs;
   var res;
   var expDet;
+  var selectedBills = [].obs;
   ProgressDialog pr;
   List exp = [].obs;
   List purpose = [].obs;
   List empExpList = [].obs;
+  List rejectedList = [].obs;
   List attachment = [].obs;
+  List billAttachment = [].obs;
+  List expenseBillsList = [].obs;
+  List empExpAdvanceList = [].obs;
+  var balance;
 
   @override
   void onInit() {
@@ -92,6 +99,7 @@ class ExpenseController extends GetxController {
       );
     }
   }
+
   void getNewEmpAdv(amount) async {
     try {
       await pr.show();
@@ -163,33 +171,24 @@ class ExpenseController extends GetxController {
 
   void getExpAdv() async {
     try {
+      isLoading(true);
       await pr.show();
-      var ExpAdv = await RemoteServices().getExpAdv();
-      if (ExpAdv != null) {
+      res = await RemoteServices().getExpAdv();
+      if (res != null) {
+        isLoading(false);
         await pr.hide();
-        print('newExpAdv: $ExpAdv');
-        if (ExpAdv['success']) {
-          Get.snackbar(
-            null,
-            'Advance Updated Successfully',
-            colorText: Colors.white,
-            backgroundColor: AppUtils().greenColor,
-            snackPosition: SnackPosition.BOTTOM,
-            margin: EdgeInsets.symmetric(
-              horizontal: 8.0,
-              vertical: 10.0,
-            ),
-            padding: EdgeInsets.symmetric(
-              horizontal: 12.0,
-              vertical: 18.0,
-            ),
-            borderRadius: 5.0,
-          );
-          Timer(Duration(seconds: 2), Get.back);
+        if (res['success']) {
+          print('expAdvancec valid: $res');
+          if (res['empExpAdvanceList'] != null) {
+            for (var i = 0; i < res['empExpAdvanceList'].length; i++) {
+              empExpAdvanceList.add(res['empExpAdvanceList'][i]);
+            }
+            print("empExpAdvanceList:$empExpAdvanceList");
+          }
         } else {
           Get.snackbar(
             null,
-            'Advance request not updated',
+            'Something went wrong! Please try again later',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,
@@ -207,6 +206,7 @@ class ExpenseController extends GetxController {
       }
     } catch (e) {
       print(e);
+      isLoading(false);
       await pr.hide();
       Get.snackbar(
         null,
@@ -283,10 +283,12 @@ class ExpenseController extends GetxController {
       );
     }
   }
-  void aprRejExpense(status) async {
+
+  void aprRejExpense(adminRemarks,amount,empId, empExpenseId, status) async {
     try {
       await pr.show();
-      var appRejRes = await RemoteServices().aprRejExpense(status);
+      var appRejRes =
+          await RemoteServices().aprRejExpense(adminRemarks,amount,empId, empExpenseId, status);
       if (appRejRes != null) {
         await pr.hide();
         print('appRejRes: $appRejRes');
@@ -306,10 +308,8 @@ class ExpenseController extends GetxController {
               vertical: 18.0,
             ),
             borderRadius: 5.0,
-            duration: Duration(
-              seconds: 2,
-            ),
           );
+          Timer(Duration(seconds: 1), Get.back);
           // getEmpExpenses();
         } else {
           Get.snackbar(
@@ -354,6 +354,7 @@ class ExpenseController extends GetxController {
 
   void getEmpExpenses() async {
     try {
+      empExpList = [];
       isLoading(true);
       await pr.show();
       res = await RemoteServices().getEmpExpenses();
@@ -411,19 +412,78 @@ class ExpenseController extends GetxController {
     }
   }
 
-  void getExpAttachments() async {
+  void getEmpExpense(status) async {
+    try {
+      rejectedList = [];
+      isLoading(true);
+      await pr.show();
+      res = await RemoteServices().getEmpExpense(status);
+      if (res != null) {
+        isLoading(false);
+        await pr.hide();
+        if (res['success']) {
+          expDet = res;
+          print('rejApr valid: $res');
+          if (res['rejectedList'] != null) {
+            for (var i = 0; i < res['rejectedList'].length; i++) {
+              rejectedList.add(res['rejectedList'][i]);
+            }
+          }
+        } else {
+          Get.snackbar(
+            null,
+            'Something went wrong! Please try again later',
+            colorText: Colors.white,
+            backgroundColor: Colors.black87,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
+          );
+        }
+      }
+    } catch (e) {
+      print(e);
+      isLoading(false);
+      await pr.hide();
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
+      );
+    }
+  }
+
+  void getExpAttachments(expenseEmpId) async {
     try {
       isLoading(true);
       await pr.show();
-      res = await RemoteServices().getExpAttachments();
+      res = await RemoteServices().getExpAttachments(expenseEmpId);
       if (res != null) {
         isLoading(false);
         await pr.hide();
         if (res['success']) {
           print('expattach valid: $res');
-          if (res['attachments'] != null) {
-            for (var i = 0; i < res['attachments'].length; i++) {
-              attachment.add(res['attachments'][i]);
+          if (res['expAttachments'] != null) {
+            for (var i = 0; i < res['expAttachments'].length; i++) {
+              attachment.add(res['expAttachments'][i]);
             }
             print("expattach:$attachment");
           }
@@ -444,6 +504,396 @@ class ExpenseController extends GetxController {
             ),
             borderRadius: 5.0,
           );
+        }
+      }
+    } catch (e) {
+      print(e);
+      isLoading(false);
+      await pr.hide();
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
+      );
+    }
+  }
+
+  void getBillAttachments(expenseBillId) async {
+    try {
+      isLoading(true);
+      await pr.show();
+      res = await RemoteServices().getBillAttachments(expenseBillId);
+      if (res != null) {
+        isLoading(false);
+        await pr.hide();
+        if (res['success']) {
+          print('billAttach valid: $res');
+          if (res['expenseBillUrl'] != null) {
+            for (var i = 0; i < res['expenseBillUrl'].length; i++) {
+              billAttachment.add(res['expenseBillUrl'][i]);
+            }
+            // print("billAttach:$billAttachment");
+          }
+        } else {
+          Get.snackbar(
+            null,
+            'Something went wrong! Please try again later',
+            colorText: Colors.white,
+            backgroundColor: Colors.black87,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
+          );
+        }
+      }
+    } catch (e) {
+      print(e);
+      isLoading(false);
+      await pr.hide();
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
+      );
+    }
+  }
+
+  void newExpBills(
+      amount, expenseTypeId, remarks, imageFile, imageFile2, imageFile3) async {
+    try {
+      await pr.show();
+      var expenseBillRes = await RemoteServices().newExpBills(imageFile,
+           amount, expenseTypeId, remarks,imageFile2, imageFile3);
+      if (expenseBillRes != null) {
+        await pr.hide();
+        print('ExpenseRes valid: ${expenseBillRes['success']}');
+        if (expenseBillRes['success']) {
+          Get.snackbar(
+            null,
+            'Bills sent successfully',
+            colorText: Colors.white,
+            backgroundColor: AppUtils().greenColor,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
+            duration: Duration(
+              seconds: 2,
+            ),
+          );
+          Timer(Duration(seconds: 2), Get.back);
+        } else {
+          Get.snackbar(
+            null,
+            'Bills send failed',
+            colorText: Colors.white,
+            backgroundColor: Colors.black87,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
+          );
+        }
+      }
+    } catch (e) {
+      print(e);
+      await pr.hide();
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
+      );
+    }
+  }
+
+  void editExpBills(amount, expenseTypeId, expenseBillId, remarks, imageFile,
+      imageFile2, imageFile3) async {
+    try {
+      await pr.show();
+      var editBillRes = await RemoteServices().editExpBills(
+          amount,
+          expenseTypeId,
+          expenseBillId,
+          remarks,
+          imageFile,
+          imageFile2,
+          imageFile3);
+      if (editBillRes != null) {
+        await pr.hide();
+        print('ExpenseRes valid: ${editBillRes['success']}');
+        if (editBillRes['success']) {
+          Get.snackbar(
+            null,
+            'Bills updated successfully',
+            colorText: Colors.white,
+            backgroundColor: AppUtils().greenColor,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
+            duration: Duration(
+              seconds: 2,
+            ),
+          );
+          Timer(Duration(seconds: 2), Get.back);
+        } else {
+          Get.snackbar(
+            null,
+            'Bills update failed',
+            colorText: Colors.white,
+            backgroundColor: Colors.black87,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
+          );
+        }
+      }
+    } catch (e) {
+      print(e);
+      await pr.hide();
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
+      );
+    }
+  }
+
+  void getBillsByStatus() async {
+    try {
+      isLoading(true);
+      await pr.show();
+      res = await RemoteServices().getBillsByStatus();
+      if (res != null) {
+        isLoading(false);
+        await pr.hide();
+        if (res['success']) {
+          print('expBills valid: $res');
+          if (res['expenseBills'] != null) {
+            for (var i = 0; i < res['expenseBills'].length; i++) {
+              expenseBillsList.add(res['expenseBills'][i]);
+            }
+            print("expBills:$expenseBillsList");
+          }
+        } else {
+          Get.snackbar(
+            null,
+            'Something went wrong! Please try again later',
+            colorText: Colors.white,
+            backgroundColor: Colors.black87,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
+          );
+        }
+      }
+    } catch (e) {
+      print(e);
+      isLoading(false);
+      await pr.hide();
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
+      );
+    }
+  }
+
+  void getBillsToExpense() async {
+    try {
+      await pr.show();
+      String bills = selectedBills.join(',');
+      var billsToExpRes = await RemoteServices().getBillsToExpense(bills);
+      if (billsToExpRes != null) {
+        await pr.hide();
+        print('billsToExpRes valid: ${billsToExpRes['success']}');
+        if (billsToExpRes['success']) {
+          Get.snackbar(
+            null,
+            'Bills sent successfully',
+            colorText: Colors.white,
+            backgroundColor: AppUtils().greenColor,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
+            duration: Duration(
+              seconds: 2,
+            ),
+          );
+          Timer(Duration(seconds: 2), Get.back);
+        } else {
+          Get.snackbar(
+            null,
+            'Bills send failed',
+            colorText: Colors.white,
+            backgroundColor: Colors.black87,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
+          );
+        }
+      }
+    } catch (e) {
+      print(e);
+      await pr.hide();
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
+      );
+    }
+  }
+
+  void getExpAdvBalance(empId)async{
+    try {
+      isLoading(true);
+      await pr.show();
+      res = await RemoteServices().getExpAdvBalance(empId);
+      if (res != null) {
+        isLoading(false);
+        await pr.hide();
+        if (res['success']) {
+          print('empBalance valid: $res');
+          if (res['empBalance'] != null) {
+              balance = res['empBalance'];
+              balance!=null?balance:"N/A";
+          }
+        } else {
+          // Get.snackbar(
+          //   null,
+          //   'Something went wrong! Please try again later',
+          //   colorText: Colors.white,
+          //   backgroundColor: Colors.black87,
+          //   snackPosition: SnackPosition.BOTTOM,
+          //   margin: EdgeInsets.symmetric(
+          //     horizontal: 8.0,
+          //     vertical: 10.0,
+          //   ),
+          //   padding: EdgeInsets.symmetric(
+          //     horizontal: 12.0,
+          //     vertical: 18.0,
+          //   ),
+          //   borderRadius: 5.0,
+          // );
         }
       }
     } catch (e) {

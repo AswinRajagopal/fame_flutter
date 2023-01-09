@@ -5,6 +5,7 @@ import '../controllers/login_controller.dart';
 
 import 'forgot_password_page.dart';
 
+import 'otp_auth_page.dart';
 import 'signup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
@@ -384,6 +385,33 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.black),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50.0),
+                              side: BorderSide(color: AppUtils().blueColor)))),
+                  onPressed: () {
+                    Get.to(OtpAuth());
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Text(
+                      'OTP Authentication',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 15.0,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),

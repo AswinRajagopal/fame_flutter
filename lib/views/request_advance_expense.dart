@@ -8,6 +8,7 @@ import 'package:fame/views/view_expenses.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:intl/intl.dart';
+import 'package:number_to_character/number_to_character.dart';
 import '../connection/remote_services.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import '../utils/utils.dart';
@@ -35,6 +36,8 @@ class _RequestExpenseState extends State<RequestExpense> {
   var expenseTypeId;
   var passDate;
   var employeeId;
+  var amountInWords = '';
+  var empBalance;
 
   @override
   void initState() {
@@ -97,6 +100,17 @@ class _RequestExpenseState extends State<RequestExpense> {
       setState(() {
         date.text = DateFormat('dd-MM-yyyy').format(picked).toString();
         passDate = DateFormat('yyyy-MM-dd').format(picked).toString();
+      });
+    }
+  }
+
+  Future<Null> getWord(amount) {
+    var converter = NumberToCharacterConverter('en');
+    var amtInWords = int.parse(amount);
+    if (amtInWords != null) {
+      setState(() {
+        amountInWords = converter.convertInt(amtInWords).capitalizeFirst;
+        print(amountInWords);
       });
     }
   }
@@ -199,7 +213,10 @@ class _RequestExpenseState extends State<RequestExpense> {
                                     child: Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        expC.empExpList[0]['empId'].toString(),
+                                        RemoteServices()
+                                            .box
+                                            .get('empid')
+                                            .toString(),
                                         style: TextStyle(
                                             fontSize: 18.0,
                                             color: Colors.black54),
@@ -212,71 +229,104 @@ class _RequestExpenseState extends State<RequestExpense> {
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0,
-                          vertical: 10.0,
-                        ),
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              side: BorderSide(color: Colors.black38)),
-                          child: Container(
-                            height: 60.0,
-                            child: TypeAheadField(
-                              textFieldConfiguration: TextFieldConfiguration(
-                                controller: empName,
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  isDense: true,
-                                  contentPadding: EdgeInsets.all(10),
-                                  hintStyle: TextStyle(
-                                    color: Colors.grey[600],
-                                    fontSize: 18.0,
-                                    // fontWeight: FontWeight.bold,
+                         Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20.0,
+                            vertical: 10.0,
+                          ),
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                side: BorderSide(color: Colors.black38)),
+                            child: Container(
+                              height: 60.0,
+                              child: TypeAheadField(
+                                textFieldConfiguration: TextFieldConfiguration(
+                                  controller: empName,
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.all(10),
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontSize: 18.0,
+                                      // fontWeight: FontWeight.bold,
+                                    ),
+                                    labelText: 'Enter Employee Name',
                                   ),
-                                  labelText: 'Enter Employee Name',
                                 ),
+                                suggestionsCallback: (pattern) async {
+                                  // print(pattern);
+                                  if (pattern.isNotEmpty) {
+                                    return await RemoteServices()
+                                        .getEmployees(pattern);
+                                  } else {
+                                    employeeId = null;
+                                  }
+                                  return null;
+                                },
+                                hideOnEmpty: true,
+                                noItemsFoundBuilder: (context) {
+                                  return Text('No employee found');
+                                },
+                                itemBuilder: (context, suggestion) {
+                                  return ListTile(
+                                    title: Text(
+                                      suggestion['name'],
+                                    ),
+                                    subtitle: Text(
+                                      suggestion['empId'] +
+                                          " " +
+                                          "(" +
+                                          suggestion['clientName'] +
+                                          ")",
+                                      semanticsLabel: expC.balance!=null?
+                                      expC.balance:'',
+                                    ),
+                                  );
+                                },
+                                onSuggestionSelected: (suggestion) {
+                                  print(suggestion);
+                                  empName.text =
+                                      suggestion['name'].toString().trimRight() +
+                                          "-" +
+                                          suggestion['empId'];
+                                  empId = suggestion['empId'];
+                                  employeeId = suggestion['empId'];
+                                  expC.getExpAdvBalance(empId);
+                                },
                               ),
-                              suggestionsCallback: (pattern) async {
-                                // print(pattern);
-                                if (pattern.isNotEmpty) {
-                                  return await RemoteServices()
-                                      .getEmployees(pattern);
-                                } else {
-                                  employeeId = null;
-                                }
-                                return null;
-                              },
-                              hideOnEmpty: true,
-                              noItemsFoundBuilder: (context) {
-                                return Text('No employee found');
-                              },
-                              itemBuilder: (context, suggestion) {
-                                return ListTile(
-                                  title: Text(
-                                    suggestion['name'],
-                                  ),
-                                  subtitle: Text(
-                                    suggestion['empId'] +
-                                        " " +
-                                        "(" +
-                                        suggestion['clientName'] +
-                                        ")",
-                                  ),
-                                );
-                              },
-                              onSuggestionSelected: (suggestion) {
-                                print(suggestion);
-                                empName.text =
-                                    suggestion['name'].toString().trimRight() +
-                                        "-" +
-                                        suggestion['empId'];
-                                empId.text = suggestion['empId'];
-                                employeeId = suggestion['empId'];
-                              },
                             ),
                           ),
+                        ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 25.0, vertical: 5.0),
+                        child: Row(
+                          children: [
+                            Text(
+                              'Employee Balance Amount:',
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 25.0,
+                          vertical: 5.0,
+                        ),
+                        child: Row(
+                          children: [
+                            Text(
+                              expC.balance!=null?
+                              expC.balance:'N/A',
+                            )
+                          ],
                         ),
                       ),
                       Padding(
@@ -311,6 +361,10 @@ class _RequestExpenseState extends State<RequestExpense> {
                                           color: Colors.grey[600],
                                           fontSize: 18.0),
                                     ),
+                                    onChanged: (val) {
+                                      print('inside on changed');
+                                      getWord(amount.text);
+                                    },
                                   ),
                                 ),
                               ),
@@ -344,6 +398,12 @@ class _RequestExpenseState extends State<RequestExpense> {
                                         return sC.toString();
                                       }).toList(),
                                       onChanged: (value) {
+                                        for (var e in expC.exp) {
+                                          if (e['expenseType'] == value) {
+                                            expenseTypeId = e['expenseTypeId'];
+                                            break;
+                                          }
+                                        }
                                         setState(() {});
                                       }),
                                 ),
@@ -354,6 +414,39 @@ class _RequestExpenseState extends State<RequestExpense> {
                       ),
                       SizedBox(
                         height: 10.0,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 25.0, vertical: 5.0),
+                        child: Row(
+                          children: [
+                            Text(
+                              'Amount In Words:',
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 25.0, vertical: 5.0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                amountInWords,
+                                style: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 18.0,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
@@ -430,10 +523,6 @@ class _RequestExpenseState extends State<RequestExpense> {
                                 borderRadius: 5.0,
                               );
                             } else {
-                              Get.to(ViewExpense());
-                              if (expenseTypeId == null) {
-                                expenseTypeId = '2';
-                              }
                               print(empId);
                               print(amount.text);
                               expC.getNewEmpAdv(amount.text);
@@ -465,114 +554,6 @@ class _RequestExpenseState extends State<RequestExpense> {
                     ],
                   ),
                 ),
-                // Flexible(
-                //   child: Align(
-                //     alignment: Alignment.bottomCenter,
-                //     child: Container(
-                //       height: 70.0,
-                //       decoration: BoxDecoration(
-                //         color: Colors.white,
-                //         border: Border(
-                //           top: BorderSide(
-                //             color: Colors.grey[300],
-                //             width: 1,
-                //           ),
-                //         ),
-                //       ),
-                //       child: Row(
-                //         mainAxisAlignment: MainAxisAlignment.spaceAround,
-                //         children: [
-                //           FlatButton(
-                //             onPressed: () {
-                //               print('Cancel');
-                //               Get.back();
-                //             },
-                //             child: Text(
-                //               'Cancel',
-                //               style: TextStyle(
-                //                 color: Theme.of(context).primaryColor,
-                //                 fontWeight: FontWeight.bold,
-                //                 fontSize: 20.0,
-                //               ),
-                //             ),
-                //           ),
-                //           RaisedButton(
-                //             onPressed: () async {
-                //               print('Submit');
-                //               FocusScope.of(context).requestFocus(FocusNode());
-                //               if (amount.text == null ||
-                //                   amount.text == '' ||
-                //                   remarks.text == null ||
-                //                   remarks.text == '') {
-                //                 Get.snackbar(
-                //                   null,
-                //                   'Please provide all the details',
-                //                   colorText: Colors.white,
-                //                   backgroundColor: Colors.black87,
-                //                   snackPosition: SnackPosition.BOTTOM,
-                //                   margin: EdgeInsets.symmetric(
-                //                     horizontal: 8.0,
-                //                     vertical: 10.0,
-                //                   ),
-                //                   padding: EdgeInsets.symmetric(
-                //                     horizontal: 12.0,
-                //                     vertical: 18.0,
-                //                   ),
-                //                   borderRadius: 5.0,
-                //                 );
-                //               } else if (expC.exp.isEmpty) {
-                //                 Get.snackbar(
-                //                   null,
-                //                   'Please select atleast one Expense Type',
-                //                   colorText: Colors.white,
-                //                   backgroundColor: Colors.black87,
-                //                   snackPosition: SnackPosition.BOTTOM,
-                //                   margin: EdgeInsets.symmetric(
-                //                     horizontal: 8.0,
-                //                     vertical: 10.0,
-                //                   ),
-                //                   padding: EdgeInsets.symmetric(
-                //                     horizontal: 12.0,
-                //                     vertical: 18.0,
-                //                   ),
-                //                   borderRadius: 5.0,
-                //                 );
-                //               } else {
-                //                 if (expenseTypeId == null) {
-                //                   expenseTypeId = '3';
-                //                 }
-                //                 print(empId);
-                //                 print(amount.text);
-                //                 expC.newExpenses(amount.text, expenseTypeId);
-                //               }
-                //             },
-                //             child: Padding(
-                //               padding: const EdgeInsets.symmetric(
-                //                 vertical: 12.0,
-                //                 horizontal: 40.0,
-                //               ),
-                //               child: Text(
-                //                 'Submit',
-                //                 style: TextStyle(
-                //                   color: Colors.white,
-                //                   fontWeight: FontWeight.bold,
-                //                   fontSize: 20.0,
-                //                 ),
-                //               ),
-                //             ),
-                //             color: Colors.black87,
-                //             shape: RoundedRectangleBorder(
-                //               borderRadius: BorderRadius.circular(5.0),
-                //               side: BorderSide(
-                //                 color: Colors.black87,
-                //               ),
-                //             ),
-                //           ),
-                //         ],
-                //       ),
-                //     ),
-                //   ),
-                // ),
               ],
             ),
           ),

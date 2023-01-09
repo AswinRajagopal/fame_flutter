@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:get/get.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class AppUtils {
   var appName = 'FaME';
@@ -10,14 +10,20 @@ class AppUtils {
   Color greenColor = HexColor('4DB734');
   Color darkBlueColor = HexColor('3C6BB7');
   Color lightBlueColor = HexColor('54D2DB');
-  Color blueColor=HexColor('4a81db');
+  Color blueColor = HexColor('4a81db');
   Color orangeColor = HexColor('FF7933');
+  static String snackbarTitle;
+  static String snackbarErrorMessage =
+      'Something went wrong! Please try again later';
+  static Color snackbarTextColor = Colors.white;
+  static Color snackbarbackgroundColor = Colors.black87;
   static String WHOLEDAY = 'W';
   static String ADMIN = '4';
   static String MANAGER = '3';
   static String FIRSTHALF = 'F';
   static String SECONDHALF = 'S';
   static String GKEY = 'AIzaSyADoNEFbFbgHCpu7mz7yLWhbbUMZqk4yHU';
+
   // static String GKEY = 'AIzaSyBFsUGJKkY5yvYAC3Tb0vHIX9ZW7s5aGog';
   static String EMP_ID = 'EMP_ID';
   static String ATTENDANCE = 'ATTENDANCE';

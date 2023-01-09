@@ -8,12 +8,12 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 
-class ExpensesListWidget extends StatelessWidget {
-  final expenses;
+class RejectedListWidget extends StatelessWidget {
+  final rejectedExp;
   final int length;
   final int index;
   final ExpenseController expC;
-  ExpensesListWidget(this.expenses,this.index, this.length,this.expC,);
+  RejectedListWidget(this.rejectedExp,this.index, this.length,this.expC,);
   final TextEditingController expense = TextEditingController();
 
   String convertDate(date) {
@@ -54,7 +54,7 @@ class ExpensesListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(ExpensesDetailList(this.expenses,this.index, this.length,this.expC,));
+        Get.to(ExpensesDetailList(this.rejectedExp,this.index, this.length,this.expC,));
       },
       child: Card(
         margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
@@ -74,7 +74,7 @@ class ExpensesListWidget extends StatelessWidget {
                   children: [
                     Column(children: [
                       Text(
-                        expenses['empName'],
+                        rejectedExp['empName'],
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 15.0,
@@ -82,7 +82,7 @@ class ExpensesListWidget extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        expenses['empId'],
+                        rejectedExp['empId'],
                         style: TextStyle(
                           fontSize: 15.0,
                           color: Colors.grey,
@@ -94,7 +94,7 @@ class ExpensesListWidget extends StatelessWidget {
                     ),
                     Expanded(
                       child: Text(
-                        expenses['expenseType'],
+                        rejectedExp['expenseType'],
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 15.0,
@@ -107,84 +107,42 @@ class ExpensesListWidget extends StatelessWidget {
                     ),
                     Column(
                       children: [
-                        expenses['status'] == 0
-                            ? Container(
-                                width: 70.0,
-                                height: 30.0,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: Colors.blue[100],
-                                  border: Border.all(
-                                    color: Colors.blue[100], // Set border color
-                                  ), // Set border width
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(
-                                          2.0)), // Set rounded corner radius
-                                ),
-                                child: Text(
-                                  getStatus(expenses['status']),
-                                  style: TextStyle(
-                                      color: Colors.blue,
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              )
-                            : expenses['status'] == 1
-                                ? Container(
-                                    width: 70.0,
-                                    height: 30.0,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      color: Colors.yellow[100],
-                                      border: Border.all(
-                                        color: Colors
-                                            .yellow[100], // Set border color
-                                      ), // Set border width
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(
-                                              2.0)), // Set rounded corner radius
-                                    ),
-                                    child: Text(
-                                      getStatus(expenses['status']),
-                                      style: TextStyle(
-                                          color: Colors.yellow,
-                                          fontSize: 12.0,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  )
-                                : Container(
-                                    width: 70.0,
-                                    height: 30.0,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      color: Colors.red[100],
-                                      border: Border.all(
-                                        color:
-                                            Colors.red[100], // Set border color
-                                      ), // Set border width
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(
-                                              2.0)), // Set rounded corner radius
-                                    ),
-                                    child: Text(
-                                      getStatus(expenses['status']),
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontSize: 12.0,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
+                        Container(
+                          width: 70.0,
+                          height: 30.0,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: rejectedExp['status'] == 1
+                                ? Colors.yellow[100]
+                                : Colors.red[100],
+                            border: Border.all(
+                              color: rejectedExp['status'] == 1
+                                  ? Colors.yellow[100]
+                                  : Colors.red[100], // Set border color
+                            ), // Set border width
+                            borderRadius: BorderRadius.all(Radius.circular(
+                                2.0)), // Set rounded corner radius
+                          ),
+                          child: Text(
+                            getStatus(rejectedExp['status']),
+                            style: TextStyle(
+                                color:
+                                rejectedExp['status']==1 ? Colors.yellow : Colors.red,
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        )
                       ],
                     ),
-                    SizedBox(width: 30.0),
+                    SizedBox(width: 20.0),
                     Column(children: [
                       IntrinsicWidth(
                         child: Column(
                           children: [
                             Container(
-                              width:100,
+                              width: 100,
                               child: Text(
-                                expenses['amount'].toString(),
+                                rejectedExp['amount'].toString(),
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 25.0,
@@ -225,7 +183,7 @@ class ExpensesListWidget extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            widgetDate(expenses['createdOn']),
+                            widgetDate(rejectedExp['createdOn']),
                             style: TextStyle(
                               fontSize: 15.0,
                               color: Colors.grey,

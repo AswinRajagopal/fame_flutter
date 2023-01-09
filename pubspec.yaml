@@ -90,6 +90,8 @@ dependencies:
   checkdigit: ^0.2.0
   autocomplete_textfield: ^1.7.3
   connectivity: ^2.0.2
+  custom_check_box: ^0.0.2
+  number_to_character: ^0.0.8
   # workmanager: ^0.2.3
   # location: ^3.2.4
   # background_location: ^0.3.1
@@ -108,6 +110,7 @@ dependencies:
   month_picker_dialog:
   flutter_downloader: ^1.5.2
   gallery_saver: ^2.0.3
+  firebase_auth: any
 # flutter_icons:
 #   image_path: "assets/images/icon.png"
 #   android: true

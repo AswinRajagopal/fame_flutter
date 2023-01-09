@@ -15,15 +15,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart' as path;
 
-class Expenses extends StatefulWidget {
+class MyBills extends StatefulWidget {
   final String details;
-  Expenses({this.details});
+  MyBills({this.details});
 
   @override
-  _ExpensesState createState() => _ExpensesState(this.details);
+  _MyBillState createState() => _MyBillState(this.details);
 }
 
-class _ExpensesState extends State<Expenses> {
+class _MyBillState extends State<MyBills> {
   final ExpenseController expC = Get.put(ExpenseController());
   CameraController controller;
   final TextEditingController date = TextEditingController();
@@ -40,8 +40,13 @@ class _ExpensesState extends State<Expenses> {
   var passDate;
   var amountInWords = '';
 
+  bool _isVisible1 = false;
+  bool _isVisible2 = false;
+  bool _isVisible3 = false;
+
   var details;
-  _ExpensesState(this.details);
+
+  _MyBillState(this.details);
 
   @override
   void initState() {
@@ -160,7 +165,7 @@ class _ExpensesState extends State<Expenses> {
                         child: Row(
                           children: [
                             Text(
-                              'Add Expense',
+                              'My Bills',
                               style: TextStyle(
                                   fontSize: 20.0, fontWeight: FontWeight.bold),
                             )
@@ -331,9 +336,6 @@ class _ExpensesState extends State<Expenses> {
                           ],
                         ),
                       ),
-                      SizedBox(
-                        height: 10.0,
-                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 25.0, vertical: 5.0),
@@ -357,7 +359,7 @@ class _ExpensesState extends State<Expenses> {
                           children: [
                             Expanded(
                               child: Text(
-                                amountInWords != null ? amountInWords : '',
+                                amountInWords,
                                 style: TextStyle(
                                   color: Colors.grey[600],
                                   fontSize: 18.0,
@@ -674,7 +676,7 @@ class _ExpensesState extends State<Expenses> {
                               color: AppUtils().blueColor,
                               size: 40.0,
                             ),
-                          ),
+                          )
                         ]),
                       ),
                       Row(
@@ -692,10 +694,10 @@ class _ExpensesState extends State<Expenses> {
                                       color: Colors.white,
                                       border: Border.all(
                                         color: Colors.black54,
-                                  width: 1,
-                                ),
-                              ),
-                              child: Padding(
+                                        width: 1,
+                                      ),
+                                    ),
+                                    child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
                                         attach.text,
@@ -723,8 +725,8 @@ class _ExpensesState extends State<Expenses> {
                                         color: Colors.black54,
                                         width: 1,
                                       ),
-                              ),
-                              child: Padding(
+                                    ),
+                                    child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
                                         attachOne.text,
@@ -781,6 +783,59 @@ class _ExpensesState extends State<Expenses> {
                       //     child: Container(
                       //       height: 60,
                       //       child: TextField(
+                      //         controller: attach,
+                      //         decoration: InputDecoration(
+                      //           border: InputBorder.none,
+                      //           isDense: true,
+                      //           contentPadding: EdgeInsets.only(
+                      //             left: 10,
+                      //             top: 18,
+                      //           ),
+                      //           hintStyle: TextStyle(
+                      //             color: Colors.grey[600],
+                      //             fontSize: 18.0,
+                      //           ),
+                      //           hintText: 'Attachment',
+                      //           suffixIcon: Padding(
+                      //             padding: const EdgeInsets.all(8.0),
+                      //             child: Image.asset(
+                      //               'assets/images/uplode_proof.png',
+                      //               scale: 2.2,
+                      //             ),
+                      //           ),
+                      //         ),
+                      //         readOnly: true,
+                      //         keyboardType: null,
+                      //         onTap: () async {
+                      //           var pickedFile = await ImagePicker().getImage(
+                      //             source: ImageSource.camera,
+                      //             imageQuality: 50,
+                      //           );
+                      //           if (pickedFile != null) {
+                      //             attachment = new File(pickedFile.path);
+                      //             attach.text = path.basename(pickedFile.path);
+                      //             setState(() {});
+                      //           } else {
+                      //             print('No image selected.');
+                      //             setState(() {});
+                      //           }
+                      //         },
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                      // Padding(
+                      //   padding: const EdgeInsets.symmetric(
+                      //     horizontal: 20.0,
+                      //     vertical: 15.0,
+                      //   ),
+                      //   child: Card(
+                      //     shape: RoundedRectangleBorder(
+                      //         borderRadius: BorderRadius.circular(5.0),
+                      //         side: BorderSide(color: Colors.black38)),
+                      //     child: Container(
+                      //       height: 60,
+                      //       child: TextField(
                       //         controller: attachOne,
                       //         decoration: InputDecoration(
                       //           border: InputBorder.none,
@@ -810,8 +865,9 @@ class _ExpensesState extends State<Expenses> {
                       //             imageQuality: 50,
                       //           );
                       //           if (pickedFile != null) {
-                      //             attachment2 =  new File(pickedFile.path);
-                      //             attachOne.text = path.basename(pickedFile.path);
+                      //             attachment2 = new File(pickedFile.path);
+                      //             attachOne.text =
+                      //                 path.basename(pickedFile.path);
                       //             setState(() {});
                       //           } else {
                       //             print('No image selected.');
@@ -863,8 +919,9 @@ class _ExpensesState extends State<Expenses> {
                       //             imageQuality: 50,
                       //           );
                       //           if (pickedFile != null) {
-                      //             attachment3 =  new File(pickedFile.path);
-                      //             attachTwo.text = path.basename(pickedFile.path);
+                      //             attachment3 = new File(pickedFile.path);
+                      //             attachTwo.text =
+                      //                 path.basename(pickedFile.path);
                       //             setState(() {});
                       //           } else {
                       //             print('No image selected.');
@@ -938,7 +995,7 @@ class _ExpensesState extends State<Expenses> {
                                 borderRadius: 5.0,
                               );
                             } else {
-                              expC.newExpenses(
+                              expC.newExpBills(
                                   amount.text,
                                   expenseTypeId,
                                   remarks.text,
@@ -953,7 +1010,7 @@ class _ExpensesState extends State<Expenses> {
                               horizontal: 40.0,
                             ),
                             child: Text(
-                              'Submit',
+                              'Save',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
