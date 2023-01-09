@@ -20,7 +20,6 @@ class OtpLoginController extends GetxController {
       var res = await RemoteServices().validateMobile(mobile);
       if (res != null) {
         await pr.hide();
-        print('resetPassword valid: ${res['success']}');
         if (res['success']) {
           await pr.hide();
           // await RemoteServices().box.put('UserName', res['Details']['UserName']);
@@ -68,61 +67,15 @@ class OtpLoginController extends GetxController {
     }
   }
 
-  // void validateMobile(mobile) async {
-  //   try {
-  //     await pr.show();
-  //     var res = await RemoteServices().validateMobile(mobile);
-  //     print('mobile: $res');
-  //     if (res['success'] == true) {
-  //       await pr.hide();
-  //       // await RemoteServices().box.put('UserName', res['Details']['UserName']);
-  //       // await RemoteServices().box.put('Emp_Id', res['Details']['Emp_Id']);
-  //       await verifyPhone('+91$mobile');
-  //     } else {
-  //       await pr.hide();
-  //       Get.snackbar(
-  //         null,
-  //         'Mobile number not associated with any account',
-  //         colorText: AppUtils.snackbarTextColor,
-  //         duration: Duration(seconds: 2),
-  //         backgroundColor: AppUtils.snackbarbackgroundColor,
-  //         snackPosition: SnackPosition.BOTTOM,
-  //         margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-  //         padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
-  //         borderRadius: 5.0,
-  //       );
-  //     }
-  //   } catch (e) {
-  //     print(e);
-  //     await pr.hide();
-  //     if (e.toString() == 'DioError [DioErrorType.RESPONSE]: Http status error [500]') {
-  //       Get.snackbar(
-  //         AppUtils.snackbarTitle,
-  //         'Internal Server Error',
-  //         colorText: AppUtils.snackbarTextColor,
-  //         backgroundColor: AppUtils.snackbarbackgroundColor,
-  //         snackPosition: SnackPosition.BOTTOM,
-  //         margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-  //         padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
-  //         borderRadius: 5.0,
-  //       );
-  //     }
-  //   }
-  // }
 
   Future<void> verifyPhone(phoneNo, {noredirect}) async {
-    print('phoneNo: $phoneNo');
     await pr.show();
-    // await Firebase.initializeApp();
     var firebaseAuth = await FirebaseAuth.instance;
-    // await firebaseAuth.setSettings(
-    //   appVerificationDisabledForTesting: true,
-    // );
+
     final PhoneCodeSent smsOTPSent =
         (String verId, [int forceCodeResend]) async {
       await pr.hide();
       // verificationId = verId;
-      print('verId: $verId');
       if (noredirect != null) {
         Get.snackbar(
           null,
@@ -148,26 +101,6 @@ class OtpLoginController extends GetxController {
           //Either sends an SMS with a 6 digit code to the phone number specified, or sign's the user in and [verificationCompleted] is called.
           // verificationId = verId;
           await pr.hide();
-          // if (noredirect != null) {
-          //   Get.snackbar(
-          //     null,
-          //     'OTP resend successfully.',
-          //     colorText: Colors.white,
-          //     duration: Duration(seconds: 2),
-          //     backgroundColor: AppUtils.snackbarbackgroundColorSuccess,
-          //     snackPosition: SnackPosition.BOTTOM,
-          //     margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-          //     padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
-          //     borderRadius: 5.0,
-          //   );
-          // } else {
-          //   await Get.to(
-          //     OTPScreen(
-          //       verId,
-          //       phoneNo,
-          //     ),
-          //   );
-          // }
         },
         codeSent: smsOTPSent,
         // WHEN CODE SENT THEN WE OPEN DIALOG TO ENTER OTP.
@@ -177,11 +110,9 @@ class OtpLoginController extends GetxController {
           if (AuthCredential != null) {
             await RemoteServices().loginUsingPhoneNo(phoneNo);
           }
-          print(phoneAuthCredential);
         },
         verificationFailed: (exceptio) async {
           await pr.hide();
-          print('${exceptio.message}');
           Get.snackbar(
             AppUtils.snackbarTitle,
             exceptio.message,
@@ -201,7 +132,6 @@ class OtpLoginController extends GetxController {
   }
 
   void handleError(error) {
-    print(error);
     switch (error.code) {
       case 'ERROR_INVALID_VERIFICATION_CODE':
         Get.snackbar(
@@ -252,7 +182,6 @@ class OtpLoginController extends GetxController {
       );
       var user = await firebaseAuth.signInWithCredential(credential);
       var currentUser = await firebaseAuth.currentUser.phoneNumber;
-      print('user: $user');
       if (user != null) {
         if (currentUser != null) {
           var loginResponse =await RemoteServices().loginUsingPhoneNo(currentUser.replaceAll('+91', ''));
