@@ -311,7 +311,7 @@ class _OtpAuthState extends State<OtpAuth> {
                             borderRadius: 5.0,
                           );
                         } else {
-                          olC.verifyPhone(prefix.text+mobile.text);
+                          olC.validateMobile(mobile.text);
                         }
                       },
                     ),

@@ -22,9 +22,7 @@ class OtpLoginController extends GetxController {
         await pr.hide();
         if (res['success']) {
           await pr.hide();
-          // await RemoteServices().box.put('UserName', res['Details']['UserName']);
-          // await RemoteServices().box.put('Emp_Id', res['Details']['Emp_Id']);
-          await verifyPhone('$mobile');
+          await verifyPhone('+91'+'$mobile');
         } else {
           Get.snackbar(
             null,
@@ -108,7 +106,6 @@ class OtpLoginController extends GetxController {
         verificationCompleted: (AuthCredential phoneAuthCredential) async {
           await pr.hide();
           if (AuthCredential != null) {
-            await RemoteServices().loginUsingPhoneNo(phoneNo);
           }
         },
         verificationFailed: (exceptio) async {
@@ -184,6 +181,7 @@ class OtpLoginController extends GetxController {
       var currentUser = await firebaseAuth.currentUser.phoneNumber;
       if (user != null) {
         if (currentUser != null) {
+          RemoteServices().box.put('lite', false);
           var loginResponse =await RemoteServices().loginUsingPhoneNo(currentUser.replaceAll('+91', ''));
           if (loginResponse != null) {
             await pr.hide();

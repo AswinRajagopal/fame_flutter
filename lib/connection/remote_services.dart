@@ -175,31 +175,20 @@ class RemoteServices {
   }
 
   Future validateMobile(mobile) async {
-    if (await checkInternet()) {
-      var request = http.MultipartRequest(
-        'POST',
-        Uri.parse('$baseURL/user/verify_phone'),
-      );
-      request.fields.addAll({
-        'phoneNumber': mobile.toString(),
-      });
-
-      var response = await request.send();
-      await RemoteServices().loginUsingPhoneNo(mobile);
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = await response.stream.bytesToString();
-        return json.decode(jsonString);
-      } else if (response.statusCode == 500) {
-        print('validateMobile');
-        showResponseCodeMsg(errorCode: 500);
-        return null;
-      } else {
-        //show error message
-        showResponseCodeMsg(errorCode: response.statusCode);
-        return null;
-      }
+    var response = await client.post(
+      '$baseURL/user/verify_phone',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          "phoneNumber": mobile.toString()
+        },
+      ),
+    );
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return jsonDecode(jsonString);
     } else {
+      //show error message
       return null;
     }
   }
