@@ -210,7 +210,8 @@ class RemoteServices {
       '$baseURL/user/login',
       headers: header,
       body: jsonEncode(
-        <String, String>{"phoneNumber": phoneNo.toString()},
+        <String, String>{"phoneNumber": phoneNo.toString(),
+          'pushCode': pushCode},
       ),
     );
     print(response.statusCode);

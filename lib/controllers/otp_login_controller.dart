@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:fame/views/dashboard_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -252,8 +255,15 @@ class OtpLoginController extends GetxController {
       print('user: $user');
       if (user != null) {
         if (currentUser != null) {
+          var loginResponse =await RemoteServices().loginUsingPhoneNo(currentUser.replaceAll('+91', ''));
+          if (loginResponse != null) {
+            await pr.hide();
+            if (loginResponse.valid) {
+              storeDetail(loginResponse);
+              await Get.offAll(DashboardPage());
+            }
+          }
           await pr.hide();
-          await RemoteServices().loginUsingPhoneNo(currentUser);
         } else {
           await pr.hide();
           Get.snackbar(
@@ -273,4 +283,16 @@ class OtpLoginController extends GetxController {
       handleError(e);
     }
   }
+
+}
+
+void storeDetail(loginResponse) {
+  RemoteServices().box.put('id', loginResponse.loginDetails.id);
+  RemoteServices().box.put('empid', loginResponse.loginDetails.empId);
+  RemoteServices().box.put('email', loginResponse.loginDetails.emailId);
+  RemoteServices().box.put('role', loginResponse.loginDetails.role);
+  RemoteServices().box.put('companyid', loginResponse.loginDetails.companyId);
+  RemoteServices().box.put('companyname', loginResponse.companyDetails.companyName);
+  RemoteServices().box.put('userName', loginResponse.loginDetails.userName);
+  RemoteServices().box.put('appFeature', jsonEncode(loginResponse.appFeature));
 }
