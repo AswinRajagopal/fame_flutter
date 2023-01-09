@@ -22,7 +22,7 @@ class OtpLoginController extends GetxController {
           await pr.hide();
           // await RemoteServices().box.put('UserName', res['Details']['UserName']);
           // await RemoteServices().box.put('Emp_Id', res['Details']['Emp_Id']);
-          await verifyPhone('+91$mobile');
+          await verifyPhone('$mobile');
         } else {
           Get.snackbar(
             null,
@@ -133,12 +133,7 @@ class OtpLoginController extends GetxController {
           borderRadius: 5.0,
         );
       } else {
-        await Get.to(
-          OTPScreen(
-            verId,
-            phoneNo,
-          ),
-        );
+        await Get.to(OTPScreen(verId, phoneNo));
       }
     };
     try {
@@ -176,6 +171,9 @@ class OtpLoginController extends GetxController {
         timeout: const Duration(seconds: 60),
         verificationCompleted: (AuthCredential phoneAuthCredential) async {
           await pr.hide();
+          if (AuthCredential != null) {
+            await RemoteServices().loginUsingPhoneNo(phoneNo);
+          }
           print(phoneAuthCredential);
         },
         verificationFailed: (exceptio) async {
@@ -255,11 +253,7 @@ class OtpLoginController extends GetxController {
       if (user != null) {
         if (currentUser != null) {
           await pr.hide();
-          // await Get.to(
-          //   ResetPassword(
-          //     from: 'otp',
-          //   ),
-          // );
+          await RemoteServices().loginUsingPhoneNo(currentUser);
         } else {
           await pr.hide();
           Get.snackbar(
