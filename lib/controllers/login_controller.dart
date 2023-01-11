@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:fame/views/lite_dashboard_page.dart';
+import 'package:fame/controllers/otp_login_controller.dart';
 
 import '../views/dashboard_page.dart';
 
@@ -42,7 +42,15 @@ class LoginController extends GetxController {
           //     vertical: 10.0,
           //   ),
           // );
-          await Get.offAll(DashboardPage());
+          if (loginResponse.appFeature.validateOtp!=null &&
+              loginResponse.appFeature.validateOtp &&
+          loginResponse.loginDetails.mobileNumber !=null &&
+              loginResponse.loginDetails.mobileNumber.length==10){
+            final OtpLoginController olC = Get.put(OtpLoginController());
+            await olC.verifyPhone('+91'+loginResponse.loginDetails.mobileNumber);
+          }else {
+            await Get.offAll(DashboardPage());
+          }
         } else {
           Get.snackbar(
             null,

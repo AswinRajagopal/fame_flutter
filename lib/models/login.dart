@@ -68,6 +68,7 @@ class AppFeature {
     this.probationaries,
     this.diyFace,
     this.autoCheckout,
+    this.validateOtp,
     this.hubFeature,
     this.appUpdate,
     this.compImg,
@@ -97,6 +98,7 @@ class AppFeature {
   bool multipleCheckin;
   bool diyFace;
   bool autoCheckout;
+  bool validateOtp;
   bool hubFeature;
   bool appUpdate;
   bool faceReregister;
@@ -123,6 +125,7 @@ class AppFeature {
         probationaries: json['probationaries'],
         diyFace: json['diyFace'],
         autoCheckout: json['autoCheckout'],
+        validateOtp: json['validateOtp'],
         paySlipUrl: json['paySlipUrl'],
     insuranceUrl:json['insuranceUrl'],
         compImg: json['compImg'],
@@ -155,6 +158,7 @@ class AppFeature {
         'diyFace': diyFace,
         'faceReregister': faceReregister,
         'autoCheckout': autoCheckout,
+        'validateOtp': validateOtp,
         'paySlipUrl': paySlipUrl,
         'insuranceUrl':insuranceUrl,
         'compImg': compImg,
@@ -214,6 +218,7 @@ class LoginDetails {
     this.clientId,
     this.role,
     this.pushCode,
+    this.mobileNumber,
     this.rated,
   });
 
@@ -225,6 +230,7 @@ class LoginDetails {
   dynamic updatedDateTime;
   String emailId;
   String companyId;
+  String mobileNumber;
   dynamic clientId;
   String role;
   String pushCode;
@@ -242,6 +248,7 @@ class LoginDetails {
         clientId: json['clientId'],
         role: json['role'],
         pushCode: json['pushCode'],
+        mobileNumber: json['phoneNumber'],
         rated: json['rated'],
       );
 
@@ -257,6 +264,7 @@ class LoginDetails {
         'clientId': clientId,
         'role': role,
         'pushCode': pushCode,
+        'mobileNumber': mobileNumber,
         'rated': rated,
       };
 }

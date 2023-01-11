@@ -1,3 +1,4 @@
+import 'package:fame/controllers/otp_login_controller.dart';
 import 'package:flutter/gestures.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
@@ -19,6 +20,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final LoginController loginController = Get.put(LoginController());
+  final OtpLoginController opc = Get.put(OtpLoginController());
   bool rememberMe = true;
   TextEditingController username = TextEditingController();
   TextEditingController empid = TextEditingController();
@@ -30,7 +32,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    loginController.pr = ProgressDialog(
+
+    var pr = ProgressDialog(
       context,
       type: ProgressDialogType.Normal,
       isDismissible: false,
@@ -58,9 +61,11 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-    loginController.pr.style(
+    pr.style(
       backgroundColor: Colors.white,
     );
+    loginController.pr = pr;
+    opc.pr = pr;
   }
 
   @override
@@ -402,7 +407,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Text(
-                      'OTP Authentication',
+                      'Login with OTP',
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 15.0,
