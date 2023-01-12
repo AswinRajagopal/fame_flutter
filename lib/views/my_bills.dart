@@ -558,17 +558,147 @@ class _MyBillState extends State<MyBills> {
                               ),
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () async {
-                              await Get.bottomSheet(
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 15.0,
-                                    vertical: 15.0,
+                          attachment2 != null
+                              ? GestureDetector(
+                                  onTap: () async {
+                                    await Get.bottomSheet(
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 15.0,
+                                          vertical: 15.0,
+                                        ),
+                                        child: ListView(
+                                          shrinkWrap: true,
+                                          physics: ScrollPhysics(),
+                                          children: [
+                                            Text(
+                                              'Please choose from...',
+                                              style: TextStyle(
+                                                fontSize: 20.0,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 15.0,
+                                            ),
+                                            Row(
+                                              children: [
+                                                TextButton(
+                                                  onPressed: () async {
+                                                    Get.back();
+                                                    var pickedFile =
+                                                        await ImagePicker()
+                                                            .getImage(
+                                                      source:
+                                                          ImageSource.camera,
+                                                      imageQuality: 50,
+                                                    );
+                                                    if (pickedFile != null) {
+                                                      attachment3 = new File(
+                                                          pickedFile.path);
+                                                      attachTwo.text =
+                                                          path.basename(
+                                                              pickedFile.path);
+                                                      setState(() {});
+                                                    } else {
+                                                      print(
+                                                          'No image selected.');
+                                                      setState(() {});
+                                                    }
+                                                  },
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.camera,
+                                                        size: 30.0,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 10.0,
+                                                      ),
+                                                      Text(
+                                                        'Camera',
+                                                        style: TextStyle(
+                                                          fontSize: 20.0,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .primaryColor,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Spacer(),
+                                                TextButton(
+                                                  onPressed: () async {
+                                                    Get.back();
+                                                    var pickedFile =
+                                                        await ImagePicker()
+                                                            .getImage(
+                                                      source:
+                                                          ImageSource.gallery,
+                                                      imageQuality: 50,
+                                                    );
+                                                    if (pickedFile != null) {
+                                                      attachment3 = new File(
+                                                          pickedFile.path);
+                                                      attachTwo.text =
+                                                          path.basename(
+                                                              pickedFile.path);
+                                                      setState(() {});
+                                                    } else {
+                                                      print(
+                                                          'No image selected.');
+                                                      setState(() {});
+                                                    }
+                                                  },
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.image,
+                                                        size: 30.0,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 10.0,
+                                                      ),
+                                                      Text(
+                                                        'Gallery',
+                                                        style: TextStyle(
+                                                          fontSize: 20.0,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .primaryColor,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      isDismissible: true,
+                                      backgroundColor: Colors.white,
+                                    );
+                                  },
+                                  child: Icon(
+                                    Icons.add_circle,
+                                    color: AppUtils().blueColor,
+                                    size: 40.0,
                                   ),
-                                  child: ListView(
-                                    shrinkWrap: true,
-                                    physics: ScrollPhysics(),
+                                )
+                              : GestureDetector(
+                                  onTap: () async {
+                                    await Get.bottomSheet(
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 15.0,
+                                          vertical: 15.0,
+                                        ),
+                                        child: ListView(
+                                          shrinkWrap: true,
+                                          physics: ScrollPhysics(),
                                     children: [
                                       Text(
                                         'Please choose from...',
@@ -587,13 +717,13 @@ class _MyBillState extends State<MyBills> {
                                             onPressed: () async {
                                               Get.back();
                                               var pickedFile =
-                                                  await ImagePicker().getImage(
+                                              await ImagePicker().getImage(
                                                 source: ImageSource.camera,
                                                 imageQuality: 50,
                                               );
                                               if (pickedFile != null) {
                                                 attachment2 =
-                                                    new File(pickedFile.path);
+                                                new File(pickedFile.path);
                                                 attachOne.text = path
                                                     .basename(pickedFile.path);
                                                 setState(() {});
@@ -627,13 +757,13 @@ class _MyBillState extends State<MyBills> {
                                             onPressed: () async {
                                               Get.back();
                                               var pickedFile =
-                                                  await ImagePicker().getImage(
+                                              await ImagePicker().getImage(
                                                 source: ImageSource.gallery,
                                                 imageQuality: 50,
                                               );
                                               if (pickedFile != null) {
                                                 attachment2 =
-                                                    new File(pickedFile.path);
+                                                new File(pickedFile.path);
                                                 attachOne.text = path
                                                     .basename(pickedFile.path);
                                                 setState(() {});
@@ -739,10 +869,16 @@ class _MyBillState extends State<MyBills> {
                                   ),
                                 )
                               : Column(),
+                        ],
+                      ),
+                      Row(
+                        children: [
                           attachment3 != null
                               ? Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      vertical: 10.0),
+                                    horizontal: 25.0,
+                                    vertical: 10.0,
+                                  ),
                                   child: Container(
                                     alignment: Alignment.center,
                                     width: 150,
@@ -771,167 +907,6 @@ class _MyBillState extends State<MyBills> {
                         ],
                       ),
 
-                      // Padding(
-                      //   padding: const EdgeInsets.symmetric(
-                      //     horizontal: 20.0,
-                      //     vertical: 15.0,
-                      //   ),
-                      //   child: Card(
-                      //     shape: RoundedRectangleBorder(
-                      //         borderRadius: BorderRadius.circular(5.0),
-                      //         side: BorderSide(color: Colors.black38)),
-                      //     child: Container(
-                      //       height: 60,
-                      //       child: TextField(
-                      //         controller: attach,
-                      //         decoration: InputDecoration(
-                      //           border: InputBorder.none,
-                      //           isDense: true,
-                      //           contentPadding: EdgeInsets.only(
-                      //             left: 10,
-                      //             top: 18,
-                      //           ),
-                      //           hintStyle: TextStyle(
-                      //             color: Colors.grey[600],
-                      //             fontSize: 18.0,
-                      //           ),
-                      //           hintText: 'Attachment',
-                      //           suffixIcon: Padding(
-                      //             padding: const EdgeInsets.all(8.0),
-                      //             child: Image.asset(
-                      //               'assets/images/uplode_proof.png',
-                      //               scale: 2.2,
-                      //             ),
-                      //           ),
-                      //         ),
-                      //         readOnly: true,
-                      //         keyboardType: null,
-                      //         onTap: () async {
-                      //           var pickedFile = await ImagePicker().getImage(
-                      //             source: ImageSource.camera,
-                      //             imageQuality: 50,
-                      //           );
-                      //           if (pickedFile != null) {
-                      //             attachment = new File(pickedFile.path);
-                      //             attach.text = path.basename(pickedFile.path);
-                      //             setState(() {});
-                      //           } else {
-                      //             print('No image selected.');
-                      //             setState(() {});
-                      //           }
-                      //         },
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-                      // Padding(
-                      //   padding: const EdgeInsets.symmetric(
-                      //     horizontal: 20.0,
-                      //     vertical: 15.0,
-                      //   ),
-                      //   child: Card(
-                      //     shape: RoundedRectangleBorder(
-                      //         borderRadius: BorderRadius.circular(5.0),
-                      //         side: BorderSide(color: Colors.black38)),
-                      //     child: Container(
-                      //       height: 60,
-                      //       child: TextField(
-                      //         controller: attachOne,
-                      //         decoration: InputDecoration(
-                      //           border: InputBorder.none,
-                      //           isDense: true,
-                      //           contentPadding: EdgeInsets.only(
-                      //             left: 10,
-                      //             top: 18,
-                      //           ),
-                      //           hintStyle: TextStyle(
-                      //             color: Colors.grey[600],
-                      //             fontSize: 18.0,
-                      //           ),
-                      //           hintText: 'Attachment',
-                      //           suffixIcon: Padding(
-                      //             padding: const EdgeInsets.all(8.0),
-                      //             child: Image.asset(
-                      //               'assets/images/uplode_proof.png',
-                      //               scale: 2.2,
-                      //             ),
-                      //           ),
-                      //         ),
-                      //         readOnly: true,
-                      //         keyboardType: null,
-                      //         onTap: () async {
-                      //           var pickedFile = await ImagePicker().getImage(
-                      //             source: ImageSource.camera,
-                      //             imageQuality: 50,
-                      //           );
-                      //           if (pickedFile != null) {
-                      //             attachment2 = new File(pickedFile.path);
-                      //             attachOne.text =
-                      //                 path.basename(pickedFile.path);
-                      //             setState(() {});
-                      //           } else {
-                      //             print('No image selected.');
-                      //             setState(() {});
-                      //           }
-                      //         },
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-                      // Padding(
-                      //   padding: const EdgeInsets.symmetric(
-                      //     horizontal: 20.0,
-                      //     vertical: 15.0,
-                      //   ),
-                      //   child: Card(
-                      //     shape: RoundedRectangleBorder(
-                      //         borderRadius: BorderRadius.circular(5.0),
-                      //         side: BorderSide(color: Colors.black38)),
-                      //     child: Container(
-                      //       height: 60,
-                      //       child: TextField(
-                      //         controller: attachTwo,
-                      //         decoration: InputDecoration(
-                      //           border: InputBorder.none,
-                      //           isDense: true,
-                      //           contentPadding: EdgeInsets.only(
-                      //             left: 10,
-                      //             top: 18,
-                      //           ),
-                      //           hintStyle: TextStyle(
-                      //             color: Colors.grey[600],
-                      //             fontSize: 18.0,
-                      //           ),
-                      //           hintText: 'Attachment',
-                      //           suffixIcon: Padding(
-                      //             padding: const EdgeInsets.all(8.0),
-                      //             child: Image.asset(
-                      //               'assets/images/uplode_proof.png',
-                      //               scale: 2.2,
-                      //             ),
-                      //           ),
-                      //         ),
-                      //         readOnly: true,
-                      //         keyboardType: null,
-                      //         onTap: () async {
-                      //           var pickedFile = await ImagePicker().getImage(
-                      //             source: ImageSource.camera,
-                      //             imageQuality: 50,
-                      //           );
-                      //           if (pickedFile != null) {
-                      //             attachment3 = new File(pickedFile.path);
-                      //             attachTwo.text =
-                      //                 path.basename(pickedFile.path);
-                      //             setState(() {});
-                      //           } else {
-                      //             print('No image selected.');
-                      //             setState(() {});
-                      //           }
-                      //         },
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
                       Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: 20.0, vertical: 5.0),

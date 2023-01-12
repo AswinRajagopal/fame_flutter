@@ -140,9 +140,10 @@ class RejectedListWidget extends StatelessWidget {
                         child: Column(
                           children: [
                             Container(
-                              width: 100,
+                              alignment: Alignment.centerRight,
+                              width: 120,
                               child: Text(
-                                rejectedExp['amount'].toString(),
+                                rejectedExp['amount'].toString() + "0",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 25.0,

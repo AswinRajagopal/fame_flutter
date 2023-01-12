@@ -6,10 +6,7 @@ import 'package:get/get.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
 import '../connection/remote_services.dart';
-import '../controllers/broadcast_controller.dart';
 import '../utils/utils.dart';
-import '../widgets/broadcast_list_widget.dart';
-import 'new_broadcast.dart';
 
 class ViewBills extends StatefulWidget {
   @override
@@ -75,6 +72,17 @@ class _ViewBillsState extends State<ViewBills> {
       appBar: AppBar(
         title: Text(
           'My Bills List',
+        ),
+        leading: IconButton(
+          onPressed: () {
+            Get.back();
+            setState(() {
+              expC.expenseBillsList.clear();
+            });
+          },
+          icon: Icon(
+            Icons.arrow_back,
+          ),
         ),
       ),
       floatingActionButton: Column(

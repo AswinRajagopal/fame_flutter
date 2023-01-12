@@ -193,7 +193,7 @@ class _BillsWidgetState extends State<BillsListWidget> {
                               Container(
                                 width: 100.0,
                                 child: Text(
-                                  billsList['amount'].toString(),
+                                  billsList['amount'].toString() + "0",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 25.0,

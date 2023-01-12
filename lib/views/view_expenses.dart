@@ -8,6 +8,7 @@ import 'package:fame/widgets/advance_list_widget.dart';
 import 'package:fame/widgets/expenses_list_widget.dart';
 import 'package:fame/widgets/rejected_expense_list_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import '../connection/remote_services.dart';
@@ -20,15 +21,16 @@ class ViewExpense extends StatefulWidget {
 
 class _ViewExpenseState extends State<ViewExpense> {
   final ExpenseController expC = Get.put(ExpenseController());
+  TextEditingController empName = TextEditingController();
+
   var expenseId;
   var roleId;
   var expenseTypeId;
+  var empId;
   bool _isRejectedList = false;
   bool _expense = false;
   bool _advance = false;
   String _chosenValue;
-
-  // List of items in our dropdown menu
 
   @override
   void initState() {
@@ -99,58 +101,75 @@ class _ViewExpenseState extends State<ViewExpense> {
                   Flexible(
                     child: Align(
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           IntrinsicHeight(
                             child: Row(
                               children: <Widget>[
-                                Column(children: [
-                                  new Text(
-                                      expC.expDet != null &&
-                                              expC.expDet['totalExpenses'] !=
-                                                  null &&
-                                              expC.expDet['totalExpenses']
-                                                          ['expense']
-                                                      .toString() !=
-                                                  'null'
-                                          ? expC.expDet['totalExpenses']
-                                                  ['expense']
-                                              .toString()
-                                          :'11801.0',
-                                      style: new TextStyle(
-                                          fontSize: 40.0, color: Colors.black)),
-                                  Text('Expenses This Month',
-                                      style: new TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: 'Roboto',
-                                          color: Colors.green))
-                                ]),
+                                Container(
+                                  child: Obx(() {
+                                    return Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          new Text(
+                                              expC.expDet != null &&
+                                                      expC.expDet[
+                                                              'totalExpenses'] !=
+                                                          null &&
+                                                      expC.expDet['totalExpenses']
+                                                                  ['expense']
+                                                              .toString() !=
+                                                          'null'
+                                                  ? expC.expDet['totalExpenses']
+                                                              ['expense']
+                                                          .toString() +
+                                                      "0"
+                                                  : '0.00',
+                                              style: new TextStyle(
+                                                  fontSize: 40.0,
+                                                  color: Colors.black)),
+                                          Text('Expenses This Month',
+                                              style: new TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontFamily: 'Roboto',
+                                                  color: Colors.green))
+                                        ]);
+                                  }),
+                                ),
                                 VerticalDivider(
                                   width: 100.0,
                                   color: Colors.black,
                                   thickness: 2,
                                 ),
-                                Column(children: [
-                                  new Text(
-                                      expC.expDet != null &&
-                                              expC.expDet['totalExpenses'] !=
-                                                  null &&
-                                              expC.expDet['totalExpenses']
-                                                          ['advance']
-                                                      .toString() !=
-                                                  'null'
-                                          ? expC.expDet['totalExpenses']
-                                                  ['advance']
-                                              .toString()
-                                          :'1000.0',
-                                      style: new TextStyle(
-                                          fontSize: 40.0, color: Colors.black)),
-                                  Text('Advance This Month',
-                                      style: new TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: 'Roboto',
-                                          color: Colors.red))
-                                ]),
+                                Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        child: new Text(
+                                            expC.expDet != null &&
+                                                    expC.expDet[
+                                                            'totalExpenses'] !=
+                                                        null &&
+                                                    expC.expDet['totalExpenses']
+                                                                ['advance']
+                                                            .toString() !=
+                                                        'null'
+                                                ? expC.expDet['totalExpenses']
+                                                        ['advance']
+                                                    .toString()
+                                                : '0.00',
+                                            style: new TextStyle(
+                                                fontSize: 40.0,
+                                                color: Colors.black)),
+                                      ),
+                                      Text('Advance This Month',
+                                          style: new TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: 'Roboto',
+                                              color: Colors.red))
+                                    ]),
                               ],
                             ),
                           )
@@ -272,8 +291,90 @@ class _ViewExpenseState extends State<ViewExpense> {
           SizedBox(
             height: 15.0,
           ),
+          roleId == AppUtils.ADMIN
+              ? Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Text(
+                        'Filter By',
+                        style: TextStyle(
+                            fontSize: 20.0, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Icon(Icons.filter_alt)
+                  ],
+                )
+              : Column(),
+          roleId == AppUtils.ADMIN
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0,
+                    vertical: 10.0,
+                  ),
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        side: BorderSide(color: Colors.black38)),
+                    child: Container(
+                      height: 60.0,
+                      child: TypeAheadField(
+                        textFieldConfiguration: TextFieldConfiguration(
+                          controller: empName,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            isDense: true,
+                            contentPadding: EdgeInsets.all(20),
+                            hintStyle: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 18.0,
+                              // fontWeight: FontWeight.bold,
+                            ),
+                            hintText: 'Employee Name',
+                          ),
+                        ),
+                        suggestionsCallback: (pattern) async {
+                          // print(pattern);
+                          if (pattern.isNotEmpty) {
+                            return await RemoteServices().getEmployees(pattern);
+                          } else {
+                            empId = null;
+                          }
+                          return null;
+                        },
+                        hideOnEmpty: true,
+                        noItemsFoundBuilder: (context) {
+                          return Text('No employee found');
+                        },
+                        itemBuilder: (context, suggestion) {
+                          return ListTile(
+                            title: Text(
+                              suggestion['name'],
+                            ),
+                            subtitle: Text(
+                              suggestion['empId'],
+                            ),
+                          );
+                        },
+                        onSuggestionSelected: (suggestion) {
+                          print(suggestion);
+                          print(suggestion['name']);
+                          empName.text =
+                              suggestion['name'].toString().trimRight() +
+                                  ' - ' +
+                                  suggestion['empId'];
+                          empId = suggestion['empId'];
+                        },
+                      ),
+                    ),
+                  ),
+                )
+              : Column(),
+          SizedBox(
+            height: 15.0,
+          ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Row(
               children: [
                 Flexible(
@@ -290,80 +391,85 @@ class _ViewExpenseState extends State<ViewExpense> {
                           ),
                         ),
                         Spacer(),
-                        Container(
-                          child: Row(
-                            children: [
-                              DropdownButton<String>(
-                                focusColor: Colors.white,
-                                value: _chosenValue,
-                                elevation: 5,
-                                underline: Container(
-                                  decoration: ShapeDecoration(
-                                    shape: RoundedRectangleBorder(
-                                      side: BorderSide(width: 1.0, style: BorderStyle.solid),
-                                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                                    ),
-                                  ),
+                        Expanded(
+                          child: Container(
+                            width: 150.0,
+                            child: DropdownSearch<String>(
+                              validator: (v) =>
+                                  v == null ? "required field" : null,
+                              hint: "All",
+                              mode: Mode.MENU,
+                              dropdownSearchDecoration: InputDecoration(
+                                filled: true,
+                                border: UnderlineInputBorder(
+                                  borderSide: BorderSide.none,
                                 ),
-                                style: TextStyle(color: Colors.white),
-                                iconEnabledColor: Colors.black,
-                                items: <String>[
-                                  'All',
-                                  'Rejected List',
-                                  'Approved List',
-                                  'Expenses',
-                                  'Advance',
-                                ].map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(
-                                        value,
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                        ),
-                                      ));
-                                }).toList(),
-                                hint: Text(
-                                  "All",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 14,),
+                              ),
+                              showAsSuffixIcons: true,
+                              dropdownButtonBuilder: (_) => Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: const Icon(
+                                  Icons.arrow_drop_down,
+                                  size: 24,
+                                  color: Colors.black,
                                 ),
-                                onChanged: (String value) {
-                                  setState(() {
-                                    _chosenValue = value;
-                                    if (_chosenValue == 'Rejected List') {
-                                      expC.getEmpExpense('2');
-                                      _isRejectedList = true;
-                                      _advance = false;
+                              ),
+                              showSelectedItem: true,
+                              items: [
+                                'All',
+                                'Rejected List',
+                                'Approved List',
+                                'Expenses',
+                                'Advance',
+                              ],
+                              onChanged: (String value) {
+                                setState(() {
+                                  expC.rejectedList.clear();
+                                  expC.empExpList.clear();
+                                  expC.empExpAdvanceList.clear();
+                                  expC.expenseBillsList.clear();
+                                  _chosenValue = value;
+                                  if (_chosenValue == 'Rejected List') {
+                                    empId != null
+                                        ? expC.getEmpExpenseAdmin(empId, '2')
+                                        : expC.getEmpExpense('2');
+                                    _isRejectedList = true;
+                                    _advance = false;
+                                    _expense = false;
+                                  } else if (_chosenValue == 'Expenses') {
+                                    empId != null
+                                        ? expC.getEmpExpensesAdmin(empId)
+                                        : expC.getEmpExpenses();
+                                    _expense = true;
+                                    _advance = false;
+                                    _isRejectedList = false;
+                                  } else {
+                                    if (_chosenValue == 'Advance') {
+                                      empId != null
+                                          ? expC.getExpAdvAdmin(empId)
+                                          : expC.getExpAdv();
+                                      _advance = true;
                                       _expense = false;
-                                    } else if (_chosenValue == 'Expenses') {
-                                      expC.getEmpExpenses();
+                                      _isRejectedList = false;
+                                    }else if(_chosenValue == 'All'){
+                                      empId != null
+                                          ? expC.getEmpExpensesAdmin(empId)
+                                          : expC.getEmpExpenses();
                                       _expense = true;
                                       _advance = false;
                                       _isRejectedList = false;
                                     } else {
-                                      if (_chosenValue == 'Advance') {
-                                        expC.getExpAdv();
-                                        _advance = true;
-                                        _expense = false;
-                                        _isRejectedList = false;
-                                      }else if(_chosenValue == 'All'){
-                                        expC.getEmpExpenses();
-                                        _expense = true;
-                                        _advance = false;
-                                        _isRejectedList = false;
-                                      }else{
-                                        expC.getEmpExpense('1');
-                                        _isRejectedList = true;
-                                        _advance = false;
-                                        _expense = false;
-                                      }
+                                      empId != null
+                                          ? expC.getEmpExpenseAdmin(empId, '1')
+                                          : expC.getEmpExpense('1');
+                                      _isRejectedList = true;
+                                      _advance = false;
+                                      _expense = false;
                                     }
-                                  });
-                                },
-                              ),
-                            ],
+                                  }
+                                });
+                              },
+                            ),
                           ),
                         ),
                       ],
@@ -397,7 +503,7 @@ class _ViewExpenseState extends State<ViewExpense> {
                               children: [
                                 Center(
                                   child: Text(
-                                    'No Rejected Expenses List found',
+                                    'No Expenses List found',
                                     style: TextStyle(
                                       fontSize: 18.0,
                                       // fontWeight: FontWeight.bold,

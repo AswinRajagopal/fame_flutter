@@ -117,6 +117,9 @@ class _ExpensesDetailListState extends State<ExpensesDetailList> {
         leading: IconButton(
           onPressed: () {
             Get.back();
+            setState(() {
+              expC.attachment.clear();
+            });
           },
           icon: Icon(
             Icons.arrow_back,
@@ -186,7 +189,8 @@ class _ExpensesDetailListState extends State<ExpensesDetailList> {
                           SizedBox(height: 15.0),
                           RowWidget('EmpId', expenses['empId'].toString()),
                           SizedBox(height: 15.0),
-                          RowWidget('Amount', expenses['amount'].toString()),
+                          RowWidget(
+                              'Amount', expenses['amount'].toString() + "0"),
                           SizedBox(height: 15.0),
                           RowWidget('ExpenseType',
                               expenses['expenseType'].toString()),
@@ -208,7 +212,7 @@ class _ExpensesDetailListState extends State<ExpensesDetailList> {
                           SizedBox(height: 15.0),
                           Row(
                             children: [
-                              expC.attachment.length == 1
+                              expC.attachment.length > 0
                                   ? GestureDetector(
                                       onTap: () async {
                                         var pitstop = expC.attachment[0];
@@ -236,7 +240,10 @@ class _ExpensesDetailListState extends State<ExpensesDetailList> {
                                       ),
                                     )
                                   : Container(),
-                              expC.attachment.length == 2
+                              SizedBox(
+                                width: 20.0,
+                              ),
+                              expC.attachment.length > 1
                                   ? GestureDetector(
                                       onTap: () async {
                                         var pitstop = expC.attachment[1];
@@ -267,7 +274,7 @@ class _ExpensesDetailListState extends State<ExpensesDetailList> {
                               SizedBox(
                                 width: 15.0,
                               ),
-                              expC.attachment.length == 3
+                              expC.attachment.length > 2
                                   ? GestureDetector(
                                       onTap: () async {
                                         var pitstop = expC.attachment[2];
@@ -376,8 +383,6 @@ class _ExpensesDetailListState extends State<ExpensesDetailList> {
                                                   AppUtils().blueColor,
                                                   onConfirm: () async {
                                                     expenses['adminRemarks']=adminRemarks.text.toString();
-                                                    expenses['amount'] =
-                                                        expense.text.toString();
                                                     expC.aprRejExpense(
                                                         adminRemarks.text,
                                                         expense.text,
