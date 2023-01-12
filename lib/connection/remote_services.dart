@@ -1408,7 +1408,6 @@ class RemoteServices {
           'companyId': box.get('companyid').toString(),
         }));
     print(response.statusCode);
-    print(response.body);
     if (response.statusCode == 200) {
       var jsonString = response.body;
       return json.decode(jsonString);
@@ -1425,7 +1424,6 @@ class RemoteServices {
           'companyId': box.get('companyid').toString(),
         }));
     print(response.statusCode);
-    print(response.body);
     if (response.statusCode == 200) {
       var jsonString = response.body;
       return json.decode(jsonString);
@@ -1442,7 +1440,6 @@ class RemoteServices {
           'companyId': box.get('companyid').toString(),
         }));
     print(response.statusCode);
-    print(response.body);
     if (response.statusCode == 200) {
       var jsonString = response.body;
       return json.decode(jsonString);
@@ -1459,7 +1456,6 @@ class RemoteServices {
           'companyId': box.get('companyid').toString(),
         }));
     print(response.statusCode);
-    print(response.body);
     if (response.statusCode == 200) {
       var jsonString = response.body;
       return json.decode(jsonString);
@@ -1477,7 +1473,6 @@ class RemoteServices {
           "status": status
         }));
     print(response.statusCode);
-    print(response.body);
     if (response.statusCode == 200) {
       var jsonString = response.body;
       return json.decode(jsonString);
@@ -1495,7 +1490,6 @@ class RemoteServices {
           "status": status
         }));
     print(response.statusCode);
-    print(response.body);
     if (response.statusCode == 200) {
       var jsonString = response.body;
       return json.decode(jsonString);
@@ -1512,7 +1506,6 @@ class RemoteServices {
           "expenseEmpId": expenseEmpId
         }));
     print(response.statusCode);
-    print(response.body);
     if (response.statusCode == 200) {
       var jsonString = response.body;
       return json.decode(jsonString);
@@ -1529,7 +1522,6 @@ class RemoteServices {
           "expenseBillId": expenseBillId
         }));
     print(response.statusCode);
-    print(response.body);
     if (response.statusCode == 200) {
       var jsonString = response.body;
       return json.decode(jsonString);
@@ -1785,25 +1777,6 @@ class RemoteServices {
     }
   }
 
-  Future updateExpBills() async {
-    var response = await client.post(
-      '$baseURL/expense/update_bills',
-      headers: header,
-      body: jsonEncode(<String, String>{
-        "companyId": "6",
-        "status": "2",
-        "empExpenseId": "85"
-      }),
-    );
-    print(response.statusCode);
-    if (response.statusCode == 200) {
-      var jsonString = response.body;
-      return json.decode(jsonString);
-    } else {
-      //show error message
-      return null;
-    }
-  }
 
   Future getBillsToExpense(bills) async {
     var response = await client.post(

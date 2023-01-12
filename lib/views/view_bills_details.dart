@@ -1,5 +1,4 @@
 
-import 'package:dotted_line/dotted_line.dart';
 import 'package:fame/connection/remote_services.dart';
 import 'package:fame/controllers/expense_controller.dart';
 import 'package:fame/utils/utils.dart';
@@ -93,7 +92,6 @@ class _ViewBillsDetailListState extends State<ViewBillsDetailList> {
 
   @override
   Widget build(BuildContext context) {
-    var roleId = RemoteServices().box.get('role');
     return Scaffold(
       backgroundColor: AppUtils().innerScaffoldBg,
       appBar: AppBar(
@@ -296,81 +294,6 @@ class _ViewBillsDetailListState extends State<ViewBillsDetailList> {
                                     : Container(),
                               ],
                             ),
-                            roleId == AppUtils.ADMIN
-                                ? Column(
-                              children: [
-                                SizedBox(
-                                  height: 15.0,
-                                ),
-                                DottedLine(
-                                  direction: Axis.horizontal,
-                                  lineLength: double.infinity,
-                                  lineThickness: 1.0,
-                                  dashLength: 4.0,
-                                  dashColor: Colors.grey,
-                                  dashRadius: 0.0,
-                                  dashGapLength: 4.0,
-                                  dashGapColor: Colors.transparent,
-                                  dashGapRadius: 0.0,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: 20.0,
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.end,
-                                    children: [
-                                      RaisedButton(
-                                        onPressed: () {
-                                          // expenses['status']=getStatus(expenses['status']);
-                                        },
-                                        child: Text(
-                                          'Reject',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16.0,
-                                          ),
-                                        ),
-                                        color: Colors.red,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.circular(5.0),
-                                          side: BorderSide(
-                                            color: Colors.red,
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 30.0,
-                                      ),
-                                      RaisedButton(
-                                        onPressed: () async {
-                                        },
-                                        child: Text(
-                                          'Accept',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16.0,
-                                          ),
-                                        ),
-                                        color: AppUtils().blueColor,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.circular(5.0),
-                                          side: BorderSide(
-                                            color: AppUtils().blueColor,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            )
-                                : Column(),
                           ],
                         ),
                       ),

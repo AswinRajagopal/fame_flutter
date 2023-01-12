@@ -1,11 +1,11 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:fame/utils/utils.dart';
 import 'package:flutter/material.dart';
-import '../connection/remote_services.dart';
 import 'package:get/get.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+
+import '../connection/remote_services.dart';
 
 class ExpenseController extends GetxController {
   var isLoading = true.obs;
@@ -37,7 +37,6 @@ class ExpenseController extends GetxController {
           imageFile, amount, expenseTypeId, remarks, imageFile2, imageFile3);
       if (ExpenseRes != null) {
         await pr.hide();
-        print('ExpenseRes valid: ${ExpenseRes['success']}');
         if (ExpenseRes['success']) {
           Get.snackbar(
             null,
@@ -106,7 +105,6 @@ class ExpenseController extends GetxController {
       var newEmpAdv = await RemoteServices().getNewEmpAdv(amount);
       if (newEmpAdv != null) {
         await pr.hide();
-        print('newEmpAdv: $newEmpAdv');
         if (newEmpAdv['success']) {
           Get.snackbar(
             null,
@@ -178,12 +176,10 @@ class ExpenseController extends GetxController {
         isLoading(false);
         await pr.hide();
         if (res['success']) {
-          print('expAdvancec valid: $res');
           if (res['empExpAdvanceList'] != null) {
             for (var i = 0; i < res['empExpAdvanceList'].length; i++) {
               empExpAdvanceList.add(res['empExpAdvanceList'][i]);
             }
-            print("empExpAdvanceList:$empExpAdvanceList");
           }
         } else {
           Get.snackbar(
@@ -236,12 +232,10 @@ class ExpenseController extends GetxController {
         isLoading(false);
         await pr.hide();
         if (res['success']) {
-          print('expAdvancec valid: $res');
           if (res['empExpAdvanceList'] != null) {
             for (var i = 0; i < res['empExpAdvanceList'].length; i++) {
               empExpAdvanceList.add(res['empExpAdvanceList'][i]);
             }
-            print("empExpAdvanceList:$empExpAdvanceList");
           }
         } else {
           Get.snackbar(
@@ -349,7 +343,6 @@ class ExpenseController extends GetxController {
           await RemoteServices().aprRejExpense(adminRemarks,amount,empId, empExpenseId, status);
       if (appRejRes != null) {
         await pr.hide();
-        print('appRejRes: $appRejRes');
         if (appRejRes['success']) {
           Get.snackbar(
             null,
@@ -424,12 +417,10 @@ class ExpenseController extends GetxController {
         await pr.hide();
         if (res['success']) {
           expDet = res;
-          print('expensesTypeRes valid: $res');
           if (res['expenseList'] != null) {
             for (var i = 0; i < res['expenseList'].length; i++) {
               empExpList.add(res['expenseList'][i]);
             }
-            print("empexplist:$empExpList");
           }
         } else {
           Get.snackbar(
@@ -484,12 +475,10 @@ class ExpenseController extends GetxController {
         await pr.hide();
         if (res['success']) {
           expDet = res;
-          print('expensesTypeRes valid: $res');
           if (res['expenseList'] != null) {
             for (var i = 0; i < res['expenseList'].length; i++) {
               empExpList.add(res['expenseList'][i]);
             }
-            print("empexplist:$empExpList");
           }
         } else {
           Get.snackbar(
@@ -544,7 +533,6 @@ class ExpenseController extends GetxController {
         await pr.hide();
         if (res['success']) {
           expDet = res;
-          print('rejApr valid: $res');
           if (res['rejectedOrApprvList'] != null) {
             for (var i = 0; i < res['rejectedOrApprvList'].length; i++) {
               rejectedList.add(res['rejectedOrApprvList'][i]);
@@ -603,7 +591,6 @@ class ExpenseController extends GetxController {
         await pr.hide();
         if (res['success']) {
           expDet = res;
-          print('rejApr valid: $res');
           if (res['rejectedOrApprvList'] != null) {
             for (var i = 0; i < res['rejectedOrApprvList'].length; i++) {
               rejectedList.add(res['rejectedOrApprvList'][i]);
@@ -660,12 +647,10 @@ class ExpenseController extends GetxController {
         isLoading(false);
         await pr.hide();
         if (res['success']) {
-          print('expattach valid: $res');
           if (res['expAttachments'] != null) {
             for (var i = 0; i < res['expAttachments'].length; i++) {
               attachment.add(res['expAttachments'][i]);
             }
-            print("expattach:$attachment");
           }
         } else {
           Get.snackbar(
@@ -718,7 +703,6 @@ class ExpenseController extends GetxController {
         isLoading(false);
         await pr.hide();
         if (res['success']) {
-          print('billAttach valid: $res');
           if (res['expenseBillUrl'] != null) {
             for (var i = 0; i < res['expenseBillUrl'].length; i++) {
               billAttachment.add(res['expenseBillUrl'][i]);
@@ -775,7 +759,6 @@ class ExpenseController extends GetxController {
            amount, expenseTypeId, remarks,imageFile2, imageFile3);
       if (expenseBillRes != null) {
         await pr.hide();
-        print('ExpenseRes valid: ${expenseBillRes['success']}');
         if (expenseBillRes['success']) {
           Get.snackbar(
             null,
@@ -852,7 +835,6 @@ class ExpenseController extends GetxController {
           imageFile3);
       if (editBillRes != null) {
         await pr.hide();
-        print('ExpenseRes valid: ${editBillRes['success']}');
         if (editBillRes['success']) {
           Get.snackbar(
             null,
@@ -924,12 +906,10 @@ class ExpenseController extends GetxController {
         isLoading(false);
         await pr.hide();
         if (res['success']) {
-          print('expBills valid: $res');
           if (res['expenseBills'] != null) {
             for (var i = 0; i < res['expenseBills'].length; i++) {
               expenseBillsList.add(res['expenseBills'][i]);
             }
-            print("expBills:$expenseBillsList");
           }
         } else {
           Get.snackbar(
@@ -980,7 +960,6 @@ class ExpenseController extends GetxController {
       var billsToExpRes = await RemoteServices().getBillsToExpense(bills);
       if (billsToExpRes != null) {
         await pr.hide();
-        print('billsToExpRes valid: ${billsToExpRes['success']}');
         if (billsToExpRes['success']) {
           Get.snackbar(
             null,
@@ -1052,29 +1031,11 @@ class ExpenseController extends GetxController {
         isLoading(false);
         await pr.hide();
         if (res['success']) {
-          print('empBalance valid: $res');
           if (res['empBalance'] != null) {
               balance = res['empBalance'];
               balance!=null?balance:"N/A";
           }
-        } else {
-          // Get.snackbar(
-          //   null,
-          //   'Something went wrong! Please try again later',
-          //   colorText: Colors.white,
-          //   backgroundColor: Colors.black87,
-          //   snackPosition: SnackPosition.BOTTOM,
-          //   margin: EdgeInsets.symmetric(
-          //     horizontal: 8.0,
-          //     vertical: 10.0,
-          //   ),
-          //   padding: EdgeInsets.symmetric(
-          //     horizontal: 12.0,
-          //     vertical: 18.0,
-          //   ),
-          //   borderRadius: 5.0,
-          // );
-        }
+        } else {}
       }
     } catch (e) {
       print(e);
