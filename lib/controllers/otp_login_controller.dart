@@ -69,12 +69,11 @@ class OtpLoginController extends GetxController {
   Future<void> verifyPhone(phoneNo, {noredirect}) async {
     await pr.show();
     var firebaseAuth = await FirebaseAuth.instance;
-
     final PhoneCodeSent smsOTPSent =
         (String verId, [int forceCodeResend]) async {
-      await pr.hide();
       // verificationId = verId;
       if (noredirect != null) {
+        await pr.hide();
         Get.snackbar(
           null,
           'OTP resend successfully.',
@@ -87,6 +86,7 @@ class OtpLoginController extends GetxController {
           borderRadius: 5.0,
         );
       } else {
+        await pr.hide();
         await Get.to(OTPScreen(verId, phoneNo));
       }
     };

@@ -27,10 +27,8 @@ class LoginController extends GetxController {
       RemoteServices().box.put('lite', lite);
       var loginResponse = await rs.login(username, empid, password);
       if (loginResponse != null) {
-        await pr.hide();
         print('loginResponse valid: ${loginResponse.valid}');
         if (loginResponse.valid) {
-          storeDetail(loginResponse);
           // Get.snackbar(
           //   null,
           //   'Employee found',
@@ -49,9 +47,12 @@ class LoginController extends GetxController {
             final OtpLoginController olC = Get.put(OtpLoginController());
             await olC.verifyPhone('+91'+loginResponse.loginDetails.mobileNumber);
           }else {
+            await pr.hide();
+            storeDetail(loginResponse);
             await Get.offAll(DashboardPage());
           }
         } else {
+          await pr.hide();
           Get.snackbar(
             null,
             'Username and password are incorrect',
@@ -89,8 +90,6 @@ class LoginController extends GetxController {
         ),
         borderRadius: 5.0,
       );
-    } finally {
-      await pr.hide();
     }
   }
 
