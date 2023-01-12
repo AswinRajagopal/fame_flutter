@@ -1,12 +1,10 @@
 import 'package:dotted_line/dotted_line.dart';
-import 'package:fame/connection/remote_services.dart';
 import 'package:fame/controllers/expense_controller.dart';
-import 'package:fame/utils/utils.dart';
 import 'package:fame/views/expenses_list_details.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
-import 'package:get/get.dart';
 
 class ExpensesListWidget extends StatelessWidget {
   final expenses;
@@ -176,15 +174,16 @@ class ExpensesListWidget extends StatelessWidget {
                                   ),
                       ],
                     ),
-                    SizedBox(width: 30.0),
+                    SizedBox(width: 20.0),
                     Column(children: [
                       IntrinsicWidth(
                         child: Column(
                           children: [
                             Container(
-                              width:100,
+                              alignment: Alignment.centerRight,
+                              width: 120,
                               child: Text(
-                                expenses['amount'].toString(),
+                                expenses['amount'].toString() + "0",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 25.0,

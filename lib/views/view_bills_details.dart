@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:dotted_line/dotted_line.dart';
 import 'package:fame/connection/remote_services.dart';
@@ -7,8 +6,8 @@ import 'package:fame/utils/utils.dart';
 import 'package:fame/widgets/loading_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
@@ -104,6 +103,9 @@ class _ViewBillsDetailListState extends State<ViewBillsDetailList> {
         leading: IconButton(
           onPressed: () {
             Get.back();
+            setState(() {
+              expC.billAttachment.clear();
+            });
           },
           icon: Icon(
             Icons.arrow_back,
@@ -170,110 +172,128 @@ class _ViewBillsDetailListState extends State<ViewBillsDetailList> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            RowWidget('ExpenseBillId', billsList['expenseBillId'].toString()),
+                            RowWidget('ExpenseBillId',
+                                billsList['expenseBillId'].toString()),
                             SizedBox(height: 15.0),
                             RowWidget('EmpExpenseId',
                                 billsList['empExpenseId'].toString()),
                             SizedBox(height: 15.0),
-                            RowWidget('ExpenseTypeId', billsList['expenseTypeId'].toString()),
+                            RowWidget('ExpenseTypeId',
+                                billsList['expenseTypeId'].toString()),
                             SizedBox(height: 15.0),
                             RowWidget('EmpId', billsList['empId'].toString()),
                             SizedBox(height: 15.0),
-                            RowWidget('Amount', billsList['amount'].toString()),
+                            RowWidget(
+                                'Amount', billsList['amount'].toString() + "0"),
                             SizedBox(height: 15.0),
-                            RowWidget('Remarks',
-                                billsList['remarks'].toString()),
+                            RowWidget(
+                                'Remarks', billsList['remarks'].toString()),
                             SizedBox(height: 15.0),
                             RowWidget(
                               'Status',
                               getStatus(billsList['status']),
                             ),
                             SizedBox(height: 15.0),
-                            RowWidget(
-                                'UpdatedOn', convertDate(billsList['updatedOn'])),
+                            RowWidget('UpdatedOn', convertDate(billsList['updatedOn'])),
                             SizedBox(height: 15.0),
                             RowWidget(
                                 'CreatedOn', convertDate(billsList['createdOn'])),
                             SizedBox(height: 15.0),
                             Row(
                               children: [
-                                expC.billAttachment.length==1?GestureDetector(
-                                  onTap: () async {
-                                    var pitstop = expC.billAttachment[0];
-                                    if (pitstop!=null) {
-                                      await showDialog(
-                                          context: context,
-                                          builder: (_) => imageDialog(pitstop));
-                                    }
-                                  },
-                                  child: Container(
-                                    width: 100.0,
+                                expC.billAttachment.length > 0
+                                    ? GestureDetector(
+                                        onTap: () async {
+                                          var pitstop = expC.billAttachment[0];
+                                          if (pitstop != null) {
+                                            await showDialog(
+                                                context: context,
+                                                builder: (_) =>
+                                                    imageDialog(pitstop));
+                                          }
+                                        },
+                                        child: Container(
+                                          width: 100.0,
                                     height: 150.0,
                                     decoration: BoxDecoration(
                                       border: Border.all(
-                                          width: 1, color: Colors.white),
-                                      borderRadius: BorderRadius.circular(10),
-                                      image: DecorationImage(
-                                          image:
-                                          NetworkImage(
-                                              expC.billAttachment[0].toString()),
-                                          fit: BoxFit.cover), //<-- SEE HERE
-                                    ),
-                                  ),
-                                ):Container(),
+                                                width: 1, color: Colors.white),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            image: DecorationImage(
+                                                image: NetworkImage(expC
+                                                    .billAttachment[0]
+                                                    .toString()),
+                                                fit: BoxFit
+                                                    .cover), //<-- SEE HERE
+                                          ),
+                                        ),
+                                      )
+                                    : Container(),
+                                SizedBox(
+                                  width: 20.0,
+                                ),
+                                expC.billAttachment.length > 1
+                                    ? GestureDetector(
+                                        onTap: () async {
+                                          var pitstop = expC.billAttachment[1];
+                                          if (pitstop != null) {
+                                            await showDialog(
+                                                context: context,
+                                                builder: (_) =>
+                                                    imageDialog(pitstop));
+                                          }
+                                        },
+                                        child: Container(
+                                          width: 100.0,
+                                    height: 150.0,
+                                    decoration: BoxDecoration(
+                                            border: Border.all(
+                                                width: 1, color: Colors.white),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            image: DecorationImage(
+                                                image: NetworkImage(expC
+                                                    .billAttachment[1]
+                                                    .toString()),
+                                                fit: BoxFit
+                                                    .cover), //<-- SEE HERE
+                                          ),
+                                        ),
+                                      )
+                                    : Container(),
                                 SizedBox(
                                   width: 15.0,
                                 ),
-                                expC.billAttachment.length ==2?GestureDetector(
-                                  onTap: () async {
-                                    var pitstop = expC.billAttachment[1];
-                                    if (pitstop!=null) {
-                                      await showDialog(
-                                          context: context,
-                                          builder: (_) => imageDialog(pitstop));
-                                    }
-                                  },
-                                  child: Container(
-                                    width: 100.0,
+                                expC.billAttachment.length > 2
+                                    ? GestureDetector(
+                                        onTap: () async {
+                                          var pitstop = expC.billAttachment[2];
+                                          if (pitstop != null) {
+                                            await showDialog(
+                                                context: context,
+                                                builder: (_) =>
+                                                    imageDialog(pitstop));
+                                          }
+                                        },
+                                        child: Container(
+                                          width: 100.0,
                                     height: 150.0,
                                     decoration: BoxDecoration(
-                                      border:
-                                      Border.all(width: 1, color: Colors.white),
-                                      borderRadius: BorderRadius.circular(10),
-                                      image: DecorationImage(
-                                          image:
-                                          NetworkImage(
-                                              expC.billAttachment[1].toString()),
-                                          fit: BoxFit.cover), //<-- SEE HERE
-                                    ),
-                                  ),
-                                ):Container(),
-                                SizedBox(
-                                  width: 15.0,
-                                ),
-                                expC.billAttachment.length == 3 ? GestureDetector(
-                                  onTap: () async {
-                                    var pitstop = expC.billAttachment[2];
-                                    if (pitstop!=null) {
-                                      await showDialog(
-                                          context: context,
-                                          builder: (_) => imageDialog(pitstop));
-                                    }
-                                  },
-                                  child: Container(
-                                    width: 100.0,
-                                    height: 150.0,
-                                    decoration: BoxDecoration(
-                                      border:
-                                      Border.all(width: 1, color: Colors.white),
-                                      borderRadius: BorderRadius.circular(10),
-                                      image: DecorationImage(
-                                          image: NetworkImage(
-                                              expC.billAttachment[2].toString()),
-                                          fit: BoxFit.cover), //<-- SEE HERE
-                                    ),
-                                  ),
-                                ):Container(),
+                                            border: Border.all(
+                                                width: 1, color: Colors.white),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            image: DecorationImage(
+                                                image: NetworkImage(expC
+                                                    .billAttachment[2]
+                                                    .toString()),
+                                                fit: BoxFit
+                                                    .cover), //<-- SEE HERE
+                                          ),
+                                        ),
+                                      )
+                                    : Container(),
                               ],
                             ),
                             roleId == AppUtils.ADMIN

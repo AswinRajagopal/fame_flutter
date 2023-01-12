@@ -227,6 +227,64 @@ class ExpenseController extends GetxController {
     }
   }
 
+  void getExpAdvAdmin(empId) async {
+    try {
+      isLoading(true);
+      await pr.show();
+      res = await RemoteServices().getExpAdvAdmin(empId);
+      if (res != null) {
+        isLoading(false);
+        await pr.hide();
+        if (res['success']) {
+          print('expAdvancec valid: $res');
+          if (res['empExpAdvanceList'] != null) {
+            for (var i = 0; i < res['empExpAdvanceList'].length; i++) {
+              empExpAdvanceList.add(res['empExpAdvanceList'][i]);
+            }
+            print("empExpAdvanceList:$empExpAdvanceList");
+          }
+        } else {
+          Get.snackbar(
+            null,
+            'Something went wrong! Please try again later',
+            colorText: Colors.white,
+            backgroundColor: Colors.black87,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
+          );
+        }
+      }
+    } catch (e) {
+      print(e);
+      isLoading(false);
+      await pr.hide();
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
+      );
+    }
+  }
+
   void getExpenses() async {
     try {
       isLoading(true);
@@ -308,8 +366,11 @@ class ExpenseController extends GetxController {
               vertical: 18.0,
             ),
             borderRadius: 5.0,
+            duration: Duration(
+              seconds: 2,
+            ),
           );
-          Timer(Duration(seconds: 1), Get.back);
+          Timer(Duration(seconds: 2), Get.back);
           // getEmpExpenses();
         } else {
           Get.snackbar(
@@ -412,6 +473,66 @@ class ExpenseController extends GetxController {
     }
   }
 
+  void getEmpExpensesAdmin(empId) async {
+    try {
+      empExpList = [];
+      isLoading(true);
+      await pr.show();
+      res = await RemoteServices().getEmpExpensesAdmin(empId);
+      if (res != null) {
+        isLoading(false);
+        await pr.hide();
+        if (res['success']) {
+          expDet = res;
+          print('expensesTypeRes valid: $res');
+          if (res['expenseList'] != null) {
+            for (var i = 0; i < res['expenseList'].length; i++) {
+              empExpList.add(res['expenseList'][i]);
+            }
+            print("empexplist:$empExpList");
+          }
+        } else {
+          Get.snackbar(
+            null,
+            'Something went wrong! Please try again later',
+            colorText: Colors.white,
+            backgroundColor: Colors.black87,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
+          );
+        }
+      }
+    } catch (e) {
+      print(e);
+      isLoading(false);
+      await pr.hide();
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
+      );
+    }
+  }
+
   void getEmpExpense(status) async {
     try {
       rejectedList = [];
@@ -424,9 +545,68 @@ class ExpenseController extends GetxController {
         if (res['success']) {
           expDet = res;
           print('rejApr valid: $res');
-          if (res['rejectedList'] != null) {
-            for (var i = 0; i < res['rejectedList'].length; i++) {
-              rejectedList.add(res['rejectedList'][i]);
+          if (res['rejectedOrApprvList'] != null) {
+            for (var i = 0; i < res['rejectedOrApprvList'].length; i++) {
+              rejectedList.add(res['rejectedOrApprvList'][i]);
+            }
+          }
+        } else {
+          Get.snackbar(
+            null,
+            'Something went wrong! Please try again later',
+            colorText: Colors.white,
+            backgroundColor: Colors.black87,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
+          );
+        }
+      }
+    } catch (e) {
+      print(e);
+      isLoading(false);
+      await pr.hide();
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
+      );
+    }
+  }
+
+  void getEmpExpenseAdmin(empId, status) async {
+    try {
+      rejectedList = [];
+      isLoading(true);
+      await pr.show();
+      res = await RemoteServices().getEmpExpenseAdmin(empId, status);
+      if (res != null) {
+        isLoading(false);
+        await pr.hide();
+        if (res['success']) {
+          expDet = res;
+          print('rejApr valid: $res');
+          if (res['rejectedOrApprvList'] != null) {
+            for (var i = 0; i < res['rejectedOrApprvList'].length; i++) {
+              rejectedList.add(res['rejectedOrApprvList'][i]);
             }
           }
         } else {

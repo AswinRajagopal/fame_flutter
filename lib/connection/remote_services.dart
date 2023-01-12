@@ -1417,6 +1417,23 @@ class RemoteServices {
     }
   }
 
+  Future getExpAdvAdmin(empId) async {
+    var response = await client.post('$baseURL/expense/get_emp_adv',
+        headers: header,
+        body: jsonEncode(<String, dynamic>{
+          'empId': empId,
+          'companyId': box.get('companyid').toString(),
+        }));
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      return null;
+    }
+  }
+
   Future getEmpExpenses() async {
     var response = await client.post('$baseURL/expense/get_emp_expenses',
         headers: header,
@@ -1434,11 +1451,46 @@ class RemoteServices {
     }
   }
 
+  Future getEmpExpensesAdmin(empId) async {
+    var response = await client.post('$baseURL/expense/get_emp_expenses',
+        headers: header,
+        body: jsonEncode(<String, String>{
+          'empId': empId,
+          'companyId': box.get('companyid').toString(),
+        }));
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      return null;
+    }
+  }
+
   Future getEmpExpense(status) async {
     var response = await client.post('$baseURL/expense/get_emp_expenses',
         headers: header,
         body: jsonEncode(<String, String>{
           'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          "status": status
+        }));
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      return null;
+    }
+  }
+
+  Future getEmpExpenseAdmin(empId, status) async {
+    var response = await client.post('$baseURL/expense/get_emp_expenses',
+        headers: header,
+        body: jsonEncode(<String, String>{
+          'empId': empId,
           'companyId': box.get('companyid').toString(),
           "status": status
         }));
