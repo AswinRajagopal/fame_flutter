@@ -277,21 +277,17 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         child: Row(
                           children: [
-                            Checkbox(
-                              value: rememberMe,
-                              onChanged: (value) {
-                                print(value);
-                                setState(() {
-                                  rememberMe = value;
-                                });
+                            FlatButton(
+                              onPressed: () {
+                                Get.to(OtpAuth());
                               },
-                            ),
-                            Text(
-                              'Remember me',
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 15.0,
+                              child: Text(
+                                'Login wth OTP',
+                                style: TextStyle(
+                                  color: AppUtils().blueColor,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 15.0,
+                                ),
                               ),
                             ),
                             Spacer(),
@@ -390,33 +386,6 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.black),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50.0),
-                              side: BorderSide(color: AppUtils().blueColor)))),
-                  onPressed: () {
-                    Get.to(OtpAuth());
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Text(
-                      'Login with OTP',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 15.0,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            )
           ],
         ),
       ),
