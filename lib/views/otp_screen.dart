@@ -62,7 +62,7 @@ class _OTPScreenState extends State<OTPScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 20.0,
+                  horizontal: 15.0,
                   vertical: 10.0,
                 ),
                 child: Text(
@@ -78,11 +78,13 @@ class _OTPScreenState extends State<OTPScreen> {
                 padding: const EdgeInsets.symmetric(
                   horizontal: 20.0,
                 ),
-                child: Text(
-                  'We have sent a verification code to your mobile number.',
-                  style: TextStyle(
-                    color: Color(0xFF3C4858),
-                    fontSize: 20.0,
+                child: Container(
+                  child: Text(
+                    'OTP sent to Mobile Number:' + widget.mobile,
+                    style: TextStyle(
+                      color: Color(0xFF3C4858),
+                      fontSize: 18.0,
+                    ),
                   ),
                 ),
               ),
