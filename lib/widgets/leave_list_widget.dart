@@ -1,11 +1,12 @@
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:dotted_line/dotted_line.dart';
-import '../controllers/leave_controller.dart';
-import '../connection/remote_services.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-    class LeaveListWidget extends StatelessWidget {
+import '../connection/remote_services.dart';
+import '../controllers/leave_controller.dart';
+
+class LeaveListWidget extends StatelessWidget {
   final leave;
   final int index;
   final int length;
@@ -21,6 +22,9 @@ import 'package:intl/intl.dart';
   final double sBox = 120.0;
   final double sBoxSpace = 10.0;
 
+  var number;
+  var added;
+
   String convertDate(date) {
     return DateFormat('dd').format(DateTime.parse(date)).toString() +
         '-' +
@@ -32,8 +36,14 @@ import 'package:intl/intl.dart';
   int dateDifference(date1, date2) {
     var fromDate = DateTime.parse(date1);
     var toDate = DateTime.parse(date2);
-
-    return toDate.difference(fromDate).inDays;
+    if (fromDate == toDate) {
+      if (fromDate.difference(toDate).inDays <= 0) number = 1;
+      return number;
+    } else {
+      var day = toDate.difference(fromDate).inDays;
+      added = day + 1;
+      return added;
+    }
   }
 
   String getStatus(status) {
@@ -52,8 +62,6 @@ import 'package:intl/intl.dart';
 
   @override
   Widget build(BuildContext context) {
-    // print(RemoteServices().box.get('empid'));
-    // print(leave['empId']);
     print(RemoteServices().box.get('empid') != leave['empId']);
     return Container(
       color: Colors.white,
@@ -146,50 +154,48 @@ import 'package:intl/intl.dart';
                 ),
               ],
             ),
-            Visibility(
-              visible: dateDifference(leave['fromDate'], leave['toDate']) > 0,
-              child: SizedBox(
-                height: rowAfterSize,
-              ),
+            SizedBox(
+              height: rowAfterSize,
             ),
-            Visibility(
-              visible: dateDifference(leave['fromDate'], leave['toDate']) > 0,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: sBox,
-                    child: Text(
-                      'Duration',
-                      style: TextStyle(
-                        // fontWeight: FontWeight.bold,
-                        fontSize: titleSize,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: sBoxSpace,
-                  ),
-                  Text(
-                    ':',
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: sBox,
+                  child: Text(
+                    'Duration',
                     style: TextStyle(
-                      fontSize: textSize,
+                      // fontWeight: FontWeight.bold,
+                      fontSize: titleSize,
                     ),
                   ),
-                  SizedBox(
-                    width: secondWidth,
+                ),
+                SizedBox(
+                  width: sBoxSpace,
+                ),
+                Text(
+                  ':',
+                  style: TextStyle(
+                    fontSize: textSize,
                   ),
-                  Text(
-                    dateDifference(leave['fromDate'], leave['toDate'])
-                            .toString() +
-                        " days",
-                    style: TextStyle(
-                      fontSize: textSize,
-                      color: Colors.grey,
-                    ),
+                ),
+                SizedBox(
+                  width: secondWidth,
+                ),
+                Text(
+                  dateDifference(leave['fromDate'], leave['toDate']) > 1
+                      ? dateDifference(leave['fromDate'], leave['toDate'])
+                              .toString() +
+                          " days"
+                      : dateDifference(leave['fromDate'], leave['toDate'])
+                              .toString() +
+                          " day",
+                  style: TextStyle(
+                    fontSize: textSize,
+                    color: Colors.grey,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
             SizedBox(
               height: rowAfterSize,
