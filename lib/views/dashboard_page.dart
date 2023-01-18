@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'package:fame/controllers/profile_controller.dart';
 import 'package:fame/views/routeplan_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
@@ -41,6 +42,7 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  final ProfileController pC = Get.put(ProfileController());
   final DashboardController dbC = Get.put(DashboardController());
   final EmprplanController erpC = Get.put(EmprplanController());
   final DBCalController calC = Get.put(DBCalController());
@@ -49,6 +51,71 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   void initState() {
     super.initState();
+    new Future.delayed(Duration.zero, () {
+      DateFormat('dd-MM')
+          .format(DateTime.parse(dbC.response['empDetails']['dob'])) ==
+          DateFormat('dd-MM').format(DateTime.now()) ?
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0))),
+              content: Stack(
+                overflow: Overflow.visible,
+                alignment: Alignment.center,
+                children: <Widget>[
+                  Container(
+                    width: double.infinity,
+                    height: 200,
+                    decoration: BoxDecoration(color: Colors.white),
+                    padding: EdgeInsets.fromLTRB(20, 80, 20, 20),
+                    child: Center(
+                      child: Column(children: [
+                        Obx(() {
+                          if (dbC.isDashboardLoading.value) {
+                            return Text(
+                              '...',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            );
+                          } else {
+                            return Flexible(
+                              child: Text(
+                                "Happy birthday" + " " +
+                                    dbC.response['empdetails']['name'] + " !" ??
+                                    'N/A',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 24.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            );
+                          }
+                        }),
+                        Text('Have a great year Ahead...',
+                            style: TextStyle(
+                                fontSize: 24, fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center),
+                      ]),
+                    ),
+                  ),
+                  Positioned(
+                      top: -140,
+                      child: Image.asset("assets/images/birthday.png",
+                          width: 200, height: 200))
+                ],
+              ));
+        },
+      ) : DashboardPage();
+    });
+
     callBg();
     liteMode = RemoteServices().box.get('lite');
     Future.delayed(Duration(milliseconds: 100), () {
@@ -75,8 +142,8 @@ class _DashboardPageState extends State<DashboardPage> {
 
   String convertTimeWithParse(time) {
     return DateFormat('h:mm')
-            .format(DateFormat('HH:mm:ss').parse(time))
-            .toString() +
+        .format(DateFormat('HH:mm:ss').parse(time))
+        .toString() +
         DateFormat('a')
             .format(DateFormat('HH:mm:ss').parse(time))
             .toString()
@@ -160,7 +227,8 @@ class _DashboardPageState extends State<DashboardPage> {
               borderRadius: 5.0,
             );
             return false;
-          } else if(appFeatures['multipleCheckin']==null || !appFeatures['multipleCheckin']){
+          } else if (appFeatures['multipleCheckin'] == null ||
+              !appFeatures['multipleCheckin']) {
             // attendance given
             // dont allow checkin
             Get.snackbar(
@@ -184,7 +252,7 @@ class _DashboardPageState extends State<DashboardPage> {
           return true;
         } else {
           if (curDate == chkDate &&
-              (appFeatures['multipleCheckin']==null ||
+              (appFeatures['multipleCheckin'] == null ||
                   !appFeatures['multipleCheckin'])) {
             Get.snackbar(
               null,
@@ -462,13 +530,13 @@ class _DashboardPageState extends State<DashboardPage> {
                                     ),
                                     child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                       children: [
                                         Column(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                          MainAxisAlignment.start,
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               'You are posted in',
@@ -494,11 +562,11 @@ class _DashboardPageState extends State<DashboardPage> {
                                                 // print('Length: ${dbC.response['clientData']['name'].length}');
                                                 var clientName =
                                                     dbC.response['clientData']
-                                                            ['name'] ??
+                                                    ['name'] ??
                                                         'N/A';
                                                 var areaName =
                                                     dbC.response['clientData']
-                                                            ['address'] ??
+                                                    ['address'] ??
                                                         'N/A';
                                                 return Row(
                                                   children: [
@@ -509,7 +577,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                         style: TextStyle(
                                                           fontSize: 15.0,
                                                           fontWeight:
-                                                              FontWeight.bold,
+                                                          FontWeight.bold,
                                                         ),
                                                         overflow: TextOverflow
                                                             .ellipsis,
@@ -533,7 +601,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                 Text(
                                                   convertTimeWithParse(
                                                       dbC.response['empdetails']
-                                                          ['shiftStartTime']),
+                                                      ['shiftStartTime']),
                                                   style: TextStyle(
                                                     fontSize: 15.0,
                                                     fontWeight: FontWeight.bold,
@@ -548,7 +616,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                 Text(
                                                   convertTimeWithParse(
                                                       dbC.response['empdetails']
-                                                          ['shiftEndTime']),
+                                                      ['shiftEndTime']),
                                                   style: TextStyle(
                                                     fontSize: 15.0,
                                                     fontWeight: FontWeight.bold,
@@ -559,7 +627,9 @@ class _DashboardPageState extends State<DashboardPage> {
                                           ],
                                         ),
                                         Visibility(
-                                          visible: appFeatures['checkin'] ==null || appFeatures['checkin'],
+                                          visible:
+                                              appFeatures['checkin'] == null ||
+                                                  appFeatures['checkin'],
                                           child: RaisedButton(
                                             onPressed: () async {
                                               print(RemoteServices()
@@ -576,30 +646,23 @@ class _DashboardPageState extends State<DashboardPage> {
                                                           .get('faceApi'),
                                                       appFeatures[
                                                           'checkinLocation']));
-                                                }else {
+                                                } else {
                                                   await Get.snackbar(
                                                     null,
                                                     'Please enable Location to checkin / checkout',
-                                                    colorText:
-                                                    Colors.white,
+                                                    colorText: Colors.white,
                                                     backgroundColor:
-                                                    Colors
-                                                        .black87,
+                                                        Colors.black87,
                                                     snackPosition:
-                                                    SnackPosition
-                                                        .BOTTOM,
-                                                    margin: EdgeInsets
-                                                        .symmetric(
-                                                        horizontal:
-                                                        8.0,
-                                                        vertical:
-                                                        10.0),
-                                                    padding: EdgeInsets
-                                                        .symmetric(
-                                                        horizontal:
-                                                        12.0,
-                                                        vertical:
-                                                        18.0),
+                                                        SnackPosition.BOTTOM,
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 8.0,
+                                                            vertical: 10.0),
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 12.0,
+                                                            vertical: 18.0),
                                                     borderRadius: 5.0,
                                                   );
                                                 }
@@ -611,9 +674,9 @@ class _DashboardPageState extends State<DashboardPage> {
                                                   'You cannot checkin / checkout without giving location permission',
                                                   colorText: Colors.white,
                                                   backgroundColor:
-                                                      Colors.black87,
+                                                  Colors.black87,
                                                   snackPosition:
-                                                      SnackPosition.BOTTOM,
+                                                  SnackPosition.BOTTOM,
                                                   margin: EdgeInsets.symmetric(
                                                       horizontal: 8.0,
                                                       vertical: 10.0),
@@ -639,7 +702,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                             color: AppUtils().greenColor,
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
-                                                  BorderRadius.circular(
+                                              BorderRadius.circular(
                                                 25.0,
                                               ),
                                               side: BorderSide(
@@ -653,152 +716,152 @@ class _DashboardPageState extends State<DashboardPage> {
                                   );
                                 } else {
                                   var chkinDt = dbC.response['dailyAttendance']
-                                      ['checkInDateTime'];
+                                  ['checkInDateTime'];
                                   var chkoutDt = dbC.response['dailyAttendance']
-                                      ['checkOutDateTime'];
+                                  ['checkOutDateTime'];
                                   return (chkinDt != null && chkinDt != '') &&
-                                          (chkoutDt == null || chkoutDt == '')
+                                      (chkoutDt == null || chkoutDt == '')
                                       ? Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                            10.0,
-                                            10.0,
-                                            10.0,
-                                            10.0,
-                                          ),
-                                          child: Column(
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  Text(
-                                                    'Current Status: ',
-                                                    style: TextStyle(
-                                                      fontSize: 16.0,
-                                                      color: Colors.grey,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    'On Duty',
-                                                    style: TextStyle(
-                                                      fontSize: 16.0,
-                                                      color: AppUtils()
-                                                          .orangeColor,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ],
+                                    padding: const EdgeInsets.fromLTRB(
+                                      10.0,
+                                      10.0,
+                                      10.0,
+                                      10.0,
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              'Current Status: ',
+                                              style: TextStyle(
+                                                fontSize: 16.0,
+                                                color: Colors.grey,
+                                                fontWeight:
+                                                FontWeight.bold,
                                               ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  Text(
-                                                    'Checked in on ',
-                                                    style: TextStyle(
-                                                      fontSize: 16.0,
-                                                      color: Colors.grey,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    convertTimeForCheckedIn(
-                                                      chkinDt,
-                                                    ),
-                                                    style: TextStyle(
-                                                      fontSize: 16.0,
-                                                      color: Colors.grey,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                    // maxLines: 2,
-                                                  ),
-                                                ],
+                                            ),
+                                            Text(
+                                              'On Duty',
+                                              style: TextStyle(
+                                                fontSize: 16.0,
+                                                color: AppUtils()
+                                                    .orangeColor,
+                                                fontWeight:
+                                                FontWeight.bold,
                                               ),
-                                              SizedBox(
-                                                height: 5.0,
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              'Checked in on ',
+                                              style: TextStyle(
+                                                fontSize: 16.0,
+                                                color: Colors.grey,
+                                                fontWeight:
+                                                FontWeight.bold,
                                               ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          Text(
-                                                            'Checked in at ',
-                                                            style: TextStyle(
-                                                              fontSize: 16.0,
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            convertTimeWithoutParse(dbC
-                                                                        .response[
-                                                                    'dailyAttendance']
-                                                                [
-                                                                'checkInDateTime']),
-                                                            style: TextStyle(
-                                                              fontSize: 16.0,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
-                                                          ),
-                                                        ],
+                                            ),
+                                            Text(
+                                              convertTimeForCheckedIn(
+                                                chkinDt,
+                                              ),
+                                              style: TextStyle(
+                                                fontSize: 16.0,
+                                                color: Colors.grey,
+                                                fontWeight:
+                                                FontWeight.bold,
+                                              ),
+                                              // maxLines: 2,
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 5.0,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment
+                                              .spaceBetween,
+                                          children: [
+                                            Column(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment
+                                                  .start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      'Checked in at ',
+                                                      style: TextStyle(
+                                                        fontSize: 16.0,
                                                       ),
-                                                      SizedBox(
-                                                        height: 5.0,
+                                                    ),
+                                                    Text(
+                                                      convertTimeWithoutParse(dbC
+                                                          .response[
+                                                      'dailyAttendance']
+                                                      [
+                                                      'checkInDateTime']),
+                                                      style: TextStyle(
+                                                        fontSize: 16.0,
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .bold,
                                                       ),
-                                                      Row(
-                                                        children: [
-                                                          Text(
-                                                            'Shift ends at ',
-                                                            style: TextStyle(
-                                                              fontSize: 16.0,
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            convertTimeWithParse(dbC
-                                                                        .response[
-                                                                    'empdetails']
-                                                                [
-                                                                'shiftEndTime']),
-                                                            style: TextStyle(
-                                                              fontSize: 16.0,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
-                                                          ),
-                                                        ],
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  height: 5.0,
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      'Shift ends at ',
+                                                      style: TextStyle(
+                                                        fontSize: 16.0,
                                                       ),
-                                                    ],
-                                                  ),
-                                                  Visibility(
-                                                    child: RaisedButton(
-                                                      onPressed: () async {
-                                                        //Check Condition
-                                                        var chk =
-                                                            checkCondition(
-                                                          dbC.response,
-                                                          'chkout',
-                                                        );
-                                                        if (chk) {
-                                                          if (await Permission
-                                                              .locationWhenInUse
-                                                              .isGranted) {
-                                                            if (await Geolocator
+                                                    ),
+                                                    Text(
+                                                      convertTimeWithParse(dbC
+                                                          .response[
+                                                      'empdetails']
+                                                      [
+                                                      'shiftEndTime']),
+                                                      style: TextStyle(
+                                                        fontSize: 16.0,
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .bold,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                            Visibility(
+                                              child: RaisedButton(
+                                                onPressed: () async {
+                                                  //Check Condition
+                                                  var chk =
+                                                  checkCondition(
+                                                    dbC.response,
+                                                    'chkout',
+                                                  );
+                                                  if (chk) {
+                                                    if (await Permission
+                                                        .locationWhenInUse
+                                                        .isGranted) {
+                                                      if (await Geolocator
                                                                 .isLocationServiceEnabled()) {
                                                               await Get.to(CheckoutPage(
                                                                   RemoteServices()
@@ -807,301 +870,307 @@ class _DashboardPageState extends State<DashboardPage> {
                                                                           'faceApi'),
                                                                   appFeatures[
                                                                       'checkinLocation']));
-                                                            }else {
-                                                              await Get.snackbar(
+                                                            } else {
+                                                              await Get
+                                                                  .snackbar(
                                                                 null,
                                                                 'Please enable Location to checkin / checkout',
                                                                 colorText:
-                                                                Colors.white,
+                                                                    Colors
+                                                                        .white,
                                                                 backgroundColor:
-                                                                Colors
-                                                                    .black87,
+                                                                    Colors
+                                                                        .black87,
                                                                 snackPosition:
-                                                                SnackPosition
-                                                                    .BOTTOM,
+                                                                    SnackPosition
+                                                                        .BOTTOM,
                                                                 margin: EdgeInsets
                                                                     .symmetric(
-                                                                    horizontal:
-                                                                    8.0,
-                                                                    vertical:
-                                                                    10.0),
+                                                                        horizontal:
+                                                                            8.0,
+                                                                        vertical:
+                                                                            10.0),
                                                                 padding: EdgeInsets
                                                                     .symmetric(
-                                                                    horizontal:
-                                                                    12.0,
-                                                                    vertical:
-                                                                    18.0),
-                                                                borderRadius: 5.0,
+                                                                        horizontal:
+                                                                            12.0,
+                                                                        vertical:
+                                                                            18.0),
+                                                                borderRadius:
+                                                                    5.0,
                                                               );
-                                                            }
-                                                          } else if (await Permission
-                                                              .locationWhenInUse
-                                                              .isPermanentlyDenied) {
-                                                            await Get.snackbar(
-                                                              null,
-                                                              'You cannot checkin / checkout without giving location permission',
-                                                              colorText:
-                                                                  Colors.white,
-                                                              backgroundColor:
-                                                                  Colors
-                                                                      .black87,
-                                                              snackPosition:
-                                                                  SnackPosition
-                                                                      .BOTTOM,
-                                                              margin: EdgeInsets
-                                                                  .symmetric(
-                                                                      horizontal:
-                                                                          8.0,
-                                                                      vertical:
-                                                                          10.0),
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                      horizontal:
-                                                                          12.0,
-                                                                      vertical:
-                                                                          18.0),
-                                                              borderRadius: 5.0,
-                                                            );
-                                                          } else {
-                                                            await Permission
-                                                                .locationWhenInUse
-                                                                .request();
-                                                          }
-                                                        }
-                                                      },
-                                                      child: Text(
-                                                        'Check Out',
-                                                        style: TextStyle(
-                                                          fontSize: 18.0,
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      ),
-                                                      color: AppUtils()
-                                                          .orangeColor,
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                          25.0,
-                                                        ),
-                                                        side: BorderSide(
-                                                          color: AppUtils()
-                                                              .orangeColor,
-                                                        ),
-                                                      ),
-                                                    ),
+                                                      }
+                                                    } else if (await Permission
+                                                        .locationWhenInUse
+                                                        .isPermanentlyDenied) {
+                                                      await Get.snackbar(
+                                                        null,
+                                                        'You cannot checkin / checkout without giving location permission',
+                                                        colorText:
+                                                        Colors.white,
+                                                        backgroundColor:
+                                                        Colors
+                                                            .black87,
+                                                        snackPosition:
+                                                        SnackPosition
+                                                            .BOTTOM,
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                            horizontal:
+                                                            8.0,
+                                                            vertical:
+                                                            10.0),
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                            horizontal:
+                                                            12.0,
+                                                            vertical:
+                                                            18.0),
+                                                        borderRadius: 5.0,
+                                                      );
+                                                    } else {
+                                                      await Permission
+                                                          .locationWhenInUse
+                                                          .request();
+                                                    }
+                                                  }
+                                                },
+                                                child: Text(
+                                                  'Check Out',
+                                                  style: TextStyle(
+                                                    fontSize: 18.0,
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                    FontWeight.bold,
                                                   ),
-                                                ],
+                                                ),
+                                                color: AppUtils()
+                                                    .orangeColor,
+                                                shape:
+                                                RoundedRectangleBorder(
+                                                  borderRadius:
+                                                  BorderRadius
+                                                      .circular(
+                                                    25.0,
+                                                  ),
+                                                  side: BorderSide(
+                                                    color: AppUtils()
+                                                        .orangeColor,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                      : Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                      10.0,
+                                      25.0,
+                                      10.0,
+                                      25.0,
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Visibility(
+                                          visible: !conditionForMsg(
+                                              dbC.response,
+                                              'chkin') &&
+                                              RemoteServices()
+                                                  .box
+                                                  .get('role') !=
+                                                  '4',
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                            children: [
+                                              Text(
+                                                'Attendance already given\nTiming : ' +
+                                                    formatter.format(
+                                                        DateTime.parse(dbC
+                                                            .response[
+                                                        'dailyAttendance']
+                                                        [
+                                                        'checkInDateTime'])) +
+                                                    ' to ' +
+                                                    formatter.format(
+                                                        DateTime.parse(dbC
+                                                            .response[
+                                                        'dailyAttendance']
+                                                        [
+                                                        'checkOutDateTime'])),
+                                                textAlign:
+                                                TextAlign.center,
+                                                style: TextStyle(
+                                                  fontSize: 16.0,
+                                                  color: AppUtils()
+                                                      .orangeColor,
+                                                  fontWeight:
+                                                  FontWeight.bold,
+                                                ),
                                               ),
                                             ],
                                           ),
-                                        )
-                                      : Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                            10.0,
-                                            25.0,
-                                            10.0,
-                                            25.0,
-                                          ),
-                                          child: Column(
-                                            children: [
-                                              Visibility(
-                                                visible: !conditionForMsg(
-                                                        dbC.response,
-                                                        'chkin') &&
-                                                    RemoteServices()
-                                                            .box
-                                                            .get('role') !=
-                                                        '4',
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.end,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment
+                                              .spaceBetween,
+                                          children: [
+                                            Column(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment
+                                                  .start,
+                                              children: [
+                                                Text(
+                                                  'You are posted in',
+                                                  style: TextStyle(
+                                                    fontSize: 15.0,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 5.0,
+                                                ),
+                                                Obx(() {
+                                                  if (dbC
+                                                      .isDashboardLoading
+                                                      .value) {
+                                                    return Text(
+                                                      '...',
+                                                      style: TextStyle(
+                                                        color:
+                                                        Colors.white,
+                                                        fontSize: 20.0,
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .bold,
+                                                      ),
+                                                    );
+                                                  } else {
+                                                    // print('Length: ${dbC.response['clientData']['name'].length}');
+                                                    var clientName = dbC
+                                                        .response[
+                                                    'clientData']
+                                                    ['name'] ??
+                                                        'N/A';
+                                                    var areaName = dbC
+                                                        .response[
+                                                    'clientData']
+                                                    ['address'] ??
+                                                        'N/A';
+                                                    return Row(
+                                                      children: [
+                                                        SizedBox(
+                                                          width: 240.0,
+                                                          child: Text(
+                                                            '$clientName at $areaName',
+                                                            style:
+                                                            TextStyle(
+                                                              fontSize:
+                                                              15.0,
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .bold,
+                                                            ),
+                                                            overflow:
+                                                            TextOverflow
+                                                                .ellipsis,
+                                                          ),
+                                                        ),
+                                                        // Text(
+                                                        //   ' in ',
+                                                        //   style: TextStyle(
+                                                        //     fontSize: 15.0,
+                                                        //   ),
+                                                        // ),
+                                                        // SizedBox(
+                                                        //   width: 40.0,
+                                                        //   child: Text(
+                                                        //     // dbC.response['empdetails']['area'] ?? 'N/A',
+                                                        //     'asdasd asdasd asdasdasd',
+                                                        //     style: TextStyle(
+                                                        //       fontSize: 15.0,
+                                                        //       fontWeight: FontWeight.bold,
+                                                        //     ),
+                                                        //     overflow: TextOverflow.ellipsis,
+                                                        //   ),
+                                                        // ),
+                                                      ],
+                                                    );
+                                                  }
+                                                }),
+                                                SizedBox(
+                                                  height: 5.0,
+                                                ),
+                                                Row(
                                                   children: [
                                                     Text(
-                                                      'Attendance already given\nTiming : ' +
-                                                          formatter.format(
-                                                              DateTime.parse(dbC
-                                                                          .response[
-                                                                      'dailyAttendance']
-                                                                  [
-                                                                  'checkInDateTime'])) +
-                                                          ' to ' +
-                                                          formatter.format(
-                                                              DateTime.parse(dbC
-                                                                          .response[
-                                                                      'dailyAttendance']
-                                                                  [
-                                                                  'checkOutDateTime'])),
-                                                      textAlign:
-                                                          TextAlign.center,
+                                                      'Duty Timings : ',
                                                       style: TextStyle(
-                                                        fontSize: 16.0,
-                                                        color: AppUtils()
-                                                            .orangeColor,
+                                                        fontSize: 15.0,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      convertTimeWithParse(dbC
+                                                          .response[
+                                                      'empdetails']
+                                                      [
+                                                      'shiftStartTime']),
+                                                      style: TextStyle(
+                                                        fontSize: 15.0,
                                                         fontWeight:
-                                                            FontWeight.bold,
+                                                        FontWeight
+                                                            .bold,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      ' to ',
+                                                      style: TextStyle(
+                                                        fontSize: 15.0,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      convertTimeWithParse(dbC
+                                                          .response[
+                                                      'empdetails']
+                                                      [
+                                                      'shiftEndTime']),
+                                                      style: TextStyle(
+                                                        fontSize: 15.0,
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .bold,
                                                       ),
                                                     ),
                                                   ],
                                                 ),
-                                              ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        'You are posted in',
-                                                        style: TextStyle(
-                                                          fontSize: 15.0,
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 5.0,
-                                                      ),
-                                                      Obx(() {
-                                                        if (dbC
-                                                            .isDashboardLoading
-                                                            .value) {
-                                                          return Text(
-                                                            '...',
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 20.0,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
-                                                          );
-                                                        } else {
-                                                          // print('Length: ${dbC.response['clientData']['name'].length}');
-                                                          var clientName = dbC
-                                                                          .response[
-                                                                      'clientData']
-                                                                  ['name'] ??
-                                                              'N/A';
-                                                          var areaName = dbC
-                                                                          .response[
-                                                                      'clientData']
-                                                                  ['address'] ??
-                                                              'N/A';
-                                                          return Row(
-                                                            children: [
-                                                              SizedBox(
-                                                                width: 240.0,
-                                                                child: Text(
-                                                                  '$clientName at $areaName',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        15.0,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                  ),
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                ),
-                                                              ),
-                                                              // Text(
-                                                              //   ' in ',
-                                                              //   style: TextStyle(
-                                                              //     fontSize: 15.0,
-                                                              //   ),
-                                                              // ),
-                                                              // SizedBox(
-                                                              //   width: 40.0,
-                                                              //   child: Text(
-                                                              //     // dbC.response['empdetails']['area'] ?? 'N/A',
-                                                              //     'asdasd asdasd asdasdasd',
-                                                              //     style: TextStyle(
-                                                              //       fontSize: 15.0,
-                                                              //       fontWeight: FontWeight.bold,
-                                                              //     ),
-                                                              //     overflow: TextOverflow.ellipsis,
-                                                              //   ),
-                                                              // ),
-                                                            ],
-                                                          );
-                                                        }
-                                                      }),
-                                                      SizedBox(
-                                                        height: 5.0,
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Text(
-                                                            'Duty Timings : ',
-                                                            style: TextStyle(
-                                                              fontSize: 15.0,
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            convertTimeWithParse(dbC
-                                                                        .response[
-                                                                    'empdetails']
-                                                                [
-                                                                'shiftStartTime']),
-                                                            style: TextStyle(
-                                                              fontSize: 15.0,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            ' to ',
-                                                            style: TextStyle(
-                                                              fontSize: 15.0,
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            convertTimeWithParse(dbC
-                                                                        .response[
-                                                                    'empdetails']
-                                                                [
-                                                                'shiftEndTime']),
-                                                            style: TextStyle(
-                                                              fontSize: 15.0,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Visibility(
-                                                    visible: appFeatures['checkin'] ==null || appFeatures['checkin'],
-                                                    child: RaisedButton(
-                                                      onPressed: () async {
-                                                        //Check Condition
-                                                        var chk =
-                                                            checkCondition(
-                                                          dbC.response,
-                                                          'chkin',
-                                                        );
-                                                        if (chk) {
-                                                          print(RemoteServices()
-                                                              .box
-                                                              .get('faceApi'));
-                                                          if (await Permission
-                                                              .locationWhenInUse
-                                                              .isGranted) {
-                                                            if (await Geolocator
+                                              ],
+                                            ),
+                                            Visibility(
+                                              visible: appFeatures[
+                                              'checkin'] ==
+                                                  null ||
+                                                  appFeatures['checkin'],
+                                              child: RaisedButton(
+                                                onPressed: () async {
+                                                  //Check Condition
+                                                  var chk =
+                                                  checkCondition(
+                                                    dbC.response,
+                                                    'chkin',
+                                                  );
+                                                  if (chk) {
+                                                    print(RemoteServices()
+                                                        .box
+                                                        .get('faceApi'));
+                                                    if (await Permission
+                                                        .locationWhenInUse
+                                                        .isGranted) {
+                                                      if (await Geolocator
                                                                 .isLocationServiceEnabled()) {
                                                               await Get.to(CheckinPage(
                                                                   RemoteServices()
@@ -1110,98 +1179,101 @@ class _DashboardPageState extends State<DashboardPage> {
                                                                           'faceApi'),
                                                                   appFeatures[
                                                                       'checkinLocation']));
-                                                            }else {
-                                                              await Get.snackbar(
+                                                            } else {
+                                                              await Get
+                                                                  .snackbar(
                                                                 null,
                                                                 'Please enable Location to checkin / checkout',
                                                                 colorText:
-                                                                Colors.white,
+                                                                    Colors
+                                                                        .white,
                                                                 backgroundColor:
-                                                                Colors
-                                                                    .black87,
+                                                                    Colors
+                                                                        .black87,
                                                                 snackPosition:
-                                                                SnackPosition
-                                                                    .BOTTOM,
+                                                                    SnackPosition
+                                                                        .BOTTOM,
                                                                 margin: EdgeInsets
                                                                     .symmetric(
-                                                                    horizontal:
-                                                                    8.0,
-                                                                    vertical:
-                                                                    10.0),
+                                                                        horizontal:
+                                                                            8.0,
+                                                                        vertical:
+                                                                            10.0),
                                                                 padding: EdgeInsets
                                                                     .symmetric(
-                                                                    horizontal:
-                                                                    12.0,
-                                                                    vertical:
-                                                                    18.0),
-                                                                borderRadius: 5.0,
+                                                                        horizontal:
+                                                                            12.0,
+                                                                        vertical:
+                                                                            18.0),
+                                                                borderRadius:
+                                                                    5.0,
                                                               );
-                                                            }
-                                                          } else if (await Permission
-                                                              .locationWhenInUse
-                                                              .isPermanentlyDenied) {
-                                                            await Get.snackbar(
-                                                              null,
-                                                              'You cannot checkin / checkout without giving location permission',
-                                                              colorText:
-                                                                  Colors.white,
-                                                              backgroundColor:
-                                                                  Colors
-                                                                      .black87,
-                                                              snackPosition:
-                                                                  SnackPosition
-                                                                      .BOTTOM,
-                                                              margin: EdgeInsets
-                                                                  .symmetric(
-                                                                      horizontal:
-                                                                          8.0,
-                                                                      vertical:
-                                                                          10.0),
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                      horizontal:
-                                                                          12.0,
-                                                                      vertical:
-                                                                          18.0),
-                                                              borderRadius: 5.0,
-                                                            );
-                                                          } else {
-                                                            await Permission
-                                                                .locationWhenInUse
-                                                                .request();
-                                                          }
-                                                        }
-                                                      },
-                                                      child: Text(
-                                                        'Check In',
-                                                        style: TextStyle(
-                                                          fontSize: 16.0,
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      ),
-                                                      color:
-                                                          AppUtils().greenColor,
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                          25.0,
-                                                        ),
-                                                        side: BorderSide(
-                                                          color: AppUtils()
-                                                              .greenColor,
-                                                        ),
-                                                      ),
-                                                    ),
+                                                      }
+                                                    } else if (await Permission
+                                                        .locationWhenInUse
+                                                        .isPermanentlyDenied) {
+                                                      await Get.snackbar(
+                                                        null,
+                                                        'You cannot checkin / checkout without giving location permission',
+                                                        colorText:
+                                                        Colors.white,
+                                                        backgroundColor:
+                                                        Colors
+                                                            .black87,
+                                                        snackPosition:
+                                                        SnackPosition
+                                                            .BOTTOM,
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                            horizontal:
+                                                            8.0,
+                                                            vertical:
+                                                            10.0),
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                            horizontal:
+                                                            12.0,
+                                                            vertical:
+                                                            18.0),
+                                                        borderRadius: 5.0,
+                                                      );
+                                                    } else {
+                                                      await Permission
+                                                          .locationWhenInUse
+                                                          .request();
+                                                    }
+                                                  }
+                                                },
+                                                child: Text(
+                                                  'Check In',
+                                                  style: TextStyle(
+                                                    fontSize: 16.0,
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                    FontWeight.bold,
                                                   ),
-                                                ],
+                                                ),
+                                                color:
+                                                AppUtils().greenColor,
+                                                shape:
+                                                RoundedRectangleBorder(
+                                                  borderRadius:
+                                                  BorderRadius
+                                                      .circular(
+                                                    25.0,
+                                                  ),
+                                                  side: BorderSide(
+                                                    color: AppUtils()
+                                                        .greenColor,
+                                                  ),
+                                                ),
                                               ),
-                                            ],
-                                          ),
-                                        );
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  );
                                 }
                               }),
                             ],
@@ -1226,157 +1298,159 @@ class _DashboardPageState extends State<DashboardPage> {
                               } else {
                                 var role = RemoteServices().box.get('role');
                                 return dbC.response['psCount'] == null &&
-                                        role != '4'
+                                    role != '4'
                                     ? Container(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        color: Colors.white,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                top: 5.0,
-                                                left: 20.0,
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  appFeatures[
-                                                  'attendance']? Text(
-                                                    DateFormat.MMMM()
-                                                        .format(DateTime.now())
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                      fontSize: 20.0,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ):Row(),
-                                                  role != '1' &&
-                                                          appFeatures[
-                                                              'attendance']
-                                                      ? FlatButton(
-                                                          onPressed: () {
-                                                            Get.offAll(
-                                                              AttendancePage(),
-                                                            );
-                                                          },
-                                                          child: Row(
-                                                            children: [
-                                                              Text(
-                                                                'Enter Attendance',
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize:
-                                                                      16.0,
-                                                                  color: Colors
-                                                                      .grey,
-                                                                ),
-                                                              ),
-                                                              Icon(
-                                                                Icons
-                                                                    .chevron_right,
-                                                                size: 25.0,
-                                                                color:
-                                                                    Colors.grey,
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        )
-                                                      : Container(),
-                                                ],
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 10.0,
-                                            ),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  'No data to show',
-                                                  style: TextStyle(
-                                                    fontSize: 18.0,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              height: 20.0,
-                                            ),
-                                          ],
+                                  width:
+                                  MediaQuery.of(context).size.width,
+                                  color: Colors.white,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          top: 5.0,
+                                          left: 20.0,
                                         ),
-                                      )
-                                    : Container(
-                                        // height: 150.0,
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        color: Colors.white,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment
+                                              .spaceBetween,
                                           children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                top: 10.0,
-                                                left: 20.0,
+                                            appFeatures['attendance']
+                                                ? Text(
+                                              DateFormat.MMMM()
+                                                  .format(DateTime
+                                                  .now())
+                                                  .toString(),
+                                              style: TextStyle(
+                                                fontSize: 20.0,
+                                                fontWeight:
+                                                FontWeight.bold,
                                               ),
+                                            )
+                                                : Row(),
+                                            role != '1' &&
+                                                appFeatures[
+                                                'attendance']
+                                                ? FlatButton(
+                                              onPressed: () {
+                                                Get.offAll(
+                                                  AttendancePage(),
+                                                );
+                                              },
                                               child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
                                                 children: [
                                                   Text(
-                                                    '',
-                                                    style: TextStyle(
-                                                      fontSize: 20.0,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                    'Enter Attendance',
+                                                    style:
+                                                    TextStyle(
+                                                      fontSize:
+                                                      16.0,
+                                                      color: Colors
+                                                          .grey,
                                                     ),
                                                   ),
-                                                  role != '1' &&
-                                                          appFeatures[
-                                                              'attendance']
-                                                      ? FlatButton(
-                                                          onPressed: () {
-                                                            Get.offAll(
-                                                              AttendancePage(),
-                                                            );
-                                                          },
-                                                          child: Row(
-                                                            children: [
-                                                              Text(
-                                                                'Enter Attendance',
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize:
-                                                                      16.0,
-                                                                  color: Colors
-                                                                      .grey,
-                                                                ),
-                                                              ),
-                                                              Icon(
-                                                                Icons
-                                                                    .chevron_right,
-                                                                size: 25.0,
-                                                                color:
-                                                                    Colors.grey,
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        )
-                                                      : Container(),
+                                                  Icon(
+                                                    Icons
+                                                        .chevron_right,
+                                                    size: 25.0,
+                                                    color:
+                                                    Colors.grey,
+                                                  ),
                                                 ],
                                               ),
-                                            ),
+                                            )
+                                                : Container(),
                                           ],
                                         ),
-                                      );
+                                      ),
+                                      SizedBox(
+                                        height: 10.0,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'No data to show',
+                                            style: TextStyle(
+                                              fontSize: 18.0,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 20.0,
+                                      ),
+                                    ],
+                                  ),
+                                )
+                                    : Container(
+                                  // height: 150.0,
+                                  width:
+                                  MediaQuery.of(context).size.width,
+                                  color: Colors.white,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          top: 10.0,
+                                          left: 20.0,
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment
+                                              .spaceBetween,
+                                          children: [
+                                            Text(
+                                              '',
+                                              style: TextStyle(
+                                                fontSize: 20.0,
+                                                fontWeight:
+                                                FontWeight.bold,
+                                              ),
+                                            ),
+                                            role != '1' &&
+                                                appFeatures[
+                                                'attendance']
+                                                ? FlatButton(
+                                              onPressed: () {
+                                                Get.offAll(
+                                                  AttendancePage(),
+                                                );
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    'Enter Attendance',
+                                                    style:
+                                                    TextStyle(
+                                                      fontSize:
+                                                      16.0,
+                                                      color: Colors
+                                                          .grey,
+                                                    ),
+                                                  ),
+                                                  Icon(
+                                                    Icons
+                                                        .chevron_right,
+                                                    size: 25.0,
+                                                    color:
+                                                    Colors.grey,
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                                : Container(),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
                               }
                             }),
                           ],
@@ -1421,11 +1495,10 @@ class _DashboardPageState extends State<DashboardPage> {
                               children: [
                                 CircleAvatar(
                                   radius: 20.0,
-                                  backgroundImage: appFeatures['compImg']==null?
-                                  AssetImage('assets/images/tm_logo.png'):
-                                  NetworkImage(
-                                      appFeatures['compImg']
-                                  ),
+                                  backgroundImage: appFeatures['compImg'] ==
+                                          null
+                                      ? AssetImage('assets/images/tm_logo.png')
+                                      : NetworkImage(appFeatures['compImg']),
                                   backgroundColor: Colors.white,
                                 ),
                                 SizedBox(
@@ -1585,13 +1658,13 @@ class _DashboardPageState extends State<DashboardPage> {
                                     ),
                                     child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                       children: [
                                         Column(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                          MainAxisAlignment.start,
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               'You are posted in',
@@ -1617,11 +1690,11 @@ class _DashboardPageState extends State<DashboardPage> {
                                                 // print('Length: ${dbC.response['clientData']['name'].length}');
                                                 var clientName =
                                                     dbC.response['clientData']
-                                                            ['name'] ??
+                                                    ['name'] ??
                                                         'N/A';
                                                 var areaName =
                                                     dbC.response['clientData']
-                                                            ['address'] ??
+                                                    ['address'] ??
                                                         'N/A';
                                                 return Row(
                                                   children: [
@@ -1632,7 +1705,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                         style: TextStyle(
                                                           fontSize: 15.0,
                                                           fontWeight:
-                                                              FontWeight.bold,
+                                                          FontWeight.bold,
                                                         ),
                                                         overflow: TextOverflow
                                                             .ellipsis,
@@ -1656,7 +1729,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                 Text(
                                                   convertTimeWithParse(
                                                       dbC.response['empdetails']
-                                                          ['shiftStartTime']),
+                                                      ['shiftStartTime']),
                                                   style: TextStyle(
                                                     fontSize: 15.0,
                                                     fontWeight: FontWeight.bold,
@@ -1671,7 +1744,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                 Text(
                                                   convertTimeWithParse(
                                                       dbC.response['empdetails']
-                                                          ['shiftEndTime']),
+                                                      ['shiftEndTime']),
                                                   style: TextStyle(
                                                     fontSize: 15.0,
                                                     fontWeight: FontWeight.bold,
@@ -1682,7 +1755,9 @@ class _DashboardPageState extends State<DashboardPage> {
                                           ],
                                         ),
                                         Visibility(
-                                          visible: appFeatures['checkin'] ==null || appFeatures['checkin'],
+                                          visible:
+                                              appFeatures['checkin'] == null ||
+                                                  appFeatures['checkin'],
                                           child: RaisedButton(
                                             onPressed: () async {
                                               print(RemoteServices()
@@ -1699,30 +1774,23 @@ class _DashboardPageState extends State<DashboardPage> {
                                                           .get('faceApi'),
                                                       appFeatures[
                                                           'checkinLocation']));
-                                                }else {
+                                                } else {
                                                   await Get.snackbar(
                                                     null,
                                                     'Please enable Location to checkin / checkout',
-                                                    colorText:
-                                                    Colors.white,
+                                                    colorText: Colors.white,
                                                     backgroundColor:
-                                                    Colors
-                                                        .black87,
+                                                        Colors.black87,
                                                     snackPosition:
-                                                    SnackPosition
-                                                        .BOTTOM,
-                                                    margin: EdgeInsets
-                                                        .symmetric(
-                                                        horizontal:
-                                                        8.0,
-                                                        vertical:
-                                                        10.0),
-                                                    padding: EdgeInsets
-                                                        .symmetric(
-                                                        horizontal:
-                                                        12.0,
-                                                        vertical:
-                                                        18.0),
+                                                        SnackPosition.BOTTOM,
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 8.0,
+                                                            vertical: 10.0),
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 12.0,
+                                                            vertical: 18.0),
                                                     borderRadius: 5.0,
                                                   );
                                                 }
@@ -1734,9 +1802,9 @@ class _DashboardPageState extends State<DashboardPage> {
                                                   'You cannot checkin / checkout without giving location permission',
                                                   colorText: Colors.white,
                                                   backgroundColor:
-                                                      Colors.black87,
+                                                  Colors.black87,
                                                   snackPosition:
-                                                      SnackPosition.BOTTOM,
+                                                  SnackPosition.BOTTOM,
                                                   margin: EdgeInsets.symmetric(
                                                       horizontal: 8.0,
                                                       vertical: 10.0),
@@ -1762,7 +1830,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                             color: AppUtils().greenColor,
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
-                                                  BorderRadius.circular(
+                                              BorderRadius.circular(
                                                 25.0,
                                               ),
                                               side: BorderSide(
@@ -1776,152 +1844,152 @@ class _DashboardPageState extends State<DashboardPage> {
                                   );
                                 } else {
                                   var chkinDt = dbC.response['dailyAttendance']
-                                      ['checkInDateTime'];
+                                  ['checkInDateTime'];
                                   var chkoutDt = dbC.response['dailyAttendance']
-                                      ['checkOutDateTime'];
+                                  ['checkOutDateTime'];
                                   return (chkinDt != null && chkinDt != '') &&
-                                          (chkoutDt == null || chkoutDt == '')
+                                      (chkoutDt == null || chkoutDt == '')
                                       ? Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                            10.0,
-                                            10.0,
-                                            10.0,
-                                            10.0,
-                                          ),
-                                          child: Column(
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  Text(
-                                                    'Current Status: ',
-                                                    style: TextStyle(
-                                                      fontSize: 16.0,
-                                                      color: Colors.grey,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    'On Duty',
-                                                    style: TextStyle(
-                                                      fontSize: 16.0,
-                                                      color: AppUtils()
-                                                          .orangeColor,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ],
+                                    padding: const EdgeInsets.fromLTRB(
+                                      10.0,
+                                      10.0,
+                                      10.0,
+                                      10.0,
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              'Current Status: ',
+                                              style: TextStyle(
+                                                fontSize: 16.0,
+                                                color: Colors.grey,
+                                                fontWeight:
+                                                FontWeight.bold,
                                               ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  Text(
-                                                    'Checked in on ',
-                                                    style: TextStyle(
-                                                      fontSize: 16.0,
-                                                      color: Colors.grey,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    convertTimeForCheckedIn(
-                                                      chkinDt,
-                                                    ),
-                                                    style: TextStyle(
-                                                      fontSize: 16.0,
-                                                      color: Colors.grey,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                    // maxLines: 2,
-                                                  ),
-                                                ],
+                                            ),
+                                            Text(
+                                              'On Duty',
+                                              style: TextStyle(
+                                                fontSize: 16.0,
+                                                color: AppUtils()
+                                                    .orangeColor,
+                                                fontWeight:
+                                                FontWeight.bold,
                                               ),
-                                              SizedBox(
-                                                height: 5.0,
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              'Checked in on ',
+                                              style: TextStyle(
+                                                fontSize: 16.0,
+                                                color: Colors.grey,
+                                                fontWeight:
+                                                FontWeight.bold,
                                               ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          Text(
-                                                            'Checked in at ',
-                                                            style: TextStyle(
-                                                              fontSize: 16.0,
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            convertTimeWithoutParse(dbC
-                                                                        .response[
-                                                                    'dailyAttendance']
-                                                                [
-                                                                'checkInDateTime']),
-                                                            style: TextStyle(
-                                                              fontSize: 16.0,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
-                                                          ),
-                                                        ],
+                                            ),
+                                            Text(
+                                              convertTimeForCheckedIn(
+                                                chkinDt,
+                                              ),
+                                              style: TextStyle(
+                                                fontSize: 16.0,
+                                                color: Colors.grey,
+                                                fontWeight:
+                                                FontWeight.bold,
+                                              ),
+                                              // maxLines: 2,
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 5.0,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment
+                                              .spaceBetween,
+                                          children: [
+                                            Column(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment
+                                                  .start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      'Checked in at ',
+                                                      style: TextStyle(
+                                                        fontSize: 16.0,
                                                       ),
-                                                      SizedBox(
-                                                        height: 5.0,
+                                                    ),
+                                                    Text(
+                                                      convertTimeWithoutParse(dbC
+                                                          .response[
+                                                      'dailyAttendance']
+                                                      [
+                                                      'checkInDateTime']),
+                                                      style: TextStyle(
+                                                        fontSize: 16.0,
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .bold,
                                                       ),
-                                                      Row(
-                                                        children: [
-                                                          Text(
-                                                            'Shift ends at ',
-                                                            style: TextStyle(
-                                                              fontSize: 16.0,
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            convertTimeWithParse(dbC
-                                                                        .response[
-                                                                    'empdetails']
-                                                                [
-                                                                'shiftEndTime']),
-                                                            style: TextStyle(
-                                                              fontSize: 16.0,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
-                                                          ),
-                                                        ],
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  height: 5.0,
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      'Shift ends at ',
+                                                      style: TextStyle(
+                                                        fontSize: 16.0,
                                                       ),
-                                                    ],
-                                                  ),
-                                                  Visibility(
-                                                    child: RaisedButton(
-                                                      onPressed: () async {
-                                                        //Check Condition
-                                                        var chk =
-                                                            checkCondition(
-                                                          dbC.response,
-                                                          'chkout',
-                                                        );
-                                                        if (chk) {
-                                                          if (await Permission
-                                                              .locationWhenInUse
-                                                              .isGranted) {
-                                                            if (await Geolocator
+                                                    ),
+                                                    Text(
+                                                      convertTimeWithParse(dbC
+                                                          .response[
+                                                      'empdetails']
+                                                      [
+                                                      'shiftEndTime']),
+                                                      style: TextStyle(
+                                                        fontSize: 16.0,
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .bold,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                            Visibility(
+                                              child: RaisedButton(
+                                                onPressed: () async {
+                                                  //Check Condition
+                                                  var chk =
+                                                  checkCondition(
+                                                    dbC.response,
+                                                    'chkout',
+                                                  );
+                                                  if (chk) {
+                                                    if (await Permission
+                                                        .locationWhenInUse
+                                                        .isGranted) {
+                                                      if (await Geolocator
                                                                 .isLocationServiceEnabled()) {
                                                               await Get.to(CheckoutPage(
                                                                   RemoteServices()
@@ -1930,301 +1998,307 @@ class _DashboardPageState extends State<DashboardPage> {
                                                                           'faceApi'),
                                                                   appFeatures[
                                                                       'checkinLocation']));
-                                                            }else {
-                                                              await Get.snackbar(
+                                                            } else {
+                                                              await Get
+                                                                  .snackbar(
                                                                 null,
                                                                 'Please enable Location to checkin / checkout',
                                                                 colorText:
-                                                                Colors.white,
+                                                                    Colors
+                                                                        .white,
                                                                 backgroundColor:
-                                                                Colors
-                                                                    .black87,
+                                                                    Colors
+                                                                        .black87,
                                                                 snackPosition:
-                                                                SnackPosition
-                                                                    .BOTTOM,
+                                                                    SnackPosition
+                                                                        .BOTTOM,
                                                                 margin: EdgeInsets
                                                                     .symmetric(
-                                                                    horizontal:
-                                                                    8.0,
-                                                                    vertical:
-                                                                    10.0),
+                                                                        horizontal:
+                                                                            8.0,
+                                                                        vertical:
+                                                                            10.0),
                                                                 padding: EdgeInsets
                                                                     .symmetric(
-                                                                    horizontal:
-                                                                    12.0,
-                                                                    vertical:
-                                                                    18.0),
-                                                                borderRadius: 5.0,
+                                                                        horizontal:
+                                                                            12.0,
+                                                                        vertical:
+                                                                            18.0),
+                                                                borderRadius:
+                                                                    5.0,
                                                               );
-                                                            }
-                                                          } else if (await Permission
-                                                              .locationWhenInUse
-                                                              .isPermanentlyDenied) {
-                                                            await Get.snackbar(
-                                                              null,
-                                                              'You cannot checkin / checkout without giving location permission',
-                                                              colorText:
-                                                                  Colors.white,
-                                                              backgroundColor:
-                                                                  Colors
-                                                                      .black87,
-                                                              snackPosition:
-                                                                  SnackPosition
-                                                                      .BOTTOM,
-                                                              margin: EdgeInsets
-                                                                  .symmetric(
-                                                                      horizontal:
-                                                                          8.0,
-                                                                      vertical:
-                                                                          10.0),
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                      horizontal:
-                                                                          12.0,
-                                                                      vertical:
-                                                                          18.0),
-                                                              borderRadius: 5.0,
-                                                            );
-                                                          } else {
-                                                            await Permission
-                                                                .locationWhenInUse
-                                                                .request();
-                                                          }
-                                                        }
-                                                      },
-                                                      child: Text(
-                                                        'Check Out',
-                                                        style: TextStyle(
-                                                          fontSize: 18.0,
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      ),
-                                                      color: AppUtils()
-                                                          .orangeColor,
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                          25.0,
-                                                        ),
-                                                        side: BorderSide(
-                                                          color: AppUtils()
-                                                              .orangeColor,
-                                                        ),
-                                                      ),
-                                                    ),
+                                                      }
+                                                    } else if (await Permission
+                                                        .locationWhenInUse
+                                                        .isPermanentlyDenied) {
+                                                      await Get.snackbar(
+                                                        null,
+                                                        'You cannot checkin / checkout without giving location permission',
+                                                        colorText:
+                                                        Colors.white,
+                                                        backgroundColor:
+                                                        Colors
+                                                            .black87,
+                                                        snackPosition:
+                                                        SnackPosition
+                                                            .BOTTOM,
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                            horizontal:
+                                                            8.0,
+                                                            vertical:
+                                                            10.0),
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                            horizontal:
+                                                            12.0,
+                                                            vertical:
+                                                            18.0),
+                                                        borderRadius: 5.0,
+                                                      );
+                                                    } else {
+                                                      await Permission
+                                                          .locationWhenInUse
+                                                          .request();
+                                                    }
+                                                  }
+                                                },
+                                                child: Text(
+                                                  'Check Out',
+                                                  style: TextStyle(
+                                                    fontSize: 18.0,
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                    FontWeight.bold,
                                                   ),
-                                                ],
+                                                ),
+                                                color: AppUtils()
+                                                    .orangeColor,
+                                                shape:
+                                                RoundedRectangleBorder(
+                                                  borderRadius:
+                                                  BorderRadius
+                                                      .circular(
+                                                    25.0,
+                                                  ),
+                                                  side: BorderSide(
+                                                    color: AppUtils()
+                                                        .orangeColor,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                      : Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                      10.0,
+                                      25.0,
+                                      10.0,
+                                      25.0,
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Visibility(
+                                          visible: !conditionForMsg(
+                                              dbC.response,
+                                              'chkin') &&
+                                              RemoteServices()
+                                                  .box
+                                                  .get('role') !=
+                                                  '4',
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                            children: [
+                                              Text(
+                                                'Attendance already given\nTiming : ' +
+                                                    formatter.format(
+                                                        DateTime.parse(dbC
+                                                            .response[
+                                                        'dailyAttendance']
+                                                        [
+                                                        'checkInDateTime'])) +
+                                                    ' to ' +
+                                                    formatter.format(
+                                                        DateTime.parse(dbC
+                                                            .response[
+                                                        'dailyAttendance']
+                                                        [
+                                                        'checkOutDateTime'])),
+                                                textAlign:
+                                                TextAlign.center,
+                                                style: TextStyle(
+                                                  fontSize: 16.0,
+                                                  color: AppUtils()
+                                                      .orangeColor,
+                                                  fontWeight:
+                                                  FontWeight.bold,
+                                                ),
                                               ),
                                             ],
                                           ),
-                                        )
-                                      : Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                            10.0,
-                                            25.0,
-                                            10.0,
-                                            25.0,
-                                          ),
-                                          child: Column(
-                                            children: [
-                                              Visibility(
-                                                visible: !conditionForMsg(
-                                                        dbC.response,
-                                                        'chkin') &&
-                                                    RemoteServices()
-                                                            .box
-                                                            .get('role') !=
-                                                        '4',
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.end,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment
+                                              .spaceBetween,
+                                          children: [
+                                            Column(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment
+                                                  .start,
+                                              children: [
+                                                Text(
+                                                  'You are posted in',
+                                                  style: TextStyle(
+                                                    fontSize: 15.0,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 5.0,
+                                                ),
+                                                Obx(() {
+                                                  if (dbC
+                                                      .isDashboardLoading
+                                                      .value) {
+                                                    return Text(
+                                                      '...',
+                                                      style: TextStyle(
+                                                        color:
+                                                        Colors.white,
+                                                        fontSize: 20.0,
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .bold,
+                                                      ),
+                                                    );
+                                                  } else {
+                                                    // print('Length: ${dbC.response['clientData']['name'].length}');
+                                                    var clientName = dbC
+                                                        .response[
+                                                    'clientData']
+                                                    ['name'] ??
+                                                        'N/A';
+                                                    var areaName = dbC
+                                                        .response[
+                                                    'clientData']
+                                                    ['address'] ??
+                                                        'N/A';
+                                                    return Row(
+                                                      children: [
+                                                        SizedBox(
+                                                          width: 240.0,
+                                                          child: Text(
+                                                            '$clientName at $areaName',
+                                                            style:
+                                                            TextStyle(
+                                                              fontSize:
+                                                              15.0,
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .bold,
+                                                            ),
+                                                            overflow:
+                                                            TextOverflow
+                                                                .ellipsis,
+                                                          ),
+                                                        ),
+                                                        // Text(
+                                                        //   ' in ',
+                                                        //   style: TextStyle(
+                                                        //     fontSize: 15.0,
+                                                        //   ),
+                                                        // ),
+                                                        // SizedBox(
+                                                        //   width: 40.0,
+                                                        //   child: Text(
+                                                        //     // dbC.response['empdetails']['area'] ?? 'N/A',
+                                                        //     'asdasd asdasd asdasdasd',
+                                                        //     style: TextStyle(
+                                                        //       fontSize: 15.0,
+                                                        //       fontWeight: FontWeight.bold,
+                                                        //     ),
+                                                        //     overflow: TextOverflow.ellipsis,
+                                                        //   ),
+                                                        // ),
+                                                      ],
+                                                    );
+                                                  }
+                                                }),
+                                                SizedBox(
+                                                  height: 5.0,
+                                                ),
+                                                Row(
                                                   children: [
                                                     Text(
-                                                      'Attendance already given\nTiming : ' +
-                                                          formatter.format(
-                                                              DateTime.parse(dbC
-                                                                          .response[
-                                                                      'dailyAttendance']
-                                                                  [
-                                                                  'checkInDateTime'])) +
-                                                          ' to ' +
-                                                          formatter.format(
-                                                              DateTime.parse(dbC
-                                                                          .response[
-                                                                      'dailyAttendance']
-                                                                  [
-                                                                  'checkOutDateTime'])),
-                                                      textAlign:
-                                                          TextAlign.center,
+                                                      'Duty Timings : ',
                                                       style: TextStyle(
-                                                        fontSize: 16.0,
-                                                        color: AppUtils()
-                                                            .orangeColor,
+                                                        fontSize: 15.0,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      convertTimeWithParse(dbC
+                                                          .response[
+                                                      'empdetails']
+                                                      [
+                                                      'shiftStartTime']),
+                                                      style: TextStyle(
+                                                        fontSize: 15.0,
                                                         fontWeight:
-                                                            FontWeight.bold,
+                                                        FontWeight
+                                                            .bold,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      ' to ',
+                                                      style: TextStyle(
+                                                        fontSize: 15.0,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      convertTimeWithParse(dbC
+                                                          .response[
+                                                      'empdetails']
+                                                      [
+                                                      'shiftEndTime']),
+                                                      style: TextStyle(
+                                                        fontSize: 15.0,
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .bold,
                                                       ),
                                                     ),
                                                   ],
                                                 ),
-                                              ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        'You are posted in',
-                                                        style: TextStyle(
-                                                          fontSize: 15.0,
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 5.0,
-                                                      ),
-                                                      Obx(() {
-                                                        if (dbC
-                                                            .isDashboardLoading
-                                                            .value) {
-                                                          return Text(
-                                                            '...',
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 20.0,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
-                                                          );
-                                                        } else {
-                                                          // print('Length: ${dbC.response['clientData']['name'].length}');
-                                                          var clientName = dbC
-                                                                          .response[
-                                                                      'clientData']
-                                                                  ['name'] ??
-                                                              'N/A';
-                                                          var areaName = dbC
-                                                                          .response[
-                                                                      'clientData']
-                                                                  ['address'] ??
-                                                              'N/A';
-                                                          return Row(
-                                                            children: [
-                                                              SizedBox(
-                                                                width: 240.0,
-                                                                child: Text(
-                                                                  '$clientName at $areaName',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        15.0,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                  ),
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                ),
-                                                              ),
-                                                              // Text(
-                                                              //   ' in ',
-                                                              //   style: TextStyle(
-                                                              //     fontSize: 15.0,
-                                                              //   ),
-                                                              // ),
-                                                              // SizedBox(
-                                                              //   width: 40.0,
-                                                              //   child: Text(
-                                                              //     // dbC.response['empdetails']['area'] ?? 'N/A',
-                                                              //     'asdasd asdasd asdasdasd',
-                                                              //     style: TextStyle(
-                                                              //       fontSize: 15.0,
-                                                              //       fontWeight: FontWeight.bold,
-                                                              //     ),
-                                                              //     overflow: TextOverflow.ellipsis,
-                                                              //   ),
-                                                              // ),
-                                                            ],
-                                                          );
-                                                        }
-                                                      }),
-                                                      SizedBox(
-                                                        height: 5.0,
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Text(
-                                                            'Duty Timings : ',
-                                                            style: TextStyle(
-                                                              fontSize: 15.0,
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            convertTimeWithParse(dbC
-                                                                        .response[
-                                                                    'empdetails']
-                                                                [
-                                                                'shiftStartTime']),
-                                                            style: TextStyle(
-                                                              fontSize: 15.0,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            ' to ',
-                                                            style: TextStyle(
-                                                              fontSize: 15.0,
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            convertTimeWithParse(dbC
-                                                                        .response[
-                                                                    'empdetails']
-                                                                [
-                                                                'shiftEndTime']),
-                                                            style: TextStyle(
-                                                              fontSize: 15.0,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Visibility(
-                                                    visible:appFeatures['checkin'] == null || appFeatures['checkin'],
-                                                    child: RaisedButton(
-                                                      onPressed: () async {
-                                                        //Check Condition
-                                                        var chk =
-                                                            checkCondition(
-                                                          dbC.response,
-                                                          'chkin',
-                                                        );
-                                                        if (chk) {
-                                                          print(RemoteServices()
-                                                              .box
-                                                              .get('faceApi'));
-                                                          if (await Permission
-                                                              .locationWhenInUse
-                                                              .isGranted) {
-                                                            if (await Geolocator
+                                              ],
+                                            ),
+                                            Visibility(
+                                              visible: appFeatures[
+                                              'checkin'] ==
+                                                  null ||
+                                                  appFeatures['checkin'],
+                                              child: RaisedButton(
+                                                onPressed: () async {
+                                                  //Check Condition
+                                                  var chk =
+                                                  checkCondition(
+                                                    dbC.response,
+                                                    'chkin',
+                                                  );
+                                                  if (chk) {
+                                                    print(RemoteServices()
+                                                        .box
+                                                        .get('faceApi'));
+                                                    if (await Permission
+                                                        .locationWhenInUse
+                                                        .isGranted) {
+                                                      if (await Geolocator
                                                                 .isLocationServiceEnabled()) {
                                                               await Get.to(CheckinPage(
                                                                   RemoteServices()
@@ -2233,98 +2307,101 @@ class _DashboardPageState extends State<DashboardPage> {
                                                                           'faceApi'),
                                                                   appFeatures[
                                                                       'checkinLocation']));
-                                                            }else {
-                                                              await Get.snackbar(
+                                                            } else {
+                                                              await Get
+                                                                  .snackbar(
                                                                 null,
                                                                 'Please enable Location to checkin / checkout',
                                                                 colorText:
-                                                                Colors.white,
+                                                                    Colors
+                                                                        .white,
                                                                 backgroundColor:
-                                                                Colors
-                                                                    .black87,
+                                                                    Colors
+                                                                        .black87,
                                                                 snackPosition:
-                                                                SnackPosition
-                                                                    .BOTTOM,
+                                                                    SnackPosition
+                                                                        .BOTTOM,
                                                                 margin: EdgeInsets
                                                                     .symmetric(
-                                                                    horizontal:
-                                                                    8.0,
-                                                                    vertical:
-                                                                    10.0),
+                                                                        horizontal:
+                                                                            8.0,
+                                                                        vertical:
+                                                                            10.0),
                                                                 padding: EdgeInsets
                                                                     .symmetric(
-                                                                    horizontal:
-                                                                    12.0,
-                                                                    vertical:
-                                                                    18.0),
-                                                                borderRadius: 5.0,
+                                                                        horizontal:
+                                                                            12.0,
+                                                                        vertical:
+                                                                            18.0),
+                                                                borderRadius:
+                                                                    5.0,
                                                               );
-                                                            }
-                                                          } else if (await Permission
-                                                              .locationWhenInUse
-                                                              .isPermanentlyDenied) {
-                                                            await Get.snackbar(
-                                                              null,
-                                                              'You cannot checkin / checkout without giving location permission',
-                                                              colorText:
-                                                                  Colors.white,
-                                                              backgroundColor:
-                                                                  Colors
-                                                                      .black87,
-                                                              snackPosition:
-                                                                  SnackPosition
-                                                                      .BOTTOM,
-                                                              margin: EdgeInsets
-                                                                  .symmetric(
-                                                                      horizontal:
-                                                                          8.0,
-                                                                      vertical:
-                                                                          10.0),
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                      horizontal:
-                                                                          12.0,
-                                                                      vertical:
-                                                                          18.0),
-                                                              borderRadius: 5.0,
-                                                            );
-                                                          } else {
-                                                            await Permission
-                                                                .locationWhenInUse
-                                                                .request();
-                                                          }
-                                                        }
-                                                      },
-                                                      child: Text(
-                                                        'Check In',
-                                                        style: TextStyle(
-                                                          fontSize: 16.0,
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      ),
-                                                      color:
-                                                          AppUtils().greenColor,
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                          25.0,
-                                                        ),
-                                                        side: BorderSide(
-                                                          color: AppUtils()
-                                                              .greenColor,
-                                                        ),
-                                                      ),
-                                                    ),
+                                                      }
+                                                    } else if (await Permission
+                                                        .locationWhenInUse
+                                                        .isPermanentlyDenied) {
+                                                      await Get.snackbar(
+                                                        null,
+                                                        'You cannot checkin / checkout without giving location permission',
+                                                        colorText:
+                                                        Colors.white,
+                                                        backgroundColor:
+                                                        Colors
+                                                            .black87,
+                                                        snackPosition:
+                                                        SnackPosition
+                                                            .BOTTOM,
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                            horizontal:
+                                                            8.0,
+                                                            vertical:
+                                                            10.0),
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                            horizontal:
+                                                            12.0,
+                                                            vertical:
+                                                            18.0),
+                                                        borderRadius: 5.0,
+                                                      );
+                                                    } else {
+                                                      await Permission
+                                                          .locationWhenInUse
+                                                          .request();
+                                                    }
+                                                  }
+                                                },
+                                                child: Text(
+                                                  'Check In',
+                                                  style: TextStyle(
+                                                    fontSize: 16.0,
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                    FontWeight.bold,
                                                   ),
-                                                ],
+                                                ),
+                                                color:
+                                                AppUtils().greenColor,
+                                                shape:
+                                                RoundedRectangleBorder(
+                                                  borderRadius:
+                                                  BorderRadius
+                                                      .circular(
+                                                    25.0,
+                                                  ),
+                                                  side: BorderSide(
+                                                    color: AppUtils()
+                                                        .greenColor,
+                                                  ),
+                                                ),
                                               ),
-                                            ],
-                                          ),
-                                        );
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  );
                                 }
                               }),
                             ],
@@ -2349,36 +2426,38 @@ class _DashboardPageState extends State<DashboardPage> {
                               } else {
                                 var role = RemoteServices().box.get('role');
                                 return dbC.response['psCount'] == null &&
-                                        role != '4'
+                                    role != '4'
                                     ? Container(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        color: Colors.white,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                  width:
+                                  MediaQuery.of(context).size.width,
+                                  color: Colors.white,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          top: 5.0,
+                                          left: 20.0,
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment
+                                              .spaceBetween,
                                           children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                top: 5.0,
-                                                left: 20.0,
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  appFeatures[
-                                                  'attendance']? Text(
-                                                    DateFormat.MMMM()
-                                                        .format(DateTime.now())
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                      fontSize: 20.0,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ):Row(),
+                                                  appFeatures['attendance']
+                                                      ? Text(
+                                                          DateFormat.MMMM()
+                                                              .format(DateTime
+                                                                  .now())
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                            fontSize: 20.0,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        )
+                                                      : Row(),
                                                   role != '1' &&
                                                           appFeatures[
                                                               'attendance']
@@ -2390,81 +2469,83 @@ class _DashboardPageState extends State<DashboardPage> {
                                                           },
                                                           child: Row(
                                                             children: [
-                                                              Text(
-                                                                'Enter Attendance',
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize:
-                                                                      16.0,
-                                                                  color: Colors
-                                                                      .grey,
-                                                                ),
-                                                              ),
-                                                              Icon(
-                                                                Icons
-                                                                    .chevron_right,
-                                                                size: 25.0,
-                                                                color:
-                                                                    Colors.grey,
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        )
-                                                      : Container(),
+                                                  Text(
+                                                    'Enter Attendance',
+                                                    style:
+                                                    TextStyle(
+                                                      fontSize:
+                                                      16.0,
+                                                      color: Colors
+                                                          .grey,
+                                                    ),
+                                                  ),
+                                                  Icon(
+                                                    Icons
+                                                        .chevron_right,
+                                                    size: 25.0,
+                                                    color:
+                                                    Colors.grey,
+                                                  ),
                                                 ],
                                               ),
-                                            ),
-                                            SizedBox(
-                                              height: 10.0,
-                                            ),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  'No data to show',
-                                                  style: TextStyle(
-                                                    fontSize: 18.0,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              height: 20.0,
-                                            ),
+                                            )
+                                                : Container(),
                                           ],
                                         ),
-                                      )
+                                      ),
+                                      SizedBox(
+                                        height: 10.0,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'No data to show',
+                                            style: TextStyle(
+                                              fontSize: 18.0,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 20.0,
+                                      ),
+                                    ],
+                                  ),
+                                )
                                     : Container(
-                                        // height: 150.0,
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        color: Colors.white,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                  // height: 150.0,
+                                  width:
+                                  MediaQuery.of(context).size.width,
+                                  color: Colors.white,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          top: 10.0,
+                                          left: 20.0,
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment
+                                              .spaceBetween,
                                           children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                top: 10.0,
-                                                left: 20.0,
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  appFeatures[
-                                                  'attendance']?Text(
-                                                    DateFormat.MMMM()
-                                                        .format(DateTime.now())
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                      fontSize: 20.0,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ):Row(),
+                                                  appFeatures['attendance']
+                                                      ? Text(
+                                                          DateFormat.MMMM()
+                                                              .format(DateTime
+                                                                  .now())
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                            fontSize: 20.0,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        )
+                                                      : Row(),
                                                   role != '1' &&
                                                           appFeatures[
                                                               'attendance']
@@ -2476,95 +2557,97 @@ class _DashboardPageState extends State<DashboardPage> {
                                                           },
                                                           child: Row(
                                                             children: [
-                                                              Text(
-                                                                'Enter Attendance',
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize:
-                                                                      16.0,
-                                                                  color: Colors
-                                                                      .grey,
-                                                                ),
-                                                              ),
-                                                              Icon(
-                                                                Icons
-                                                                    .chevron_right,
-                                                                size: 25.0,
-                                                                color:
-                                                                    Colors.grey,
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        )
-                                                      : Container(),
+                                                  Text(
+                                                    'Enter Attendance',
+                                                    style:
+                                                    TextStyle(
+                                                      fontSize:
+                                                      16.0,
+                                                      color: Colors
+                                                          .grey,
+                                                    ),
+                                                  ),
+                                                  Icon(
+                                                    Icons
+                                                        .chevron_right,
+                                                    size: 25.0,
+                                                    color:
+                                                    Colors.grey,
+                                                  ),
                                                 ],
                                               ),
-                                            ),
-                                            SizedBox(
-                                              height: 10.0,
-                                            ),
-                                            role != '4'&&
-                                                appFeatures['attendance']
-                                                ? Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceAround,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      CustomProgressIndicator(
-                                                        // '23',
-                                                        new DateTime.now().day.toString(),
-                                                        'Total Days',
-                                                        75.0,
-                                                        1,
-                                                      ),
-                                                      CustomProgressIndicator(
-                                                        dbC.response['psCount']
-                                                                ['present']
-                                                            .toString(),
-                                                        'Checkin',
-                                                        75.0,
-                                                        dbC.response['psCount']
-                                                                ['present'] /
-                                                            dbC.response[
-                                                                    'psCount']
-                                                                ['shifts'],
-                                                      ),
-                                                      CustomProgressIndicator(
-                                                        dbC.response['psCount']
-                                                                ['absent']
-                                                            .toString(),
-                                                        'Leave',
-                                                        75.0,
-                                                        dbC.response['psCount']
-                                                                ['absent'] /
-                                                            dbC.response[
-                                                                    'psCount']
-                                                                ['shifts'],
-                                                      ),
-                                                      CustomProgressIndicator(
-                                                        dbC.response['psCount']
-                                                                ['wo']
-                                                            .toString(),
-                                                        'Late',
-                                                        75.0,
-                                                        dbC.response['psCount']
-                                                                ['wo'] /
-                                                            dbC.response[
-                                                                    'psCount']
-                                                                ['shifts'],
-                                                      ),
-                                                    ],
-                                                  )
+                                            )
                                                 : Container(),
-                                            role == '2' || role == '3'
-                                                ? Column(children: [
-                                                    SizedBox(
-                                                      height: 10.0,
-                                                    ),
-                                                    Divider(
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 10.0,
+                                      ),
+                                      role != '4' &&
+                                          appFeatures['attendance']
+                                          ? Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment
+                                            .spaceAround,
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment
+                                            .center,
+                                        children: [
+                                          CustomProgressIndicator(
+                                            // '23',
+                                            new DateTime.now()
+                                                .day
+                                                .toString(),
+                                            'Total Days',
+                                            75.0,
+                                            1,
+                                          ),
+                                          CustomProgressIndicator(
+                                            dbC.response['psCount']
+                                            ['present']
+                                                .toString(),
+                                            'Checkin',
+                                            75.0,
+                                            dbC.response['psCount']
+                                            ['present'] /
+                                                dbC.response[
+                                                'psCount']
+                                                ['shifts'],
+                                          ),
+                                          CustomProgressIndicator(
+                                            dbC.response['psCount']
+                                            ['absent']
+                                                .toString(),
+                                            'Leave',
+                                            75.0,
+                                            dbC.response['psCount']
+                                            ['absent'] /
+                                                dbC.response[
+                                                'psCount']
+                                                ['shifts'],
+                                          ),
+                                          CustomProgressIndicator(
+                                            dbC.response['psCount']
+                                            ['wo']
+                                                .toString(),
+                                            'Late',
+                                            75.0,
+                                            dbC.response['psCount']
+                                            ['wo'] /
+                                                dbC.response[
+                                                'psCount']
+                                                ['shifts'],
+                                          ),
+                                        ],
+                                      )
+                                          : Container(),
+                                      role == '2' || role == '3'
+                                          ? Column(children: [
+                                        SizedBox(
+                                          height: 10.0,
+                                        ),
+                                        Divider(
                                                       color: Colors.black,
                                                       thickness: 1,
                                                       indent: 30.0,
@@ -2575,7 +2658,8 @@ class _DashboardPageState extends State<DashboardPage> {
                                                     )
                                                   ])
                                                 : Container(),
-                                            role != '1' && appFeatures['attendance']
+                                            role != '1' &&
+                                                    appFeatures['attendance']
                                                 ? Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
@@ -2587,64 +2671,64 @@ class _DashboardPageState extends State<DashboardPage> {
                                                       CustomProgressIndicator(
                                                         // '23',
                                                         dbC.response[
-                                                                'adminCount']
-                                                                ['emps']
-                                                            .toString(),
-                                                        'Employees',
-                                                        75.0,
-                                                        1,
-                                                      ),
-                                                      CustomProgressIndicator(
-                                                        dbC.response[
-                                                                'adminCount']
-                                                                ['present']
-                                                            .toString(),
-                                                        'Checkin',
-                                                        75.0,
-                                                        dbC.response[
-                                                                    'adminCount']
-                                                                ['present'] /
-                                                            dbC.response[
-                                                                    'adminCount']
-                                                                ['emps'],
-                                                      ),
-                                                      CustomProgressIndicator(
-                                                        dbC.response[
-                                                                'adminCount']
-                                                                ['absent']
-                                                            .toString(),
-                                                        'Leave',
-                                                        75.0,
-                                                        dbC.response[
-                                                                    'adminCount']
-                                                                ['absent'] /
-                                                            dbC.response[
-                                                                    'adminCount']
-                                                                ['emps'],
-                                                      ),
-                                                      CustomProgressIndicator(
-                                                        dbC.response[
-                                                                'adminCount']
-                                                                ['wo']
-                                                            .toString(),
-                                                        'Late',
-                                                        75.0,
-                                                        dbC.response[
-                                                                    'adminCount']
-                                                                ['wo'] /
-                                                            dbC.response[
-                                                                    'adminCount']
-                                                                ['emps'],
-                                                      ),
-                                                    ],
-                                                  )
-                                                : Container(),
-                                            SizedBox(
-                                              height: 20.0,
-                                            ),
-                                          ],
-                                        ),
-                                      );
+                                            'adminCount']
+                                            ['emps']
+                                                .toString(),
+                                            'Employees',
+                                            75.0,
+                                            1,
+                                          ),
+                                          CustomProgressIndicator(
+                                            dbC.response[
+                                            'adminCount']
+                                            ['present']
+                                                .toString(),
+                                            'Checkin',
+                                            75.0,
+                                            dbC.response[
+                                            'adminCount']
+                                            ['present'] /
+                                                dbC.response[
+                                                'adminCount']
+                                                ['emps'],
+                                          ),
+                                          CustomProgressIndicator(
+                                            dbC.response[
+                                            'adminCount']
+                                            ['absent']
+                                                .toString(),
+                                            'Leave',
+                                            75.0,
+                                            dbC.response[
+                                            'adminCount']
+                                            ['absent'] /
+                                                dbC.response[
+                                                'adminCount']
+                                                ['emps'],
+                                          ),
+                                          CustomProgressIndicator(
+                                            dbC.response[
+                                            'adminCount']
+                                            ['wo']
+                                                .toString(),
+                                            'Late',
+                                            75.0,
+                                            dbC.response[
+                                            'adminCount']
+                                            ['wo'] /
+                                                dbC.response[
+                                                'adminCount']
+                                                ['emps'],
+                                          ),
+                                        ],
+                                      )
+                                          : Container(),
+                                      SizedBox(
+                                        height: 20.0,
+                                      ),
+                                    ],
+                                  ),
+                                );
                               }
                             }),
                           ],
@@ -2655,7 +2739,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           return Container(
                             color: AppUtils().greyScaffoldBg,
                             height: dbC.response['empActivities'] == null ||
-                                    dbC.response['empActivities'].length == 0
+                                dbC.response['empActivities'].length == 0
                                 ? 30.0
                                 : 0.0,
                           );
@@ -2675,7 +2759,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           } else {
                             return Visibility(
                               visible: dbC.response['empActivities'] == null ||
-                                      dbC.response['empActivities'].length == 0
+                                  dbC.response['empActivities'].length == 0
                                   ? false
                                   : true,
                               child: Container(
@@ -2690,13 +2774,13 @@ class _DashboardPageState extends State<DashboardPage> {
                                   child: ListView.builder(
                                     scrollDirection: Axis.horizontal,
                                     itemCount: dbC.response['empActivities'] ==
-                                            null
+                                        null
                                         ? 0
                                         : dbC.response['empActivities'].length,
                                     itemBuilder:
                                         (BuildContext context, int index) {
                                       var empAct =
-                                          dbC.response['empActivities'][index];
+                                      dbC.response['empActivities'][index];
                                       return DBActivityTile(
                                         empAct,
                                         index,
@@ -2714,47 +2798,46 @@ class _DashboardPageState extends State<DashboardPage> {
                         width: 20.0,
                       ),
                       Visibility(
-                        visible: appFeatures['routePlan'] ?? true,
-                        child: GestureDetector(
-                          onTap: () {
-                            Get.to(RouteplanList());
+                          visible: appFeatures['routePlan'] ?? true,
+                          child: GestureDetector(
+                            onTap: () {
+                              Get.to(RouteplanList());
                             },
-                        child:Container(
-                          width: MediaQuery.of(context).size.width,
-                          color: Colors.white,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 20.0,
-                              vertical: 15.0,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              color: Colors.white,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20.0,
+                                  vertical: 15.0,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Image.asset(
-                                      'assets/images/dummy_location.png',
-                                      height: 40.0,
-                                      width: 40.0,
-                                    ),
-                                    SizedBox(
-                                      width: 10.0,
-                                    ),
-                                    Text(
-                                      'My Route Plan',
-                                      style: TextStyle(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                    Row(
+                                      children: [
+                                        Image.asset(
+                                          'assets/images/dummy_location.png',
+                                          height: 40.0,
+                                          width: 40.0,
+                                        ),
+                                        SizedBox(
+                                          width: 10.0,
+                                        ),
+                                        Text(
+                                          'My Route Plan',
+                                          style: TextStyle(
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                        ),
-                        )
-                      ),
+                          )),
                       Visibility(
                         visible: appFeatures['gps'] ?? true,
                         child: Container(
@@ -2780,7 +2863,7 @@ class _DashboardPageState extends State<DashboardPage> {
                               return Container(
                                 color: AppUtils().greyScaffoldBg,
                                 height: erpC.empRes.routePlanList == null ||
-                                        erpC.empRes.routePlanList.length == 0
+                                    erpC.empRes.routePlanList.length == 0
                                     ? 0.0
                                     : 220.0,
                                 width: MediaQuery.of(context).size.width,
@@ -2789,31 +2872,31 @@ class _DashboardPageState extends State<DashboardPage> {
                                     bottom: 20.0,
                                   ),
                                   child: erpC.empRes.routePlanList == null ||
-                                          erpC.empRes.routePlanList.length == 0
+                                      erpC.empRes.routePlanList.length == 0
                                       ? Container()
                                       : ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          // itemCount: erpC.empRes.routePlanList.length,
-                                          itemCount:
-                                              erpC.empRes.routePlanList.length >
-                                                      4
-                                                  ? 5
-                                                  : erpC.empRes.routePlanList
-                                                      .length,
-                                          itemBuilder: (context, index) {
-                                            var length = erpC
-                                                .empRes.routePlanList.length;
-                                            var empRoute = erpC
-                                                .empRes.routePlanList[index];
-                                            // print('index: $index');
-                                            return DBEmprTile(
-                                              empRoute,
-                                              index,
-                                              // erpC.empRes.routePlanList.length,
-                                              length > 4 ? 4 : length,
-                                            );
-                                          },
-                                        ),
+                                    scrollDirection: Axis.horizontal,
+                                    // itemCount: erpC.empRes.routePlanList.length,
+                                    itemCount:
+                                    erpC.empRes.routePlanList.length >
+                                        4
+                                        ? 5
+                                        : erpC.empRes.routePlanList
+                                        .length,
+                                    itemBuilder: (context, index) {
+                                      var length = erpC
+                                          .empRes.routePlanList.length;
+                                      var empRoute = erpC
+                                          .empRes.routePlanList[index];
+                                      // print('index: $index');
+                                      return DBEmprTile(
+                                        empRoute,
+                                        index,
+                                        // erpC.empRes.routePlanList.length,
+                                        length > 4 ? 4 : length,
+                                      );
+                                    },
+                                  ),
                                 ),
                               );
                             }
@@ -2822,7 +2905,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       ),
                       Visibility(
                         visible: appFeatures['routePlan'] ||
-                                appFeatures['pinMyVisit'] ??
+                            appFeatures['pinMyVisit'] ??
                             true,
                         child: Container(
                           width: MediaQuery.of(context).size.width,
@@ -2845,7 +2928,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                     // ),
                                     Visibility(
                                         visible:
-                                            appFeatures['routePlan'] ?? true,
+                                        appFeatures['routePlan'] ?? true,
                                         child: Icon(
                                           Icons.map,
                                           size: 25.0,
@@ -2872,7 +2955,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                     Spacer(),
                                     Visibility(
                                       visible:
-                                          appFeatures['pinMyVisit'] ?? true,
+                                      appFeatures['pinMyVisit'] ?? true,
                                       child: Icon(
                                         Icons.pin_drop,
                                         size: 25.0,
@@ -2884,7 +2967,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                     ),
                                     Visibility(
                                         visible:
-                                            appFeatures['pinMyVisit'] ?? true,
+                                        appFeatures['pinMyVisit'] ?? true,
                                         child: GestureDetector(
                                           onTap: () {
                                             Get.to(PinMyVisit());
@@ -2949,7 +3032,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                     if (calC.calendarType != 'myCal') {
                                       calC.calendarType = 'myCal';
                                       var dateParse =
-                                          DateTime.parse(calC.changedDate);
+                                      DateTime.parse(calC.changedDate);
                                       var formattedDate =
                                           '${dateParse.month}${dateParse.year.toString().substring(2)}';
                                       calC.getCalendar(month: formattedDate);
@@ -2982,10 +3065,10 @@ class _DashboardPageState extends State<DashboardPage> {
                                               fontSize: 18.0,
                                               fontWeight: FontWeight.bold,
                                               color:
-                                                  calC.calendarType == 'myCal'
-                                                      ? Theme.of(context)
-                                                          .primaryColor
-                                                      : Colors.white,
+                                              calC.calendarType == 'myCal'
+                                                  ? Theme.of(context)
+                                                  .primaryColor
+                                                  : Colors.white,
                                             ),
                                           ),
                                         ),
@@ -2998,7 +3081,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                     if (calC.calendarType != 'myRos') {
                                       calC.calendarType = 'myRos';
                                       var dateParse =
-                                          DateTime.parse(calC.changedDate);
+                                      DateTime.parse(calC.changedDate);
                                       var formattedDate =
                                           '${dateParse.month}${dateParse.year.toString().substring(2)}';
                                       calC.getCalendar(month: formattedDate);
@@ -3031,10 +3114,10 @@ class _DashboardPageState extends State<DashboardPage> {
                                               fontSize: 18.0,
                                               fontWeight: FontWeight.bold,
                                               color:
-                                                  calC.calendarType == 'myRos'
-                                                      ? Theme.of(context)
-                                                          .primaryColor
-                                                      : Colors.white,
+                                              calC.calendarType == 'myRos'
+                                                  ? Theme.of(context)
+                                                  .primaryColor
+                                                  : Colors.white,
                                             ),
                                           ),
                                         ),
