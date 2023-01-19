@@ -48,11 +48,22 @@ class ExpensesListWidget extends StatelessWidget {
     }
   }
 
+  String numberFormatter(amountform) {
+    var amount = int.parse(amountform.toStringAsFixed(0));
+    var formatter = NumberFormat('#,##,000');
+    return formatter.format(amount).toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(ExpensesDetailList(this.expenses,this.index, this.length,this.expC,));
+        Get.to(ExpensesDetailList(
+          this.expenses,
+          this.index,
+          this.length,
+          this.expC,
+        ));
       },
       child: Card(
         margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
@@ -88,7 +99,7 @@ class ExpensesListWidget extends StatelessWidget {
                       )
                     ]),
                     SizedBox(
-                      width: 20.0,
+                      width: 30.0,
                     ),
                     Expanded(
                       child: Text(
@@ -174,7 +185,6 @@ class ExpensesListWidget extends StatelessWidget {
                                   ),
                       ],
                     ),
-                    SizedBox(width: 20.0),
                     Column(children: [
                       IntrinsicWidth(
                         child: Column(
@@ -183,7 +193,7 @@ class ExpensesListWidget extends StatelessWidget {
                               alignment: Alignment.centerRight,
                               width: 120,
                               child: Text(
-                                expenses['amount'].toString() + "0",
+                                numberFormatter(expenses['amount']).toString(),
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 25.0,

@@ -31,6 +31,12 @@ class AdvanceListWidget extends StatelessWidget {
         DateFormat('a').format(DateTime.parse(date)).toString().toLowerCase();
   }
 
+  String numberFormatter(amountform) {
+    var amount = int.parse(amountform.toStringAsFixed(0));
+    var formatter = NumberFormat('#,##,000');
+    return formatter.format(amount).toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -67,11 +73,11 @@ class AdvanceListWidget extends StatelessWidget {
                     )
                   ]),
                   SizedBox(
-                    width: 50.0,
+                    width: 30.0,
                   ),
                   Expanded(
                     child: Text(
-                      advance['empExpAdvanceId'].toString(),
+                      advance['expenseType'].toString(),
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 15.0,
@@ -106,7 +112,6 @@ class AdvanceListWidget extends StatelessWidget {
                       )
                     ],
                   ),
-                  SizedBox(width: 20.0),
                   Column(children: [
                     IntrinsicWidth(
                       child: Column(
@@ -115,7 +120,7 @@ class AdvanceListWidget extends StatelessWidget {
                             alignment: Alignment.centerRight,
                             width: 120,
                             child: Text(
-                              advance['amount'].toString() + '0',
+                              numberFormatter(advance['amount']).toString(),
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 25.0,

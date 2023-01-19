@@ -467,9 +467,10 @@ class _ExpensesState extends State<Expenses> {
                                                     if (pickedFile != null) {
                                                       attachment = new File(
                                                           pickedFile.path);
-                                                      attach.text =
-                                                          path.basename(
-                                                              pickedFile.path);
+                                                      String dir = path.dirname(
+                                                          pickedFile.path);
+                                                      attach.text = path.join(
+                                                          '', 'image1.jpg');
                                                       setState(() {});
                                                     } else {
                                                       print(
@@ -512,9 +513,10 @@ class _ExpensesState extends State<Expenses> {
                                                     if (pickedFile != null) {
                                                       attachment = new File(
                                                           pickedFile.path);
-                                                      attach.text =
-                                                          path.basename(
-                                                              pickedFile.path);
+                                                      String dir = path.dirname(
+                                                          pickedFile.path);
+                                                      attach.text = path.join(
+                                                          '', 'image1.jpg');
                                                       setState(() {});
                                                     } else {
                                                       print(
@@ -595,9 +597,11 @@ class _ExpensesState extends State<Expenses> {
                                                     if (pickedFile != null) {
                                                       attachment3 = new File(
                                                           pickedFile.path);
+                                                      String dir = path.dirname(
+                                                          pickedFile.path);
                                                       attachTwo.text =
-                                                          path.basename(
-                                                              pickedFile.path);
+                                                          path.join(
+                                                              '', 'image3.jpg');
                                                       setState(() {});
                                                     } else {
                                                       print(
@@ -641,8 +645,8 @@ class _ExpensesState extends State<Expenses> {
                                                       attachment3 = new File(
                                                           pickedFile.path);
                                                       attachTwo.text =
-                                                          path.basename(
-                                                              pickedFile.path);
+                                                          path.join(
+                                                              '', 'image3.jpg');
                                                       setState(() {});
                                                     } else {
                                                       print(
@@ -720,12 +724,13 @@ class _ExpensesState extends State<Expenses> {
                                                 imageQuality: 50,
                                               );
                                               if (pickedFile != null) {
-                                                attachment2 =
-                                                new File(pickedFile.path);
-                                                attachOne.text = path
-                                                    .basename(pickedFile.path);
-                                                setState(() {});
-                                              } else {
+                                                attachment2 = new File(
+                                                          pickedFile.path);
+                                                      attachOne.text =
+                                                          path.join(
+                                                              '', 'image2.jpg');
+                                                      setState(() {});
+                                                    } else {
                                                 print('No image selected.');
                                                 setState(() {});
                                               }
@@ -760,12 +765,13 @@ class _ExpensesState extends State<Expenses> {
                                                 imageQuality: 50,
                                               );
                                               if (pickedFile != null) {
-                                                attachment2 =
-                                                new File(pickedFile.path);
-                                                attachOne.text = path
-                                                    .basename(pickedFile.path);
-                                                setState(() {});
-                                              } else {
+                                                attachment2 = new File(
+                                                          pickedFile.path);
+                                                      attachOne.text =
+                                                          path.join(
+                                                              '', 'image2.jpg');
+                                                      setState(() {});
+                                                    } else {
                                                 print('No image selected.');
                                                 setState(() {});
                                               }
@@ -904,112 +910,6 @@ class _ExpensesState extends State<Expenses> {
                               : Column(),
                         ],
                       ),
-                      // Padding(
-                      //   padding: const EdgeInsets.symmetric(
-                      //     horizontal: 20.0,
-                      //     vertical: 15.0,
-                      //   ),
-                      //   child: Card(
-                      //     shape: RoundedRectangleBorder(
-                      //         borderRadius: BorderRadius.circular(5.0),
-                      //         side: BorderSide(color: Colors.black38)),
-                      //     child: Container(
-                      //       height: 60,
-                      //       child: TextField(
-                      //         controller: attachOne,
-                      //         decoration: InputDecoration(
-                      //           border: InputBorder.none,
-                      //           isDense: true,
-                      //           contentPadding: EdgeInsets.only(
-                      //             left: 10,
-                      //             top: 18,
-                      //           ),
-                      //           hintStyle: TextStyle(
-                      //             color: Colors.grey[600],
-                      //             fontSize: 18.0,
-                      //           ),
-                      //           hintText: 'Attachment',
-                      //           suffixIcon: Padding(
-                      //             padding: const EdgeInsets.all(8.0),
-                      //             child: Image.asset(
-                      //               'assets/images/uplode_proof.png',
-                      //               scale: 2.2,
-                      //             ),
-                      //           ),
-                      //         ),
-                      //         readOnly: true,
-                      //         keyboardType: null,
-                      //         onTap: () async {
-                      //           var pickedFile = await ImagePicker().getImage(
-                      //             source: ImageSource.camera,
-                      //             imageQuality: 50,
-                      //           );
-                      //           if (pickedFile != null) {
-                      //             attachment2 =  new File(pickedFile.path);
-                      //             attachOne.text = path.basename(pickedFile.path);
-                      //             setState(() {});
-                      //           } else {
-                      //             print('No image selected.');
-                      //             setState(() {});
-                      //           }
-                      //         },
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-                      // Padding(
-                      //   padding: const EdgeInsets.symmetric(
-                      //     horizontal: 20.0,
-                      //     vertical: 15.0,
-                      //   ),
-                      //   child: Card(
-                      //     shape: RoundedRectangleBorder(
-                      //         borderRadius: BorderRadius.circular(5.0),
-                      //         side: BorderSide(color: Colors.black38)),
-                      //     child: Container(
-                      //       height: 60,
-                      //       child: TextField(
-                      //         controller: attachTwo,
-                      //         decoration: InputDecoration(
-                      //           border: InputBorder.none,
-                      //           isDense: true,
-                      //           contentPadding: EdgeInsets.only(
-                      //             left: 10,
-                      //             top: 18,
-                      //           ),
-                      //           hintStyle: TextStyle(
-                      //             color: Colors.grey[600],
-                      //             fontSize: 18.0,
-                      //           ),
-                      //           hintText: 'Attachment',
-                      //           suffixIcon: Padding(
-                      //             padding: const EdgeInsets.all(8.0),
-                      //             child: Image.asset(
-                      //               'assets/images/uplode_proof.png',
-                      //               scale: 2.2,
-                      //             ),
-                      //           ),
-                      //         ),
-                      //         readOnly: true,
-                      //         keyboardType: null,
-                      //         onTap: () async {
-                      //           var pickedFile = await ImagePicker().getImage(
-                      //             source: ImageSource.camera,
-                      //             imageQuality: 50,
-                      //           );
-                      //           if (pickedFile != null) {
-                      //             attachment3 =  new File(pickedFile.path);
-                      //             attachTwo.text = path.basename(pickedFile.path);
-                      //             setState(() {});
-                      //           } else {
-                      //             print('No image selected.');
-                      //             setState(() {});
-                      //           }
-                      //         },
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
                       Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: 20.0, vertical: 5.0),

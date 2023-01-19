@@ -140,7 +140,8 @@ class _ViewBillsState extends State<ViewBills> {
                   itemCount: expC.expenseBillsList.length,
                   itemBuilder: (context, index) {
                     var billsList = expC.expenseBillsList[index];
-                    return BillsListWidget(billsList,expC);
+                    return BillsListWidget(
+                        billsList, index, expC.expenseBillsList.length, expC);
                   },
                 );
               }
