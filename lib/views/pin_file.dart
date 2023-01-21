@@ -1,24 +1,19 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:io';
 
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as path;
 import 'package:progress_dialog/progress_dialog.dart';
 
 import '../connection/remote_services.dart';
 import '../controllers/my_pin_controller.dart';
 import '../utils/utils.dart';
-import 'package:path/path.dart' as path;
 
 class AttachImg extends StatefulWidget {
   @override
@@ -27,8 +22,6 @@ class AttachImg extends StatefulWidget {
 
 class _AttachImgState extends State<AttachImg> {
   final MyPinController mpC = Get.put(MyPinController());
-  CameraController controller;
-  List<CameraDescription> cameras;
   var currentTime = DateFormat().add_jm().format(DateTime.now()).toString();
   File attachment;
   var clientId;
@@ -48,11 +41,6 @@ class _AttachImgState extends State<AttachImg> {
   @override
   void initState() {
     super.initState();
-    if (RemoteServices().box.get('faceApi') == 1) {
-      initCam();
-    } else {
-      mpC.getCurrentLocation();
-    }
     mpC.pr = ProgressDialog(
       context,
       type: ProgressDialogType.Normal,
@@ -87,159 +75,6 @@ class _AttachImgState extends State<AttachImg> {
   }
 
   @override
-  void dispose() {
-    controller?.dispose();
-    super.dispose();
-  }
-
-  void initCam() async {
-    cameras = await availableCameras();
-    controller = CameraController(
-      cameras[1],
-      ResolutionPreset.medium,
-    );
-    await controller.initialize().then((_) {
-      if (!mounted) {
-        return;
-      }
-      setState(() {});
-    });
-    mpC.getCurrentLocation();
-  }
-
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    // App state changed before we got the chance to initialize.
-    if (controller == null || !controller.value.isInitialized) {
-      return;
-    }
-    if (state == AppLifecycleState.inactive) {
-      controller?.dispose();
-    } else if (state == AppLifecycleState.resumed) {
-      if (controller != null) {
-        onNewCameraSelected(controller.description);
-      }
-    }
-  }
-
-  void _showCameraException(CameraException e) {
-    print(e.code + e.description);
-    Get.snackbar(
-      null,
-      '${e.code}\n${e.description}',
-      colorText: Colors.white,
-      backgroundColor: Colors.black87,
-      snackPosition: SnackPosition.BOTTOM,
-      margin: EdgeInsets.symmetric(
-        horizontal: 8.0,
-        vertical: 10.0,
-      ),
-      padding: EdgeInsets.symmetric(
-        horizontal: 12.0,
-        vertical: 18.0,
-      ),
-      borderRadius: 5.0,
-    );
-  }
-
-  void onNewCameraSelected(CameraDescription cameraDescription) async {
-    if (controller != null) {
-      await controller.dispose();
-    }
-    controller = CameraController(
-      cameraDescription,
-      ResolutionPreset.medium,
-    );
-
-    // If the controller is updated then update the UI.
-    controller.addListener(() {
-      if (mounted) setState(() {});
-      if (controller.value.hasError) {
-        Get.snackbar(
-          null,
-          '${controller.value.errorDescription}',
-          colorText: Colors.white,
-          backgroundColor: Colors.black87,
-          snackPosition: SnackPosition.BOTTOM,
-          margin: EdgeInsets.symmetric(
-            horizontal: 8.0,
-            vertical: 10.0,
-          ),
-          padding: EdgeInsets.symmetric(
-            horizontal: 12.0,
-            vertical: 18.0,
-          ),
-          borderRadius: 5.0,
-        );
-      }
-    });
-
-    try {
-      await controller.initialize();
-    } on CameraException catch (e) {
-      _showCameraException(e);
-    }
-
-    if (mounted) {
-      setState(() {});
-    }
-  }
-
-  void takePicture(type) async {
-    var file;
-    var res;
-    if (type == 1) {
-      if (!controller.value.isInitialized) {
-        Get.snackbar(
-          null,
-          'select a camera first.',
-          colorText: Colors.white,
-          backgroundColor: Colors.black87,
-          snackPosition: SnackPosition.BOTTOM,
-          margin: EdgeInsets.symmetric(
-            horizontal: 8.0,
-            vertical: 10.0,
-          ),
-          padding: EdgeInsets.symmetric(
-            horizontal: 12.0,
-            vertical: 18.0,
-          ),
-          borderRadius: 5.0,
-        );
-        return null;
-      }
-      final extDir = await getApplicationDocumentsDirectory();
-      final dirPath = '${extDir.path}/Pictures/flutter_test';
-      await Directory(dirPath).create(recursive: true);
-      final filePath = '$dirPath/image.jpg';
-      var dir = Directory(filePath);
-      try {
-        dir.deleteSync(recursive: true);
-      } catch (e) {
-        print(e.toString());
-      }
-      if (controller.value.isTakingPicture) {
-        return null;
-      }
-
-      try {
-        await controller.takePicture(filePath);
-      } on CameraException catch (e) {
-        _showCameraException(e);
-        return null;
-      }
-      file = File(filePath);
-      res = await mpC.uploadImage(file);
-    } else {
-      res = true;
-    }
-
-    print(res);
-    if (res != null && res) {
-      controller.dispose();
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppUtils().innerScaffoldBg,
@@ -256,7 +91,7 @@ class _AttachImgState extends State<AttachImg> {
               Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: Stack(
-                  children:[
+                  children: [
                     Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5.0),
@@ -302,7 +137,8 @@ class _AttachImgState extends State<AttachImg> {
                       });
                     },
                     decoration: InputDecoration(
-                      errorText: validateName ? 'Please Enter Client Name' : null,
+                      errorText:
+                          validateName ? 'Please Enter Client Name' : null,
                       isDense: true,
                       contentPadding: EdgeInsets.all(10),
                       hintStyle: TextStyle(
@@ -316,7 +152,8 @@ class _AttachImgState extends State<AttachImg> {
                   ),
                   suggestionsCallback: (pattern) async {
                     if (pattern.isNotEmpty) {
-                      return await RemoteServices().getBranchClientsSugg(pattern);
+                      return await RemoteServices()
+                          .getBranchClientsSugg(pattern);
                     } else {
                       clientId = null;
                     }
@@ -340,9 +177,10 @@ class _AttachImgState extends State<AttachImg> {
                     print(suggestion);
                     print(suggestion['name']);
                     clientId = suggestion['id'];
-                    clientText.text = suggestion['name'].toString().trimRight() +
-                        ' - ' +
-                        suggestion['id'];
+                    clientText.text =
+                        suggestion['name'].toString().trimRight() +
+                            ' - ' +
+                            suggestion['id'];
                   },
                   autoFlipDirection: true,
                 ),
@@ -375,7 +213,7 @@ class _AttachImgState extends State<AttachImg> {
                     FocusScope.of(context).requestFocus(FocusNode());
                     activity = value;
                     setState(() {});
-                    },
+                  },
                 ),
               ),
               Padding(
@@ -450,7 +288,9 @@ class _AttachImgState extends State<AttachImg> {
                   ),
                 ),
               ),
-              SizedBox(height: 15.0,),
+              SizedBox(
+                height: 15.0,
+              ),
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: Stack(
@@ -480,9 +320,7 @@ class _AttachImgState extends State<AttachImg> {
                   ],
                 ),
               ),
-              SizedBox(
-                height:250.0
-              ),
+              SizedBox(height: 250.0),
               Flexible(
                 child: Align(
                   alignment: Alignment.bottomCenter,
@@ -524,8 +362,7 @@ class _AttachImgState extends State<AttachImg> {
                                   await File(attachment.path).readAsBytes();
                               // print(base64.encode(bytes));
                               base64String = base64.encode(bytes);
-                            } else {
-                            }
+                            } else {}
                             if (clientText.text == null ||
                                 remarks.text == null ||
                                 activity == null) {
@@ -545,26 +382,24 @@ class _AttachImgState extends State<AttachImg> {
                                 ),
                                 borderRadius: 5.0,
                               );
-                            }
-                            else if (attachment==null){
-                                Get.snackbar(
-                                  null,
-                                  'Please provide Attachment',
-                                  colorText: Colors.white,
-                                  backgroundColor: Colors.black87,
-                                  snackPosition: SnackPosition.BOTTOM,
-                                  margin: EdgeInsets.symmetric(
-                                    horizontal: 8.0,
-                                    vertical: 10.0,
-                                  ),
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 12.0,
-                                    vertical: 18.0,
-                                  ),
-                                  borderRadius: 5.0,
-                                );
-                            }
-                            else{
+                            } else if (attachment == null) {
+                              Get.snackbar(
+                                null,
+                                'Please provide Attachment',
+                                colorText: Colors.white,
+                                backgroundColor: Colors.black87,
+                                snackPosition: SnackPosition.BOTTOM,
+                                margin: EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                  vertical: 10.0,
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 12.0,
+                                  vertical: 18.0,
+                                ),
+                                borderRadius: 5.0,
+                              );
+                            } else {
                               FocusScope.of(context).requestFocus(FocusNode());
                               await mpC.pr.show();
                               var pinVisit = await RemoteServices().pinMyVisit(

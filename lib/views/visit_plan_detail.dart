@@ -73,6 +73,7 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
 
   @override
   void dispose() {
+    Get.delete<VisitPlanController>();
     super.dispose();
   }
 
@@ -91,9 +92,13 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
                 color: Colors.white,
                 semanticLabel: 'pdf',
               ),
-              onPressed: () {
-                RemoteServices().getVisitDownloads(
+              onPressed: () async {
+                vpC.pr.show();
+               var path = await RemoteServices().getVisitDownloads(
                     widget.empId, widget.fDate, widget.tDate);
+               vpC.pr.hide();
+                Get.delete<VisitPlanController>();
+                Share.shareFiles([path.toString()]);
               })
         ],
       ),

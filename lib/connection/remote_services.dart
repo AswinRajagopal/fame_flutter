@@ -1994,7 +1994,7 @@ class RemoteServices {
               },
             ));
     if (response.statusCode == 200) {
-      Share.shareFiles([fullPath]);
+      return fullPath;
     } else {
       return null;
     }

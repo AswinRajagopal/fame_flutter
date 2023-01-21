@@ -24,7 +24,7 @@ class _CheckinPageState extends State<CheckinPage> {
   final CheckinController checkinController = Get.put(CheckinController());
   CameraController controller;
   List<CameraDescription> cameras;
-  var currentTime = DateFormat().add_jm().format(DateTime.now()).toString();
+  var currentTime = DateFormat('dd-MM-yy').add_jm().format(DateTime.now()).toString();
   // Position _currentPosition;
   // String currentAddress = 'Fetching your location...';
   var size;

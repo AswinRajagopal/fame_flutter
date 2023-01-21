@@ -9,7 +9,6 @@ import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
@@ -18,7 +17,7 @@ import '../connection/remote_services.dart';
 class CheckoutController extends GetxController {
   ProgressDialog pr;
   var checkoutResponse;
-  var todayString = (DateFormat.yMd().add_jm().format(DateTime.now()).toString()).obs;
+  var todayString = (DateFormat('dd-MM-yy').add_jm().format(DateTime.now()).toString()).obs;
   Position currentPosition;
   var currentAddress = 'Fetching your location...'.obs;
 
@@ -37,7 +36,7 @@ class CheckoutController extends GetxController {
 
   void updateTime() {
     Timer.periodic(Duration(seconds: 1), (timer) {
-      todayString.value = DateFormat.yMd().add_jm().format(DateTime.now()).toString();
+      todayString.value = DateFormat('dd-MM-yy').add_jm().format(DateTime.now()).toString();
     });
   }
 
