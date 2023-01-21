@@ -93,12 +93,7 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
                 semanticLabel: 'pdf',
               ),
               onPressed: () async {
-                vpC.pr.show();
-               var path = await RemoteServices().getVisitDownloads(
-                    widget.empId, widget.fDate, widget.tDate);
-               vpC.pr.hide();
-                Get.delete<VisitPlanController>();
-                Share.shareFiles([path.toString()]);
+                var path = vpC.getPdf(widget.empId, widget.fDate, widget.tDate);
               })
         ],
       ),

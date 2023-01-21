@@ -4,6 +4,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:share/share.dart';
 
 class VisitPlanController extends GetxController {
   var isLoadingFromToDate = true.obs;
@@ -146,6 +147,31 @@ class VisitPlanController extends GetxController {
           horizontal: 12.0,
           vertical: 18.0,
         ),
+        borderRadius: 5.0,
+      );
+    }
+  }
+
+  void getPdf(empId, fdate, tdate) async {
+    try {
+      await pr.show();
+      var path = await RemoteServices().getVisitDownloads(empId, fdate,
+      tdate);
+      await pr.hide();
+      if (path != null) {
+        Share.shareFiles([path.toString()]);
+      }
+    } catch (e) {
+      print(e);
+      await pr.hide();
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+        padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
         borderRadius: 5.0,
       );
     }
