@@ -24,7 +24,6 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
-import 'package:share/share.dart';
 
 import '../models/attendance.dart';
 import '../models/checkin.dart';
@@ -41,11 +40,13 @@ import '../models/signup.dart';
 import '../models/support.dart';
 import '../models/transfer_list.dart';
 import '../views/welcome_page.dart';
+
 // import 'package:background_locator/background_locator.dart' as bgl;
 // import 'package:background_locator/settings/locator_settings.dart' as ls;
 
 class RemoteServices {
   static var baseURL = 'http://52.66.61.207:8090/v1/api';
+
   // static var baseURL = 'http://10.0.19.27:8090/v1/api';
   // static var baseURL = 'http://androidapp.mydiyosfame.com:8090/v1/api';
   // static var baseURL = 'http://192.168.0.247:8090/v1/api';
@@ -53,7 +54,7 @@ class RemoteServices {
   // static var baseURL = 'http://10.0.52.40:8090/v1/api'  ;
   // static var baseURL = 'http://192.168.31.252:8090/v1/api';
   static var client = http.Client();
-  static var header = <String, String>{
+  var header = <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
   };
   var box = Hive.box('fame_pocket');
@@ -179,9 +180,7 @@ class RemoteServices {
       '$baseURL/user/verify_phone',
       headers: header,
       body: jsonEncode(
-        <String, String>{
-          "phoneNumber": mobile.toString()
-        },
+        <String, String>{"phoneNumber": mobile.toString()},
       ),
     );
     if (response.statusCode == 200) {
@@ -199,8 +198,10 @@ class RemoteServices {
       '$baseURL/user/login',
       headers: header,
       body: jsonEncode(
-        <String, String>{"phoneNumber": phoneNo.toString(),
-          'pushCode': pushCode},
+        <String, String>{
+          "phoneNumber": phoneNo.toString(),
+          'pushCode': pushCode
+        },
       ),
     );
     print(response.statusCode);
@@ -249,7 +250,9 @@ class RemoteServices {
   ) async {
     var response = await client.post(
       '$baseURL/user/signup',
-      headers: header,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
       body: jsonEncode(
         <String, String>{
           'userName': username,
@@ -344,7 +347,9 @@ class RemoteServices {
   static Future<Otp> otpverify(mobile, otp) async {
     var response = await client.post(
       '$baseURL/user/verify_regotp',
-      headers: header,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
       body: jsonEncode(
         <String, String>{
           'mobile': mobile,
@@ -386,7 +391,9 @@ class RemoteServices {
   static Future<ForgotPassword> forgorPassword(email) async {
     var response = await client.post(
       '$baseURL/user/forgot_pass',
-      headers: header,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
       body: jsonEncode(
         <String, String>{
           'emailId': email,
@@ -1322,12 +1329,13 @@ class RemoteServices {
     }
   }
 
-  Future aprRejExpense(adminRemarks,amount,empId, expenseEmpId, status) async {
+  Future aprRejExpense(
+      adminRemarks, amount, empId, expenseEmpId, status) async {
     print(
       jsonEncode(
         <String, dynamic>{
           "companyId": box.get('companyid').toString(),
-          "adminRemarks":adminRemarks.toString(),
+          "adminRemarks": adminRemarks.toString(),
           "amount": amount.toString(),
           "empId": empId.toString(),
           "expenseEmpId": expenseEmpId.toString(),
@@ -1341,7 +1349,7 @@ class RemoteServices {
       body: jsonEncode(
         <String, dynamic>{
           "companyId": box.get('companyid').toString(),
-          "adminRemarks":adminRemarks.toString(),
+          "adminRemarks": adminRemarks.toString(),
           "amount": amount.toString(),
           "empId": empId.toString(),
           "expenseEmpId": expenseEmpId.toString(),
@@ -1776,7 +1784,6 @@ class RemoteServices {
       return null;
     }
   }
-
 
   Future getBillsToExpense(bills) async {
     var response = await client.post(
