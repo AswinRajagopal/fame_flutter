@@ -13,7 +13,14 @@ class RejectedListWidget extends StatelessWidget {
   final int length;
   final int index;
   final ExpenseController expC;
-  RejectedListWidget(this.rejectedExp,this.index, this.length,this.expC,);
+
+  RejectedListWidget(
+    this.rejectedExp,
+    this.index,
+    this.length,
+    this.expC,
+  );
+
   final TextEditingController expense = TextEditingController();
 
   String convertDate(date) {
@@ -50,11 +57,22 @@ class RejectedListWidget extends StatelessWidget {
     }
   }
 
+  String numberFormatter(amountform) {
+    var amount = int.parse(amountform.toStringAsFixed(0));
+    var formatter = NumberFormat('#,##,000');
+    return formatter.format(amount).toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(ExpensesDetailList(this.rejectedExp,this.index, this.length,this.expC,));
+        Get.to(ExpensesDetailList(
+          this.rejectedExp,
+          this.index,
+          this.length,
+          this.expC,
+        ));
       },
       child: Card(
         margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
@@ -90,7 +108,7 @@ class RejectedListWidget extends StatelessWidget {
                       )
                     ]),
                     SizedBox(
-                      width: 20.0,
+                      width: 30.0,
                     ),
                     Expanded(
                       child: Text(
@@ -126,15 +144,15 @@ class RejectedListWidget extends StatelessWidget {
                           child: Text(
                             getStatus(rejectedExp['status']),
                             style: TextStyle(
-                                color:
-                                rejectedExp['status']==1 ? Colors.yellow : Colors.red,
+                                color: rejectedExp['status'] == 1
+                                    ? Colors.yellow
+                                    : Colors.red,
                                 fontSize: 12.0,
                                 fontWeight: FontWeight.bold),
                           ),
                         )
                       ],
                     ),
-                    SizedBox(width: 20.0),
                     Column(children: [
                       IntrinsicWidth(
                         child: Column(
@@ -143,7 +161,8 @@ class RejectedListWidget extends StatelessWidget {
                               alignment: Alignment.centerRight,
                               width: 120,
                               child: Text(
-                                rejectedExp['amount'].toString() + "0",
+                                numberFormatter(rejectedExp['amount'])
+                                    .toString(),
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 25.0,

@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:fame/utils/utils.dart';
+import 'package:fame/views/view_bills.dart';
+import 'package:fame/views/view_expenses.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -57,7 +59,10 @@ class ExpenseController extends GetxController {
               seconds: 2,
             ),
           );
-          Timer(Duration(seconds: 2), Get.back);
+          Timer(Duration(seconds: 2), () {
+            Get.off(ViewExpense());
+            return Future.value(true);
+          });
         } else {
           Get.snackbar(
             null,
@@ -336,11 +341,11 @@ class ExpenseController extends GetxController {
     }
   }
 
-  void aprRejExpense(adminRemarks,amount,empId, empExpenseId, status) async {
+  void aprRejExpense(adminRemarks, amount, empId, empExpenseId, status) async {
     try {
       await pr.show();
-      var appRejRes =
-          await RemoteServices().aprRejExpense(adminRemarks,amount,empId, empExpenseId, status);
+      var appRejRes = await RemoteServices()
+          .aprRejExpense(adminRemarks, amount, empId, empExpenseId, status);
       if (appRejRes != null) {
         await pr.hide();
         if (appRejRes['success']) {
@@ -707,7 +712,6 @@ class ExpenseController extends GetxController {
             for (var i = 0; i < res['expenseBillUrl'].length; i++) {
               billAttachment.add(res['expenseBillUrl'][i]);
             }
-            // print("billAttach:$billAttachment");
           }
         } else {
           Get.snackbar(
@@ -755,8 +759,8 @@ class ExpenseController extends GetxController {
       amount, expenseTypeId, remarks, imageFile, imageFile2, imageFile3) async {
     try {
       await pr.show();
-      var expenseBillRes = await RemoteServices().newExpBills(imageFile,
-           amount, expenseTypeId, remarks,imageFile2, imageFile3);
+      var expenseBillRes = await RemoteServices().newExpBills(
+          imageFile, amount, expenseTypeId, remarks, imageFile2, imageFile3);
       if (expenseBillRes != null) {
         await pr.hide();
         if (expenseBillRes['success']) {
@@ -779,7 +783,10 @@ class ExpenseController extends GetxController {
               seconds: 2,
             ),
           );
-          Timer(Duration(seconds: 2), Get.back);
+          Timer(Duration(seconds: 2), () {
+            Get.off(ViewBills());
+            return Future.value(true);
+          });
         } else {
           Get.snackbar(
             null,
@@ -855,7 +862,10 @@ class ExpenseController extends GetxController {
               seconds: 2,
             ),
           );
-          Timer(Duration(seconds: 2), Get.back);
+          Timer(Duration(seconds: 2), () {
+            Get.off(ViewBills());
+            return Future.value(true);
+          });
         } else {
           Get.snackbar(
             null,
@@ -980,7 +990,10 @@ class ExpenseController extends GetxController {
               seconds: 2,
             ),
           );
-          Timer(Duration(seconds: 2), Get.back);
+          Timer(Duration(seconds: 2), () {
+            Get.off(ViewExpense());
+            return Future.value(true);
+          });
         } else {
           Get.snackbar(
             null,
@@ -1022,7 +1035,7 @@ class ExpenseController extends GetxController {
     }
   }
 
-  void getExpAdvBalance(empId)async{
+  void getExpAdvBalance(empId) async {
     try {
       isLoading(true);
       await pr.show();
@@ -1032,8 +1045,8 @@ class ExpenseController extends GetxController {
         await pr.hide();
         if (res['success']) {
           if (res['empBalance'] != null) {
-              balance = res['empBalance'];
-              balance!=null?balance:"N/A";
+            balance = res['empBalance'];
+            balance != null ? balance : "N/A";
           }
         } else {}
       }

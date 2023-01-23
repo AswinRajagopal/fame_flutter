@@ -469,9 +469,10 @@ class _MyBillState extends State<MyBills> {
                                                     if (pickedFile != null) {
                                                       attachment = new File(
                                                           pickedFile.path);
-                                                      attach.text =
-                                                          path.basename(
-                                                              pickedFile.path);
+                                                      String dir = path.dirname(
+                                                          pickedFile.path);
+                                                      attach.text = path.join(
+                                                          '', 'image1.jpg');
                                                       setState(() {});
                                                     } else {
                                                       print(
@@ -514,9 +515,10 @@ class _MyBillState extends State<MyBills> {
                                                     if (pickedFile != null) {
                                                       attachment = new File(
                                                           pickedFile.path);
-                                                      attach.text =
-                                                          path.basename(
-                                                              pickedFile.path);
+                                                      String dir = path.dirname(
+                                                          pickedFile.path);
+                                                      attach.text = path.join(
+                                                          '', 'image1.jpg');
                                                       setState(() {});
                                                     } else {
                                                       print(
@@ -597,9 +599,11 @@ class _MyBillState extends State<MyBills> {
                                                     if (pickedFile != null) {
                                                       attachment3 = new File(
                                                           pickedFile.path);
+                                                      String dir = path.dirname(
+                                                          pickedFile.path);
                                                       attachTwo.text =
-                                                          path.basename(
-                                                              pickedFile.path);
+                                                          path.join(
+                                                              '', 'image3.jpg');
                                                       setState(() {});
                                                     } else {
                                                       print(
@@ -642,9 +646,11 @@ class _MyBillState extends State<MyBills> {
                                                     if (pickedFile != null) {
                                                       attachment3 = new File(
                                                           pickedFile.path);
+                                                      String dir = path.dirname(
+                                                          pickedFile.path);
                                                       attachTwo.text =
-                                                          path.basename(
-                                                              pickedFile.path);
+                                                          path.join(
+                                                              '', 'image3.jpg');
                                                       setState(() {});
                                                     } else {
                                                       print(
@@ -722,12 +728,15 @@ class _MyBillState extends State<MyBills> {
                                                 imageQuality: 50,
                                               );
                                               if (pickedFile != null) {
-                                                attachment2 =
-                                                new File(pickedFile.path);
-                                                attachOne.text = path
-                                                    .basename(pickedFile.path);
-                                                setState(() {});
-                                              } else {
+                                                attachment2 = new File(
+                                                          pickedFile.path);
+                                                      String dir = path.dirname(
+                                                          pickedFile.path);
+                                                      attachOne.text =
+                                                          path.join(
+                                                              '', 'image2.jpg');
+                                                      setState(() {});
+                                                    } else {
                                                 print('No image selected.');
                                                 setState(() {});
                                               }
@@ -762,12 +771,15 @@ class _MyBillState extends State<MyBills> {
                                                 imageQuality: 50,
                                               );
                                               if (pickedFile != null) {
-                                                attachment2 =
-                                                new File(pickedFile.path);
-                                                attachOne.text = path
-                                                    .basename(pickedFile.path);
-                                                setState(() {});
-                                              } else {
+                                                attachment2 = new File(
+                                                          pickedFile.path);
+                                                      String dir = path.dirname(
+                                                          pickedFile.path);
+                                                      attachOne.text =
+                                                          path.join(
+                                                              '', 'image2.jpg');
+                                                      setState(() {});
+                                                    } else {
                                                 print('No image selected.');
                                                 setState(() {});
                                               }

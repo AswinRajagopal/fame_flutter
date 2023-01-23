@@ -9,9 +9,11 @@ import 'package:intl/intl.dart';
 
 class BillsListWidget extends StatefulWidget {
   final billsList;
-  ExpenseController expC;
+  final int index;
+  final int length;
+  final ExpenseController expC;
 
-  BillsListWidget(this.billsList, this.expC);
+  BillsListWidget(this.billsList, this.index, this.length, this.expC);
 
   @override
   _BillsWidgetState createState() =>
@@ -59,6 +61,12 @@ class _BillsWidgetState extends State<BillsListWidget> {
     }
   }
 
+  String numberFormatter(amountform) {
+    var amount = int.parse(amountform.toStringAsFixed(0));
+    var formatter = NumberFormat('#,##,000');
+    return formatter.format(amount).toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(children: [
@@ -74,7 +82,7 @@ class _BillsWidgetState extends State<BillsListWidget> {
             margin: EdgeInsets.symmetric(vertical: 5.0),
             child: Padding(
               padding: const EdgeInsets.symmetric(
-                vertical: 20.0,
+                vertical: 10.0,
                 horizontal: 15.0,
               ),
               child: Column(
@@ -105,7 +113,7 @@ class _BillsWidgetState extends State<BillsListWidget> {
                       ),
                       Expanded(
                         child: Text(
-                          billsList['remarks'],
+                          billsList['expenseType'],
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 15.0,
@@ -185,15 +193,16 @@ class _BillsWidgetState extends State<BillsListWidget> {
                                     ),
                         ],
                       ),
-                      SizedBox(width: 30.0),
                       Column(children: [
                         IntrinsicWidth(
                           child: Column(
                             children: [
                               Container(
-                                width: 100.0,
+                                alignment: Alignment.centerRight,
+                                width: 120,
                                 child: Text(
-                                  billsList['amount'].toString() + "0",
+                                  numberFormatter(billsList['amount'])
+                                      .toString(),
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 25.0,
