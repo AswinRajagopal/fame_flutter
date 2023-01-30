@@ -49,7 +49,6 @@ dependencies:
   geolocator: ^6.1.14
   dio: ^3.0.10
   geocoding: ^1.0.5
-  # dots_indicator: ^1.2.0
   date_format: ^1.0.9
   flutter_google_places: ^0.2.6
   geocoder: ^0.2.1

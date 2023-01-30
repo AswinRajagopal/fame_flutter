@@ -2680,7 +2680,6 @@ class RemoteServices {
       var jsonString = response.body;
       return json.decode(jsonString);
     } else {
-      //show error message
       return null;
     }
   }
