@@ -80,7 +80,7 @@ class _OBPersonalState extends State<OBPersonal> {
         });
       }
     });
-      adminC.getObMandateFields();
+    adminC.getObMandateFields();
     super.initState();
   }
 
@@ -995,7 +995,10 @@ class _OBPersonalState extends State<OBPersonal> {
                               adminC.step1(false);
                               if (AppUtils.checkTextisNull(
                                       adminC.name, 'Name') ||
-                                  adminC.mandateList[1] == true) {
+                                  adminC.mandateList['mandateFields']['name'] ==
+                                          true &&
+                                      adminC.mandateList['mandateFields']
+                                          ['name']) {
                                 Get.snackbar(
                                   null,
                                   'Please provide Name',
@@ -1010,7 +1013,11 @@ class _OBPersonalState extends State<OBPersonal> {
                                 );
                               } else if (AppUtils.checkTextisNull(
                                       adminC.fatherName, 'FatherName') ||
-                                  adminC.mandateList[2] == true) {
+                                  adminC.mandateList['mandateFields']
+                                              ['fatherName'] ==
+                                          true &&
+                                      adminC.mandateList['mandateFields']
+                                          ['fatherName']) {
                                 Get.snackbar(
                                   null,
                                   'Please provide Father Name',
@@ -1023,6 +1030,10 @@ class _OBPersonalState extends State<OBPersonal> {
                                       horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
                                 );
+                                if (adminC.fatherName.text != null) {
+                                  adminC.mandateList['mandateFields']
+                                      ['fatherName'] = false;
+                                }
                               } else if (adminC.aadhar.isNullOrBlank) {
                                 Get.snackbar(
                                   null,
@@ -1052,7 +1063,10 @@ class _OBPersonalState extends State<OBPersonal> {
                                 );
                               } else if (AppUtils.checkTextisNull(
                                       adminC.dtOfBirth, 'Dob') ||
-                                  adminC.mandateList[3] == true) {
+                                  adminC.mandateList['mandateFields']['dob'] ==
+                                          true &&
+                                      adminC.mandateList['mandateFields']
+                                          ['dob']) {
                                 Get.snackbar(
                                   null,
                                   'Please provide DOB',
@@ -1066,7 +1080,11 @@ class _OBPersonalState extends State<OBPersonal> {
                                   borderRadius: 5.0,
                                 );
                               } else if (adminC.empPhone.text.length != 10 ||
-                                  adminC.mandateList[4] == true) {
+                                  adminC.mandateList['mandateFields']
+                                              ['phoneNumber'] ==
+                                          true &&
+                                      adminC.mandateList['mandateFields']
+                                          ['phoneNumber']) {
                                 Get.snackbar(
                                   null,
                                   'Please provide 10 digit phone number',
@@ -1080,7 +1098,11 @@ class _OBPersonalState extends State<OBPersonal> {
                                   borderRadius: 5.0,
                                 );
                               } else if (adminC.client == null && !_isManual ||
-                                  adminC.mandateList[5] == true) {
+                                  adminC.mandateList['mandateFields']
+                                              ['enterClientName'] ==
+                                          true &&
+                                      adminC.mandateList['mandateFields']
+                                          ['enterClientName']) {
                                 Get.snackbar(
                                   null,
                                   'Client is not selected',
@@ -1094,7 +1116,11 @@ class _OBPersonalState extends State<OBPersonal> {
                                   borderRadius: 5.0,
                                 );
                               } else if (adminC.designation == null ||
-                                  adminC.mandateList[6] == true) {
+                                  adminC.mandateList['mandateFields']
+                                              ['designation'] ==
+                                          true &&
+                                      adminC.mandateList['mandateFields']
+                                          ['designation']) {
                                 Get.snackbar(
                                   null,
                                   'Designation is not selected',
@@ -1109,7 +1135,11 @@ class _OBPersonalState extends State<OBPersonal> {
                                 );
                               } else if (AppUtils.checkTextisNull(
                                       adminC.dtOfJoin, 'Joining Date') ||
-                                  adminC.mandateList[7] == true) {
+                                  adminC.mandateList['mandateFields']
+                                              ['dateOfJoining'] ==
+                                          true &&
+                                      adminC.mandateList['mandateFields']
+                                          ['dateOfJoining']) {
                                 Get.snackbar(
                                   null,
                                   'Please provide Joining Date',

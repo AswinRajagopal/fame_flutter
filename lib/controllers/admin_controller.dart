@@ -180,7 +180,7 @@ class AdminController extends GetxController {
   // final vaccineType = {'Covaxin', 'Covishield', 'Sputnik v'};
 
   var curDate = DateFormat('yyyy-MM-dd').format(DateTime.now()).toString();
-  List mandateList = [].obs;
+  var mandateList;
 
   Future<Null> getDate(BuildContext context) async {
     await DatePicker.showDatePicker(
@@ -1640,7 +1640,7 @@ class AdminController extends GetxController {
         if (res['success']) {
           if (res['mandateFields'] != null) {
             for (var i = 0; i < res['mandateFields'].length; i++) {
-              mandateList.add(res['mandateFields'][i]);
+              mandateList=res;
             }
           }
         } else {

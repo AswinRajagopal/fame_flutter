@@ -134,7 +134,13 @@ class _OBFamilyState extends State<OBFamily> {
                       adminC.empFamilyMembers.clear();
                       for (var i = 0; i < adminC.familyDetail.length; i++) {
                         if (adminC.familyDetail[i] != null) {
-                          if (AppUtils.checkTextisNull(adminC.famName[i], 'Member Name')||adminC.mandateList[13]==true) {
+                          if (AppUtils.checkTextisNull(
+                                  adminC.famName[i], 'Member Name') ||
+                              adminC.mandateList['mandateFields']
+                                          ['nameOfMember'] ==
+                                      true &&
+                                  adminC.mandateList['mandateFields']
+                                      ['nameOfMember']) {
                             error = true;
                             Get.snackbar(
                               null,
@@ -142,11 +148,19 @@ class _OBFamilyState extends State<OBFamily> {
                               colorText: Colors.white,
                               backgroundColor: Colors.black87,
                               snackPosition: SnackPosition.BOTTOM,
-                              margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                              padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 8.0, vertical: 10.0),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 12.0, vertical: 18.0),
                               borderRadius: 5.0,
                             );
-                          } else if (AppUtils.checkTextisNull(adminC.famDob[i], 'Member Dob')||adminC.mandateList[14]==true) {
+                          } else if (AppUtils.checkTextisNull(
+                                  adminC.famDob[i], 'Member Dob') ||
+                              adminC.mandateList['mandateFields']
+                                          ['dobOfMember'] ==
+                                      true &&
+                                  adminC.mandateList['mandateFields']
+                                      ['dobOfMember']) {
                             error = true;
                             Get.snackbar(
                               null,
@@ -154,11 +168,15 @@ class _OBFamilyState extends State<OBFamily> {
                               colorText: Colors.white,
                               backgroundColor: Colors.black87,
                               snackPosition: SnackPosition.BOTTOM,
-                              margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                              padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 8.0, vertical: 10.0),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 12.0, vertical: 18.0),
                               borderRadius: 5.0,
                             );
-                          } else if (AppUtils.checkTextisNull(adminC.famAge[i], 'Member Age')||adminC.mandateList[15]==true) {
+                          } else if (AppUtils.checkTextisNull(
+                                  adminC.famAge[i], 'Member Age') ||
+                              adminC.mandateList['mandateFields']['age']== true && adminC.mandateList['mandateFields']['age']) {
                             error = true;
                             Get.snackbar(
                               null,
@@ -166,11 +184,14 @@ class _OBFamilyState extends State<OBFamily> {
                               colorText: Colors.white,
                               backgroundColor: Colors.black87,
                               snackPosition: SnackPosition.BOTTOM,
-                              margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                              padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 8.0, vertical: 10.0),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 12.0, vertical: 18.0),
                               borderRadius: 5.0,
                             );
-                          } else if (AppUtils.checkTextisNull(adminC.famRelation[i], 'Member Relation')) {
+                          } else if (AppUtils.checkTextisNull(
+                              adminC.famRelation[i], 'Member Relation')) {
                             error = true;
                             Get.snackbar(
                               null,
@@ -178,8 +199,10 @@ class _OBFamilyState extends State<OBFamily> {
                               colorText: Colors.white,
                               backgroundColor: Colors.black87,
                               snackPosition: SnackPosition.BOTTOM,
-                              margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                              padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 8.0, vertical: 10.0),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 12.0, vertical: 18.0),
                               borderRadius: 5.0,
                             );
                           } else {
@@ -192,7 +215,8 @@ class _OBFamilyState extends State<OBFamily> {
                               'empId': adminC.addedEmpId.toString(),
                               'relAadhaarNo': adminC.famAadhar[i].text,
                               // 'dofBirth': adminC.famDob[i].text,
-                              'dofBirth': '${adminC.famDob[i].text.split('-')[2]}-${adminC.famDob[i].text.split('-')[1]}-${adminC.famDob[i].text.split('-')[0]}',
+                              'dofBirth':
+                                  '${adminC.famDob[i].text.split('-')[2]}-${adminC.famDob[i].text.split('-')[1]}-${adminC.famDob[i].text.split('-')[0]}',
                               'nomineePercent': adminC.famPercent[i].text,
                               'pfNominee': adminC.famNominee[i] ? 'Y' : 'N',
                               'esiNominee': adminC.famNominee[i] ? 'Y' : 'N',

@@ -130,7 +130,9 @@ class _OBBankState extends State<OBBank> {
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          labelText: 'Account No*',labelStyle: TextStyle(color:Colors.grey[600],fontSize: 18.0),
+                          labelText: 'Account No*',
+                          labelStyle: TextStyle(
+                              color: Colors.grey[600], fontSize: 18.0),
                         ),
                       ),
                     ),
@@ -143,8 +145,11 @@ class _OBBankState extends State<OBBank> {
                         controller: adminC.ifsc,
                         maxLength: 160,
                         maxLengthEnforced: true,
-                        keyboardType:TextInputType.text,
-                        inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[a-zA-Z|0-9]")), ],
+                        keyboardType: TextInputType.text,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(
+                              RegExp("[a-zA-Z|0-9]")),
+                        ],
                         decoration: InputDecoration(
                           isDense: true,
                           contentPadding: EdgeInsets.all(5),
@@ -152,7 +157,9 @@ class _OBBankState extends State<OBBank> {
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          labelText: 'IFSC*',labelStyle: TextStyle(color:Colors.grey[600],fontSize: 18.0),
+                          labelText: 'IFSC*',
+                          labelStyle: TextStyle(
+                              color: Colors.grey[600], fontSize: 18.0),
                         ),
                       ),
                     ),
@@ -303,55 +310,78 @@ class _OBBankState extends State<OBBank> {
                           ),
                           RaisedButton(
                             onPressed: () {
-                              if (adminC.bank ==null||adminC.mandateList[8]==true) {
+                              if (adminC.bank == null ||
+                                  adminC.mandateList['mandateFields']
+                                              ['selectBank'] ==
+                                          true &&
+                                      adminC.mandateList['mandateFields']
+                                          ['selectBank']) {
                                 Get.snackbar(
                                   null,
                                   'Please provide Bank Name',
                                   colorText: Colors.white,
                                   backgroundColor: Colors.black87,
                                   snackPosition: SnackPosition.BOTTOM,
-                                  margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 8.0, vertical: 10.0),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
                                 );
-                              }else if (AppUtils.checkTextisNull(adminC.accountNo, 'Account Number')) {
+                              } else if (AppUtils.checkTextisNull(
+                                      adminC.accountNo, 'Account Number') ||
+                                  adminC.mandateList['mandateFields']
+                                              ['accountNumber'] ==
+                                          true &&
+                                      adminC.mandateList['mandateFields']
+                                          ['accountNumber']) {
                                 Get.snackbar(
                                   null,
                                   'Please provide Account Number',
                                   colorText: Colors.white,
                                   backgroundColor: Colors.black87,
                                   snackPosition: SnackPosition.BOTTOM,
-                                  margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 8.0, vertical: 10.0),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
                                 );
-                              }
-
-                              else if(adminC.accountNo.text.length<8||adminC.mandateList[9]==true){
+                              } else if (adminC.accountNo.text.length < 8) {
                                 Get.snackbar(
                                   null,
                                   'Please enter a valid bank Account Number',
                                   colorText: Colors.white,
                                   backgroundColor: Colors.black87,
                                   snackPosition: SnackPosition.BOTTOM,
-                                  margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 8.0, vertical: 10.0),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
                                 );
-
-                              }else if (AppUtils.checkTextisNull(adminC.ifsc, 'IFSC')||adminC.mandateList[10]==true) {
+                              } else if (AppUtils.checkTextisNull(
+                                      adminC.ifsc, 'IFSC') ||
+                                  adminC.mandateList['mandateFields']
+                                              ['ifscCode'] ==
+                                          true &&
+                                      adminC.mandateList['mandateFields']
+                                          ['ifscCode']) {
                                 Get.snackbar(
                                   null,
                                   'Please provide IFSC',
                                   colorText: Colors.white,
                                   backgroundColor: Colors.black87,
                                   snackPosition: SnackPosition.BOTTOM,
-                                  margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 8.0, vertical: 10.0),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
                                 );
-                              }else{
-                                FocusScope.of(context).requestFocus(FocusNode());
+                              } else {
+                                FocusScope.of(context)
+                                    .requestFocus(FocusNode());
                                 adminC.step3(true);
                                 Get.to(OBAddress());
                               }
