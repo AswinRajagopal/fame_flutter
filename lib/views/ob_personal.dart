@@ -80,6 +80,7 @@ class _OBPersonalState extends State<OBPersonal> {
         });
       }
     });
+      adminC.getObMandateFields();
     super.initState();
   }
 
@@ -729,7 +730,10 @@ class _OBPersonalState extends State<OBPersonal> {
                                 print(suggestion['name']);
                                 adminC.client = suggestion['id'];
                                 adminC.clientAu.text =
-                                    suggestion['name'].toString().trimRight() + " ("+ suggestion['clientShortName'] +")"+
+                                    suggestion['name'].toString().trimRight() +
+                                        " (" +
+                                        suggestion['clientShortName'] +
+                                        ")" +
                                         ' - ' +
                                         suggestion['id'];
                                 adminC.sitePostedTo = suggestion['id'];
@@ -984,12 +988,14 @@ class _OBPersonalState extends State<OBPersonal> {
                           RaisedButton(
                             onPressed: () {
                               FocusScope.of(context).requestFocus(FocusNode());
-                              if(_isManual && adminC.clientMu.text.length>0) {
+                              if (_isManual &&
+                                  adminC.clientMu.text.length > 0) {
                                 adminC.client = adminC.clientMu.text;
                               }
                               adminC.step1(false);
                               if (AppUtils.checkTextisNull(
-                                  adminC.name, 'Name')) {
+                                      adminC.name, 'Name') ||
+                                  adminC.mandateList[1] == true) {
                                 Get.snackbar(
                                   null,
                                   'Please provide Name',
@@ -1003,7 +1009,8 @@ class _OBPersonalState extends State<OBPersonal> {
                                   borderRadius: 5.0,
                                 );
                               } else if (AppUtils.checkTextisNull(
-                                  adminC.fatherName, 'FatherName')) {
+                                      adminC.fatherName, 'FatherName') ||
+                                  adminC.mandateList[2] == true) {
                                 Get.snackbar(
                                   null,
                                   'Please provide Father Name',
@@ -1044,7 +1051,8 @@ class _OBPersonalState extends State<OBPersonal> {
                                   borderRadius: 5.0,
                                 );
                               } else if (AppUtils.checkTextisNull(
-                                  adminC.dtOfBirth, 'Dob')) {
+                                      adminC.dtOfBirth, 'Dob') ||
+                                  adminC.mandateList[3] == true) {
                                 Get.snackbar(
                                   null,
                                   'Please provide DOB',
@@ -1057,7 +1065,8 @@ class _OBPersonalState extends State<OBPersonal> {
                                       horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
                                 );
-                              } else if (adminC.empPhone.text.length != 10) {
+                              } else if (adminC.empPhone.text.length != 10 ||
+                                  adminC.mandateList[4] == true) {
                                 Get.snackbar(
                                   null,
                                   'Please provide 10 digit phone number',
@@ -1070,8 +1079,8 @@ class _OBPersonalState extends State<OBPersonal> {
                                       horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
                                 );
-                              }
-                              else if (adminC.client == null && !_isManual) {
+                              } else if (adminC.client == null && !_isManual ||
+                                  adminC.mandateList[5] == true) {
                                 Get.snackbar(
                                   null,
                                   'Client is not selected',
@@ -1084,8 +1093,8 @@ class _OBPersonalState extends State<OBPersonal> {
                                       horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
                                 );
-                              }
-                              else if (adminC.designation == null) {
+                              } else if (adminC.designation == null ||
+                                  adminC.mandateList[6] == true) {
                                 Get.snackbar(
                                   null,
                                   'Designation is not selected',
@@ -1099,7 +1108,8 @@ class _OBPersonalState extends State<OBPersonal> {
                                   borderRadius: 5.0,
                                 );
                               } else if (AppUtils.checkTextisNull(
-                                  adminC.dtOfJoin, 'Joining Date')) {
+                                      adminC.dtOfJoin, 'Joining Date') ||
+                                  adminC.mandateList[7] == true) {
                                 Get.snackbar(
                                   null,
                                   'Please provide Joining Date',

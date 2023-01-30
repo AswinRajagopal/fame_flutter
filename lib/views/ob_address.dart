@@ -577,7 +577,7 @@ class _OBAddressState extends State<OBAddress> {
                             onPressed: () {
                               FocusScope.of(context).requestFocus(FocusNode());
                               adminC.step4(false);
-                              if (AppUtils.checkTextisNull(adminC.permanenthouseNo, 'House Number')) {
+                              if (AppUtils.checkTextisNull(adminC.permanenthouseNo, 'House Number')||adminC.mandateList[11]==true) {
                                 Get.snackbar(
                                   null,
                                   'Please provide House Number',

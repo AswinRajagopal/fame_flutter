@@ -2423,7 +2423,6 @@ class RemoteServices {
   }
 
   Future getDesignSugg(unitName) async {
-    // print('empName: $empName');
     var response = await client.post(
       '$baseURL/company/get_designations',
       headers: header,
@@ -2612,6 +2611,26 @@ class RemoteServices {
       ),
     );
     print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future getObMandateFields() async {
+    var response = await client.post(
+      '$baseURL/company/get_mandate_fields',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'companyId': box.get('companyid').toString(),
+        },
+      ),
+    );
+    // print(response.statusCode);
     if (response.statusCode == 200) {
       var jsonString = response.body;
       return json.decode(jsonString);

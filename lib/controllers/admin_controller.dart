@@ -23,6 +23,7 @@ class AdminController extends GetxController {
   var disabledFatherName = false.obs;
   var aadharScan = false;
   var reload = true;
+  var res;
   ProgressDialog pr;
   var resAddShift;
   var resAddClient;
@@ -179,6 +180,7 @@ class AdminController extends GetxController {
   // final vaccineType = {'Covaxin', 'Covishield', 'Sputnik v'};
 
   var curDate = DateFormat('yyyy-MM-dd').format(DateTime.now()).toString();
+  List mandateList = [].obs;
 
   Future<Null> getDate(BuildContext context) async {
     await DatePicker.showDatePicker(
@@ -1057,7 +1059,7 @@ class AdminController extends GetxController {
                     // ),
                     Checkbox(
                       value: famNominee[index],
-                      onChanged: (value) {
+                      onChanged:(value) {
                         print(value);
                         famNominee[index] = value;
                         familyDetail.refresh();
@@ -1624,6 +1626,62 @@ class AdminController extends GetxController {
       print('proofDetails: $proofDetails');
       addEmployeeData(empFamilyMembers, proofDetails, aadhar1, aadhar2, proof11,
           proof12, proof21, proof22, profile, empId);
+    }
+  }
+
+  void getObMandateFields() async {
+    try {
+      isLoading(true);
+      await pr.show();
+      res = await RemoteServices().getObMandateFields();
+      if (res != null) {
+        isLoading(false);
+        await pr.hide();
+        if (res['success']) {
+          if (res['mandateFields'] != null) {
+            for (var i = 0; i < res['mandateFields'].length; i++) {
+              mandateList.add(res['mandateFields'][i]);
+            }
+          }
+        } else {
+          Get.snackbar(
+            null,
+            'Something went wrong! Please try again later',
+            colorText: Colors.white,
+            backgroundColor: Colors.black87,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
+          );
+        }
+      }
+    } catch (e) {
+      print(e);
+      isLoading(false);
+      await pr.hide();
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
+      );
     }
   }
 

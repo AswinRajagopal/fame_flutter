@@ -134,7 +134,7 @@ class _OBFamilyState extends State<OBFamily> {
                       adminC.empFamilyMembers.clear();
                       for (var i = 0; i < adminC.familyDetail.length; i++) {
                         if (adminC.familyDetail[i] != null) {
-                          if (AppUtils.checkTextisNull(adminC.famName[i], 'Member Name')) {
+                          if (AppUtils.checkTextisNull(adminC.famName[i], 'Member Name')||adminC.mandateList[13]==true) {
                             error = true;
                             Get.snackbar(
                               null,
@@ -146,7 +146,7 @@ class _OBFamilyState extends State<OBFamily> {
                               padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
                               borderRadius: 5.0,
                             );
-                          } else if (AppUtils.checkTextisNull(adminC.famDob[i], 'Member Dob')) {
+                          } else if (AppUtils.checkTextisNull(adminC.famDob[i], 'Member Dob')||adminC.mandateList[14]==true) {
                             error = true;
                             Get.snackbar(
                               null,
@@ -158,7 +158,7 @@ class _OBFamilyState extends State<OBFamily> {
                               padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
                               borderRadius: 5.0,
                             );
-                          } else if (AppUtils.checkTextisNull(adminC.famAge[i], 'Member Age')) {
+                          } else if (AppUtils.checkTextisNull(adminC.famAge[i], 'Member Age')||adminC.mandateList[15]==true) {
                             error = true;
                             Get.snackbar(
                               null,

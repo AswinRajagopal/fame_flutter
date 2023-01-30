@@ -303,7 +303,7 @@ class _OBBankState extends State<OBBank> {
                           ),
                           RaisedButton(
                             onPressed: () {
-                              if (adminC.bank ==null) {
+                              if (adminC.bank ==null||adminC.mandateList[8]==true) {
                                 Get.snackbar(
                                   null,
                                   'Please provide Bank Name',
@@ -327,7 +327,7 @@ class _OBBankState extends State<OBBank> {
                                 );
                               }
 
-                              else if(adminC.accountNo.text.length<8){
+                              else if(adminC.accountNo.text.length<8||adminC.mandateList[9]==true){
                                 Get.snackbar(
                                   null,
                                   'Please enter a valid bank Account Number',
@@ -339,8 +339,7 @@ class _OBBankState extends State<OBBank> {
                                   borderRadius: 5.0,
                                 );
 
-                              }else if (AppUtils.checkTextisNull(adminC.ifsc, 'IFSC')) {
-
+                              }else if (AppUtils.checkTextisNull(adminC.ifsc, 'IFSC')||adminC.mandateList[10]==true) {
                                 Get.snackbar(
                                   null,
                                   'Please provide IFSC',
