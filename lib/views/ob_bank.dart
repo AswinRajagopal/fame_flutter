@@ -310,31 +310,36 @@ class _OBBankState extends State<OBBank> {
                           ),
                           RaisedButton(
                             onPressed: () {
-                              if (adminC.bank == null ||
-                                  adminC.mandateList['mandateFields']
-                                              ['selectBank'] ==
-                                          true &&
-                                      adminC.mandateList['mandateFields']
-                                          ['selectBank']) {
-                                Get.snackbar(
-                                  null,
-                                  'Please provide Bank Name',
-                                  colorText: Colors.white,
-                                  backgroundColor: Colors.black87,
-                                  snackPosition: SnackPosition.BOTTOM,
-                                  margin: EdgeInsets.symmetric(
-                                      horizontal: 8.0, vertical: 10.0),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 12.0, vertical: 18.0),
-                                  borderRadius: 5.0,
-                                );
+                              if (adminC.bank == null) {
+                                if (adminC.mandateList['mandateFields']
+                                        ['selectBank'] ==
+                                    true) {
+                                  Get.snackbar(
+                                    null,
+                                    'Please provide Bank Name',
+                                    colorText: Colors.white,
+                                    backgroundColor: Colors.black87,
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: 8.0, vertical: 10.0),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 12.0, vertical: 18.0),
+                                    borderRadius: 5.0,
+                                  );
+                                } else if (adminC.bank != null ||
+                                    adminC.mandateList['mandateFields']
+                                            ['selectBank'] ==
+                                        false) {
+                                  FocusScope.of(context)
+                                      .requestFocus(FocusNode());
+                                  adminC.step3(true);
+                                  Get.to(OBAddress());
+                                }
                               } else if (AppUtils.checkTextisNull(
-                                      adminC.accountNo, 'Account Number') ||
-                                  adminC.mandateList['mandateFields']
-                                              ['accountNumber'] ==
-                                          true &&
-                                      adminC.mandateList['mandateFields']
-                                          ['accountNumber']) {
+                                      adminC.accountNo, 'Account Number')) {
+                                if( adminC.mandateList['mandateFields']
+                                ['accountNumber'] ==
+                                    true ){
                                 Get.snackbar(
                                   null,
                                   'Please provide Account Number',
@@ -346,7 +351,14 @@ class _OBBankState extends State<OBBank> {
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
-                                );
+                                );}else if(adminC.accountNo.text!=null|| adminC.mandateList['mandateFields']
+                                ['accountNumber'] ==
+                                    false ){
+                                  FocusScope.of(context)
+                                      .requestFocus(FocusNode());
+                                  adminC.step3(true);
+                                  Get.to(OBAddress());
+                                }
                               } else if (adminC.accountNo.text.length < 8) {
                                 Get.snackbar(
                                   null,
@@ -361,12 +373,10 @@ class _OBBankState extends State<OBBank> {
                                   borderRadius: 5.0,
                                 );
                               } else if (AppUtils.checkTextisNull(
-                                      adminC.ifsc, 'IFSC') ||
-                                  adminC.mandateList['mandateFields']
-                                              ['ifscCode'] ==
-                                          true &&
-                                      adminC.mandateList['mandateFields']
-                                          ['ifscCode']) {
+                                      adminC.ifsc, 'IFSC')) {
+                                if(adminC.mandateList['mandateFields']
+                                ['ifscCode'] ==
+                                    true ){
                                 Get.snackbar(
                                   null,
                                   'Please provide IFSC',
@@ -378,7 +388,14 @@ class _OBBankState extends State<OBBank> {
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
-                                );
+                                );}else if(adminC.ifsc.text!=null||adminC.mandateList['mandateFields']
+                                ['ifscCode'] ==
+                                    false ){
+                                  FocusScope.of(context)
+                                      .requestFocus(FocusNode());
+                                  adminC.step3(true);
+                                  Get.to(OBAddress());
+                                }
                               } else {
                                 FocusScope.of(context)
                                     .requestFocus(FocusNode());

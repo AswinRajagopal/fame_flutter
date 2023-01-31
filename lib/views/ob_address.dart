@@ -607,12 +607,10 @@ class _OBAddressState extends State<OBAddress> {
                               adminC.step4(false);
                               if (AppUtils.checkTextisNull(
                                       adminC.permanenthouseNo,
-                                      'House Number') ||
-                                  adminC.mandateList['mandateFields']
-                                              ['houseNumber'] ==
-                                          true &&
-                                      adminC.mandateList['mandateFields']
-                                          ['houseNumber']) {
+                                      'House Number')) {
+                                if(  adminC.mandateList['mandateFields']
+                                ['houseNumber'] ==
+                                    true){
                                 Get.snackbar(
                                   null,
                                   'Please provide House Number',
@@ -624,7 +622,12 @@ class _OBAddressState extends State<OBAddress> {
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
-                                );
+                                );}else if(adminC.permanenthouseNo.text!=null||adminC.mandateList['mandateFields']
+                                ['houseNumber'] ==
+                                    false){
+                                  Get.to(OBFamily());
+                                  adminC.step4(true);
+                                }
                               } else {
                                 Get.to(OBFamily());
                                 adminC.step4(true);

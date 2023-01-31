@@ -994,47 +994,65 @@ class _OBPersonalState extends State<OBPersonal> {
                               }
                               adminC.step1(false);
                               if (AppUtils.checkTextisNull(
-                                      adminC.name, 'Name') ||
-                                  adminC.mandateList['mandateFields']['name'] ==
-                                          true &&
-                                      adminC.mandateList['mandateFields']
-                                          ['name']) {
-                                Get.snackbar(
-                                  null,
-                                  'Please provide Name',
-                                  colorText: Colors.white,
-                                  backgroundColor: Colors.black87,
-                                  snackPosition: SnackPosition.BOTTOM,
-                                  margin: EdgeInsets.symmetric(
-                                      horizontal: 8.0, vertical: 10.0),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 12.0, vertical: 18.0),
-                                  borderRadius: 5.0,
-                                );
+                                  adminC.name, 'Name')) {
+                                if (adminC.mandateList['mandateFields']
+                                        ['name'] ==
+                                    true) {
+                                  Get.snackbar(
+                                    null,
+                                    'Please provide Name',
+                                    colorText: Colors.white,
+                                    backgroundColor: Colors.black87,
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: 8.0, vertical: 10.0),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 12.0, vertical: 18.0),
+                                    borderRadius: 5.0,
+                                  );
+                                } else if (adminC.name.text != null ||
+                                    adminC.mandateList['mandateFields']
+                                            ['name'] ==
+                                        false) {
+                                  adminC.proofAadharNumber.text =
+                                      adminC.aadhar.text;
+                                  adminC.proofAadharNumberConfirm.text =
+                                      adminC.aadhar.text;
+                                  Get.to(OBVaccine());
+                                  adminC.step1(true);
+                                }
                               } else if (AppUtils.checkTextisNull(
-                                      adminC.fatherName, 'FatherName') ||
-                                  adminC.mandateList['mandateFields']
-                                              ['fatherName'] ==
-                                          true &&
-                                      adminC.mandateList['mandateFields']
-                                          ['fatherName']) {
-                                Get.snackbar(
-                                  null,
-                                  'Please provide Father Name',
-                                  colorText: Colors.white,
-                                  backgroundColor: Colors.black87,
-                                  snackPosition: SnackPosition.BOTTOM,
-                                  margin: EdgeInsets.symmetric(
-                                      horizontal: 8.0, vertical: 10.0),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 12.0, vertical: 18.0),
-                                  borderRadius: 5.0,
-                                );
-                                if (adminC.fatherName.text != null) {
-                                  adminC.mandateList['mandateFields']
-                                      ['fatherName'] = false;
+                                  adminC.fatherName, 'FatherName')) {
+                                if (adminC.mandateList['mandateFields']
+                                        ['fatherName'] ==
+                                    true) {
+                                  Get.snackbar(
+                                    null,
+                                    'Please provide Father Name',
+                                    colorText: Colors.white,
+                                    backgroundColor: Colors.black87,
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: 8.0, vertical: 10.0),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 12.0, vertical: 18.0),
+                                    borderRadius: 5.0,
+                                  );
+                                } else if (adminC.fatherName.text != null ||
+                                    adminC.mandateList['mandateFields']
+                                            ['fatherName'] ==
+                                        false) {
+                                  adminC.proofAadharNumber.text =
+                                      adminC.aadhar.text;
+                                  adminC.proofAadharNumberConfirm.text =
+                                      adminC.aadhar.text;
+                                  Get.to(OBVaccine());
+                                  adminC.step1(true);
                                 }
                               } else if (adminC.aadhar.isNullOrBlank) {
+                                if(adminC.mandateList['mandateFields']
+                                ['aadharNumber'] ==
+                                    true){
                                 Get.snackbar(
                                   null,
                                   'Please enter Aadhaar Number',
@@ -1046,7 +1064,16 @@ class _OBPersonalState extends State<OBPersonal> {
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
-                                );
+                                );}else if(adminC.aadhar.text!=null||adminC.mandateList['mandateFields']
+                                ['aadharNumber'] ==
+                                    true){
+                                  adminC.proofAadharNumber.text =
+                                      adminC.aadhar.text;
+                                  adminC.proofAadharNumberConfirm.text =
+                                      adminC.aadhar.text;
+                                  Get.to(OBVaccine());
+                                  adminC.step1(true);
+                                }
                               } else if (!verhoeff
                                   .validate(adminC.aadhar.text)) {
                                 Get.snackbar(
@@ -1062,96 +1089,139 @@ class _OBPersonalState extends State<OBPersonal> {
                                   borderRadius: 5.0,
                                 );
                               } else if (AppUtils.checkTextisNull(
-                                      adminC.dtOfBirth, 'Dob') ||
-                                  adminC.mandateList['mandateFields']['dob'] ==
-                                          true &&
-                                      adminC.mandateList['mandateFields']
-                                          ['dob']) {
-                                Get.snackbar(
-                                  null,
-                                  'Please provide DOB',
-                                  colorText: Colors.white,
-                                  backgroundColor: Colors.black87,
-                                  snackPosition: SnackPosition.BOTTOM,
-                                  margin: EdgeInsets.symmetric(
-                                      horizontal: 8.0, vertical: 10.0),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 12.0, vertical: 18.0),
-                                  borderRadius: 5.0,
-                                );
-                              } else if (adminC.empPhone.text.length != 10 ||
-                                  adminC.mandateList['mandateFields']
-                                              ['phoneNumber'] ==
-                                          true &&
-                                      adminC.mandateList['mandateFields']
-                                          ['phoneNumber']) {
-                                Get.snackbar(
-                                  null,
-                                  'Please provide 10 digit phone number',
-                                  colorText: Colors.white,
-                                  backgroundColor: Colors.black87,
-                                  snackPosition: SnackPosition.BOTTOM,
-                                  margin: EdgeInsets.symmetric(
-                                      horizontal: 8.0, vertical: 10.0),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 12.0, vertical: 18.0),
-                                  borderRadius: 5.0,
-                                );
-                              } else if (adminC.client == null && !_isManual ||
-                                  adminC.mandateList['mandateFields']
-                                              ['enterClientName'] ==
-                                          true &&
-                                      adminC.mandateList['mandateFields']
-                                          ['enterClientName']) {
-                                Get.snackbar(
-                                  null,
-                                  'Client is not selected',
-                                  colorText: Colors.white,
-                                  backgroundColor: Colors.black87,
-                                  snackPosition: SnackPosition.BOTTOM,
-                                  margin: EdgeInsets.symmetric(
-                                      horizontal: 8.0, vertical: 10.0),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 12.0, vertical: 18.0),
-                                  borderRadius: 5.0,
-                                );
-                              } else if (adminC.designation == null ||
-                                  adminC.mandateList['mandateFields']
-                                              ['designation'] ==
-                                          true &&
-                                      adminC.mandateList['mandateFields']
-                                          ['designation']) {
-                                Get.snackbar(
-                                  null,
-                                  'Designation is not selected',
-                                  colorText: Colors.white,
-                                  backgroundColor: Colors.black87,
-                                  snackPosition: SnackPosition.BOTTOM,
-                                  margin: EdgeInsets.symmetric(
-                                      horizontal: 8.0, vertical: 10.0),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 12.0, vertical: 18.0),
-                                  borderRadius: 5.0,
-                                );
+                                  adminC.dtOfBirth, 'Dob')) {
+                                if (adminC.mandateList['mandateFields']
+                                        ['dob'] ==
+                                    true) {
+                                  Get.snackbar(
+                                    null,
+                                    'Please provide DOB',
+                                    colorText: Colors.white,
+                                    backgroundColor: Colors.black87,
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: 8.0, vertical: 10.0),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 12.0, vertical: 18.0),
+                                    borderRadius: 5.0,
+                                  );
+                                } else if (adminC.dtOfBirth.text != null ||
+                                    adminC.mandateList['mandateFields']
+                                            ['dob'] ==
+                                        false) {
+                                  adminC.proofAadharNumber.text =
+                                      adminC.aadhar.text;
+                                  adminC.proofAadharNumberConfirm.text =
+                                      adminC.aadhar.text;
+                                  Get.to(OBVaccine());
+                                  adminC.step1(true);
+                                }
+                              } else if (adminC.empPhone.text.length != 10) {
+                                if (adminC.mandateList['mandateFields']
+                                        ['phoneNumber'] ==
+                                    true) {
+                                  Get.snackbar(
+                                    null,
+                                    'Please provide 10 digit phone number',
+                                    colorText: Colors.white,
+                                    backgroundColor: Colors.black87,
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: 8.0, vertical: 10.0),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 12.0, vertical: 18.0),
+                                    borderRadius: 5.0,
+                                  );
+                                } else if (adminC.empPhone.text != null ||
+                                    adminC.mandateList['mandateFields']
+                                            ['phoneNumber'] ==
+                                        false) {
+                                  adminC.proofAadharNumber.text =
+                                      adminC.aadhar.text;
+                                  adminC.proofAadharNumberConfirm.text =
+                                      adminC.aadhar.text;
+                                  Get.to(OBVaccine());
+                                  adminC.step1(true);
+                                }
+                              } else if (adminC.client == null && !_isManual) {
+                                if(adminC.mandateList['mandateFields']
+                                ['enterClientName'] ==
+                                    true){
+                                  Get.snackbar(
+                                    null,
+                                    'Client is not selected',
+                                    colorText: Colors.white,
+                                    backgroundColor: Colors.black87,
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: 8.0, vertical: 10.0),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 12.0, vertical: 18.0),
+                                    borderRadius: 5.0,
+                                  );
+                                }else if(adminC.client!=null || adminC.mandateList['mandateFields']
+                                ['enterClientName'] ==
+                                    false ){
+                                  adminC.proofAadharNumber.text =
+                                      adminC.aadhar.text;
+                                  adminC.proofAadharNumberConfirm.text =
+                                      adminC.aadhar.text;
+                                  Get.to(OBVaccine());
+                                  adminC.step1(true);
+                                }
+                              } else if (adminC.designation == null) {
+                                if(adminC.mandateList['mandateFields']
+                              ['designation'] ==
+                              true){
+                                  Get.snackbar(
+                                    null,
+                                    'Designation is not selected',
+                                    colorText: Colors.white,
+                                    backgroundColor: Colors.black87,
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: 8.0, vertical: 10.0),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 12.0, vertical: 18.0),
+                                    borderRadius: 5.0,
+                                  );
+                                }else if(adminC.designation != null || adminC.mandateList['mandateFields']
+                                ['designation'] ==
+                                    false){
+                                  adminC.proofAadharNumber.text =
+                                      adminC.aadhar.text;
+                                  adminC.proofAadharNumberConfirm.text =
+                                      adminC.aadhar.text;
+                                  Get.to(OBVaccine());
+                                  adminC.step1(true);
+                                }
                               } else if (AppUtils.checkTextisNull(
-                                      adminC.dtOfJoin, 'Joining Date') ||
-                                  adminC.mandateList['mandateFields']
-                                              ['dateOfJoining'] ==
-                                          true &&
-                                      adminC.mandateList['mandateFields']
-                                          ['dateOfJoining']) {
-                                Get.snackbar(
-                                  null,
-                                  'Please provide Joining Date',
-                                  colorText: Colors.white,
-                                  backgroundColor: Colors.black87,
-                                  snackPosition: SnackPosition.BOTTOM,
-                                  margin: EdgeInsets.symmetric(
-                                      horizontal: 8.0, vertical: 10.0),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 12.0, vertical: 18.0),
-                                  borderRadius: 5.0,
-                                );
+                                      adminC.dtOfJoin, 'Joining Date')) {
+                                if(adminC.mandateList['mandateFields']
+                                ['dateOfJoining'] ==
+                                    true ){
+                                  Get.snackbar(
+                                    null,
+                                    'Please provide Joining Date',
+                                    colorText: Colors.white,
+                                    backgroundColor: Colors.black87,
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: 8.0, vertical: 10.0),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 12.0, vertical: 18.0),
+                                    borderRadius: 5.0,
+                                  );
+                                }else if(adminC.dtOfJoin.text!=null||adminC.mandateList['mandateFields']
+                                ['dateOfJoining'] ==
+                                    false ){
+                                  adminC.proofAadharNumber.text =
+                                      adminC.aadhar.text;
+                                  adminC.proofAadharNumberConfirm.text =
+                                      adminC.aadhar.text;
+                                  Get.to(OBVaccine());
+                                  adminC.step1(true);
+                                }
                               } else {
                                 adminC.proofAadharNumber.text =
                                     adminC.aadhar.text;

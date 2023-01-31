@@ -135,76 +135,111 @@ class _OBFamilyState extends State<OBFamily> {
                       for (var i = 0; i < adminC.familyDetail.length; i++) {
                         if (adminC.familyDetail[i] != null) {
                           if (AppUtils.checkTextisNull(
-                                  adminC.famName[i], 'Member Name') ||
-                              adminC.mandateList['mandateFields']
-                                          ['nameOfMember'] ==
-                                      true &&
-                                  adminC.mandateList['mandateFields']
-                                      ['nameOfMember']) {
-                            error = true;
-                            Get.snackbar(
-                              null,
-                              'Please provide Member Name',
-                              colorText: Colors.white,
-                              backgroundColor: Colors.black87,
-                              snackPosition: SnackPosition.BOTTOM,
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: 8.0, vertical: 10.0),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 12.0, vertical: 18.0),
-                              borderRadius: 5.0,
-                            );
+                              adminC.famName[i], 'Member Name')) {
+                            if (adminC.mandateList['mandateFields']
+                                    ['nameOfMember'] ==
+                                true) {
+                              error = true;
+                              Get.snackbar(
+                                null,
+                                'Please provide Member Name',
+                                colorText: Colors.white,
+                                backgroundColor: Colors.black87,
+                                snackPosition: SnackPosition.BOTTOM,
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: 8.0, vertical: 10.0),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 12.0, vertical: 18.0),
+                                borderRadius: 5.0,
+                              );
+                            } else if (adminC.famName != null ||
+                                adminC.mandateList['mandateFields']
+                                        ['nameOfMember'] ==
+                                    false) {
+                              if (!error) {
+                                Get.to(OBPhotos());
+                                adminC.step5(true);
+                              }
+                            }
                           } else if (AppUtils.checkTextisNull(
-                                  adminC.famDob[i], 'Member Dob') ||
-                              adminC.mandateList['mandateFields']
-                                          ['dobOfMember'] ==
-                                      true &&
-                                  adminC.mandateList['mandateFields']
-                                      ['dobOfMember']) {
-                            error = true;
-                            Get.snackbar(
-                              null,
-                              'Please provide Member Dob',
-                              colorText: Colors.white,
-                              backgroundColor: Colors.black87,
-                              snackPosition: SnackPosition.BOTTOM,
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: 8.0, vertical: 10.0),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 12.0, vertical: 18.0),
-                              borderRadius: 5.0,
-                            );
+                              adminC.famDob[i], 'Member Dob')) {
+                            if (adminC.mandateList['mandateFields']
+                                    ['dobOfMember'] ==
+                                true) {
+                              error = true;
+                              Get.snackbar(
+                                null,
+                                'Please provide Member Dob',
+                                colorText: Colors.white,
+                                backgroundColor: Colors.black87,
+                                snackPosition: SnackPosition.BOTTOM,
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: 8.0, vertical: 10.0),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 12.0, vertical: 18.0),
+                                borderRadius: 5.0,
+                              );
+                            } else if (adminC.famDob != null ||
+                                adminC.mandateList['mandateFields']
+                                        ['dobOfMember'] ==
+                                    false) {
+                              if (!error) {
+                                Get.to(OBPhotos());
+                                adminC.step5(true);
+                              }
+                            }
                           } else if (AppUtils.checkTextisNull(
-                                  adminC.famAge[i], 'Member Age') ||
-                              adminC.mandateList['mandateFields']['age']== true && adminC.mandateList['mandateFields']['age']) {
-                            error = true;
-                            Get.snackbar(
-                              null,
-                              'Please provide Member Age',
-                              colorText: Colors.white,
-                              backgroundColor: Colors.black87,
-                              snackPosition: SnackPosition.BOTTOM,
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: 8.0, vertical: 10.0),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 12.0, vertical: 18.0),
-                              borderRadius: 5.0,
-                            );
+                              adminC.famAge[i], 'Member Age')) {
+                            if (adminC.mandateList['mandateFields']['age'] ==
+                                true) {
+                              error = true;
+                              Get.snackbar(
+                                null,
+                                'Please provide Member Age',
+                                colorText: Colors.white,
+                                backgroundColor: Colors.black87,
+                                snackPosition: SnackPosition.BOTTOM,
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: 8.0, vertical: 10.0),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 12.0, vertical: 18.0),
+                                borderRadius: 5.0,
+                              );
+                            } else if (adminC.famAge != null ||
+                                adminC.mandateList['mandateFields']['age'] ==
+                                    false) {
+                              if (!error) {
+                                Get.to(OBPhotos());
+                                adminC.step5(true);
+                              }
+                            }
                           } else if (AppUtils.checkTextisNull(
                               adminC.famRelation[i], 'Member Relation')) {
-                            error = true;
-                            Get.snackbar(
-                              null,
-                              'Please provide Member Relation',
-                              colorText: Colors.white,
-                              backgroundColor: Colors.black87,
-                              snackPosition: SnackPosition.BOTTOM,
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: 8.0, vertical: 10.0),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 12.0, vertical: 18.0),
-                              borderRadius: 5.0,
-                            );
+                            if (adminC.mandateList['mandateFields']
+                                    ['selectMember'] ==
+                                true) {
+                              error = true;
+                              Get.snackbar(
+                                null,
+                                'Please provide Member Relation',
+                                colorText: Colors.white,
+                                backgroundColor: Colors.black87,
+                                snackPosition: SnackPosition.BOTTOM,
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: 8.0, vertical: 10.0),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 12.0, vertical: 18.0),
+                                borderRadius: 5.0,
+                              );
+                            } else if (adminC.famRelation != null ||
+                                adminC.mandateList['mandateFields']
+                                        ['selectMember'] ==
+                                    false) {
+                              if (!error) {
+                                Get.to(OBPhotos());
+                                adminC.step5(true);
+                              }
+                            }
                           } else {
                             // done
                             error = false;
