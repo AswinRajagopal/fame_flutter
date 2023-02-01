@@ -1,9 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:fame/controllers/expense_controller.dart';
 import 'package:fame/views/expense_manager.dart';
-import 'package:fame/views/my_bills.dart';
 import 'package:fame/views/request_advance_expense.dart';
-import 'package:fame/views/settings_page.dart';
 import 'package:fame/views/view_bills.dart';
 import 'package:fame/widgets/advance_list_widget.dart';
 import 'package:fame/widgets/expenses_list_widget.dart';
@@ -13,9 +11,9 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+
 import '../connection/remote_services.dart';
 import '../utils/utils.dart';
-import 'dashboard_page.dart';
 
 class ViewExpense extends StatefulWidget {
   @override
