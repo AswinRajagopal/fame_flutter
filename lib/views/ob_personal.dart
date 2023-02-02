@@ -67,6 +67,7 @@ class _OBPersonalState extends State<OBPersonal> {
         adminC.famNominee.clear();
         adminC.famPercent.clear();
         adminC.familyDetail.clear();
+        adminC.getObMandateFields();
         adminC.getData();
         adminC.setupFamily(0);
         adminC.step1(false);
@@ -80,7 +81,6 @@ class _OBPersonalState extends State<OBPersonal> {
         });
       }
     });
-    adminC.getObMandateFields();
     super.initState();
   }
 

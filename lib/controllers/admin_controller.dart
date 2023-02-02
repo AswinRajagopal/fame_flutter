@@ -1631,17 +1631,11 @@ class AdminController extends GetxController {
 
   void getObMandateFields() async {
     try {
-      isLoading(true);
-      await pr.show();
       res = await RemoteServices().getObMandateFields();
       if (res != null) {
-        isLoading(false);
-        await pr.hide();
         if (res['success']) {
           if (res['mandateFields'] != null) {
-            for (var i = 0; i < res['mandateFields'].length; i++) {
-              mandateList=res;
-            }
+            mandateList=res;
           }
         } else {
           Get.snackbar(
@@ -1664,8 +1658,6 @@ class AdminController extends GetxController {
       }
     } catch (e) {
       print(e);
-      isLoading(false);
-      await pr.hide();
       Get.snackbar(
         null,
         'Something went wrong! Please try again later',
