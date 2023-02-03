@@ -94,7 +94,9 @@ class _OBAddressState extends State<OBAddress> {
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          labelText: 'House No.',labelStyle: TextStyle(color:Colors.grey[600],fontSize: 18.0),
+                          labelText: 'House No.',
+                          labelStyle: TextStyle(
+                              color: Colors.grey[600], fontSize: 18.0),
                           prefixIcon: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -122,7 +124,9 @@ class _OBAddressState extends State<OBAddress> {
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          labelText: 'Street',labelStyle: TextStyle(color:Colors.grey[600],fontSize: 18.0),
+                          labelText: 'Street',
+                          labelStyle: TextStyle(
+                              color: Colors.grey[600], fontSize: 18.0),
                           prefixIcon: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -150,7 +154,9 @@ class _OBAddressState extends State<OBAddress> {
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          labelText: 'Colony',labelStyle: TextStyle(color:Colors.grey[600],fontSize: 18.0),
+                          labelText: 'Colony',
+                          labelStyle: TextStyle(
+                              color: Colors.grey[600], fontSize: 18.0),
                           prefixIcon: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -179,7 +185,9 @@ class _OBAddressState extends State<OBAddress> {
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          labelText: 'Pincode',labelStyle: TextStyle(color:Colors.grey[600],fontSize: 18.0),
+                          labelText: 'Pincode',
+                          labelStyle: TextStyle(
+                              color: Colors.grey[600], fontSize: 18.0),
                           prefixIcon: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -293,26 +301,38 @@ class _OBAddressState extends State<OBAddress> {
                             value: adminC.copyAdd,
                             onChanged: (value) {
                               print(value);
-                              if (adminC.presenthouseNo.text.isNullOrBlank || adminC.presentStreet.text.isNullOrBlank || adminC.presentColony.text.isNullOrBlank || adminC.presentPincode.text.isNullOrBlank || adminC.presentState == null || adminC.presentCity == null) {
+                              if (adminC.presenthouseNo.text.isNullOrBlank ||
+                                  adminC.presentStreet.text.isNullOrBlank ||
+                                  adminC.presentColony.text.isNullOrBlank ||
+                                  adminC.presentPincode.text.isNullOrBlank ||
+                                  adminC.presentState == null ||
+                                  adminC.presentCity == null) {
                                 Get.snackbar(
                                   null,
                                   'Please provide present address first',
                                   colorText: Colors.white,
                                   backgroundColor: Colors.black87,
                                   snackPosition: SnackPosition.BOTTOM,
-                                  margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 8.0, vertical: 10.0),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
                                 );
                               } else {
                                 if (value) {
-                                  adminC.permanenthouseNo.text = adminC.presenthouseNo.text;
-                                  adminC.permanentStreet.text = adminC.presentStreet.text;
-                                  adminC.permanentColony.text = adminC.presentColony.text;
-                                  adminC.permanentPincode.text = adminC.presentPincode.text;
+                                  adminC.permanenthouseNo.text =
+                                      adminC.presenthouseNo.text;
+                                  adminC.permanentStreet.text =
+                                      adminC.presentStreet.text;
+                                  adminC.permanentColony.text =
+                                      adminC.presentColony.text;
+                                  adminC.permanentPincode.text =
+                                      adminC.presentPincode.text;
                                   adminC.permanentState = adminC.presentState;
                                   adminC.permanentCity = adminC.presentCity;
-                                  adminC.percitiesList.addAll(adminC.citiesList);
+                                  adminC.percitiesList
+                                      .addAll(adminC.citiesList);
                                 } else {
                                   adminC.permanenthouseNo.clear();
                                   adminC.permanentStreet.clear();
@@ -366,7 +386,9 @@ class _OBAddressState extends State<OBAddress> {
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          labelText: 'House No.*',labelStyle: TextStyle(color:Colors.grey[600],fontSize: 18.0),
+                          labelText: 'House No.*',
+                          labelStyle: TextStyle(
+                              color: Colors.grey[600], fontSize: 18.0),
                           prefixIcon: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -394,7 +416,9 @@ class _OBAddressState extends State<OBAddress> {
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          labelText: 'Street',labelStyle: TextStyle(color:Colors.grey[600],fontSize: 18.0),
+                          labelText: 'Street',
+                          labelStyle: TextStyle(
+                              color: Colors.grey[600], fontSize: 18.0),
                           prefixIcon: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -422,7 +446,9 @@ class _OBAddressState extends State<OBAddress> {
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          labelText: 'Colony',labelStyle: TextStyle(color:Colors.grey[600],fontSize: 18.0),
+                          labelText: 'Colony',
+                          labelStyle: TextStyle(
+                              color: Colors.grey[600], fontSize: 18.0),
                           prefixIcon: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -451,7 +477,9 @@ class _OBAddressState extends State<OBAddress> {
                             color: Colors.grey[600],
                             fontSize: 18.0,
                           ),
-                          labelText: 'Pincode',labelStyle: TextStyle(color:Colors.grey[600],fontSize: 18.0),
+                          labelText: 'Pincode',
+                          labelStyle: TextStyle(
+                              color: Colors.grey[600], fontSize: 18.0),
                           prefixIcon: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -577,17 +605,29 @@ class _OBAddressState extends State<OBAddress> {
                             onPressed: () {
                               FocusScope.of(context).requestFocus(FocusNode());
                               adminC.step4(false);
-                              if (AppUtils.checkTextisNull(adminC.permanenthouseNo, 'House Number')) {
+                              if (AppUtils.checkTextisNull(
+                                      adminC.permanenthouseNo,
+                                      'House Number')) {
+                                if(  adminC.mandateList['mandateFields']
+                                ['houseNumber'] ==
+                                    true){
                                 Get.snackbar(
                                   null,
                                   'Please provide House Number',
                                   colorText: Colors.white,
                                   backgroundColor: Colors.black87,
                                   snackPosition: SnackPosition.BOTTOM,
-                                  margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 8.0, vertical: 10.0),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
-                                );
+                                );}else if(adminC.permanenthouseNo.text!=null||adminC.mandateList['mandateFields']
+                                ['houseNumber'] ==
+                                    false){
+                                  Get.to(OBFamily());
+                                  adminC.step4(true);
+                                }
                               } else {
                                 Get.to(OBFamily());
                                 adminC.step4(true);

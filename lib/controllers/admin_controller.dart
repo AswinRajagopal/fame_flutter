@@ -23,6 +23,7 @@ class AdminController extends GetxController {
   var disabledFatherName = false.obs;
   var aadharScan = false;
   var reload = true;
+  var res;
   ProgressDialog pr;
   var resAddShift;
   var resAddClient;
@@ -179,6 +180,7 @@ class AdminController extends GetxController {
   // final vaccineType = {'Covaxin', 'Covishield', 'Sputnik v'};
 
   var curDate = DateFormat('yyyy-MM-dd').format(DateTime.now()).toString();
+  var mandateList;
 
   Future<Null> getDate(BuildContext context) async {
     await DatePicker.showDatePicker(
@@ -1057,7 +1059,7 @@ class AdminController extends GetxController {
                     // ),
                     Checkbox(
                       value: famNominee[index],
-                      onChanged: (value) {
+                      onChanged:(value) {
                         print(value);
                         famNominee[index] = value;
                         familyDetail.refresh();
@@ -1530,50 +1532,50 @@ class AdminController extends GetxController {
     var prcolony = presentColony.text.isEmpty ? '' : '${presentColony.text}';
     var prAdd = prhouse + ', ' + prstreet + ', ' + prcolony;
     var empdetails = {
-      'empFName': name.text,
+      'empFName': name.text==null?'':name.text,
       'aadharScanned': aadharScan,
       'empSex': gender,
       'empMaritalStatus': mStatus,
-      'empDtofBirth': dob.toString(),
-      'motherTongue': language.text,
-      'empRemarks': empRemarks.text,
-      'empPhone': empPhone.text,
-      'vaccineName': vaccineName,
-      'vaccineDate': dov.toString(),
+      'empDtofBirth': dtOfBirth.text.isEmpty?'':dob.toString(),
+      'motherTongue': language.text==null?'':language.text,
+      'empRemarks': empRemarks.text==null?'':empRemarks.text,
+      'empPhone': empPhone.text==null?'':empPhone.text,
+      'vaccineName': vaccineName==null?'':vaccineName,
+      'vaccineDate': dtOfVaccine.text.isEmpty?'':dov.toString(),
       'vaccineDose': dose,
       'branch': '1',
       'employeeType': '',
-      'empFatherName': fatherName.text,
+      'empFatherName': fatherName.text==null?'':fatherName.text,
       'title': '',
-      'unitId': client.toString(),
+      'unitId': client==null?'':client.toString(),
       'empBloodGroup': AppUtils.checkStr(blood.toString()),
       'department': AppUtils.checkStr(department.toString()),
       'empDesgn': AppUtils.checkStr(designation.toString()),
-      'empUANNumber': empUANNumber.text,
-      'empESINumber': empESINumber.text,
-      'empQualification': qualification.text,
-      'empbankname': bank.toString(),
-      'empBankAcNo': AppUtils.checkStr(accountNo.text),
-      'empIFSCcode': ifsc.text,
+      'empUANNumber': empUANNumber.text.isEmpty?'':empUANNumber.text,
+      'empESINumber': empESINumber.text.isEmpty?'':empESINumber.text,
+      'empQualification': qualification.text.isEmpty?'':qualification.text,
+      'empbankname': bank==null?'':bank.toString(),
+      'empBankAcNo': accountNo.text.isEmpty?'':accountNo.text,
+      'empIFSCcode': ifsc.text.isEmpty?'':ifsc.text,
       'shirtSize': shirtSize,
       'pantSize': pantSize,
       'shoeSize': shoeSize,
-      'doj': doj.toString(),
+      'doj': dtOfJoin.text.isEmpty?'':doj.toString(),
       'empPermanentAddress': peAdd,
       'peCity': permanentCity.toString(),
       'peState': permanentState.toString(),
-      'pepincode': permanentPincode.text,
+      'pepincode': permanentPincode.text.isEmpty?'':permanentPincode.text,
       'peTown': '',
       'peHno': pehouse,
       'prHno': prhouse,
       'peStreet': pestreet,
       'prStreet': prstreet,
       'peColony': pecolony,
-      'prColony': presentColony.text,
+      'prColony': presentColony.text.isEmpty?'':presentColony.text,
       'empPresentAddress': prAdd,
       'prCity': presentCity.toString(),
       'prState': presentState.toString(),
-      'prPincode': presentPincode.text,
+      'prPincode': presentPincode.text.isEmpty?'':presentPincode.text,
       'prTown': '',
     };
     var empId = await addEmployeeNew(empdetails);
@@ -1624,6 +1626,54 @@ class AdminController extends GetxController {
       print('proofDetails: $proofDetails');
       addEmployeeData(empFamilyMembers, proofDetails, aadhar1, aadhar2, proof11,
           proof12, proof21, proof22, profile, empId);
+    }
+  }
+
+  void getObMandateFields() async {
+    try {
+      res = await RemoteServices().getObMandateFields();
+      if (res != null) {
+        if (res['success']) {
+          if (res['mandateFields'] != null) {
+            mandateList=res;
+          }
+        } else {
+          Get.snackbar(
+            null,
+            'Something went wrong! Please try again later',
+            colorText: Colors.white,
+            backgroundColor: Colors.black87,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
+          );
+        }
+      }
+    } catch (e) {
+      print(e);
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
+      );
     }
   }
 
