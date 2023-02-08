@@ -108,440 +108,448 @@ class _ExpensesDetailListState extends State<ExpensesDetailList> {
   @override
   Widget build(BuildContext context) {
     var roleId = RemoteServices().box.get('role');
-    return Scaffold(
-      backgroundColor: AppUtils().innerScaffoldBg,
-      appBar: AppBar(
-        title: Text(
-          'Expenses Details',
-        ),
-        leading: IconButton(
-          onPressed: () {
-            Get.back();
-            setState(() {
-              expC.attachment.clear();
-            });
-          },
-          icon: Icon(
-            Icons.arrow_back,
+    return WillPopScope(
+      onWillPop: () async {
+        setState(() {
+          expC.attachment.clear();
+        });
+        return true;
+      },
+      child: Scaffold(
+        backgroundColor: AppUtils().innerScaffoldBg,
+        appBar: AppBar(
+          title: Text(
+            'Expenses Details',
+          ),
+          leading: IconButton(
+            onPressed: () {
+              Get.back();
+              setState(() {
+                expC.attachment.clear();
+              });
+            },
+            icon: Icon(
+              Icons.arrow_back,
+            ),
           ),
         ),
-      ),
-      body: SafeArea(
-        bottom: false,
-        maintainBottomViewPadding: true,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 10.0,
-          ),
-          child: Obx(() {
-            if (expC.isLoading.value) {
-              return LoadingWidget(
-                containerColor: Colors.white,
-                containerHeight: MediaQuery.of(context).size.height - 55.0,
-                loaderColor: AppUtils().lightBlueColor,
-                loaderSize: 30.0,
-              );
-            } else if (expC.empExpList == null) {
-              return Container(
-                height: MediaQuery.of(context).size.height - 150.0,
-                child: Center(
-                  child: Text(
-                    'Expenses detail not available',
-                    style: TextStyle(
-                      color: AppUtils().darkBlueColor,
-                      fontSize: 20.0,
-                    ),
-                  ),
-                ),
-              );
-            }
-            return ListView(
-              shrinkWrap: true,
-              physics: ScrollPhysics(),
-              children: [
-                SizedBox(
-                  height: 20.0,
-                ),
-                Card(
-                  elevation: 5.0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(
-                        10.0,
+        body: SafeArea(
+          bottom: false,
+          maintainBottomViewPadding: true,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10.0,
+            ),
+            child: Obx(() {
+              if (expC.isLoading.value) {
+                return LoadingWidget(
+                  containerColor: Colors.white,
+                  containerHeight: MediaQuery.of(context).size.height - 55.0,
+                  loaderColor: AppUtils().lightBlueColor,
+                  loaderSize: 30.0,
+                );
+              } else if (expC.empExpList == null) {
+                return Container(
+                  height: MediaQuery.of(context).size.height - 150.0,
+                  child: Center(
+                    child: Text(
+                      'Expenses detail not available',
+                      style: TextStyle(
+                        color: AppUtils().darkBlueColor,
+                        fontSize: 20.0,
                       ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0,
-                        vertical: 25.0,
+                  ),
+                );
+              }
+              return ListView(
+                shrinkWrap: true,
+                physics: ScrollPhysics(),
+                children: [
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Card(
+                    elevation: 5.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(
+                          10.0,
+                        ),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          RowWidget('Employee Name', expenses['empName']),
-                          SizedBox(height: 15.0),
-                          RowWidget('ExpenseEmpId',
-                              expenses['expenseEmpId'].toString()),
-                          SizedBox(height: 15.0),
-                          RowWidget('EmpId', expenses['empId'].toString()),
-                          SizedBox(height: 15.0),
-                          RowWidget(
-                              'Amount', expenses['amount'].toString() + "0"),
-                          SizedBox(height: 15.0),
-                          RowWidget('ExpenseType',
-                              expenses['expenseType'].toString()),
-                          SizedBox(height: 15.0),
-                          RowWidget(
-                            'Status',
-                            getStatus(expenses['status']),
-                          ),
-                          SizedBox(height: 15.0),
-                          RowWidget(
-                            'Admin Remarks', expenses['adminRemarks'],
-                          ),
-                          SizedBox(height: 15.0),
-                          RowWidget(
-                              'UpdatedOn', convertDate(expenses['updatedOn'])),
-                          SizedBox(height: 15.0),
-                          RowWidget(
-                              'CreatedOn', convertDate(expenses['createdOn'])),
-                          SizedBox(height: 15.0),
-                          Row(
-                            children: [
-                              expC.attachment.length > 0
-                                  ? GestureDetector(
-                                      onTap: () async {
-                                        var pitstop = expC.attachment[0];
-                                        if (pitstop != null) {
-                                          await showDialog(
-                                              context: context,
-                                              builder: (_) =>
-                                                  imageDialog(pitstop));
-                                        }
-                                      },
-                                      child: Container(
-                                        width: 100.0,
-                                        height: 150.0,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                              width: 1, color: Colors.white),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          image: DecorationImage(
-                                              image: NetworkImage(expC
-                                                  .attachment[0]
-                                                  .toString()),
-                                              fit: BoxFit.cover), //<-- SEE HERE
-                                        ),
-                                      ),
-                                    )
-                                  : Container(),
-                              SizedBox(
-                                width: 20.0,
-                              ),
-                              expC.attachment.length > 1
-                                  ? GestureDetector(
-                                      onTap: () async {
-                                        var pitstop = expC.attachment[1];
-                                        if (pitstop != null) {
-                                          await showDialog(
-                                              context: context,
-                                              builder: (_) =>
-                                                  imageDialog(pitstop));
-                                        }
-                                      },
-                                      child: Container(
-                                        width: 100.0,
-                                        height: 150.0,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                              width: 1, color: Colors.white),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          image: DecorationImage(
-                                              image: NetworkImage(expC
-                                                  .attachment[1]
-                                                  .toString()),
-                                              fit: BoxFit.cover), //<-- SEE HERE
-                                        ),
-                                      ),
-                                    )
-                                  : Container(),
-                              SizedBox(
-                                width: 15.0,
-                              ),
-                              expC.attachment.length > 2
-                                  ? GestureDetector(
-                                      onTap: () async {
-                                        var pitstop = expC.attachment[2];
-                                        if (pitstop != null) {
-                                          await showDialog(
-                                              context: context,
-                                              builder: (_) =>
-                                                  imageDialog(pitstop));
-                                        }
-                                      },
-                                      child: Container(
-                                        width: 100.0,
-                                        height: 150.0,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                              width: 1, color: Colors.white),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          image: DecorationImage(
-                                              image: NetworkImage(expC
-                                                  .attachment[2]
-                                                  .toString()),
-                                              fit: BoxFit.cover), //<-- SEE HERE
-                                        ),
-                                      ),
-                                    )
-                                  : Container(),
-                            ],
-                          ),
-                          roleId == AppUtils.ADMIN
-                              ? Column(
-                                  children: [
-                                    SizedBox(
-                                      height: 15.0,
-                                    ),
-                                    DottedLine(
-                                      direction: Axis.horizontal,
-                                      lineLength: double.infinity,
-                                      lineThickness: 1.0,
-                                      dashLength: 4.0,
-                                      dashColor: Colors.grey,
-                                      dashRadius: 0.0,
-                                      dashGapLength: 4.0,
-                                      dashGapColor: Colors.transparent,
-                                      dashGapRadius: 0.0,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        top: 20.0,
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          RaisedButton(
-                                            onPressed: () async {
-                                              await Get.defaultDialog(
-                                                  title: 'Expenses',
-                                                  titleStyle: TextStyle(
-                                                      fontSize: 20.0,
-                                                      fontWeight:
-                                                      FontWeight.bold),
-                                                  radius: 20.0,
-                                                  content: Padding(
-                                                    padding:
-                                                    const EdgeInsets.only(
-                                                        bottom: 50.0),
-                                                    child: Card(
-                                                      shape:
-                                                      RoundedRectangleBorder(
-                                                          borderRadius:
-                                                          BorderRadius
-                                                              .circular(
-                                                              5.0),
-                                                          side: BorderSide(
-                                                              color: Colors
-                                                                  .black38)),
-                                                      child: TextField(
-                                                          controller: adminRemarks,
-                                                        maxLength: 160,
-                                                        maxLengthEnforced: true,
-                                                        maxLines: 4,
-                                                        keyboardType: TextInputType.multiline,
-                                                          decoration:
-                                                          InputDecoration(
-                                                              border:
-                                                              InputBorder
-                                                                  .none,
-                                                              contentPadding:
-                                                              EdgeInsets
-                                                                  .all(
-                                                                  10.0),
-                                                            hintStyle: TextStyle(
-                                                              color: Colors.grey[600],
-                                                              fontSize: 18.0,
-                                                            ),
-                                                            hintText: 'Remarks',),
-                                                        ),
-                                                    ),
-                                                  ),
-                                                  barrierDismissible: false,
-                                                  confirmTextColor:
-                                                  Colors.white,
-                                                  textConfirm: 'Reject',
-                                                  buttonColor:
-                                                  AppUtils().blueColor,
-                                                  onConfirm: () async {
-                                                    expenses['adminRemarks']=adminRemarks.text.toString();
-                                                    expC.aprRejExpense(
-                                                        adminRemarks.text,
-                                                        expense.text,
-                                                        expenses['empId'],
-                                                        expenses['expenseEmpId'],
-                                                        '2');
-                                                  });
-                                            },
-                                            child: Text(
-                                              'Reject',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16.0,
-                                              ),
-                                            ),
-                                            color: Colors.red,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5.0),
-                                              side: BorderSide(
-                                                color: Colors.red,
-                                              ),
-                                            ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0,
+                          vertical: 25.0,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            RowWidget('Employee Name', expenses['empName']),
+                            SizedBox(height: 15.0),
+                            RowWidget('ExpenseEmpId',
+                                expenses['expenseEmpId'].toString()),
+                            SizedBox(height: 15.0),
+                            RowWidget('EmpId', expenses['empId'].toString()),
+                            SizedBox(height: 15.0),
+                            RowWidget(
+                                'Amount', expenses['amount'].toString() + "0"),
+                            SizedBox(height: 15.0),
+                            RowWidget('ExpenseType',
+                                expenses['expenseType'].toString()),
+                            SizedBox(height: 15.0),
+                            RowWidget(
+                              'Status',
+                              getStatus(expenses['status']),
+                            ),
+                            SizedBox(height: 15.0),
+                            RowWidget(
+                              'Admin Remarks', expenses['adminRemarks'],
+                            ),
+                            SizedBox(height: 15.0),
+                            RowWidget(
+                                'UpdatedOn', convertDate(expenses['updatedOn'])),
+                            SizedBox(height: 15.0),
+                            RowWidget(
+                                'CreatedOn', convertDate(expenses['createdOn'])),
+                            SizedBox(height: 15.0),
+                            Row(
+                              children: [
+                                expC.attachment.length > 0
+                                    ? GestureDetector(
+                                        onTap: () async {
+                                          var pitstop = expC.attachment[0];
+                                          if (pitstop != null) {
+                                            await showDialog(
+                                                context: context,
+                                                builder: (_) =>
+                                                    imageDialog(pitstop));
+                                          }
+                                        },
+                                        child: Container(
+                                          width: 100.0,
+                                          height: 150.0,
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                                width: 1, color: Colors.white),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            image: DecorationImage(
+                                                image: NetworkImage(expC
+                                                    .attachment[0]
+                                                    .toString()),
+                                                fit: BoxFit.cover), //<-- SEE HERE
                                           ),
-                                          SizedBox(
-                                            width: 30.0,
+                                        ),
+                                      )
+                                    : Container(),
+                                SizedBox(
+                                  width: 20.0,
+                                ),
+                                expC.attachment.length > 1
+                                    ? GestureDetector(
+                                        onTap: () async {
+                                          var pitstop = expC.attachment[1];
+                                          if (pitstop != null) {
+                                            await showDialog(
+                                                context: context,
+                                                builder: (_) =>
+                                                    imageDialog(pitstop));
+                                          }
+                                        },
+                                        child: Container(
+                                          width: 100.0,
+                                          height: 150.0,
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                                width: 1, color: Colors.white),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            image: DecorationImage(
+                                                image: NetworkImage(expC
+                                                    .attachment[1]
+                                                    .toString()),
+                                                fit: BoxFit.cover), //<-- SEE HERE
                                           ),
-                                          RaisedButton(
-                                            onPressed: () async {
-                                              expense.text =
-                                                  expenses['amount'].toString();
-                                              await Get.defaultDialog(
-                                                  title: 'Expenses',
-                                                  titleStyle: TextStyle(
-                                                      fontSize: 20.0,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                  radius: 20.0,
-                                                  content: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            bottom: 50.0),
-                                                    child: Card(
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5.0),
-                                                              side: BorderSide(
-                                                                  color: Colors
-                                                                      .black38)),
-                                                      child: Column(children: [
-                                                        TextField(
-                                                          controller: expense,
-                                                          keyboardType:
-                                                              TextInputType
-                                                                  .number,
-                                                          decoration:
-                                                              InputDecoration(
-                                                                  border:
-                                                                      InputBorder
-                                                                          .none,
-                                                                  contentPadding:
-                                                                      EdgeInsets
-                                                                          .all(
-                                                                              10.0),
-                                                                  hintStyle:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                            .grey[
-                                                                        600],
-                                                                    fontSize:
-                                                                        18.0,
-                                                                  )),
-                                                        ),
-                                                        TextField(
-                                                          controller: adminRemarks,
-                                                          decoration:
-                                                          InputDecoration(
-                                                              border:
-                                                              InputBorder
-                                                                  .none,
-                                                              contentPadding:
-                                                              EdgeInsets
-                                                                  .all(
-                                                                  10.0),
-                                                              hintStyle:
-                                                              TextStyle(
+                                        ),
+                                      )
+                                    : Container(),
+                                SizedBox(
+                                  width: 15.0,
+                                ),
+                                expC.attachment.length > 2
+                                    ? GestureDetector(
+                                        onTap: () async {
+                                          var pitstop = expC.attachment[2];
+                                          if (pitstop != null) {
+                                            await showDialog(
+                                                context: context,
+                                                builder: (_) =>
+                                                    imageDialog(pitstop));
+                                          }
+                                        },
+                                        child: Container(
+                                          width: 100.0,
+                                          height: 150.0,
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                                width: 1, color: Colors.white),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            image: DecorationImage(
+                                                image: NetworkImage(expC
+                                                    .attachment[2]
+                                                    .toString()),
+                                                fit: BoxFit.cover), //<-- SEE HERE
+                                          ),
+                                        ),
+                                      )
+                                    : Container(),
+                              ],
+                            ),
+                            roleId == AppUtils.ADMIN
+                                ? Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 15.0,
+                                      ),
+                                      DottedLine(
+                                        direction: Axis.horizontal,
+                                        lineLength: double.infinity,
+                                        lineThickness: 1.0,
+                                        dashLength: 4.0,
+                                        dashColor: Colors.grey,
+                                        dashRadius: 0.0,
+                                        dashGapLength: 4.0,
+                                        dashGapColor: Colors.transparent,
+                                        dashGapRadius: 0.0,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          top: 20.0,
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            RaisedButton(
+                                              onPressed: () async {
+                                                await Get.defaultDialog(
+                                                    title: 'Expenses',
+                                                    titleStyle: TextStyle(
+                                                        fontSize: 20.0,
+                                                        fontWeight:
+                                                        FontWeight.bold),
+                                                    radius: 20.0,
+                                                    content: Padding(
+                                                      padding:
+                                                      const EdgeInsets.only(
+                                                          bottom: 50.0),
+                                                      child: Card(
+                                                        shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                                5.0),
+                                                            side: BorderSide(
                                                                 color: Colors
-                                                                    .grey[
-                                                                600],
-                                                                fontSize:
-                                                                18.0,
-                                                              )),
-                                                        ),
-                                                      ]),
+                                                                    .black38)),
+                                                        child: TextField(
+                                                            controller: adminRemarks,
+                                                          maxLength: 160,
+                                                          maxLengthEnforced: true,
+                                                          maxLines: 4,
+                                                          keyboardType: TextInputType.multiline,
+                                                            decoration:
+                                                            InputDecoration(
+                                                                border:
+                                                                InputBorder
+                                                                    .none,
+                                                                contentPadding:
+                                                                EdgeInsets
+                                                                    .all(
+                                                                    10.0),
+                                                              hintStyle: TextStyle(
+                                                                color: Colors.grey[600],
+                                                                fontSize: 18.0,
+                                                              ),
+                                                              hintText: 'Remarks',),
+                                                          ),
+                                                      ),
                                                     ),
-                                                  ),
-                                                  barrierDismissible: false,
-                                                  confirmTextColor:
-                                                      Colors.white,
-                                                  textConfirm: 'Submit',
-                                                  buttonColor:
-                                                      AppUtils().blueColor,
-                                                  onConfirm: () async {
-                                                    expenses['adminRemarks']=adminRemarks.text.toString();
-                                                    expenses['amount'] =
-                                                        expense.text.toString();
-                                                    expC.aprRejExpense(
-                                                        adminRemarks.text,
-                                                        expense.text,
-                                                        expenses['empId'],
-                                                        expenses['expenseEmpId'],
-                                                        '1');
-                                                    var expRes =
-                                                        await RemoteServices()
-                                                            .sendFeedback(
-                                                                expense.text);
-                                                    if (expRes['success']) {
-                                                      Get.back();
-                                                    }
-                                                  });
-                                            },
-                                            child: Text(
-                                              'Accept',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16.0,
+                                                    barrierDismissible: false,
+                                                    confirmTextColor:
+                                                    Colors.white,
+                                                    textConfirm: 'Reject',
+                                                    buttonColor:
+                                                    AppUtils().blueColor,
+                                                    onConfirm: () async {
+                                                      expenses['adminRemarks']=adminRemarks.text.toString();
+                                                      expC.aprRejExpense(
+                                                          adminRemarks.text,
+                                                          expense.text,
+                                                          expenses['empId'],
+                                                          expenses['expenseEmpId'],
+                                                          '2');
+                                                    });
+                                              },
+                                              child: Text(
+                                                'Reject',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16.0,
+                                                ),
+                                              ),
+                                              color: Colors.red,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(5.0),
+                                                side: BorderSide(
+                                                  color: Colors.red,
+                                                ),
                                               ),
                                             ),
-                                            color: AppUtils().blueColor,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5.0),
-                                              side: BorderSide(
-                                                color: AppUtils().blueColor,
+                                            SizedBox(
+                                              width: 30.0,
+                                            ),
+                                            RaisedButton(
+                                              onPressed: () async {
+                                                expense.text =
+                                                    expenses['amount'].toString();
+                                                await Get.defaultDialog(
+                                                    title: 'Expenses',
+                                                    titleStyle: TextStyle(
+                                                        fontSize: 20.0,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                    radius: 20.0,
+                                                    content: Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              bottom: 50.0),
+                                                      child: Card(
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            5.0),
+                                                                side: BorderSide(
+                                                                    color: Colors
+                                                                        .black38)),
+                                                        child: Column(children: [
+                                                          TextField(
+                                                            controller: expense,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .number,
+                                                            decoration:
+                                                                InputDecoration(
+                                                                    border:
+                                                                        InputBorder
+                                                                            .none,
+                                                                    contentPadding:
+                                                                        EdgeInsets
+                                                                            .all(
+                                                                                10.0),
+                                                                    hintStyle:
+                                                                        TextStyle(
+                                                                      color: Colors
+                                                                              .grey[
+                                                                          600],
+                                                                      fontSize:
+                                                                          18.0,
+                                                                    )),
+                                                          ),
+                                                          TextField(
+                                                            controller: adminRemarks,
+                                                            decoration:
+                                                            InputDecoration(
+                                                                border:
+                                                                InputBorder
+                                                                    .none,
+                                                                contentPadding:
+                                                                EdgeInsets
+                                                                    .all(
+                                                                    10.0),
+                                                                hintStyle:
+                                                                TextStyle(
+                                                                  color: Colors
+                                                                      .grey[
+                                                                  600],
+                                                                  fontSize:
+                                                                  18.0,
+                                                                )),
+                                                          ),
+                                                        ]),
+                                                      ),
+                                                    ),
+                                                    barrierDismissible: false,
+                                                    confirmTextColor:
+                                                        Colors.white,
+                                                    textConfirm: 'Submit',
+                                                    buttonColor:
+                                                        AppUtils().blueColor,
+                                                    onConfirm: () async {
+                                                      expenses['adminRemarks']=adminRemarks.text.toString();
+                                                      expenses['amount'] =
+                                                          expense.text.toString();
+                                                      expC.aprRejExpense(
+                                                          adminRemarks.text,
+                                                          expense.text,
+                                                          expenses['empId'],
+                                                          expenses['expenseEmpId'],
+                                                          '1');
+                                                      var expRes =
+                                                          await RemoteServices()
+                                                              .sendFeedback(
+                                                                  expense.text);
+                                                      if (expRes['success']) {
+                                                        Get.back();
+                                                      }
+                                                    });
+                                              },
+                                              child: Text(
+                                                'Accept',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16.0,
+                                                ),
+                                              ),
+                                              color: AppUtils().blueColor,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(5.0),
+                                                side: BorderSide(
+                                                  color: AppUtils().blueColor,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                )
-                              : Column(),
-                        ],
+                                    ],
+                                  )
+                                : Column(),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 40.0,
-                ),
-              ],
-            );
-          }),
+                  SizedBox(
+                    height: 40.0,
+                  ),
+                ],
+              );
+            }),
+          ),
         ),
       ),
     );

@@ -1791,6 +1791,7 @@ class RemoteServices {
       headers: header,
       body: jsonEncode(<String, String>{
         "companyId": box.get('companyid').toString(),
+        'empId': box.get('empid').toString(),
         "bills": bills
       }),
     );

@@ -59,10 +59,7 @@ class ExpenseController extends GetxController {
               seconds: 2,
             ),
           );
-          Timer(Duration(seconds: 2), () {
-            Get.off(ViewExpense());
-            return Future.value(true);
-          });
+          Timer(Duration(seconds: 2), Get.back);
         } else {
           Get.snackbar(
             null,
@@ -764,6 +761,7 @@ class ExpenseController extends GetxController {
       if (expenseBillRes != null) {
         await pr.hide();
         if (expenseBillRes['success']) {
+           expenseBillsList.clear();
           Get.snackbar(
             null,
             'Bills sent successfully',
@@ -783,10 +781,7 @@ class ExpenseController extends GetxController {
               seconds: 2,
             ),
           );
-          Timer(Duration(seconds: 2), () {
-            Get.off(ViewBills());
-            return Future.value(true);
-          });
+          Timer(Duration(seconds: 2), Get.back);
         } else {
           Get.snackbar(
             null,
@@ -862,10 +857,7 @@ class ExpenseController extends GetxController {
               seconds: 2,
             ),
           );
-          Timer(Duration(seconds: 2), () {
-            Get.off(ViewBills());
-            return Future.value(true);
-          });
+          Timer(Duration(seconds: 2), Get.back);
         } else {
           Get.snackbar(
             null,
@@ -990,10 +982,7 @@ class ExpenseController extends GetxController {
               seconds: 2,
             ),
           );
-          Timer(Duration(seconds: 2), () {
-            Get.off(ViewExpense());
-            return Future.value(true);
-          });
+          Timer(Duration(seconds: 2), Get.back);
         } else {
           Get.snackbar(
             null,

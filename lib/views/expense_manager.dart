@@ -134,6 +134,9 @@ class _ExpensesState extends State<Expenses> {
         leading: IconButton(
           onPressed: () {
             Get.back();
+            setState(() {
+              expC.exp.clear();
+            });
           },
           icon: Icon(
             Icons.arrow_back,
@@ -141,6 +144,12 @@ class _ExpensesState extends State<Expenses> {
         ),
       ),
       body: WillPopScope(
+        onWillPop: () async {
+          setState(() {
+            expC.exp.clear();
+          });
+          return true;
+        },
         child: SafeArea(
           child: SingleChildScrollView(
             child: Column(

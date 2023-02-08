@@ -40,7 +40,7 @@ class _EditBillState extends State<EditBills> {
   var expenseTypeId;
   File attachment, attachment2, attachment3;
   var passDate;
-  var amountInWords=' ';
+  var amountInWords = ' ';
 
   var billsList;
   _EditBillState(this.billsList);
@@ -85,12 +85,13 @@ class _EditBillState extends State<EditBills> {
       expC.getExpenses,
     );
 
-    if(billsList!=null) {
+    if (billsList != null) {
       amount.text = billsList['amount'].toString();
       remarks.text = billsList['remarks'].toString();
-      attach.text=billsList['attachment'];
-      attachOne.text=billsList['attachment'];
-      attachTwo.text=billsList['attachment'];
+      attach.text = billsList['attachUrl'][0];
+      attachOne.text = billsList['attachUrl'][1];
+      attachTwo.text = billsList['attachUrl'][2];
+      expense.text=billsList['expenseTypeId'].toString();
     }
 
     super.initState();
@@ -105,7 +106,7 @@ class _EditBillState extends State<EditBills> {
         passDate.toString(),
       ),
       firstDate:
-      DateTime.now().add(Duration(days: -(attendanceDaysPermitted - 1))),
+          DateTime.now().add(Duration(days: -(attendanceDaysPermitted - 1))),
       lastDate: DateTime.now(),
     );
 
@@ -152,6 +153,12 @@ class _EditBillState extends State<EditBills> {
         ),
       ),
       body: WillPopScope(
+        onWillPop: () async {
+          setState(() {
+            expC.exp.clear();
+          });
+          return true;
+        },
         child: SafeArea(
           child: SingleChildScrollView(
             child: Column(
@@ -302,10 +309,10 @@ class _EditBillState extends State<EditBills> {
                                           color: Colors.grey[600],
                                           fontSize: 18.0),
                                     ),
-                                      onChanged: (val){
-                                        print('inside on changed');
-                                        getWord(amount.text);
-                                      },
+                                    onChanged: (val) {
+                                      print('inside on changed');
+                                      getWord(amount.text);
+                                    },
                                   ),
                                 ),
                               ),
@@ -346,11 +353,16 @@ class _EditBillState extends State<EditBills> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 25.0, vertical: 5.0),
                         child: Row(
-                          children: [Text('Amount In Words:',style: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                          ),)],
+                          children: [
+                            Text(
+                              'Amount In Words:',
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          ],
                         ),
                       ),
                       Padding(
@@ -397,7 +409,6 @@ class _EditBillState extends State<EditBills> {
                           ),
                         ),
                       ),
-
                       Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 20.0,
@@ -705,120 +716,128 @@ class _EditBillState extends State<EditBills> {
                                         child: ListView(
                                           shrinkWrap: true,
                                           physics: ScrollPhysics(),
-                                    children: [
-                                      Text(
-                                        'Please choose from...',
-                                        style: TextStyle(
-                                          fontSize: 20.0,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w400,
+                                          children: [
+                                            Text(
+                                              'Please choose from...',
+                                              style: TextStyle(
+                                                fontSize: 20.0,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 15.0,
+                                            ),
+                                            Row(
+                                              children: [
+                                                TextButton(
+                                                  onPressed: () async {
+                                                    Get.back();
+                                                    var pickedFile =
+                                                        await ImagePicker()
+                                                            .getImage(
+                                                      source:
+                                                          ImageSource.camera,
+                                                      imageQuality: 50,
+                                                    );
+                                                    if (pickedFile != null) {
+                                                      attachment2 = new File(
+                                                          pickedFile.path);
+                                                      String dir = path.dirname(
+                                                          pickedFile.path);
+                                                      attachOne.text =
+                                                          path.join(
+                                                              '', 'image2.jpg');
+                                                      setState(() {});
+                                                    } else {
+                                                      print(
+                                                          'No image selected.');
+                                                      setState(() {});
+                                                    }
+                                                  },
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.camera,
+                                                        size: 30.0,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 10.0,
+                                                      ),
+                                                      Text(
+                                                        'Camera',
+                                                        style: TextStyle(
+                                                          fontSize: 20.0,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .primaryColor,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Spacer(),
+                                                TextButton(
+                                                  onPressed: () async {
+                                                    Get.back();
+                                                    var pickedFile =
+                                                        await ImagePicker()
+                                                            .getImage(
+                                                      source:
+                                                          ImageSource.gallery,
+                                                      imageQuality: 50,
+                                                    );
+                                                    if (pickedFile != null) {
+                                                      attachment2 = new File(
+                                                          pickedFile.path);
+                                                      String dir = path.dirname(
+                                                          pickedFile.path);
+                                                      attachOne.text =
+                                                          path.join(
+                                                              '', 'image2.jpg');
+                                                      setState(() {});
+                                                    } else {
+                                                      print(
+                                                          'No image selected.');
+                                                      setState(() {});
+                                                    }
+                                                  },
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.image,
+                                                        size: 30.0,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 10.0,
+                                                      ),
+                                                      Text(
+                                                        'Gallery',
+                                                        style: TextStyle(
+                                                          fontSize: 20.0,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .primaryColor,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                      SizedBox(
-                                        height: 15.0,
-                                      ),
-                                      Row(
-                                        children: [
-                                          TextButton(
-                                            onPressed: () async {
-                                              Get.back();
-                                              var pickedFile =
-                                              await ImagePicker().getImage(
-                                                source: ImageSource.camera,
-                                                imageQuality: 50,
-                                              );
-                                              if (pickedFile != null) {
-                                                attachment2 = new File(
-                                                          pickedFile.path);
-                                                      String dir = path.dirname(
-                                                          pickedFile.path);
-                                                      attachOne.text =
-                                                          path.join(
-                                                              '', 'image2.jpg');
-                                                      setState(() {});
-                                                    } else {
-                                                print('No image selected.');
-                                                setState(() {});
-                                              }
-                                            },
-                                            child: Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.camera,
-                                                  size: 30.0,
-                                                ),
-                                                SizedBox(
-                                                  width: 10.0,
-                                                ),
-                                                Text(
-                                                  'Camera',
-                                                  style: TextStyle(
-                                                    fontSize: 20.0,
-                                                    color: Theme.of(context)
-                                                        .primaryColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Spacer(),
-                                          TextButton(
-                                            onPressed: () async {
-                                              Get.back();
-                                              var pickedFile =
-                                              await ImagePicker().getImage(
-                                                source: ImageSource.gallery,
-                                                imageQuality: 50,
-                                              );
-                                              if (pickedFile != null) {
-                                                attachment2 = new File(
-                                                          pickedFile.path);
-                                                      String dir = path.dirname(
-                                                          pickedFile.path);
-                                                      attachOne.text =
-                                                          path.join(
-                                                              '', 'image2.jpg');
-                                                      setState(() {});
-                                                    } else {
-                                                print('No image selected.');
-                                                setState(() {});
-                                              }
-                                            },
-                                            child: Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.image,
-                                                  size: 30.0,
-                                                ),
-                                                SizedBox(
-                                                  width: 10.0,
-                                                ),
-                                                Text(
-                                                  'Gallery',
-                                                  style: TextStyle(
-                                                    fontSize: 20.0,
-                                                    color: Theme.of(context)
-                                                        .primaryColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                      isDismissible: true,
+                                      backgroundColor: Colors.white,
+                                    );
+                                  },
+                                  child: Icon(
+                                    Icons.add_circle,
+                                    color: AppUtils().blueColor,
+                                    size: 40.0,
                                   ),
-                                ),
-                                isDismissible: true,
-                                backgroundColor: Colors.white,
-                              );
-                            },
-                            child: Icon(
-                              Icons.add_circle,
-                              color: AppUtils().blueColor,
-                              size: 40.0,
-                            ),
-                          )
+                                )
                         ]),
                       ),
                       Row(

@@ -138,6 +138,12 @@ class _RequestExpenseState extends State<RequestExpense> {
         ),
       ),
       body: WillPopScope(
+        onWillPop: () async {
+          setState(() {
+            expC.purpose.clear();
+          });
+          return true;
+        },
         child: SafeArea(
           child: SingleChildScrollView(
             child: Column(
