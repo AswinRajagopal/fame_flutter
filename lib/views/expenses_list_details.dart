@@ -153,7 +153,7 @@ class _ExpensesDetailListState extends State<ExpensesDetailList> {
                   height: MediaQuery.of(context).size.height - 150.0,
                   child: Center(
                     child: Text(
-                      'Expenses detail not available',
+                      'Expenses detail not available.',
                       style: TextStyle(
                         color: AppUtils().darkBlueColor,
                         fontSize: 20.0,

@@ -111,7 +111,6 @@ class _EditBillState extends State<EditBills> {
     );
 
     if (picked != null) {
-      print('Date selected ${date.text.toString()}');
       setState(() {
         date.text = DateFormat('dd-MM-yyyy').format(picked).toString();
         passDate = DateFormat('yyyy-MM-dd').format(picked).toString();
@@ -125,7 +124,6 @@ class _EditBillState extends State<EditBills> {
     if (amtInWords != null) {
       setState(() {
         amountInWords = converter.convertInt(amtInWords);
-        print(amountInWords);
       });
     }
   }
@@ -310,7 +308,6 @@ class _EditBillState extends State<EditBills> {
                                           fontSize: 18.0),
                                     ),
                                     onChanged: (val) {
-                                      print('inside on changed');
                                       getWord(amount.text);
                                     },
                                   ),
@@ -486,8 +483,6 @@ class _EditBillState extends State<EditBills> {
                                                           '', 'image1.jpg');
                                                       setState(() {});
                                                     } else {
-                                                      print(
-                                                          'No image selected.');
                                                       setState(() {});
                                                     }
                                                   },
@@ -532,8 +527,8 @@ class _EditBillState extends State<EditBills> {
                                                           '', 'image1.jpg');
                                                       setState(() {});
                                                     } else {
-                                                      print(
-                                                          'No image selected.');
+
+
                                                       setState(() {});
                                                     }
                                                   },
@@ -617,8 +612,7 @@ class _EditBillState extends State<EditBills> {
                                                               '', 'image3.jpg');
                                                       setState(() {});
                                                     } else {
-                                                      print(
-                                                          'No image selected.');
+
                                                       setState(() {});
                                                     }
                                                   },
@@ -664,8 +658,7 @@ class _EditBillState extends State<EditBills> {
                                                               '', 'image3.jpg');
                                                       setState(() {});
                                                     } else {
-                                                      print(
-                                                          'No image selected.');
+
                                                       setState(() {});
                                                     }
                                                   },
@@ -750,8 +743,7 @@ class _EditBillState extends State<EditBills> {
                                                               '', 'image2.jpg');
                                                       setState(() {});
                                                     } else {
-                                                      print(
-                                                          'No image selected.');
+
                                                       setState(() {});
                                                     }
                                                   },
@@ -797,8 +789,7 @@ class _EditBillState extends State<EditBills> {
                                                               '', 'image2.jpg');
                                                       setState(() {});
                                                     } else {
-                                                      print(
-                                                          'No image selected.');
+
                                                       setState(() {});
                                                     }
                                                   },
@@ -942,7 +933,6 @@ class _EditBillState extends State<EditBills> {
                             horizontal: 20.0, vertical: 5.0),
                         child: RaisedButton(
                           onPressed: () async {
-                            print('Submit');
                             FocusScope.of(context).requestFocus(FocusNode());
                             if (attachment == null) {
                               Get.snackbar(

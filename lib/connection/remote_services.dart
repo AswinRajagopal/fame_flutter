@@ -435,6 +435,8 @@ class RemoteServices {
     }
   }
 
+
+
   Future<Dashboard> getDashboardDetails() async {
     var response = await client.post(
       '$baseURL/attendance/dashboard_flut',
@@ -570,6 +572,7 @@ class RemoteServices {
       return null;
     }
   }
+
 
   Future checkin(lat, lng, address) async {
     var response = await client.post(

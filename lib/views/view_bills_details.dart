@@ -327,8 +327,6 @@ class _ViewBillsDetailListState extends State<ViewBillsDetailList> {
 
   Widget imageDialog(img) {
     return Dialog(
-      // backgroundColor: Colors.transparent,
-      // elevation: 0,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,

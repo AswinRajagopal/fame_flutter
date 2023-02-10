@@ -802,6 +802,7 @@ class ExpenseController extends GetxController {
         }
       }
     } catch (e) {
+
       print(e);
       await pr.hide();
       Get.snackbar(

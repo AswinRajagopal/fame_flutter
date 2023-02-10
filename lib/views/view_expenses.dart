@@ -350,7 +350,6 @@ class _ViewExpenseState extends State<ViewExpense> {
                           ),
                         ),
                         suggestionsCallback: (pattern) async {
-                          // print(pattern);
                           if (pattern.isNotEmpty) {
                             return await RemoteServices().getEmployees(pattern);
                           } else {
@@ -373,8 +372,6 @@ class _ViewExpenseState extends State<ViewExpense> {
                           );
                         },
                         onSuggestionSelected: (suggestion) {
-                          print(suggestion);
-                          print(suggestion['name']);
                           empName.text =
                               suggestion['name'].toString().trimRight() +
                                   ' - ' +
@@ -536,7 +533,6 @@ class _ViewExpenseState extends State<ViewExpense> {
                           physics: ScrollPhysics(),
                           itemCount: expC.rejectedList.length,
                           itemBuilder: (context, index) {
-                            print(expC.rejectedList[index]);
                             var rejectedExp = expC.rejectedList[index];
                             return RejectedListWidget(rejectedExp, index,
                                 expC.rejectedList.length, expC);
@@ -585,7 +581,6 @@ class _ViewExpenseState extends State<ViewExpense> {
                               physics: ScrollPhysics(),
                               itemCount: expC.empExpList.length,
                               itemBuilder: (context, index) {
-                                print(expC.empExpList[index]);
                                 var expense = expC.empExpList[index];
                                 return ExpensesListWidget(expense, index,
                                     expC.empExpList.length, expC);
@@ -636,7 +631,6 @@ class _ViewExpenseState extends State<ViewExpense> {
                                   physics: ScrollPhysics(),
                                   itemCount: expC.empExpAdvanceList.length,
                                   itemBuilder: (context, index) {
-                                    print(expC.empExpAdvanceList[index]);
                                     var advance = expC.empExpAdvanceList[index];
                                     return AdvanceListWidget(advance);
                                   },
@@ -685,7 +679,6 @@ class _ViewExpenseState extends State<ViewExpense> {
                                   physics: ScrollPhysics(),
                                   itemCount: expC.empExpList.length,
                                   itemBuilder: (context, index) {
-                                    print(expC.empExpList[index]);
                                     var expense = expC.empExpList[index];
                                     return ExpensesListWidget(expense, index,
                                         expC.empExpList.length, expC);

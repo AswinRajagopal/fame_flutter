@@ -104,7 +104,6 @@ class _MyBillState extends State<MyBills> {
     );
 
     if (picked != null) {
-      print('Date selected ${date.text.toString()}');
       setState(() {
         date.text = DateFormat('dd-MM-yyyy').format(picked).toString();
         passDate = DateFormat('yyyy-MM-dd').format(picked).toString();
@@ -118,7 +117,6 @@ class _MyBillState extends State<MyBills> {
     if (amtInWords != null) {
       setState(() {
         amountInWords = converter.convertInt(amtInWords).capitalizeFirst;
-        print(amountInWords);
       });
     }
   }
@@ -305,7 +303,6 @@ class _MyBillState extends State<MyBills> {
                                             fontSize: 18.0),
                                       ),
                                       onChanged: (val) {
-                                        print('inside on changed');
                                         getWord(amount.text);
                                       },
                                     ),
@@ -483,8 +480,6 @@ class _MyBillState extends State<MyBills> {
                                                             '', 'image1.jpg');
                                                         setState(() {});
                                                       } else {
-                                                        print(
-                                                            'No image selected.');
                                                         setState(() {});
                                                       }
                                                     },
@@ -529,8 +524,6 @@ class _MyBillState extends State<MyBills> {
                                                             '', 'image1.jpg');
                                                         setState(() {});
                                                       } else {
-                                                        print(
-                                                            'No image selected.');
                                                         setState(() {});
                                                       }
                                                     },
@@ -614,8 +607,6 @@ class _MyBillState extends State<MyBills> {
                                                                 '', 'image3.jpg');
                                                         setState(() {});
                                                       } else {
-                                                        print(
-                                                            'No image selected.');
                                                         setState(() {});
                                                       }
                                                     },
@@ -661,8 +652,6 @@ class _MyBillState extends State<MyBills> {
                                                                 '', 'image3.jpg');
                                                         setState(() {});
                                                       } else {
-                                                        print(
-                                                            'No image selected.');
                                                         setState(() {});
                                                       }
                                                     },
@@ -745,7 +734,6 @@ class _MyBillState extends State<MyBills> {
                                                                 '', 'image2.jpg');
                                                         setState(() {});
                                                       } else {
-                                                  print('No image selected.');
                                                   setState(() {});
                                                 }
                                               },
@@ -788,7 +776,6 @@ class _MyBillState extends State<MyBills> {
                                                                 '', 'image2.jpg');
                                                         setState(() {});
                                                       } else {
-                                                  print('No image selected.');
                                                   setState(() {});
                                                 }
                                               },
@@ -932,7 +919,6 @@ class _MyBillState extends State<MyBills> {
                               horizontal: 20.0, vertical: 5.0),
                           child: RaisedButton(
                             onPressed: () async {
-                              print('Submit');
                               FocusScope.of(context).requestFocus(FocusNode());
                               if (attachment == null) {
                                 Get.snackbar(

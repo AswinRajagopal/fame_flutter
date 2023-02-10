@@ -4,7 +4,6 @@ import 'package:fame/widgets/view_bills_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-
 import '../connection/remote_services.dart';
 import '../utils/utils.dart';
 
