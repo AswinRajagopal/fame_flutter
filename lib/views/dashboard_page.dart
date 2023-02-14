@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'package:fame/views/lat_lng_fetch.dart';
 import 'package:fame/views/routeplan_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
@@ -2226,15 +2227,20 @@ class _DashboardPageState extends State<DashboardPage> {
                                                               .isGranted) {
                                                             if (await Geolocator
                                                                 .isLocationServiceEnabled()) {
-                                                              await Get.to(CheckinPage(
-                                                                  RemoteServices()
-                                                                      .box
-                                                                      .get(
-                                                                          'faceApi'),
-                                                                  appFeatures[
-                                                                      'checkinLocation']));
-                                                            }else {
-                                                              await Get.snackbar(
+                                                              appFeatures['nearestSiteCheckin'] !=
+                                                                      false
+                                                                  ? Get.to(
+                                                                      LatLng())
+                                                                  : await Get.to(CheckinPage(
+                                                                      RemoteServices()
+                                                                          .box
+                                                                          .get(
+                                                                              'faceApi'),
+                                                                      appFeatures[
+                                                                          'checkinLocation']));
+                                                            } else {
+                                                              await Get
+                                                                  .snackbar(
                                                                 null,
                                                                 'Please enable Location to checkin / checkout',
                                                                 colorText:

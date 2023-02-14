@@ -435,7 +435,27 @@ class RemoteServices {
     }
   }
 
-
+  Future getNearestSite(double lat,double lng)async{
+    var response=await client.post(
+      '$baseURL/attendance/nearest_site',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'lat':lat.toString(),
+          'lon':lng.toString(),
+        },
+      ),
+    );
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return jsonDecode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
 
   Future<Dashboard> getDashboardDetails() async {
     var response = await client.post(
@@ -573,6 +593,31 @@ class RemoteServices {
     }
   }
 
+  Future nearestCheckin(lat, lng, address,clientId) async {
+    var response = await client.post(
+      '$baseURL/attendance/checkin',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'shift': box.get('shift').toString(),
+          'clientId': clientId.toString(),
+          'lat': lat.toString(),
+          'lng': lng.toString(),
+          'address': address.toString(),
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
 
   Future checkin(lat, lng, address) async {
     var response = await client.post(

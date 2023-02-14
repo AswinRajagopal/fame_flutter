@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:fame/connection/remote_services.dart';
 import '../utils/utils.dart';
 import 'dashboard_page.dart';
 import 'package:path_provider/path_provider.dart';
@@ -22,6 +24,7 @@ class CheckinPage extends StatefulWidget {
 
 class _CheckinPageState extends State<CheckinPage> {
   final CheckinController checkinController = Get.put(CheckinController());
+  var appFeatures = jsonDecode(RemoteServices().box.get('appFeature'));
   CameraController controller;
   List<CameraDescription> cameras;
   var currentTime = DateFormat('dd-MM-yy').add_jm().format(DateTime.now()).toString();
@@ -161,6 +164,8 @@ class _CheckinPageState extends State<CheckinPage> {
       file = File(filePath);
       // networkcall(file);
       res = await checkinController.uploadImage(file);
+    } else if (appFeatures['nearestSiteCheckin'] == true) {
+      res = await checkinController.nearestCheckin();
     } else {
       res = await checkinController.justCheckin();
     }

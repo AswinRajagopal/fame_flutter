@@ -16,16 +16,21 @@ import '../views/dashboard_page.dart';
 
 class CheckinController extends GetxController {
   ProgressDialog pr;
+  var isLoading = true.obs;
   var checkinResponse;
-  var todayString = (DateFormat('dd-MM-yy').add_jm().format(DateTime.now()).toString()).obs;
+  var site;
+  var todayString =
+      (DateFormat('dd-MM-yy').add_jm().format(DateTime.now()).toString()).obs;
   Position currentPosition;
   var currentAddress = 'Fetching your location...'.obs;
 
   @override
   void onInit() {
     updateTime();
-    print('locationFetchTimeout: ${jsonDecode(RemoteServices().box.get('appFeature'))}');
-    if (jsonDecode(RemoteServices().box.get('appFeature'))['locFetchTimeout']) latlngTimeout();
+    print(
+        'locationFetchTimeout: ${jsonDecode(RemoteServices().box.get('appFeature'))}');
+    if (jsonDecode(RemoteServices().box.get('appFeature'))['locFetchTimeout'])
+      latlngTimeout();
     super.onInit();
   }
 
@@ -36,17 +41,24 @@ class CheckinController extends GetxController {
 
   void updateTime() {
     Timer.periodic(Duration(seconds: 10), (timer) {
-      var todayString = (DateFormat('dd-MM-yy').add_jm().format(DateTime.now()).toString()).obs;
+      var todayString =
+          (DateFormat('dd-MM-yy').add_jm().format(DateTime.now()).toString())
+              .obs;
     });
   }
 
   Future latlngTimeout() {
-    Timer(const Duration(seconds: 10), () => (currentAddress.value == 'Fetching your location...') ? currentAddress.value = 'Please checkin' : '');
+    Timer(
+        const Duration(seconds: 10),
+        () => (currentAddress.value == 'Fetching your location...')
+            ? currentAddress.value = 'Please checkin'
+            : '');
     return null;
   }
 
   void getCurrentLocation() {
-    Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.medium).then((Position position) {
+    Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.medium)
+        .then((Position position) {
       currentPosition = position;
       getAddressFromLatLng();
       // ignore: unnecessary_lambdas
@@ -272,6 +284,81 @@ class CheckinController extends GetxController {
       Get.snackbar(
         null,
         'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
+      );
+      return false;
+    }
+  }
+
+  void nearestSite() async {
+    try {
+      isLoading(true);
+      await pr.show();
+      site = await RemoteServices().getNearestSite(
+        (currentPosition != null) ? currentPosition.latitude : 0.0,
+        (currentPosition != null) ? currentPosition.longitude :0.0,
+      );
+      if (site != null||site['success']) {
+        print("siteRes:$site");
+        isLoading(false);
+        await pr.hide();
+      }
+    } catch (e) {
+      print(e);
+      isLoading(false);
+      await pr.hide();
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
+      );
+    }
+  }
+
+  Future<bool> nearestCheckin() async {
+    await pr.show();
+
+    var checkin = await RemoteServices().nearestCheckin(
+      (currentPosition != null) ? currentPosition.latitude : '0.0',
+      (currentPosition != null) ? currentPosition.longitude : '0.0',
+      currentAddress.value,
+      site['clientDetail']['id']
+    );
+    // print(checkin);
+    if (checkin != null && checkin['success']) {
+      await pr.hide();
+      return true;
+    } else {
+      await pr.hide();
+      var msg = 'Something went wrong! Please try again later';
+      if (checkin['message'] != null) {
+        msg = checkin['message'];
+      }
+      Get.snackbar(
+        null,
+        msg,
         colorText: Colors.white,
         backgroundColor: Colors.black87,
         snackPosition: SnackPosition.BOTTOM,
