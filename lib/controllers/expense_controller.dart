@@ -466,12 +466,12 @@ class ExpenseController extends GetxController {
     }
   }
 
-  void getEmpExpensesAdmin(empId) async {
+  void getEmpExpensesAdmin(empId,fromDate,toDate) async {
     try {
       empExpList = [];
       isLoading(true);
       await pr.show();
-      res = await RemoteServices().getEmpExpensesAdmin(empId);
+      res = await RemoteServices().getEmpExpensesAdmin(empId,fromDate,toDate);
       if (res != null) {
         isLoading(false);
         await pr.hide();

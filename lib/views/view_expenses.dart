@@ -25,7 +25,10 @@ class ViewExpense extends StatefulWidget {
 class _ViewExpenseState extends State<ViewExpense> {
   final ExpenseController expC = Get.put(ExpenseController());
   TextEditingController empName = TextEditingController();
-
+  TextEditingController frmDate = TextEditingController();
+  TextEditingController toDate = TextEditingController();
+  var fDate;
+  var tDate;
   var expenseId;
   var roleId;
   var expenseTypeId;
@@ -72,6 +75,10 @@ class _ViewExpenseState extends State<ViewExpense> {
       expC.getEmpExpenses();
     });
     super.initState();
+    frmDate.text = DateFormat('dd-MM-yyyy').format(curDate).toString();
+    toDate.text = DateFormat('dd-MM-yyyy').format(curDate).toString();
+    fDate = DateFormat('yyyy-MM-dd').format(curDate).toString();
+    tDate = DateFormat('yyyy-MM-dd').format(curDate).toString();
   }
 
   @override
@@ -83,6 +90,50 @@ class _ViewExpenseState extends State<ViewExpense> {
     var amount = int.parse(amountform.toStringAsFixed(0));
     var formatter = NumberFormat('#,##,000');
     return formatter.format(amount).toString();
+  }
+
+  final DateTime curDate = DateTime.now();
+
+  Future<Null> fromDate(BuildContext context) async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: fDate == null
+          ? curDate
+          : DateTime.parse(
+              fDate.toString(),
+            ),
+      firstDate: DateTime.now().add(Duration(days: -365 * 2)),
+      lastDate: DateTime.now(),
+    );
+
+    if (picked != null) {
+      setState(() {
+        frmDate.text = DateFormat('dd-MM-yyyy').format(picked).toString();
+        fDate = DateFormat('yyyy-MM-dd').format(picked).toString();
+        expC.getEmpExpensesAdmin(empId, fDate, tDate);
+      });
+    }
+  }
+
+  Future<Null> lastDate(BuildContext context) async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: tDate == null
+          ? curDate
+          : DateTime.parse(
+              tDate.toString(),
+            ),
+      firstDate: DateTime.now().add(Duration(days: -365 * 2)),
+      lastDate: DateTime.now(),
+    );
+
+    if (picked != null) {
+      setState(() {
+        toDate.text = DateFormat('dd-MM-yyyy').format(picked).toString();
+        tDate = DateFormat('yyyy-MM-dd').format(picked).toString();
+        expC.getEmpExpensesAdmin(empId, fDate, tDate);
+      });
+    }
   }
 
   @override
@@ -309,16 +360,27 @@ class _ViewExpenseState extends State<ViewExpense> {
           ),
           roleId == AppUtils.ADMIN
               ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Text(
-                        'Filter By',
-                        style: TextStyle(
-                            fontSize: 20.0, fontWeight: FontWeight.bold),
-                      ),
+                    Column(
+                      children: [
+                        Row(
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 30.0),
+                              child: Text(
+                                'Filter By',
+                                style: TextStyle(
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Icon(Icons.filter_alt),
+                          ],
+                        ),
+                      ],
                     ),
-                    Icon(Icons.filter_alt)
                   ],
                 )
               : Column(),
@@ -381,6 +443,85 @@ class _ViewExpenseState extends State<ViewExpense> {
                       ),
                     ),
                   ),
+                )
+              : Column(),
+          roleId == AppUtils.ADMIN
+              ? Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal:30.0),
+                      child: Row(
+                        children: [
+                          Text('From',style: TextStyle(
+                              fontSize: 20.0, fontWeight: FontWeight.bold)),
+                          Container(
+                            width: 170,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                                vertical: 5.0,
+                              ),
+                              child: TextField(
+                                controller: frmDate,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.all(10),
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  hintText: 'Select Date',
+                                  suffixIcon: Icon(
+                                    Icons.calendar_today,
+                                    size: 25.0,
+                                  ),
+                                ),
+                                readOnly: true,
+                                keyboardType: null,
+                                onTap: () {
+                                  fromDate(context);
+                                },
+                              ),
+                            ),
+                          ),
+                          Text('To',style: TextStyle(
+                              fontSize: 20.0, fontWeight: FontWeight.bold)),
+                          Container(
+                            width: 170,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                                vertical: 5.0,
+                              ),
+                              child: TextField(
+                                controller: toDate,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.all(10),
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  hintText: 'Select Date',
+                                  suffixIcon: Icon(
+                                    Icons.calendar_today,
+                                    size: 25.0,
+                                  ),
+                                ),
+                                readOnly: true,
+                                keyboardType: null,
+                                onTap: () {
+                                  lastDate(context);
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
                 )
               : Column(),
           SizedBox(
@@ -451,7 +592,7 @@ class _ViewExpenseState extends State<ViewExpense> {
                                     _expense = false;
                                   } else if (_chosenValue == 'Expenses') {
                                     empId != null
-                                        ? expC.getEmpExpensesAdmin(empId)
+                                        ? expC.getEmpExpensesAdmin(empId,fDate,tDate)
                                         : expC.getEmpExpenses();
                                     _expense = true;
                                     _advance = false;
@@ -466,7 +607,7 @@ class _ViewExpenseState extends State<ViewExpense> {
                                       _isRejectedList = false;
                                     } else if (_chosenValue == 'All') {
                                       empId != null
-                                          ? expC.getEmpExpensesAdmin(empId)
+                                          ? expC.getEmpExpensesAdmin(empId,fDate,tDate)
                                           : expC.getEmpExpenses();
                                       _expense = true;
                                       _advance = false;

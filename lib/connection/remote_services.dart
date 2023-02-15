@@ -1504,12 +1504,14 @@ class RemoteServices {
     }
   }
 
-  Future getEmpExpensesAdmin(empId) async {
+  Future getEmpExpensesAdmin(empId,fromDate,toDate) async {
     var response = await client.post('$baseURL/expense/get_emp_expenses',
         headers: header,
         body: jsonEncode(<String, String>{
           'empId': empId,
           'companyId': box.get('companyid').toString(),
+          'fromDate':fromDate.toString(),
+          'toDate':toDate.toString()
         }));
     print(response.statusCode);
     if (response.statusCode == 200) {
