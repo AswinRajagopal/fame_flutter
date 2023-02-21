@@ -727,7 +727,8 @@ class _LiteDashboardPage extends State<LiteDashboardPage> {
                                                           .box
                                                           .get('faceApi'),
                                                       appFeatures[
-                                                      'checkinLocation']));
+                                                      'checkinLocation'],dbC.response['dailyAttendance']
+                                                  ['checkInDateTime']));
                                                   // Get.to(CheckoutPage(0));
                                                 }
                                               },

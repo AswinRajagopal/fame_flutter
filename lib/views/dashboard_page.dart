@@ -806,7 +806,8 @@ class _DashboardPageState extends State<DashboardPage> {
                                                                       .get(
                                                                           'faceApi'),
                                                                   appFeatures[
-                                                                      'checkinLocation']));
+                                                                      'checkinLocation'],dbC.response['dailyAttendance']
+                                                              ['checkInDateTime']));
                                                             }else {
                                                               await Get.snackbar(
                                                                 null,
@@ -1614,7 +1615,6 @@ class _DashboardPageState extends State<DashboardPage> {
                                                   ),
                                                 );
                                               } else {
-                                                // print('Length: ${dbC.response['clientData']['name'].length}');
                                                 var clientName =
                                                     dbC.response['clientData']
                                                             ['name'] ??
@@ -1929,7 +1929,8 @@ class _DashboardPageState extends State<DashboardPage> {
                                                                       .get(
                                                                           'faceApi'),
                                                                   appFeatures[
-                                                                      'checkinLocation']));
+                                                                      'checkinLocation'],dbC.response['dailyAttendance']
+                                                              ['checkInDateTime']));
                                                             }else {
                                                               await Get.snackbar(
                                                                 null,

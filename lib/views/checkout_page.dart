@@ -15,11 +15,12 @@ import 'dashboard_page.dart';
 
 // ignore: must_be_immutable
 class CheckoutPage extends StatefulWidget {
-  var faceApi,checkinLocation;
-  CheckoutPage(this.faceApi,this.checkinLocation);
+  var faceApi, checkinLocation;
+  var chkInDt;
+  CheckoutPage(this.faceApi, this.checkinLocation, this.chkInDt);
 
   @override
-  _CheckoutPageState createState() => _CheckoutPageState();
+  _CheckoutPageState createState() => _CheckoutPageState(this.chkInDt);
 }
 
 class _CheckoutPageState extends State<CheckoutPage> {
@@ -30,18 +31,32 @@ class _CheckoutPageState extends State<CheckoutPage> {
   var size;
   var deviceRatio;
   var xScale;
+  var chkInDt;
+  _CheckoutPageState(this.chkInDt);
+  var totalWorkingHours = '';
+  var hours;
+
+  Future<Null> workSession() {
+    final DateTime checkOutTime = DateTime.now();
+    if (checkOutTime != null) {
+      setState(() {
+        final totalWorkingHours = checkOutTime.difference(DateTime.parse(chkInDt)).inHours;
+        hours=totalWorkingHours;
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-
-    if(widget.checkinLocation != null && !widget.checkinLocation) {
+    workSession();
+    if (widget.checkinLocation != null && !widget.checkinLocation) {
       checkoutController.currentAddress.value = 'Site';
     }
 
     if (widget.faceApi == 1) {
       initCam();
-    } else if(widget.checkinLocation == null || widget.checkinLocation) {
+    } else if (widget.checkinLocation == null || widget.checkinLocation) {
       checkoutController.getCurrentLocation();
     }
     checkoutController.pr = ProgressDialog(
@@ -95,7 +110,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
       }
       setState(() {});
     });
-    if(widget.checkinLocation==null || widget.checkinLocation) {
+    if (widget.checkinLocation == null || widget.checkinLocation) {
       checkoutController.getCurrentLocation();
     }
   }
@@ -201,13 +216,31 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 height: 10.0,
               ),
               Text(
-                DateFormat().add_jm().format(DateTime.now()).toString(),
+                    DateFormat().add_jm().format(DateTime.now()).toString(),
                 style: TextStyle(
                   fontSize: 20.0,
                   color: Theme.of(context).primaryColor,
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              SizedBox(
+                height: 10.0,
+              ),
+              Text(
+                'Worked for',
+                style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              Text('$hours''hours' , style: TextStyle(
+                fontSize: 20.0,
+                color: Theme.of(context).primaryColor,
+                fontWeight: FontWeight.bold,
+              ),),
               SizedBox(
                 height: 40.0,
               ),
@@ -570,7 +603,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     ),
                     Obx(() {
                       return RaisedButton(
-                        onPressed: checkoutController.currentAddress.value == 'Fetching your location...'
+                        onPressed: checkoutController.currentAddress.value ==
+                                'Fetching your location...'
                             ? null
                             : () {
                                 takePicture(widget.faceApi);
@@ -622,4 +656,3 @@ class _CheckoutPageState extends State<CheckoutPage> {
     );
   }
 }
-
