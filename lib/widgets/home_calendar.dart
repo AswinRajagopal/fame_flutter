@@ -41,11 +41,9 @@ class _HomeCalendarState extends State<HomeCalendar> with TickerProviderStateMix
   }
 
   void showPopup(date, events) {
-    print('On Date: $date');
     var showDate = '${date.year}-${date.month <= 9 ? '0' + date.month.toString() : date.month}-${date.day <= 9 ? '0' + date.day.toString() : date.day}';
     if (calC.calendarType == 'myRos') {
       if (events != null) {
-        print(events);
         var eveSplit = events.first.split(',');
         var eveLength = events.first.split(',').length;
         var clSplit = eveSplit.last.split('#');
@@ -80,8 +78,6 @@ class _HomeCalendarState extends State<HomeCalendar> with TickerProviderStateMix
       }
     } else {
       var dtFormat = showDate.toString().split('-')[2] + '-' + showDate.toString().split('-')[1] + '-' + showDate.toString().split('-')[0];
-      print('My Calendar');
-      print(events);
       var calEvent = events == null ? [] : events.first.split('*');
       if (calEvent.length > 1) {
         Get.defaultDialog(
@@ -108,9 +104,6 @@ class _HomeCalendarState extends State<HomeCalendar> with TickerProviderStateMix
     DateTime last,
     CalendarFormat format,
   ) {
-    // print('CALLBACK: _onVisibleDaysChanged');
-    // print('Month: ${first.month}');
-    // print('Year: ${first.year.toString().substring(2)}');
     var month = '${first.month}${first.year.toString().substring(2)}';
     var chDtString = '${first.year}-${first.month < 10 ? '0' + first.month.toString() : first.month}-${first.day < 10 ? '0' + first.day.toString() : first.day}';
     calC.getCalendar(month: month, chDt: chDtString);
@@ -121,7 +114,6 @@ class _HomeCalendarState extends State<HomeCalendar> with TickerProviderStateMix
     DateTime last,
     CalendarFormat format,
   ) {
-    // print('CALLBACK: _onCalendarCreated');
   }
 
   @override
@@ -156,7 +148,6 @@ class _HomeCalendarState extends State<HomeCalendar> with TickerProviderStateMix
           fontSize: 18.0,
         ),
         titleTextBuilder: (date, locale) {
-          // print(date);
           return DateFormat.MMMM(locale).format(date).toString() + ', ' + DateFormat.y(locale).format(date).toString();
         },
       ),
@@ -233,25 +224,50 @@ class _HomeCalendarState extends State<HomeCalendar> with TickerProviderStateMix
     if (events.first.split(',').length > 1 && !events.first.toString().contains('*')) {
       var eventSplit = events.first.split(',');
       showEvent = eventSplit[0];
-      // print(events[0]);
-      // print('length: ${events.first.split(',').length}');
     } else {
       showEvent = events.first.split('*').first;
-      // print('showEvent: $showEvent');
     }
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       width: 50.0,
       height: 30.0,
       child: Center(
-        child: Text(
+        child:showEvent=='P'?Text(
           showEvent,
           style: TextStyle().copyWith(
-            color: Theme.of(context).primaryColor,
+            color: Colors.green,
             fontSize: 16.0,
             fontWeight: FontWeight.w900,
           ),
-        ),
+        ):showEvent=='LT'?Text(
+          showEvent,
+          style: TextStyle().copyWith(
+            color:Colors.yellow,
+            fontSize: 16.0,
+            fontWeight: FontWeight.w900,
+          ),
+        ):showEvent=='EE'?Text(
+          showEvent,
+          style: TextStyle().copyWith(
+            color:Colors.orange,
+            fontSize: 16.0,
+            fontWeight: FontWeight.w900,
+          ),
+        ):showEvent=='L'?Text(
+          showEvent,
+          style: TextStyle().copyWith(
+            color:Colors.red,
+            fontSize: 16.0,
+            fontWeight: FontWeight.w900,
+          ),
+        ):Text(
+      showEvent,
+      style: TextStyle().copyWith(
+        color:Theme.of(context).primaryColor,
+        fontSize: 16.0,
+        fontWeight: FontWeight.w900,
+      ),
+    ),
       ),
     );
   }
