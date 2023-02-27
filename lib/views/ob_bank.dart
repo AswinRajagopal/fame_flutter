@@ -341,7 +341,9 @@ class _OBBankState extends State<OBBank> {
                                       horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
                                 );
-                              } else if (adminC.accountNo.text.length < 8) {
+                              } else if (adminC.accountNo.text.length < 8 &&
+                                  adminC.mandateList['mandateFields']
+                                  ['accountNumber']) {
                                 Get.snackbar(
                                   null,
                                   'Please enter a valid bank Account Number',

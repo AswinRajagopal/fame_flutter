@@ -212,7 +212,7 @@ class _OBFamilyState extends State<OBFamily> {
                               'relAadhaarNo': adminC.famAadhar[i].text,
                               // 'dofBirth': adminC.famDob[i].text,
                               'dofBirth':
-                                  adminC.famDob[i].isNullOrBlank?'':'${adminC.famDob[i].text.split('-')[2]}-${adminC.famDob[i].text.split('-')[1]}-${adminC.famDob[i].text.split('-')[0]}',
+                                  adminC.famDob[i].toString().isNotEmpty?'':'${adminC.famDob[i].text.split('-')[2]}-${adminC.famDob[i].text.split('-')[1]}-${adminC.famDob[i].text.split('-')[0]}',
                               'nomineePercent': adminC.famPercent[i].text,
                               'pfNominee': adminC.famNominee[i] ? 'Y' : 'N',
                               'esiNominee': adminC.famNominee[i] ? 'Y' : 'N',
