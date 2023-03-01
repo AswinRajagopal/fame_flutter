@@ -17,10 +17,12 @@ import 'dashboard_page.dart';
 class CheckoutPage extends StatefulWidget {
   var faceApi, checkinLocation;
   var chkInDt;
-  CheckoutPage(this.faceApi, this.checkinLocation, this.chkInDt);
+  var chkOutDt;
+  CheckoutPage(this.faceApi, this.checkinLocation, this.chkInDt, this.chkOutDt);
 
   @override
-  _CheckoutPageState createState() => _CheckoutPageState(this.chkInDt);
+  _CheckoutPageState createState() =>
+      _CheckoutPageState(this.chkInDt, this.chkOutDt);
 }
 
 class _CheckoutPageState extends State<CheckoutPage> {
@@ -32,28 +34,87 @@ class _CheckoutPageState extends State<CheckoutPage> {
   var deviceRatio;
   var xScale;
   var chkInDt;
-  _CheckoutPageState(this.chkInDt);
+  String chkOutDt;
+  _CheckoutPageState(this.chkInDt, this.chkOutDt);
   var totalWorkingHours = '';
   var hours;
+  var userCheckOutTime;
+  var checkoutTime;
 
   Future<Null> workSession() {
     final DateTime checkOutTime = DateTime.now();
     if (checkOutTime != null) {
       setState(() {
-        final totalWorkingHours = checkOutTime.difference(DateTime.parse(chkInDt)).inHours;
-        hours=totalWorkingHours;
+        final totalWorkingHours =
+            checkOutTime.difference(DateTime.parse(chkInDt)).inHours;
+        hours = totalWorkingHours;
       });
     }
   }
 
+
   @override
   void initState() {
     super.initState();
+    new Future.delayed(Duration.zero, () {
+      userCheckOutTime != chkOutDt
+          ? showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                  title: Text(
+                    'Early Exit..!',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  content: Text(
+                    'Are you sure you want to exit?',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18.0,
+                    ),
+                  ),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text(
+                        'No',
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      onPressed: () {
+                        Get.to(DashboardPage());
+                      },
+                    ),
+                    FlatButton(
+                      child: Text(
+                        'Yes',
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      onPressed: () => Navigator.of(context).pop(true),
+                    ),
+                  ],
+                );
+              },
+            )
+          : Column();
+    });
+    DateTime now = DateTime.now();
+    String formattedDateTime = DateFormat('hh:mma').format(now).toLowerCase().toString();
+    userCheckOutTime=formattedDateTime;
     workSession();
     if (widget.checkinLocation != null && !widget.checkinLocation) {
       checkoutController.currentAddress.value = 'Site';
     }
-
     if (widget.faceApi == 1) {
       initCam();
     } else if (widget.checkinLocation == null || widget.checkinLocation) {
@@ -216,7 +277,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 height: 10.0,
               ),
               Text(
-                    DateFormat().add_jm().format(DateTime.now()).toString(),
+                DateFormat().add_jm().format(DateTime.now()).toString(),
                 style: TextStyle(
                   fontSize: 20.0,
                   color: Theme.of(context).primaryColor,
@@ -236,13 +297,30 @@ class _CheckoutPageState extends State<CheckoutPage> {
               SizedBox(
                 height: 10.0,
               ),
-              Text('$hours''hours' , style: TextStyle(
-                fontSize: 20.0,
-                color: Theme.of(context).primaryColor,
-                fontWeight: FontWeight.bold,
-              ),),
+              Text(
+                '$hours' 'hours',
+                style: TextStyle(
+                  fontSize: 20.0,
+                  color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               SizedBox(
-                height: 40.0,
+                height: 20.0,
+              ),
+              userCheckOutTime != checkoutTime ||
+                      userCheckOutTime <= checkoutTime
+                  ? Text(
+                      'you are Exiting Early',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color:Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  : Column(),
+              SizedBox(
+                height: 20.0,
               ),
               Container(
                 padding: const EdgeInsets.symmetric(
