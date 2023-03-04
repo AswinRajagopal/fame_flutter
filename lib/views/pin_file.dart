@@ -276,7 +276,7 @@ class _AttachImgState extends State<AttachImg> {
                     });
                   },
                   decoration: InputDecoration(
-                    errorText: validateRemarks ? 'Please Enter Remarks' : null,
+                    errorText: validateRemarks ? 'Please Enter Remarks' :remarks.text.length>1000?'please enter 1000 Characters only' :null,
                     border: OutlineInputBorder(),
                     isDense: true,
                     contentPadding: EdgeInsets.all(10.0),
