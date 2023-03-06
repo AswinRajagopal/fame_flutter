@@ -96,7 +96,6 @@ class _RequestExpenseState extends State<RequestExpense> {
     );
 
     if (picked != null) {
-      print('Date selected ${date.text.toString()}');
       setState(() {
         date.text = DateFormat('dd-MM-yyyy').format(picked).toString();
         passDate = DateFormat('yyyy-MM-dd').format(picked).toString();
@@ -110,7 +109,6 @@ class _RequestExpenseState extends State<RequestExpense> {
     if (amtInWords != null) {
       setState(() {
         amountInWords = converter.convertInt(amtInWords).capitalizeFirst;
-        print(amountInWords);
       });
     }
   }
@@ -138,6 +136,12 @@ class _RequestExpenseState extends State<RequestExpense> {
         ),
       ),
       body: WillPopScope(
+        onWillPop: () async {
+          setState(() {
+            expC.purpose.clear();
+          });
+          return true;
+        },
         child: SafeArea(
           child: SingleChildScrollView(
             child: Column(
@@ -256,7 +260,6 @@ class _RequestExpenseState extends State<RequestExpense> {
                                   ),
                                 ),
                                 suggestionsCallback: (pattern) async {
-                                  // print(pattern);
                                   if (pattern.isNotEmpty) {
                                     return await RemoteServices()
                                         .getEmployees(pattern);
@@ -286,7 +289,6 @@ class _RequestExpenseState extends State<RequestExpense> {
                                   );
                                 },
                                 onSuggestionSelected: (suggestion) {
-                                  print(suggestion);
                                   empName.text =
                                       suggestion['name'].toString().trimRight() +
                                           "-" +
@@ -362,7 +364,6 @@ class _RequestExpenseState extends State<RequestExpense> {
                                           fontSize: 18.0),
                                     ),
                                     onChanged: (val) {
-                                      print('inside on changed');
                                       getWord(amount.text);
                                     },
                                   ),
@@ -392,8 +393,6 @@ class _RequestExpenseState extends State<RequestExpense> {
                                       hint: 'Purpose',
                                       showSelectedItem: true,
                                       items: expC.purpose.map((item) {
-                                        print(item['expenseType']);
-                                        print("items " + item['expenseType']);
                                         var sC = item['expenseType'].toString();
                                         return sC.toString();
                                       }).toList(),
@@ -483,7 +482,6 @@ class _RequestExpenseState extends State<RequestExpense> {
                             horizontal: 20.0, vertical: 15.0),
                         child: RaisedButton(
                           onPressed: () async {
-                            print('Submit');
                             FocusScope.of(context).requestFocus(FocusNode());
                             if (amount.text == null ||
                                 amount.text == '' ||
@@ -523,8 +521,6 @@ class _RequestExpenseState extends State<RequestExpense> {
                                 borderRadius: 5.0,
                               );
                             } else {
-                              print(empId);
-                              print(amount.text);
                               expC.getNewEmpAdv(amount.text);
                             }
                           },

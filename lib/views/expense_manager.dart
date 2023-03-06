@@ -99,7 +99,6 @@ class _ExpensesState extends State<Expenses> {
     );
 
     if (picked != null) {
-      print('Date selected ${date.text.toString()}');
       setState(() {
         date.text = DateFormat('dd-MM-yyyy').format(picked).toString();
         passDate = DateFormat('yyyy-MM-dd').format(picked).toString();
@@ -113,7 +112,6 @@ class _ExpensesState extends State<Expenses> {
     if (amtInWords != null) {
       setState(() {
         amountInWords = converter.convertInt(amtInWords).capitalizeFirst;
-        print(amountInWords);
       });
     }
   }
@@ -134,6 +132,9 @@ class _ExpensesState extends State<Expenses> {
         leading: IconButton(
           onPressed: () {
             Get.back();
+            setState(() {
+              expC.exp.clear();
+            });
           },
           icon: Icon(
             Icons.arrow_back,
@@ -141,6 +142,12 @@ class _ExpensesState extends State<Expenses> {
         ),
       ),
       body: WillPopScope(
+        onWillPop: () async {
+          setState(() {
+            expC.exp.clear();
+          });
+          return true;
+        },
         child: SafeArea(
           child: SingleChildScrollView(
             child: Column(
@@ -292,7 +299,6 @@ class _ExpensesState extends State<Expenses> {
                                           fontSize: 18.0),
                                     ),
                                     onChanged: (val) {
-                                      print('inside on changed');
                                       getWord(amount.text);
                                     },
                                   ),
@@ -473,8 +479,7 @@ class _ExpensesState extends State<Expenses> {
                                                           '', 'image1.jpg');
                                                       setState(() {});
                                                     } else {
-                                                      print(
-                                                          'No image selected.');
+
                                                       setState(() {});
                                                     }
                                                   },
@@ -519,8 +524,7 @@ class _ExpensesState extends State<Expenses> {
                                                           '', 'image1.jpg');
                                                       setState(() {});
                                                     } else {
-                                                      print(
-                                                          'No image selected.');
+
                                                       setState(() {});
                                                     }
                                                   },
@@ -604,8 +608,6 @@ class _ExpensesState extends State<Expenses> {
                                                               '', 'image3.jpg');
                                                       setState(() {});
                                                     } else {
-                                                      print(
-                                                          'No image selected.');
                                                       setState(() {});
                                                     }
                                                   },
@@ -649,8 +651,6 @@ class _ExpensesState extends State<Expenses> {
                                                               '', 'image3.jpg');
                                                       setState(() {});
                                                     } else {
-                                                      print(
-                                                          'No image selected.');
                                                       setState(() {});
                                                     }
                                                   },
@@ -731,7 +731,6 @@ class _ExpensesState extends State<Expenses> {
                                                               '', 'image2.jpg');
                                                       setState(() {});
                                                     } else {
-                                                print('No image selected.');
                                                 setState(() {});
                                               }
                                             },
@@ -772,7 +771,6 @@ class _ExpensesState extends State<Expenses> {
                                                               '', 'image2.jpg');
                                                       setState(() {});
                                                     } else {
-                                                print('No image selected.');
                                                 setState(() {});
                                               }
                                             },
@@ -915,7 +913,6 @@ class _ExpensesState extends State<Expenses> {
                             horizontal: 20.0, vertical: 5.0),
                         child: RaisedButton(
                           onPressed: () async {
-                            print('Submit');
                             FocusScope.of(context).requestFocus(FocusNode());
                             if (attachment == null) {
                               Get.snackbar(

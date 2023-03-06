@@ -59,10 +59,7 @@ class ExpenseController extends GetxController {
               seconds: 2,
             ),
           );
-          Timer(Duration(seconds: 2), () {
-            Get.off(ViewExpense());
-            return Future.value(true);
-          });
+          Timer(Duration(seconds: 2), Get.back);
         } else {
           Get.snackbar(
             null,
@@ -469,12 +466,12 @@ class ExpenseController extends GetxController {
     }
   }
 
-  void getEmpExpensesAdmin(empId) async {
+  void getEmpExpensesAdmin(empId,fromDate,toDate) async {
     try {
       empExpList = [];
       isLoading(true);
       await pr.show();
-      res = await RemoteServices().getEmpExpensesAdmin(empId);
+      res = await RemoteServices().getEmpExpensesAdmin(empId,fromDate,toDate);
       if (res != null) {
         isLoading(false);
         await pr.hide();
@@ -764,6 +761,7 @@ class ExpenseController extends GetxController {
       if (expenseBillRes != null) {
         await pr.hide();
         if (expenseBillRes['success']) {
+           expenseBillsList.clear();
           Get.snackbar(
             null,
             'Bills sent successfully',
@@ -783,10 +781,7 @@ class ExpenseController extends GetxController {
               seconds: 2,
             ),
           );
-          Timer(Duration(seconds: 2), () {
-            Get.off(ViewBills());
-            return Future.value(true);
-          });
+          Timer(Duration(seconds: 2), Get.back);
         } else {
           Get.snackbar(
             null,
@@ -807,6 +802,7 @@ class ExpenseController extends GetxController {
         }
       }
     } catch (e) {
+
       print(e);
       await pr.hide();
       Get.snackbar(
@@ -862,10 +858,7 @@ class ExpenseController extends GetxController {
               seconds: 2,
             ),
           );
-          Timer(Duration(seconds: 2), () {
-            Get.off(ViewBills());
-            return Future.value(true);
-          });
+          Timer(Duration(seconds: 2), Get.back);
         } else {
           Get.snackbar(
             null,
@@ -990,10 +983,7 @@ class ExpenseController extends GetxController {
               seconds: 2,
             ),
           );
-          Timer(Duration(seconds: 2), () {
-            Get.off(ViewExpense());
-            return Future.value(true);
-          });
+          Timer(Duration(seconds: 2), Get.back);
         } else {
           Get.snackbar(
             null,

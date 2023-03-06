@@ -23,7 +23,10 @@ class ViewExpense extends StatefulWidget {
 class _ViewExpenseState extends State<ViewExpense> {
   final ExpenseController expC = Get.put(ExpenseController());
   TextEditingController empName = TextEditingController();
-
+  TextEditingController frmDate = TextEditingController();
+  TextEditingController toDate = TextEditingController();
+  var fDate;
+  var tDate;
   var expenseId;
   var roleId;
   var expenseTypeId;
@@ -70,6 +73,10 @@ class _ViewExpenseState extends State<ViewExpense> {
       expC.getEmpExpenses();
     });
     super.initState();
+    frmDate.text = DateFormat('dd-MM-yyyy').format(curDate).toString();
+    toDate.text = DateFormat('dd-MM-yyyy').format(curDate).toString();
+    fDate = DateFormat('yyyy-MM-dd').format(curDate).toString();
+    tDate = DateFormat('yyyy-MM-dd').format(curDate).toString();
   }
 
   @override
@@ -81,6 +88,50 @@ class _ViewExpenseState extends State<ViewExpense> {
     var amount = int.parse(amountform.toStringAsFixed(0));
     var formatter = NumberFormat('#,##,000');
     return formatter.format(amount).toString();
+  }
+
+  final DateTime curDate = DateTime.now();
+
+  Future<Null> fromDate(BuildContext context) async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: fDate == null
+          ? curDate
+          : DateTime.parse(
+              fDate.toString(),
+            ),
+      firstDate: DateTime.now().add(Duration(days: -365 * 2)),
+      lastDate: DateTime.now(),
+    );
+
+    if (picked != null) {
+      setState(() {
+        frmDate.text = DateFormat('dd-MM-yyyy').format(picked).toString();
+        fDate = DateFormat('yyyy-MM-dd').format(picked).toString();
+        expC.getEmpExpensesAdmin(empId, fDate, tDate);
+      });
+    }
+  }
+
+  Future<Null> lastDate(BuildContext context) async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: tDate == null
+          ? curDate
+          : DateTime.parse(
+              tDate.toString(),
+            ),
+      firstDate: DateTime.now().add(Duration(days: -365 * 2)),
+      lastDate: DateTime.now(),
+    );
+
+    if (picked != null) {
+      setState(() {
+        toDate.text = DateFormat('dd-MM-yyyy').format(picked).toString();
+        tDate = DateFormat('yyyy-MM-dd').format(picked).toString();
+        expC.getEmpExpensesAdmin(empId, fDate, tDate);
+      });
+    }
   }
 
   @override
@@ -119,25 +170,26 @@ class _ViewExpenseState extends State<ViewExpense> {
                                         CrossAxisAlignment.center,
                                     children: [
                                       Obx(() {
-                                        return expC.isLoading.value==null?
-                                            CircularProgressIndicator():
-                                        Text(
-                                            expC.expDet != null &&
-                                                    expC.expDet[
-                                                            'totalExpenses'] !=
-                                                        null &&
-                                                    expC.expDet['totalExpenses']
-                                                                ['expense']
-                                                            .toString() !=
-                                                        'null'
-                                                ? numberFormatter(expC.expDet[
-                                                            'totalExpenses']
-                                                        ['expense'])
-                                                    .toString()
-                                                : '0.00',
-                                            style: new TextStyle(
-                                                fontSize: 40.0,
-                                                color: Colors.black));
+                                        return expC.isLoading.value == null
+                                            ? CircularProgressIndicator()
+                                            : Text(
+                                                expC.expDet != null &&
+                                                        expC.expDet[
+                                                                'totalExpenses'] !=
+                                                            null &&
+                                                        expC.expDet['totalExpenses']
+                                                                    ['expense']
+                                                                .toString() !=
+                                                            'null'
+                                                    ? numberFormatter(expC
+                                                                    .expDet[
+                                                                'totalExpenses']
+                                                            ['expense'])
+                                                        .toString()
+                                                    : '0.00',
+                                                style: new TextStyle(
+                                                    fontSize: 40.0,
+                                                    color: Colors.black));
                                       }),
                                       Text('Expenses This Month',
                                           style: new TextStyle(
@@ -153,26 +205,28 @@ class _ViewExpenseState extends State<ViewExpense> {
                                 Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Obx((){
-                                        return expC.isLoading.value==null?
-                                        CircularProgressIndicator():Text(
-                                            expC.expDet != null &&
-                                                    expC.expDet[
-                                                            'totalExpenses'] !=
-                                                        null &&
-                                                    expC.expDet['totalExpenses']
-                                                                ['advance']
-                                                            .toString() !=
-                                                        'null'
-                                                ? numberFormatter(expC.expDet[
-                                                            'totalExpenses']
-                                                        ['advance'])
-                                                    .toString()
-                                                : '0.00',
-                                            style: new TextStyle(
-                                                fontSize: 40.0,
-                                                color: Colors.black));}
-                                      ),
+                                      Obx(() {
+                                        return expC.isLoading.value == null
+                                            ? CircularProgressIndicator()
+                                            : Text(
+                                                expC.expDet != null &&
+                                                        expC.expDet[
+                                                                'totalExpenses'] !=
+                                                            null &&
+                                                        expC.expDet['totalExpenses']
+                                                                    ['advance']
+                                                                .toString() !=
+                                                            'null'
+                                                    ? numberFormatter(expC
+                                                                    .expDet[
+                                                                'totalExpenses']
+                                                            ['advance'])
+                                                        .toString()
+                                                    : '0.00',
+                                                style: new TextStyle(
+                                                    fontSize: 40.0,
+                                                    color: Colors.black));
+                                      }),
                                       Text('Advance This Month',
                                           style: new TextStyle(
                                               fontWeight: FontWeight.bold,
@@ -238,7 +292,8 @@ class _ViewExpenseState extends State<ViewExpense> {
                                 children: [
                                   RaisedButton(
                                     onPressed: () async {
-                                      Get.to(ViewBills());
+                                      Get.to(ViewBills()).then(
+                                          (value) => expC.getEmpExpenses());
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
@@ -266,7 +321,8 @@ class _ViewExpenseState extends State<ViewExpense> {
                               ),
                         RaisedButton(
                           onPressed: () async {
-                            Get.to(Expenses());
+                            Get.to(Expenses())
+                                .then((value) => expC.getEmpExpenses());
                           },
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
@@ -302,16 +358,27 @@ class _ViewExpenseState extends State<ViewExpense> {
           ),
           roleId == AppUtils.ADMIN
               ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Text(
-                        'Filter By',
-                        style: TextStyle(
-                            fontSize: 20.0, fontWeight: FontWeight.bold),
-                      ),
+                    Column(
+                      children: [
+                        Row(
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 30.0),
+                              child: Text(
+                                'Filter By',
+                                style: TextStyle(
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Icon(Icons.filter_alt),
+                          ],
+                        ),
+                      ],
                     ),
-                    Icon(Icons.filter_alt)
                   ],
                 )
               : Column(),
@@ -343,7 +410,6 @@ class _ViewExpenseState extends State<ViewExpense> {
                           ),
                         ),
                         suggestionsCallback: (pattern) async {
-                          // print(pattern);
                           if (pattern.isNotEmpty) {
                             return await RemoteServices().getEmployees(pattern);
                           } else {
@@ -366,8 +432,6 @@ class _ViewExpenseState extends State<ViewExpense> {
                           );
                         },
                         onSuggestionSelected: (suggestion) {
-                          print(suggestion);
-                          print(suggestion['name']);
                           empName.text =
                               suggestion['name'].toString().trimRight() +
                                   ' - ' +
@@ -377,6 +441,85 @@ class _ViewExpenseState extends State<ViewExpense> {
                       ),
                     ),
                   ),
+                )
+              : Column(),
+          roleId == AppUtils.ADMIN
+              ? Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal:30.0),
+                      child: Row(
+                        children: [
+                          Text('From',style: TextStyle(
+                              fontSize: 20.0, fontWeight: FontWeight.bold)),
+                          Container(
+                            width: 170,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                                vertical: 5.0,
+                              ),
+                              child: TextField(
+                                controller: frmDate,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.all(10),
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  hintText: 'Select Date',
+                                  suffixIcon: Icon(
+                                    Icons.calendar_today,
+                                    size: 25.0,
+                                  ),
+                                ),
+                                readOnly: true,
+                                keyboardType: null,
+                                onTap: () {
+                                  fromDate(context);
+                                },
+                              ),
+                            ),
+                          ),
+                          Text('To',style: TextStyle(
+                              fontSize: 20.0, fontWeight: FontWeight.bold)),
+                          Container(
+                            width: 170,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                                vertical: 5.0,
+                              ),
+                              child: TextField(
+                                controller: toDate,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.all(10),
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  hintText: 'Select Date',
+                                  suffixIcon: Icon(
+                                    Icons.calendar_today,
+                                    size: 25.0,
+                                  ),
+                                ),
+                                readOnly: true,
+                                keyboardType: null,
+                                onTap: () {
+                                  lastDate(context);
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
                 )
               : Column(),
           SizedBox(
@@ -447,7 +590,7 @@ class _ViewExpenseState extends State<ViewExpense> {
                                     _expense = false;
                                   } else if (_chosenValue == 'Expenses') {
                                     empId != null
-                                        ? expC.getEmpExpensesAdmin(empId)
+                                        ? expC.getEmpExpensesAdmin(empId,fDate,tDate)
                                         : expC.getEmpExpenses();
                                     _expense = true;
                                     _advance = false;
@@ -462,7 +605,7 @@ class _ViewExpenseState extends State<ViewExpense> {
                                       _isRejectedList = false;
                                     } else if (_chosenValue == 'All') {
                                       empId != null
-                                          ? expC.getEmpExpensesAdmin(empId)
+                                          ? expC.getEmpExpensesAdmin(empId,fDate,tDate)
                                           : expC.getEmpExpenses();
                                       _expense = true;
                                       _advance = false;
@@ -529,7 +672,6 @@ class _ViewExpenseState extends State<ViewExpense> {
                           physics: ScrollPhysics(),
                           itemCount: expC.rejectedList.length,
                           itemBuilder: (context, index) {
-                            print(expC.rejectedList[index]);
                             var rejectedExp = expC.rejectedList[index];
                             return RejectedListWidget(rejectedExp, index,
                                 expC.rejectedList.length, expC);
@@ -578,7 +720,6 @@ class _ViewExpenseState extends State<ViewExpense> {
                               physics: ScrollPhysics(),
                               itemCount: expC.empExpList.length,
                               itemBuilder: (context, index) {
-                                print(expC.empExpList[index]);
                                 var expense = expC.empExpList[index];
                                 return ExpensesListWidget(expense, index,
                                     expC.empExpList.length, expC);
@@ -629,7 +770,6 @@ class _ViewExpenseState extends State<ViewExpense> {
                                   physics: ScrollPhysics(),
                                   itemCount: expC.empExpAdvanceList.length,
                                   itemBuilder: (context, index) {
-                                    print(expC.empExpAdvanceList[index]);
                                     var advance = expC.empExpAdvanceList[index];
                                     return AdvanceListWidget(advance);
                                   },
@@ -678,7 +818,6 @@ class _ViewExpenseState extends State<ViewExpense> {
                                   physics: ScrollPhysics(),
                                   itemCount: expC.empExpList.length,
                                   itemBuilder: (context, index) {
-                                    print(expC.empExpList[index]);
                                     var expense = expC.empExpList[index];
                                     return ExpensesListWidget(expense, index,
                                         expC.empExpList.length, expC);
