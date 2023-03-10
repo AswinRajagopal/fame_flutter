@@ -10,6 +10,7 @@ class DBCalController extends GetxController {
   var isEventLoading = true.obs;
   var calRes;
   var changedDate;
+  var attId;
   Map<DateTime, List> events = {};
   var calendarType = 'myCal';
 
@@ -73,7 +74,8 @@ class DBCalController extends GetxController {
               if (calRes['attendanceList'][i]['checkInDateTime'] != null && calRes['attendanceList'][i]['checkOutDateTime'] != null && calRes['attendanceList'][i]['attendanceAlias'] != null) {
                 var chkIn = convertTimeWithoutParse(calRes['attendanceList'][i]['checkInDateTime']);
                 var chkOut = convertTimeWithoutParse(calRes['attendanceList'][i]['checkOutDateTime']);
-                event = calRes['attendanceList'][i]['attendanceAlias'] + '*' + chkIn + ',' + chkOut;
+                var attId=calRes['attendanceList'][i]['id'];
+                event = calRes['attendanceList'][i]['attendanceAlias'] + '*' + chkIn + ',' + chkOut + "," + attId;
               }
 
               if (event != null && event != '') {

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:fame/views/change_password.dart';
 import 'package:fame/views/expense_manager.dart';
 import 'package:fame/views/view_expenses.dart';
+import 'package:fame/views/view_regularize_att.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:in_app_review/in_app_review.dart';
@@ -130,7 +131,11 @@ class _SettingsPageState extends State<SettingsPage> {
                 Get.to(OBPersonal());
               },
               child: Visibility(
-                visible: ((roleId!='1' ) && jsonDecode(RemoteServices().box.get('appFeature'))['onboarding']) ? true : false,
+                visible: ((roleId != '1') &&
+                        jsonDecode(RemoteServices().box.get('appFeature'))[
+                            'onboarding'])
+                    ? true
+                    : false,
                 child: ListContainer(
                   'assets/images/employee.png',
                   'Onboarding',
@@ -153,6 +158,18 @@ class _SettingsPageState extends State<SettingsPage> {
               child: ListContainer(
                 'assets/images/expense.png',
                 'Expense Management',
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Get.to(ViewRegularizeAtt());
+              },
+              child: Visibility(
+                visible: roleId != '1' ? true : false,
+                child: ListContainer(
+                  'assets/images/regAtt.png',
+                  'Regularize Attendance',
+                ),
               ),
             ),
             GestureDetector(
@@ -247,7 +264,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     if (feedback.text != null && feedback.text != '') {
                       FocusScope.of(context).requestFocus(FocusNode());
                       await pr.show();
-                      var fbRes = await RemoteServices().sendFeedback(feedback.text);
+                      var fbRes =
+                          await RemoteServices().sendFeedback(feedback.text);
                       if (fbRes != null) {
                         await pr.hide();
                         if (fbRes['success']) {
