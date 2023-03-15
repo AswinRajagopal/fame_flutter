@@ -1,7 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:fame/connection/remote_services.dart';
+import 'package:fame/controllers/dashboard_controller.dart';
+import 'package:fame/controllers/profile_controller.dart';
 import '../utils/utils.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
@@ -26,6 +30,8 @@ class CheckoutPage extends StatefulWidget {
 }
 
 class _CheckoutPageState extends State<CheckoutPage> {
+  final DashboardController dbC = Get.put(DashboardController());
+  final ProfileController pC = Get.put(ProfileController());
   final CheckoutController checkoutController = Get.put(CheckoutController());
   CameraController controller;
   List<CameraDescription> cameras;
@@ -39,7 +45,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   var totalWorkingHours = '';
   var hours;
   var userCheckOutTime;
-  var checkoutTime;
+  var checkOutTime;
 
   Future<Null> workSession() {
     final DateTime checkOutTime = DateTime.now();
@@ -52,65 +58,83 @@ class _CheckoutPageState extends State<CheckoutPage> {
     }
   }
 
+  String convertTimeWithParse(time) {
+    return DateFormat('h:mm')
+            .format(DateFormat('HH:mm:ss').parse(time))
+            .toString() +
+        DateFormat('a')
+            .format(DateFormat('HH:mm:ss').parse(time))
+            .toString()
+            .toLowerCase();
+  }
 
   @override
   void initState() {
     super.initState();
     new Future.delayed(Duration.zero, () {
-      userCheckOutTime != chkOutDt
-          ? showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                  title: Text(
-                    'Early Exit..!',
+      String timeString = chkOutDt;
+      TimeOfDay apiTimeOfDay =
+          TimeOfDay.fromDateTime(DateTime.parse('2023-03-11 $timeString'));
+      DateTime apiDateTime = DateTime(
+        DateTime.now().year,
+        DateTime.now().month,
+        DateTime.now().day,
+        apiTimeOfDay.hour,
+        apiTimeOfDay.minute,
+      );
+      if (DateTime.now().isBefore(apiDateTime)) {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0))),
+              title: Text(
+                'Early Exit..!',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              content: Text(
+                'Are you sure you want to exit?',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18.0,
+                ),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text(
+                    'No',
                     style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 24.0,
+                      fontSize: 14.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  content: Text(
-                    'Are you sure you want to exit?',
+                  onPressed: () {
+                    Get.to(DashboardPage());
+                  },
+                ),
+                FlatButton(
+                  child: Text(
+                    'Yes',
                     style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18.0,
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  actions: <Widget>[
-                    FlatButton(
-                      child: Text(
-                        'No',
-                        style: TextStyle(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      onPressed: () {
-                        Get.to(DashboardPage());
-                      },
-                    ),
-                    FlatButton(
-                      child: Text(
-                        'Yes',
-                        style: TextStyle(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      onPressed: () => Navigator.of(context).pop(true),
-                    ),
-                  ],
-                );
-              },
-            )
-          : Column();
+                  onPressed: () => Navigator.of(context).pop(true),
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        Column();
+      }
     });
-    DateTime now = DateTime.now();
-    String formattedDateTime = DateFormat('hh:mma').format(now).toLowerCase().toString();
-    userCheckOutTime=formattedDateTime;
     workSession();
     if (widget.checkinLocation != null && !widget.checkinLocation) {
       checkoutController.currentAddress.value = 'Site';
@@ -244,114 +268,287 @@ class _CheckoutPageState extends State<CheckoutPage> {
     print(res);
     if (res != null && res) {
       // ignore: unawaited_futures
-      Get.bottomSheet(
-        Container(
-          height: MediaQuery.of(context).size.height / 2.3,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: const Radius.circular(10.0),
-              topRight: const Radius.circular(10.0),
-            ),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Image.asset(
-                'assets/images/success.png',
-                scale: 2.0,
-                color: AppUtils().greenColor,
-              ),
-              SizedBox(
-                height: 15.0,
-              ),
-              Text(
-                'Checked out at',
-                style: TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20.0))),
+              content: Container(
+                width: MediaQuery.of(context).size.height / 2.5,
+                height: MediaQuery.of(context).size.height / 1.3,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: const Radius.circular(10.0),
+                    topRight: const Radius.circular(10.0),
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              Text(
-                DateFormat().add_jm().format(DateTime.now()).toString(),
-                style: TextStyle(
-                  fontSize: 20.0,
-                  color: Theme.of(context).primaryColor,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              Text(
-                'Worked for',
-                style: TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              Text(
-                '$hours' 'hours',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  color: Theme.of(context).primaryColor,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              userCheckOutTime != checkoutTime ||
-                      userCheckOutTime <= checkoutTime
-                  ? Text(
-                      'you are Exiting Early',
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 25.0,
+                    ),
+                    Image.asset(
+                      'assets/images/success.png',
+                      scale: 2.0,
+                      color: AppUtils().greenColor,
+                    ),
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                    Text(
+                      'Thank you!',
                       style: TextStyle(
                         fontSize: 20.0,
-                        color:Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
-                    )
-                  : Column(),
-              SizedBox(
-                height: 20.0,
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 22.0,
-                  vertical: 12.0,
-                ),
-                decoration: BoxDecoration(
-                  color: AppUtils().greenColor,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(
-                      30.0,
                     ),
-                  ),
-                ),
-                child: Text(
-                  'Thank You !',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
+                    Spacer(),
+                    file != null
+                        ? ClipOval(
+                            child: Image.file(
+                              file,
+                              width: 200,
+                              height: 200,
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        : CircleAvatar(
+                            backgroundImage: NetworkImage(
+                              'https://cdn.pixabay.com/photo/2018/08/28/12/41/avatar-3637425_960_720.png',
+                              // fit: BoxFit.cover,
+                            ),
+                            radius: 100.0,
+                          ),
+                    // }),
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                    Text(
+                      'Mr.' + RemoteServices().box.get('empName'),
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 40.0,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Employee ID',
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 5.0,
+                              ),
+                              Text(
+                                RemoteServices().box.get('empid').toString(),
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            ]),
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Check Out Time',
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 5.0,
+                              ),
+                              Text(
+                                DateFormat()
+                                    .add_jm()
+                                    .format(DateTime.now())
+                                    .toString(),
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ]),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 50.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Location',
+                                  style: TextStyle(
+                                    fontSize: 18.0,
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 5.0,
+                                ),
+                                Container(
+                                  width: 150.0,
+                                  height: 85.0,
+                                  child: Obx(() {
+                                    return Text(
+                                      checkoutController.currentAddress.value,
+                                      style: TextStyle(
+                                        fontSize: 18.0,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    );
+                                  }),
+                                )
+                              ]),
+                          Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Shift',
+                                  style: TextStyle(
+                                    fontSize: 18.0,
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 5.0,
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      convertTimeWithParse(
+                                          dbC.response['empdetails']
+                                              ['shiftStartTime']),
+                                      style: TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      ' to ',
+                                      style: TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      convertTimeWithParse(
+                                          dbC.response['empdetails']
+                                              ['shiftEndTime']),
+                                      style: TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ]),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Worked for',
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 5.0,
+                              ),
+                              Text(
+                                '$hours' 'hours',
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ]),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 50.0,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Get.offAll(DashboardPage());
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 25.0,
+                          vertical: 15.0,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppUtils().greenColor,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(
+                              30.0,
+                            ),
+                          ),
+                        ),
+                        child: Text(
+                          'Okay',
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 15.0,
+                    )
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
-        // isDismissible: false,
-      );
-      Timer(Duration(seconds: 2), () {
-        Get.offAll(DashboardPage());
-      });
+            );
+          });
+      // Timer(Duration(seconds: 2), () {
+      //   Get.offAll(DashboardPage());
+      // });
     }
   }
 
@@ -585,97 +782,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    // Padding(
-                    //   padding: const EdgeInsets.symmetric(
-                    //     horizontal: 20.0,
-                    //   ),
-                    //   child: Container(
-                    //     height: 150.0,
-                    //     width: MediaQuery.of(context).size.width,
-                    //     decoration: BoxDecoration(
-                    //       color: Colors.black87,
-                    //       borderRadius: BorderRadius.all(
-                    //         Radius.circular(
-                    //           10.0,
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     child: Padding(
-                    //       padding: const EdgeInsets.symmetric(
-                    //         horizontal: 15.0,
-                    //       ),
-                    //       child: Row(
-                    //         // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    //         crossAxisAlignment: CrossAxisAlignment.center,
-                    //         children: [
-                    //           Container(
-                    //             width: 180.0,
-                    //             child: Column(
-                    //               mainAxisAlignment: MainAxisAlignment.center,
-                    //               crossAxisAlignment: CrossAxisAlignment.start,
-                    //               children: [
-                    //                 Text(
-                    //                   'Current Address:',
-                    //                   style: TextStyle(
-                    //                     color: Colors.white54,
-                    //                   ),
-                    //                 ),
-                    //                 SizedBox(
-                    //                   width: 10.0,
-                    //                   height: 8.0,
-                    //                 ),
-                    //                 Obx(() {
-                    //                   return Text(
-                    //                     checkoutController.currentAddress.value,
-                    //                     style: TextStyle(
-                    //                       color: Colors.white,
-                    //                       fontSize: 16.0,
-                    //                     ),
-                    //                   );
-                    //                 }),
-                    //                 // Text(
-                    //                 //   'Arcesium at Mindspace.',
-                    //                 //   style: TextStyle(
-                    //                 //     color: Colors.white,
-                    //                 //     fontSize: 16.0,
-                    //                 //   ),
-                    //                 // ),
-                    //                 // Text(
-                    //                 //   'Hyderabad, Telangana, 500085, India.',
-                    //                 //   style: TextStyle(
-                    //                 //     color: Colors.white,
-                    //                 //     fontSize: 16.0,
-                    //                 //   ),
-                    //                 // ),
-                    //               ],
-                    //             ),
-                    //           ),
-                    //           SizedBox(
-                    //             width: 20.0,
-                    //           ),
-                    //           Container(
-                    //             height: 100.0,
-                    //             width: 2.0,
-                    //             color: Colors.white,
-                    //           ),
-                    //           SizedBox(
-                    //             width: 20.0,
-                    //           ),
-                    //           Obx(() {
-                    //             return Text(
-                    //               checkoutController.todayString.value,
-                    //               style: TextStyle(
-                    //                 color: Theme.of(context).primaryColor,
-                    //                 fontSize: 20.0,
-                    //                 fontWeight: FontWeight.bold,
-                    //               ),
-                    //             );
-                    //           }),
-                    //         ],
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                     SizedBox(
                       height: 30.0,
                     ),
@@ -732,5 +838,24 @@ class _CheckoutPageState extends State<CheckoutPage> {
         ),
       ),
     );
+  }
+}
+
+class CircleClipper extends CustomClipper<Rect> {
+  final double radius;
+
+  CircleClipper({this.radius});
+
+  @override
+  Rect getClip(Size size) {
+    return Rect.fromCircle(
+      center: Offset(size.width / 2, size.height / 2),
+      radius: radius,
+    );
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Rect> oldClipper) {
+    return true;
   }
 }

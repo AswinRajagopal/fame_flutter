@@ -37,8 +37,8 @@ class RegAttListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(RegularizeAttDetailList(this.regAtt))
-            .then((value) => raC.regAttList.clear());
+        Get.to(RegularizeAttDetailList(this.regAtt)
+        );
       },
       child: Container(
         margin: EdgeInsets.all(15),

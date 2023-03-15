@@ -728,11 +728,11 @@ class _LiteDashboardPage extends State<LiteDashboardPage> {
                                                           .get('faceApi'),
                                                       appFeatures[
                                                       'checkinLocation'],dbC.response['dailyAttendance']
-                                                  ['checkInDateTime'],  convertTimeWithParse(dbC
+                                                  ['checkInDateTime'], dbC
                                                       .response[
                                                   'empdetails']
                                                   [
-                                                  'shiftEndTime'])));
+                                                  'shiftEndTime']));
                                                   // Get.to(CheckoutPage(0));
                                                 }
                                               },

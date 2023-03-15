@@ -88,7 +88,7 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
         actions: <Widget>[
           IconButton(
               icon: const Icon(
-                Icons.download_sharp,
+                Icons.share,
                 color: Colors.white,
                 semanticLabel: 'pdf',
               ),
@@ -385,7 +385,7 @@ class _VisitPlanDetailState extends State<VisitPlanDetail> {
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Icon(
-                      Icons.download_rounded,
+                      Icons.share,
                     ),
                   ))
             ],

@@ -24,6 +24,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../models/attendance.dart';
 import '../models/checkin.dart';
@@ -412,7 +413,6 @@ class RemoteServices {
 
   Future<Checkin> checkinProcess(File imageFile) async {
     var dio = mydio.Dio();
-
     var formData = mydio.FormData.fromMap({
       'companyID': box.get('companyid'),
       'empID': box.get('empid'),
@@ -2043,11 +2043,13 @@ class RemoteServices {
 
   Future getVisitDownloads(empId, fromDate, toDate) async {
     Dio dio = Dio();
+    final directory = await getExternalStorageDirectory();
+    final filePath = '${directory.path}/myVisit.pdf';
+    final file = File(filePath);
 
-    var tempDir = await getApplicationDocumentsDirectory();
-    String fullPath = tempDir.path + "/myVisit.pdf";
+
     var response =
-        await dio.download('$baseURL/location/pitstops_by_empId', fullPath,
+        await dio.download('$baseURL/location/pitstops_by_empId', filePath,
             options: Options(
               headers: header,
               method: 'POST',
@@ -2059,8 +2061,9 @@ class RemoteServices {
                 "empId": empId
               },
             ));
+
     if (response.statusCode == 200) {
-      return fullPath;
+      return filePath;
     } else {
       return null;
     }

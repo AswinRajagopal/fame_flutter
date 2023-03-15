@@ -104,8 +104,13 @@ class _HomeCalendarState extends State<HomeCalendar>
                 'Checked Out @ ${calEvent[1].split(',')[1]}',
               ),
               RaisedButton(
-                onPressed:() {
-                  Get.to(RegularizeAttendancePage(dtFormat,calEvent[0],calEvent[1].split(',')[0],calEvent[1].split(',')[1],calEvent[1].split(',')[2]));
+                onPressed: () {
+                  Get.to(RegularizeAttendancePage(
+                      dtFormat,
+                      calEvent[0],
+                      calEvent[1].split(',')[0],
+                      calEvent[1].split(',')[1],
+                      calEvent[1].split(',')[2]));
                 },
                 child: Text('Regularize'),
               )
@@ -266,7 +271,7 @@ class _HomeCalendarState extends State<HomeCalendar>
                 ? Text(
                     showEvent,
                     style: TextStyle().copyWith(
-                      color: Colors.yellow,
+                      color: Colors.purple,
                       fontSize: 16.0,
                       fontWeight: FontWeight.w900,
                     ),
@@ -289,14 +294,23 @@ class _HomeCalendarState extends State<HomeCalendar>
                               fontWeight: FontWeight.w900,
                             ),
                           )
-                        : Text(
-                            showEvent,
-                            style: TextStyle().copyWith(
-                              color: Theme.of(context).primaryColor,
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.w900,
-                            ),
-                          ),
+                        : showEvent == 'A'
+                            ? Text(
+                                showEvent,
+                                style: TextStyle().copyWith(
+                                  color: Colors.red,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              )
+                            : Text(
+                                showEvent,
+                                style: TextStyle().copyWith(
+                                  color: Theme.of(context).primaryColor,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
       ),
     );
   }

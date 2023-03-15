@@ -5,6 +5,8 @@ import '../utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import '../views/dashboard_page.dart';
+
 
 class RegularizeAttController extends GetxController {
   var isLoading = true.obs;
@@ -97,7 +99,11 @@ class RegularizeAttController extends GetxController {
           Timer(Duration(seconds: 2), Get.back);
           Future.delayed(Duration(seconds:3), ()  {
             // Call the API function here
-            getRegularizeAtt();
+            regAttList.clear();
+          });
+          Future.delayed(Duration(seconds:4), ()  {
+            // Call the API function here
+           getRegularizeAtt();
           });
         } else {
           Get.snackbar(
@@ -167,7 +173,9 @@ class RegularizeAttController extends GetxController {
               seconds: 2,
             ),
           );
-          Timer(Duration(seconds: 2), Get.back);
+          Timer(Duration(seconds: 2), () {
+            Get.offAll(DashboardPage());
+          });
         } else {
           Get.snackbar(
             null,
