@@ -135,10 +135,9 @@ class _OBFamilyState extends State<OBFamily> {
                       for (var i = 0; i < adminC.familyDetail.length; i++) {
                         if (adminC.familyDetail[i] != null) {
                           if (AppUtils.checkTextisNull(
-                              adminC.famName[i], 'Member Name')) {
-                            if (adminC.mandateList['mandateFields']
-                                    ['nameOfMember'] ==
-                                true) {
+                              adminC.famName[i], 'Member Name') &&
+                              adminC.mandateList['mandateFields']
+                              ['nameOfMember']) {
                               error = true;
                               Get.snackbar(
                                 null,
@@ -152,20 +151,10 @@ class _OBFamilyState extends State<OBFamily> {
                                     horizontal: 12.0, vertical: 18.0),
                                 borderRadius: 5.0,
                               );
-                            } else if (adminC.famName != null ||
-                                adminC.mandateList['mandateFields']
-                                        ['nameOfMember'] ==
-                                    false) {
-                              if (!error) {
-                                Get.to(OBPhotos());
-                                adminC.step5(true);
-                              }
-                            }
                           } else if (AppUtils.checkTextisNull(
-                              adminC.famDob[i], 'Member Dob')) {
-                            if (adminC.mandateList['mandateFields']
-                                    ['dobOfMember'] ==
-                                true) {
+                              adminC.famDob[i], 'Member Dob') &&
+                              adminC.mandateList['mandateFields']
+                              ['dobOfMember']) {
                               error = true;
                               Get.snackbar(
                                 null,
@@ -179,19 +168,9 @@ class _OBFamilyState extends State<OBFamily> {
                                     horizontal: 12.0, vertical: 18.0),
                                 borderRadius: 5.0,
                               );
-                            } else if (adminC.famDob != null ||
-                                adminC.mandateList['mandateFields']
-                                        ['dobOfMember'] ==
-                                    false) {
-                              if (!error) {
-                                Get.to(OBPhotos());
-                                adminC.step5(true);
-                              }
-                            }
                           } else if (AppUtils.checkTextisNull(
-                              adminC.famAge[i], 'Member Age')) {
-                            if (adminC.mandateList['mandateFields']['age'] ==
-                                true) {
+                              adminC.famAge[i], 'Member Age') &&
+                              adminC.mandateList['mandateFields']['age']) {
                               error = true;
                               Get.snackbar(
                                 null,
@@ -205,19 +184,10 @@ class _OBFamilyState extends State<OBFamily> {
                                     horizontal: 12.0, vertical: 18.0),
                                 borderRadius: 5.0,
                               );
-                            } else if (adminC.famAge != null ||
-                                adminC.mandateList['mandateFields']['age'] ==
-                                    false) {
-                              if (!error) {
-                                Get.to(OBPhotos());
-                                adminC.step5(true);
-                              }
-                            }
                           } else if (AppUtils.checkTextisNull(
-                              adminC.famRelation[i], 'Member Relation')) {
-                            if (adminC.mandateList['mandateFields']
-                                    ['selectMember'] ==
-                                true) {
+                              adminC.famRelation[i], 'Member Relation') &&
+                              adminC.mandateList['mandateFields']
+                              ['selectMember']) {
                               error = true;
                               Get.snackbar(
                                 null,
@@ -231,15 +201,6 @@ class _OBFamilyState extends State<OBFamily> {
                                     horizontal: 12.0, vertical: 18.0),
                                 borderRadius: 5.0,
                               );
-                            } else if (adminC.famRelation != null ||
-                                adminC.mandateList['mandateFields']
-                                        ['selectMember'] ==
-                                    false) {
-                              if (!error) {
-                                Get.to(OBPhotos());
-                                adminC.step5(true);
-                              }
-                            }
                           } else {
                             // done
                             error = false;
@@ -251,7 +212,7 @@ class _OBFamilyState extends State<OBFamily> {
                               'relAadhaarNo': adminC.famAadhar[i].text,
                               // 'dofBirth': adminC.famDob[i].text,
                               'dofBirth':
-                                  '${adminC.famDob[i].text.split('-')[2]}-${adminC.famDob[i].text.split('-')[1]}-${adminC.famDob[i].text.split('-')[0]}',
+                                  adminC.famDob[i].toString().isNotEmpty?'':'${adminC.famDob[i].text.split('-')[2]}-${adminC.famDob[i].text.split('-')[1]}-${adminC.famDob[i].text.split('-')[0]}',
                               'nomineePercent': adminC.famPercent[i].text,
                               'pfNominee': adminC.famNominee[i] ? 'Y' : 'N',
                               'esiNominee': adminC.famNominee[i] ? 'Y' : 'N',

@@ -28,6 +28,7 @@ class _CheckinPageState extends State<CheckinPage> {
   final DashboardController dbC = Get.put(DashboardController());
   final ProfileController pC = Get.put(ProfileController());
   final CheckinController checkinController = Get.put(CheckinController());
+  var appFeatures = jsonDecode(RemoteServices().box.get('appFeature'));
   CameraController controller;
   List<CameraDescription> cameras;
   var currentTime =
@@ -176,6 +177,8 @@ class _CheckinPageState extends State<CheckinPage> {
       file = File(filePath);
       // networkcall(file);
       res = await checkinController.uploadImage(file);
+    } else if (appFeatures['nearestSiteCheckin'] == true) {
+      res = await checkinController.nearestCheckin();
     } else {
       res = await checkinController.justCheckin();
     }
@@ -658,83 +661,6 @@ class _CheckinPageState extends State<CheckinPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    // Padding(
-                    //   padding: const EdgeInsets.symmetric(
-                    //     horizontal: 20.0,
-                    //   ),
-                    //   child: Container(
-                    //     height: 150.0,
-                    //     width: MediaQuery.of(context).size.width,
-                    //     decoration: BoxDecoration(
-                    //       color: Colors.black87,
-                    //       borderRadius: BorderRadius.all(
-                    //         Radius.circular(
-                    //           10.0,
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     child: Padding(
-                    //       padding: const EdgeInsets.symmetric(
-                    //         horizontal: 15.0,
-                    //       ),
-                    //       child: Row(
-                    //         // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    //         crossAxisAlignment: CrossAxisAlignment.center,
-                    //         children: [
-                    //           Container(
-                    //             width: 180.0,
-                    //             child: Column(
-                    //               mainAxisAlignment: MainAxisAlignment.center,
-                    //               crossAxisAlignment: CrossAxisAlignment.start,
-                    //               children: [
-                    //                 Text(
-                    //                   'Current Address:',
-                    //                   style: TextStyle(
-                    //                     color: Colors.white54,
-                    //                   ),
-                    //                 ),
-                    //                 SizedBox(
-                    //                   width: 10.0,
-                    //                   height: 8.0,
-                    //                 ),
-                    //                 Obx(() {
-                    //                   return Text(
-                    //                     checkinController.currentAddress.value,
-                    //                     style: TextStyle(
-                    //                       color: Colors.white,
-                    //                       fontSize: 16.0,
-                    //                     ),
-                    //                   );
-                    //                 }),
-                    //               ],
-                    //             ),
-                    //           ),
-                    //           SizedBox(
-                    //             width: 20.0,
-                    //           ),
-                    //           Container(
-                    //             height: 100.0,
-                    //             width: 2.0,
-                    //             color: Colors.white,
-                    //           ),
-                    //           SizedBox(
-                    //             width: 20.0,
-                    //           ),
-                    //           Obx(() {
-                    //             return Text(
-                    //               checkinController.todayString.value,
-                    //               style: TextStyle(
-                    //                 color: Theme.of(context).primaryColor,
-                    //                 fontSize: 20.0,
-                    //                 fontWeight: FontWeight.bold,
-                    //               ),
-                    //             );
-                    //           }),
-                    //         ],
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                     SizedBox(
                       height: 30.0,
                     ),

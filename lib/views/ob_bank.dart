@@ -310,10 +310,9 @@ class _OBBankState extends State<OBBank> {
                           ),
                           RaisedButton(
                             onPressed: () {
-                              if (adminC.bank == null) {
-                                if (adminC.mandateList['mandateFields']
-                                        ['selectBank'] ==
-                                    true) {
+                              if (adminC.bank == null &&
+                                  adminC.mandateList['mandateFields']
+                                  ['selectBank']) {
                                   Get.snackbar(
                                     null,
                                     'Please provide Bank Name',
@@ -326,20 +325,10 @@ class _OBBankState extends State<OBBank> {
                                         horizontal: 12.0, vertical: 18.0),
                                     borderRadius: 5.0,
                                   );
-                                } else if (adminC.bank != null ||
-                                    adminC.mandateList['mandateFields']
-                                            ['selectBank'] ==
-                                        false) {
-                                  FocusScope.of(context)
-                                      .requestFocus(FocusNode());
-                                  adminC.step3(true);
-                                  Get.to(OBAddress());
-                                }
                               } else if (AppUtils.checkTextisNull(
-                                      adminC.accountNo, 'Account Number')) {
-                                if( adminC.mandateList['mandateFields']
-                                ['accountNumber'] ==
-                                    true ){
+                                      adminC.accountNo, 'Account Number') &&
+                                  adminC.mandateList['mandateFields']
+                                  ['accountNumber']) {
                                 Get.snackbar(
                                   null,
                                   'Please provide Account Number',
@@ -351,15 +340,10 @@ class _OBBankState extends State<OBBank> {
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
-                                );}else if(adminC.accountNo.text!=null|| adminC.mandateList['mandateFields']
-                                ['accountNumber'] ==
-                                    false ){
-                                  FocusScope.of(context)
-                                      .requestFocus(FocusNode());
-                                  adminC.step3(true);
-                                  Get.to(OBAddress());
-                                }
-                              } else if (adminC.accountNo.text.length < 8) {
+                                );
+                              } else if (adminC.accountNo.text.length < 8 &&
+                                  adminC.mandateList['mandateFields']
+                                  ['accountNumber']) {
                                 Get.snackbar(
                                   null,
                                   'Please enter a valid bank Account Number',
@@ -373,10 +357,8 @@ class _OBBankState extends State<OBBank> {
                                   borderRadius: 5.0,
                                 );
                               } else if (AppUtils.checkTextisNull(
-                                      adminC.ifsc, 'IFSC')) {
-                                if(adminC.mandateList['mandateFields']
-                                ['ifscCode'] ==
-                                    true ){
+                                      adminC.ifsc, 'IFSC') && adminC.mandateList['mandateFields']
+                              ['ifscCode']) {
                                 Get.snackbar(
                                   null,
                                   'Please provide IFSC',
@@ -388,14 +370,7 @@ class _OBBankState extends State<OBBank> {
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
-                                );}else if(adminC.ifsc.text!=null||adminC.mandateList['mandateFields']
-                                ['ifscCode'] ==
-                                    false ){
-                                  FocusScope.of(context)
-                                      .requestFocus(FocusNode());
-                                  adminC.step3(true);
-                                  Get.to(OBAddress());
-                                }
+                                );
                               } else {
                                 FocusScope.of(context)
                                     .requestFocus(FocusNode());

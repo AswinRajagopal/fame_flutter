@@ -994,10 +994,8 @@ class _OBPersonalState extends State<OBPersonal> {
                               }
                               adminC.step1(false);
                               if (AppUtils.checkTextisNull(
-                                  adminC.name, 'Name')) {
-                                if (adminC.mandateList['mandateFields']
-                                        ['name'] ==
-                                    true) {
+                                  adminC.name, 'Name') && adminC.mandateList['mandateFields']
+                              ['name']) {
                                   Get.snackbar(
                                     null,
                                     'Please provide Name',
@@ -1010,22 +1008,10 @@ class _OBPersonalState extends State<OBPersonal> {
                                         horizontal: 12.0, vertical: 18.0),
                                     borderRadius: 5.0,
                                   );
-                                } else if (adminC.name.text != null ||
-                                    adminC.mandateList['mandateFields']
-                                            ['name'] ==
-                                        false) {
-                                  adminC.proofAadharNumber.text =
-                                      adminC.aadhar.text;
-                                  adminC.proofAadharNumberConfirm.text =
-                                      adminC.aadhar.text;
-                                  Get.to(OBVaccine());
-                                  adminC.step1(true);
-                                }
+
                               } else if (AppUtils.checkTextisNull(
-                                  adminC.fatherName, 'FatherName')) {
-                                if (adminC.mandateList['mandateFields']
-                                        ['fatherName'] ==
-                                    true) {
+                                  adminC.fatherName, 'FatherName') &&
+                                  adminC.mandateList['mandateFields']['fatherName']) {
                                   Get.snackbar(
                                     null,
                                     'Please provide Father Name',
@@ -1038,21 +1024,10 @@ class _OBPersonalState extends State<OBPersonal> {
                                         horizontal: 12.0, vertical: 18.0),
                                     borderRadius: 5.0,
                                   );
-                                } else if (adminC.fatherName.text != null ||
-                                    adminC.mandateList['mandateFields']
-                                            ['fatherName'] ==
-                                        false) {
-                                  adminC.proofAadharNumber.text =
-                                      adminC.aadhar.text;
-                                  adminC.proofAadharNumberConfirm.text =
-                                      adminC.aadhar.text;
-                                  Get.to(OBVaccine());
-                                  adminC.step1(true);
-                                }
-                              } else if (adminC.aadhar.isNullOrBlank) {
-                                if(adminC.mandateList['mandateFields']
-                                ['aadharNumber'] ==
-                                    true){
+
+                              } else if (adminC.aadhar.isNullOrBlank &&
+                                  adminC.mandateList['mandateFields']
+                              ['aadharNumber'] ) {
                                 Get.snackbar(
                                   null,
                                   'Please enter Aadhaar Number',
@@ -1064,16 +1039,7 @@ class _OBPersonalState extends State<OBPersonal> {
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 12.0, vertical: 18.0),
                                   borderRadius: 5.0,
-                                );}else if(adminC.aadhar.text!=null||adminC.mandateList['mandateFields']
-                                ['aadharNumber'] ==
-                                    true){
-                                  adminC.proofAadharNumber.text =
-                                      adminC.aadhar.text;
-                                  adminC.proofAadharNumberConfirm.text =
-                                      adminC.aadhar.text;
-                                  Get.to(OBVaccine());
-                                  adminC.step1(true);
-                                }
+                                );
                               } else if (!verhoeff
                                   .validate(adminC.aadhar.text)) {
                                 Get.snackbar(
@@ -1089,10 +1055,8 @@ class _OBPersonalState extends State<OBPersonal> {
                                   borderRadius: 5.0,
                                 );
                               } else if (AppUtils.checkTextisNull(
-                                  adminC.dtOfBirth, 'Dob')) {
-                                if (adminC.mandateList['mandateFields']
-                                        ['dob'] ==
-                                    true) {
+                                  adminC.dtOfBirth, 'Dob') && adminC.mandateList['mandateFields']
+                              ['dob']) {
                                   Get.snackbar(
                                     null,
                                     'Please provide DOB',
@@ -1105,21 +1069,9 @@ class _OBPersonalState extends State<OBPersonal> {
                                         horizontal: 12.0, vertical: 18.0),
                                     borderRadius: 5.0,
                                   );
-                                } else if (adminC.dtOfBirth.text != null ||
-                                    adminC.mandateList['mandateFields']
-                                            ['dob'] ==
-                                        false) {
-                                  adminC.proofAadharNumber.text =
-                                      adminC.aadhar.text;
-                                  adminC.proofAadharNumberConfirm.text =
-                                      adminC.aadhar.text;
-                                  Get.to(OBVaccine());
-                                  adminC.step1(true);
-                                }
-                              } else if (adminC.empPhone.text.length != 10) {
-                                if (adminC.mandateList['mandateFields']
-                                        ['phoneNumber'] ==
-                                    true) {
+                              } else if (adminC.empPhone.text.length != 10 &&
+                                  adminC.mandateList['mandateFields']
+                                  ['phoneNumber']) {
                                   Get.snackbar(
                                     null,
                                     'Please provide 10 digit phone number',
@@ -1132,21 +1084,10 @@ class _OBPersonalState extends State<OBPersonal> {
                                         horizontal: 12.0, vertical: 18.0),
                                     borderRadius: 5.0,
                                   );
-                                } else if (adminC.empPhone.text != null ||
-                                    adminC.mandateList['mandateFields']
-                                            ['phoneNumber'] ==
-                                        false) {
-                                  adminC.proofAadharNumber.text =
-                                      adminC.aadhar.text;
-                                  adminC.proofAadharNumberConfirm.text =
-                                      adminC.aadhar.text;
-                                  Get.to(OBVaccine());
-                                  adminC.step1(true);
-                                }
-                              } else if (adminC.client == null && !_isManual) {
-                                if(adminC.mandateList['mandateFields']
-                                ['enterClientName'] ==
-                                    true){
+
+                              } else if (adminC.client == null && !_isManual
+                              && adminC.mandateList['mandateFields']
+                                  ['enterClientName']) {
                                   Get.snackbar(
                                     null,
                                     'Client is not selected',
@@ -1159,20 +1100,9 @@ class _OBPersonalState extends State<OBPersonal> {
                                         horizontal: 12.0, vertical: 18.0),
                                     borderRadius: 5.0,
                                   );
-                                }else if(adminC.client!=null || adminC.mandateList['mandateFields']
-                                ['enterClientName'] ==
-                                    false ){
-                                  adminC.proofAadharNumber.text =
-                                      adminC.aadhar.text;
-                                  adminC.proofAadharNumberConfirm.text =
-                                      adminC.aadhar.text;
-                                  Get.to(OBVaccine());
-                                  adminC.step1(true);
-                                }
-                              } else if (adminC.designation == null) {
-                                if(adminC.mandateList['mandateFields']
-                              ['designation'] ==
-                              true){
+                              } else if (adminC.designation == null &&
+                              adminC.mandateList['mandateFields']
+                              ['designation']) {
                                   Get.snackbar(
                                     null,
                                     'Designation is not selected',
@@ -1185,21 +1115,9 @@ class _OBPersonalState extends State<OBPersonal> {
                                         horizontal: 12.0, vertical: 18.0),
                                     borderRadius: 5.0,
                                   );
-                                }else if(adminC.designation != null || adminC.mandateList['mandateFields']
-                                ['designation'] ==
-                                    false){
-                                  adminC.proofAadharNumber.text =
-                                      adminC.aadhar.text;
-                                  adminC.proofAadharNumberConfirm.text =
-                                      adminC.aadhar.text;
-                                  Get.to(OBVaccine());
-                                  adminC.step1(true);
-                                }
                               } else if (AppUtils.checkTextisNull(
-                                      adminC.dtOfJoin, 'Joining Date')) {
-                                if(adminC.mandateList['mandateFields']
-                                ['dateOfJoining'] ==
-                                    true ){
+                                      adminC.dtOfJoin, 'Joining Date') &&
+                                  adminC.mandateList['mandateFields']['dateOfJoining']) {
                                   Get.snackbar(
                                     null,
                                     'Please provide Joining Date',
@@ -1212,16 +1130,6 @@ class _OBPersonalState extends State<OBPersonal> {
                                         horizontal: 12.0, vertical: 18.0),
                                     borderRadius: 5.0,
                                   );
-                                }else if(adminC.dtOfJoin.text!=null||adminC.mandateList['mandateFields']
-                                ['dateOfJoining'] ==
-                                    false ){
-                                  adminC.proofAadharNumber.text =
-                                      adminC.aadhar.text;
-                                  adminC.proofAadharNumberConfirm.text =
-                                      adminC.aadhar.text;
-                                  Get.to(OBVaccine());
-                                  adminC.step1(true);
-                                }
                               } else {
                                 adminC.proofAadharNumber.text =
                                     adminC.aadhar.text;
