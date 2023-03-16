@@ -809,11 +809,11 @@ class _DashboardPageState extends State<DashboardPage> {
                                                                           'faceApi'),
                                                                   appFeatures[
                                                                       'checkinLocation'],dbC.response['dailyAttendance']
-                                                              ['checkInDateTime'],convertTimeWithParse(dbC
+                                                              ['checkInDateTime'],dbC
                                                                   .response[
                                                               'empdetails']
                                                               [
-                                                              'shiftEndTime'])));
+                                                              'shiftEndTime']));
                                                             }else {
                                                               await Get.snackbar(
                                                                 null,
@@ -1936,11 +1936,11 @@ class _DashboardPageState extends State<DashboardPage> {
                                                                           'faceApi'),
                                                                   appFeatures[
                                                                       'checkinLocation'],dbC.response['dailyAttendance']
-                                                              ['checkInDateTime'],convertTimeWithParse(dbC
+                                                              ['checkInDateTime'],dbC
                                                                   .response[
                                                               'empdetails']
                                                               [
-                                                              'shiftEndTime'])));
+                                                              'shiftEndTime']));
                                                             }else {
                                                               await Get.snackbar(
                                                                 null,

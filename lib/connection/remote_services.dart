@@ -24,6 +24,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../models/attendance.dart';
 import '../models/checkin.dart';
@@ -45,10 +46,10 @@ import '../views/welcome_page.dart';
 // import 'package:background_locator/settings/locator_settings.dart' as ls;
 
 class RemoteServices {
-  // static var baseURL = 'http://52.66.61.207:8090/v1/api';
+  static var baseURL = 'http://52.66.61.207:8090/v1/api';
 
   // static var baseURL = 'http://10.0.19.27:8090/v1/api';
-  static var baseURL = 'http://androidapp.mydiyosfame.com:8090/v1/api';
+  // static var baseURL = 'http://androidapp.mydiyosfame.com:8090/v1/api';
   // static var baseURL = 'http://192.168.0.247:8090/v1/api';
   // static var baseURL = 'http://172.20.10.4:8090/v1/api'  ;
   // static var baseURL = 'http://10.0.52.40:8090/v1/api'  ;
@@ -412,7 +413,6 @@ class RemoteServices {
 
   Future<Checkin> checkinProcess(File imageFile) async {
     var dio = mydio.Dio();
-
     var formData = mydio.FormData.fromMap({
       'companyID': box.get('companyid'),
       'empID': box.get('empid'),
@@ -469,11 +469,10 @@ class RemoteServices {
         },
       ),
     );
-    // print(response.statusCode);
+    //
     if (response.statusCode == 200) {
       var jsonString = response.body;
       print(response.body.runtimeType);
-      // print(response.body);
       print(jsonDecode(response.body)['empdetails']);
       // developer.log('jsonString: ${jsonString.toString()}');
       return dashboardFromJson(jsonString);
@@ -1214,6 +1213,78 @@ class RemoteServices {
     }
   }
 
+  Future addRegularizeAtt(alias, checkIn, checkOut,attId) async {
+    var response = await client.post(
+      '$baseURL/attendance/add_regularize_att',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          "companyId": box.get('companyid').toString(),
+          "empId": box.get('empid').toString(),
+          "dailyAttId": attId.toString(),
+          "checkInDateTime": checkIn.toString(),
+          "checkOutDateTime": checkOut.toString(),
+          "attendanceAlias": alias.toString(),
+          "createdBy": box.get('empid').toString()
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      // return pitstopsFromJson(jsonString);
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future getRegularizeAtt() async {
+    var response = await client.post(
+      '$baseURL/attendance/get_regularize_att',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'empId': box.get('empid').toString(),
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      // return pitstopsFromJson(jsonString);
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future updateRegAtt(status,regAttId) async {
+    var response = await client.post(
+      '$baseURL/attendance/update_regularize_att',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          "companyId": box.get('companyid').toString(),
+          "status": status.toString(),
+          "updatedBy": box.get('empid').toString(),
+          "regAttId": regAttId.toString()
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
   Future getPitstops(rplanId, companyId) async {
     var response = await client.post(
       '$baseURL/location/get_rplan_details',
@@ -1379,18 +1450,6 @@ class RemoteServices {
 
   Future aprRejExpense(
       adminRemarks, amount, empId, expenseEmpId, status) async {
-    print(
-      jsonEncode(
-        <String, dynamic>{
-          "companyId": box.get('companyid').toString(),
-          "adminRemarks": adminRemarks.toString(),
-          "amount": amount.toString(),
-          "empId": empId.toString(),
-          "expenseEmpId": expenseEmpId.toString(),
-          "status": status,
-        },
-      ),
-    );
     var response = await client.post(
       '$baseURL/expense/update_expenses',
       headers: header,
@@ -2035,11 +2094,13 @@ class RemoteServices {
 
   Future getVisitDownloads(empId, fromDate, toDate) async {
     Dio dio = Dio();
+    final directory = await getExternalStorageDirectory();
+    final filePath = '${directory.path}/myVisit.pdf';
+    final file = File(filePath);
 
-    var tempDir = await getApplicationDocumentsDirectory();
-    String fullPath = tempDir.path + "/myVisit.pdf";
+
     var response =
-        await dio.download('$baseURL/location/pitstops_by_empId', fullPath,
+        await dio.download('$baseURL/location/pitstops_by_empId', filePath,
             options: Options(
               headers: header,
               method: 'POST',
@@ -2051,8 +2112,9 @@ class RemoteServices {
                 "empId": empId
               },
             ));
+
     if (response.statusCode == 200) {
-      return fullPath;
+      return filePath;
     } else {
       return null;
     }

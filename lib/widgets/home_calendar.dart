@@ -1,3 +1,4 @@
+import 'package:fame/views/regularize_attendance.dart';
 import 'package:get/get.dart';
 
 import '../controllers/dbcal_controller.dart';
@@ -13,7 +14,8 @@ class HomeCalendar extends StatefulWidget {
   _HomeCalendarState createState() => _HomeCalendarState();
 }
 
-class _HomeCalendarState extends State<HomeCalendar> with TickerProviderStateMixin {
+class _HomeCalendarState extends State<HomeCalendar>
+    with TickerProviderStateMixin {
   final DBCalController calC = Get.put(DBCalController());
   // Map<DateTime, List> _events;
   AnimationController _animationController;
@@ -41,7 +43,8 @@ class _HomeCalendarState extends State<HomeCalendar> with TickerProviderStateMix
   }
 
   void showPopup(date, events) {
-    var showDate = '${date.year}-${date.month <= 9 ? '0' + date.month.toString() : date.month}-${date.day <= 9 ? '0' + date.day.toString() : date.day}';
+    var showDate =
+        '${date.year}-${date.month <= 9 ? '0' + date.month.toString() : date.month}-${date.day <= 9 ? '0' + date.day.toString() : date.day}';
     if (calC.calendarType == 'myRos') {
       if (events != null) {
         var eveSplit = events.first.split(',');
@@ -56,7 +59,11 @@ class _HomeCalendarState extends State<HomeCalendar> with TickerProviderStateMix
           client1 = eveSplit.last;
         }
         // if (eveLength > 1) {
-        var dtFormat = showDate.toString().split('-')[2] + '-' + showDate.toString().split('-')[1] + '-' + showDate.toString().split('-')[0];
+        var dtFormat = showDate.toString().split('-')[2] +
+            '-' +
+            showDate.toString().split('-')[1] +
+            '-' +
+            showDate.toString().split('-')[0];
         Get.defaultDialog(
           title: 'Roster on $dtFormat',
           content: Column(
@@ -77,8 +84,13 @@ class _HomeCalendarState extends State<HomeCalendar> with TickerProviderStateMix
         // }
       }
     } else {
-      var dtFormat = showDate.toString().split('-')[2] + '-' + showDate.toString().split('-')[1] + '-' + showDate.toString().split('-')[0];
+      var dtFormat = showDate.toString().split('-')[2] +
+          '-' +
+          showDate.toString().split('-')[1] +
+          '-' +
+          showDate.toString().split('-')[0];
       var calEvent = events == null ? [] : events.first.split('*');
+      print('yyyj;$calEvent');
       if (calEvent.length > 1) {
         Get.defaultDialog(
           title: 'Employee Detail on $dtFormat',
@@ -91,6 +103,17 @@ class _HomeCalendarState extends State<HomeCalendar> with TickerProviderStateMix
               Text(
                 'Checked Out @ ${calEvent[1].split(',')[1]}',
               ),
+              RaisedButton(
+                onPressed: () {
+                  Get.to(RegularizeAttendancePage(
+                      dtFormat,
+                      calEvent[0],
+                      calEvent[1].split(',')[0],
+                      calEvent[1].split(',')[1],
+                      calEvent[1].split(',')[2]));
+                },
+                child: Text('Regularize'),
+              )
             ],
           ),
           radius: 5.0,
@@ -105,7 +128,8 @@ class _HomeCalendarState extends State<HomeCalendar> with TickerProviderStateMix
     CalendarFormat format,
   ) {
     var month = '${first.month}${first.year.toString().substring(2)}';
-    var chDtString = '${first.year}-${first.month < 10 ? '0' + first.month.toString() : first.month}-${first.day < 10 ? '0' + first.day.toString() : first.day}';
+    var chDtString =
+        '${first.year}-${first.month < 10 ? '0' + first.month.toString() : first.month}-${first.day < 10 ? '0' + first.day.toString() : first.day}';
     calC.getCalendar(month: month, chDt: chDtString);
   }
 
@@ -113,8 +137,7 @@ class _HomeCalendarState extends State<HomeCalendar> with TickerProviderStateMix
     DateTime first,
     DateTime last,
     CalendarFormat format,
-  ) {
-  }
+  ) {}
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +171,9 @@ class _HomeCalendarState extends State<HomeCalendar> with TickerProviderStateMix
           fontSize: 18.0,
         ),
         titleTextBuilder: (date, locale) {
-          return DateFormat.MMMM(locale).format(date).toString() + ', ' + DateFormat.y(locale).format(date).toString();
+          return DateFormat.MMMM(locale).format(date).toString() +
+              ', ' +
+              DateFormat.y(locale).format(date).toString();
         },
       ),
       daysOfWeekStyle: DaysOfWeekStyle(
@@ -221,7 +246,8 @@ class _HomeCalendarState extends State<HomeCalendar> with TickerProviderStateMix
 
   Widget _buildEventsMarker(DateTime date, List events) {
     var showEvent;
-    if (events.first.split(',').length > 1 && !events.first.toString().contains('*')) {
+    if (events.first.split(',').length > 1 &&
+        !events.first.toString().contains('*')) {
       var eventSplit = events.first.split(',');
       showEvent = eventSplit[0];
     } else {
@@ -232,42 +258,59 @@ class _HomeCalendarState extends State<HomeCalendar> with TickerProviderStateMix
       width: 50.0,
       height: 30.0,
       child: Center(
-        child:showEvent=='P'?Text(
-          showEvent,
-          style: TextStyle().copyWith(
-            color: Colors.green,
-            fontSize: 16.0,
-            fontWeight: FontWeight.w900,
-          ),
-        ):showEvent=='LT'?Text(
-          showEvent,
-          style: TextStyle().copyWith(
-            color:Colors.yellow,
-            fontSize: 16.0,
-            fontWeight: FontWeight.w900,
-          ),
-        ):showEvent=='EE'?Text(
-          showEvent,
-          style: TextStyle().copyWith(
-            color:Colors.orange,
-            fontSize: 16.0,
-            fontWeight: FontWeight.w900,
-          ),
-        ):showEvent=='L'?Text(
-          showEvent,
-          style: TextStyle().copyWith(
-            color:Colors.red,
-            fontSize: 16.0,
-            fontWeight: FontWeight.w900,
-          ),
-        ):Text(
-      showEvent,
-      style: TextStyle().copyWith(
-        color:Theme.of(context).primaryColor,
-        fontSize: 16.0,
-        fontWeight: FontWeight.w900,
-      ),
-    ),
+        child: showEvent == 'P'
+            ? Text(
+                showEvent,
+                style: TextStyle().copyWith(
+                  color: Colors.green,
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w900,
+                ),
+              )
+            : showEvent == 'LT'
+                ? Text(
+                    showEvent,
+                    style: TextStyle().copyWith(
+                      color: Colors.purple,
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  )
+                : showEvent == 'EE'
+                    ? Text(
+                        showEvent,
+                        style: TextStyle().copyWith(
+                          color: Colors.orange,
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      )
+                    : showEvent == 'L'
+                        ? Text(
+                            showEvent,
+                            style: TextStyle().copyWith(
+                              color: Colors.red,
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          )
+                        : showEvent == 'A'
+                            ? Text(
+                                showEvent,
+                                style: TextStyle().copyWith(
+                                  color: Colors.red,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              )
+                            : Text(
+                                showEvent,
+                                style: TextStyle().copyWith(
+                                  color: Theme.of(context).primaryColor,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
       ),
     );
   }
