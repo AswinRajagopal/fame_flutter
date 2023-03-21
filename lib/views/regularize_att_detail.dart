@@ -8,6 +8,7 @@ import 'package:fame/utils/utils.dart';
 import 'package:fame/widgets/loading_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -26,11 +27,16 @@ class RegularizeAttDetailList extends StatefulWidget {
 
 class _RegularizeAttDetailListState extends State<RegularizeAttDetailList> {
   final RegularizeAttController raC = Get.put(RegularizeAttController());
+  final TextEditingController remarks = TextEditingController();
+  final TextEditingController checkinTime = TextEditingController();
+  final TextEditingController checkOutTime = TextEditingController();
 
   var regAtt;
   _RegularizeAttDetailListState(
     this.regAtt,
   );
+  var checkIn;
+  var checkOut;
 
   String convertDate(date) {
     return DateFormat('dd').format(DateTime.parse(date)).toString() +
@@ -50,6 +56,76 @@ class _RegularizeAttDetailListState extends State<RegularizeAttDetailList> {
         DateFormat('MM').format(DateTime.parse(date)).toString() +
         '-' +
         DateFormat.y().format(DateTime.parse(date)).toString();
+  }
+
+  Future<void> _checkInTime(BuildContext context) async {
+    final DateTime pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+    if (pickedDate != null) {
+      final TimeOfDay pickedTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+      );
+      if (pickedTime != null) {
+        setState(() {
+          checkIn = DateTime(
+            pickedDate.year,
+            pickedDate.month,
+            pickedDate.day,
+            pickedTime.hour,
+            pickedTime.minute,
+          );
+          checkinTime.text = DateFormat('dd-MM-yyyy hh:mm a')
+              .format(DateTime(
+                pickedDate.year,
+                pickedDate.month,
+                pickedDate.day,
+                pickedTime.hour,
+                pickedTime.minute,
+              ))
+              .toString();
+        });
+      }
+    }
+  }
+
+  Future<void> _checkOutTime(BuildContext context) async {
+    final DateTime pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+    if (pickedDate != null) {
+      final TimeOfDay pickedTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+      );
+      if (pickedTime != null) {
+        setState(() {
+          checkOut = DateTime(
+            pickedDate.year,
+            pickedDate.month,
+            pickedDate.day,
+            pickedTime.hour,
+            pickedTime.minute,
+          );
+          checkOutTime.text = DateFormat('dd-MM-yyyy hh:mm a')
+              .format(DateTime(
+                pickedDate.year,
+                pickedDate.month,
+                pickedDate.day,
+                pickedTime.hour,
+                pickedTime.minute,
+              ))
+              .toString();
+        });
+      }
+    }
   }
 
   Widget titleParams(title, value) {
@@ -267,8 +343,120 @@ class _RegularizeAttDetailListState extends State<RegularizeAttDetailList> {
                                   children: [
                                     RaisedButton(
                                       onPressed: () async {
-                                        raC.updateRegAtt(
-                                            '2', regAtt['regAttId'].toString());
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                                                contentPadding: EdgeInsets.all(20.0),
+                                                title: Text('Reject',style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 24.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),),
+                                                content:  Container(
+                                                  width: MediaQuery.of(context).size.height / 2.5,
+                                                  height: MediaQuery.of(context).size.height /4.0,
+                                                  child: Column(children: [
+                                                    TextField(
+                                                      controller: checkinTime,
+                                                      decoration: InputDecoration(
+                                                        border: InputBorder.none,
+                                                        isDense: true,
+                                                        contentPadding:
+                                                            EdgeInsets.all(10),
+                                                        hintStyle: TextStyle(
+                                                          color: Colors.grey[600],
+                                                          fontSize: 18.0,
+                                                          // fontWeight: FontWeight.bold,
+                                                        ),
+                                                        labelText: 'CheckIn Time',
+                                                        labelStyle: TextStyle(
+                                                            color:
+                                                                Colors.grey[600],
+                                                            fontSize: 18.0),
+                                                        suffixIcon: Icon(
+                                                          Icons.calendar_today,
+                                                          size: 25.0,
+                                                        ),
+                                                      ),
+                                                      readOnly: true,
+                                                      keyboardType: null,
+                                                      onTap: () {
+                                                        _checkInTime(context);
+                                                      },
+                                                    ),
+                                                    TextField(
+                                                      controller: checkOutTime,
+                                                      decoration: InputDecoration(
+                                                        border: InputBorder.none,
+                                                        isDense: true,
+                                                        contentPadding:
+                                                            EdgeInsets.all(10),
+                                                        hintStyle: TextStyle(
+                                                          color: Colors.grey[600],
+                                                          fontSize: 18.0,
+                                                          // fontWeight: FontWeight.bold,
+                                                        ),
+                                                        labelText:
+                                                            'CheckOut Time',
+                                                        labelStyle: TextStyle(
+                                                            color:
+                                                                Colors.grey[600],
+                                                            fontSize: 18.0),
+                                                        suffixIcon: Icon(
+                                                          Icons.calendar_today,
+                                                          size: 25.0,
+                                                        ),
+                                                      ),
+                                                      readOnly: true,
+                                                      keyboardType: null,
+                                                      onTap: () {
+                                                        _checkOutTime(context);
+                                                      },
+                                                    ),
+                                                    Padding(
+                                                      padding: const EdgeInsets.all(8.0),
+                                                      child: Card(
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.circular(5.0),
+                                                            side: BorderSide(color: Colors.black38)),
+                                                        child: Container(
+                                                          child: TextField(
+                                                            controller: remarks,
+                                                            maxLength:1000,
+                                                            maxLines: 4,
+                                                            decoration: InputDecoration(
+                                                              border: InputBorder.none,
+                                                              isDense: true,
+                                                              contentPadding: EdgeInsets.all(10),
+                                                              hintStyle: TextStyle(
+                                                                color: Colors.grey[600],
+                                                                fontSize: 18.0,
+                                                                // fontWeight: FontWeight.bold,
+                                                              ),
+                                                              hintText: 'Remarks...',
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ]),
+                                                ),
+                                                actions: [
+                                                  new FlatButton(
+                                                    child: new Text('Submit'),
+                                                    onPressed: () {
+                                                      raC.updateRegAtt(checkIn,checkOut,
+                                                          '2',remarks.text,
+                                                          regAtt['regAttId']
+                                                              .toString());
+                                                    },
+                                                  )
+                                                ],
+                                              );
+                                            });
                                       },
                                       child: Text(
                                         'Reject',
@@ -292,8 +480,92 @@ class _RegularizeAttDetailListState extends State<RegularizeAttDetailList> {
                                     ),
                                     RaisedButton(
                                       onPressed: () async {
-                                        raC.updateRegAtt(
-                                            '1', regAtt['regAttId'].toString());
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                                                contentPadding: EdgeInsets.all(20.0),
+                                                title: Text('Accept',style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 24.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),),
+                                                content:  Container(
+                                                  width: MediaQuery.of(context).size.height / 2.5,
+                                                  height: MediaQuery.of(context).size.height /9.0,
+                                                  child: Column(children: [
+                                                    TextField(
+                                                      controller: checkinTime,
+                                                      decoration: InputDecoration(
+                                                        border: InputBorder.none,
+                                                        isDense: true,
+                                                        contentPadding:
+                                                        EdgeInsets.all(10),
+                                                        hintStyle: TextStyle(
+                                                          color: Colors.grey[600],
+                                                          fontSize: 18.0,
+                                                          // fontWeight: FontWeight.bold,
+                                                        ),
+                                                        labelText: 'CheckIn Time',
+                                                        labelStyle: TextStyle(
+                                                            color:
+                                                            Colors.grey[600],
+                                                            fontSize: 18.0),
+                                                        suffixIcon: Icon(
+                                                          Icons.calendar_today,
+                                                          size: 25.0,
+                                                        ),
+                                                      ),
+                                                      readOnly: true,
+                                                      keyboardType: null,
+                                                      onTap: () {
+                                                        _checkInTime(context);
+                                                      },
+                                                    ),
+                                                    TextField(
+                                                      controller: checkOutTime,
+                                                      decoration: InputDecoration(
+                                                        border: InputBorder.none,
+                                                        isDense: true,
+                                                        contentPadding:
+                                                        EdgeInsets.all(10),
+                                                        hintStyle: TextStyle(
+                                                          color: Colors.grey[600],
+                                                          fontSize: 18.0,
+                                                          // fontWeight: FontWeight.bold,
+                                                        ),
+                                                        labelText:
+                                                        'CheckOut Time',
+                                                        labelStyle: TextStyle(
+                                                            color:
+                                                            Colors.grey[600],
+                                                            fontSize: 18.0),
+                                                        suffixIcon: Icon(
+                                                          Icons.calendar_today,
+                                                          size: 25.0,
+                                                        ),
+                                                      ),
+                                                      readOnly: true,
+                                                      keyboardType: null,
+                                                      onTap: () {
+                                                        _checkOutTime(context);
+                                                      },
+                                                    ),
+                                                  ]),
+                                                ),
+                                                actions: [
+                                                  new FlatButton(
+                                                    child: new Text('Submit'),
+                                                    onPressed: () {
+                                                      raC.updateRegAtt(checkIn,checkOut,
+                                                          '1','approved', regAtt['regAttId'].toString());
+                                                    },
+                                                  )
+                                                ],
+                                              );
+                                            });
                                       },
                                       child: Text(
                                         'Accept',

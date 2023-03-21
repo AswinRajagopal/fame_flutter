@@ -70,16 +70,17 @@ class RegularizeAttController extends GetxController {
     }
   }
 
-  void updateRegAtt(status,regAttId) async {
+  void updateRegAtt(checkIn,checkOut,status,adminRemarks,regAttId) async {
     try {
       await pr.show();
-      var addRegAttRes = await RemoteServices().updateRegAtt(status,regAttId);
+      var addRegAttRes = await RemoteServices().updateRegAtt(checkIn,checkOut,status,adminRemarks,regAttId);
       if (addRegAttRes != null) {
         await pr.hide();
         if (addRegAttRes['success']) {
+          regAttList.clear();
           Get.snackbar(
             null,
-            'Approved successfully',
+            'Status Updated',
             colorText: Colors.white,
             backgroundColor: AppUtils().greenColor,
             snackPosition: SnackPosition.BOTTOM,
@@ -97,18 +98,17 @@ class RegularizeAttController extends GetxController {
             ),
           );
           Timer(Duration(seconds: 2), Get.back);
-          Future.delayed(Duration(seconds:3), ()  {
-            // Call the API function here
-            regAttList.clear();
-          });
-          Future.delayed(Duration(seconds:4), ()  {
+          Future.delayed(Duration(milliseconds:2500), ()  {
             // Call the API function here
            getRegularizeAtt();
+          });
+          Future.delayed(Duration(milliseconds:2800), ()  {
+           Get.back();
           });
         } else {
           Get.snackbar(
             null,
-            'Approval failed',
+            'Status failed',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,

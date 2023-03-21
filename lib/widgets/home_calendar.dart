@@ -90,7 +90,14 @@ class _HomeCalendarState extends State<HomeCalendar>
           '-' +
           showDate.toString().split('-')[0];
       var calEvent = events == null ? [] : events.first.split('*');
-      print('yyyj;$calEvent');
+      String dateString = dtFormat;
+      List<String> dateParts = dateString.split('-');
+      int day = int.parse(dateParts[0]);
+      int month = int.parse(dateParts[1]);
+      int year = int.parse(dateParts[2]);
+      final regDate = DateTime(year, month, day);
+      final curDate = DateTime.now();
+      int difference = curDate.difference(regDate).inDays;
       if (calEvent.length > 1) {
         Get.defaultDialog(
           title: 'Employee Detail on $dtFormat',
@@ -103,17 +110,18 @@ class _HomeCalendarState extends State<HomeCalendar>
               Text(
                 'Checked Out @ ${calEvent[1].split(',')[1]}',
               ),
+              difference<=2?
               RaisedButton(
                 onPressed: () {
-                  Get.to(RegularizeAttendancePage(
-                      dtFormat,
-                      calEvent[0],
-                      calEvent[1].split(',')[0],
-                      calEvent[1].split(',')[1],
-                      calEvent[1].split(',')[2]));
-                },
+                    Get.to(RegularizeAttendancePage(
+                        dtFormat,
+                        calEvent[0],
+                        calEvent[1].split(',')[0],
+                        calEvent[1].split(',')[1],
+                        calEvent[1].split(',')[2]));
+                  },
                 child: Text('Regularize'),
-              )
+              ):Column()
             ],
           ),
           radius: 5.0,
