@@ -59,7 +59,7 @@ class RegAttListWidget extends StatelessWidget {
           children: [
             Column(children: [
               Text(
-                'EmpId',
+                regAtt['empName'],
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               Text(
