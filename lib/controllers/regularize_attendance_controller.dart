@@ -80,7 +80,7 @@ class RegularizeAttController extends GetxController {
           regAttList.clear();
           Get.snackbar(
             null,
-            'Status Updated',
+            'Status Updated successfully',
             colorText: Colors.white,
             backgroundColor: AppUtils().greenColor,
             snackPosition: SnackPosition.BOTTOM,
@@ -146,10 +146,10 @@ class RegularizeAttController extends GetxController {
     }
   }
 
-  void addRegularizeAtt(alias, checkIn, checkOut,attId) async {
+  void addRegularizeAtt(alias, checkIn, checkOut,attId,reason) async {
     try {
       await pr.show();
-      var addRegAttRes = await RemoteServices().addRegularizeAtt(alias,checkIn,checkOut,attId);
+      var addRegAttRes = await RemoteServices().addRegularizeAtt(alias,checkIn,checkOut,attId,reason);
       if (addRegAttRes != null) {
         await pr.hide();
         print('addRegAttRes valid: ${addRegAttRes['success']}');

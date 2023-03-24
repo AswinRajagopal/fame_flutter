@@ -306,6 +306,7 @@ class _TransferPageState extends State<TransferPage> {
                             );
                           }).toList(),
                           decoration: InputDecoration(
+                            // errorText: clientShift.text==null || clientShift.text == ''?'Please select shift':null,
                             contentPadding: EdgeInsets.only(
                               left: clientShift.text == null || clientShift.text == '' ? 0.0 : 10.0,
                             ),
@@ -406,10 +407,27 @@ class _TransferPageState extends State<TransferPage> {
                           onPressed: () {
                             print('Submit');
                             FocusScope.of(context).requestFocus(FocusNode());
-                            if (employeeId == null || fromPeriod == null || toPeriod == null || currentUnit.text == null || clientShift.text == null || toUnit == null) {
+                            if (employeeId == null || fromPeriod == null || toPeriod == null || currentUnit.text == null || toUnit == null) {
                               Get.snackbar(
                                 null,
                                 'Please provide all the details',
+                                colorText: Colors.white,
+                                backgroundColor: Colors.black87,
+                                snackPosition: SnackPosition.BOTTOM,
+                                margin: EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                  vertical: 10.0,
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 12.0,
+                                  vertical: 18.0,
+                                ),
+                                borderRadius: 5.0,
+                              );
+                            }else if(clientShift.text==null||clientShift.text.isEmpty){
+                              Get.snackbar(
+                                null,
+                                'Please provide shift',
                                 colorText: Colors.white,
                                 backgroundColor: Colors.black87,
                                 snackPosition: SnackPosition.BOTTOM,

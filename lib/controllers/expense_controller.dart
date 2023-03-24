@@ -466,6 +466,64 @@ class ExpenseController extends GetxController {
     }
   }
 
+  void getEmpExpensesAll(empId) async {
+    try {
+      empExpList = [];
+      isLoading(true);
+      await pr.show();
+      res = await RemoteServices().getEmpExpensesAll(empId);
+      if (res != null) {
+        isLoading(false);
+        await pr.hide();
+        if (res['success']) {
+          expDet = res;
+          if (res['expenseList'] != null) {
+            for (var i = 0; i < res['expenseList'].length; i++) {
+              empExpList.add(res['expenseList'][i]);
+            }
+          }
+        } else {
+          Get.snackbar(
+            null,
+            'Something went wrong! Please try again later',
+            colorText: Colors.white,
+            backgroundColor: Colors.black87,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
+          );
+        }
+      }
+    } catch (e) {
+      print(e);
+      isLoading(false);
+      await pr.hide();
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
+      );
+    }
+  }
+
   void getEmpExpensesAdmin(empId,fromDate,toDate) async {
     try {
       empExpList = [];
@@ -761,10 +819,9 @@ class ExpenseController extends GetxController {
       if (expenseBillRes != null) {
         await pr.hide();
         if (expenseBillRes['success']) {
-           expenseBillsList.clear();
           Get.snackbar(
             null,
-            'Bills sent successfully',
+            'Bills created successfully',
             colorText: Colors.white,
             backgroundColor: AppUtils().greenColor,
             snackPosition: SnackPosition.BOTTOM,
@@ -785,7 +842,7 @@ class ExpenseController extends GetxController {
         } else {
           Get.snackbar(
             null,
-            'Bills send failed',
+            'Bills creation failed',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,
@@ -802,7 +859,6 @@ class ExpenseController extends GetxController {
         }
       }
     } catch (e) {
-
       print(e);
       await pr.hide();
       Get.snackbar(
@@ -917,7 +973,7 @@ class ExpenseController extends GetxController {
         } else {
           Get.snackbar(
             null,
-            'Something went wrong! Please try again later',
+            'No List Found',
             colorText: Colors.white,
             backgroundColor: Colors.black87,
             snackPosition: SnackPosition.BOTTOM,
@@ -984,6 +1040,10 @@ class ExpenseController extends GetxController {
             ),
           );
           Timer(Duration(seconds: 2), Get.back);
+          Future.delayed(Duration(milliseconds:2500), ()  {
+            // Call the API function here
+            expenseBillsList.clear();
+          });
         } else {
           Get.snackbar(
             null,

@@ -1139,7 +1139,7 @@ class RemoteServices {
       }
   }
 
-  Future getEmployeeBySearch(date, clientId, empName, allShifts) async {
+  Future getEmployeeBySearch(date, clientId, empName) async {
       // var dt = date.toString().split('-')[2] + '-' + date.toString().split('-')[1] + '-' + date.toString().split('-')[0];
       var response = await client.post(
         '$baseURL/attendance/get_att_suggest',
@@ -1151,7 +1151,6 @@ class RemoteServices {
             'date': date,
             'clientId': clientId,
             'empName': empName,
-            'allShifts': allShifts
           },
         ),
       );
@@ -1215,7 +1214,7 @@ class RemoteServices {
       }
   }
 
-  Future addRegularizeAtt(alias, checkIn, checkOut, attId) async {
+  Future addRegularizeAtt(alias, checkIn, checkOut, attId,reason) async {
       var response = await client.post(
         '$baseURL/attendance/add_regularize_att',
         headers: header,
@@ -1227,7 +1226,8 @@ class RemoteServices {
             "checkInDateTime": checkIn.toString(),
             "checkOutDateTime": checkOut.toString(),
             "attendanceAlias": alias.toString(),
-            "createdBy": box.get('empid').toString()
+            "createdBy": box.get('empid').toString(),
+            "reason" : reason.toString()
           },
         ),
       );
