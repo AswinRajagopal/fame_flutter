@@ -62,7 +62,7 @@ class _EmployeeNotationState extends State<EmployeeNotation> {
         if (allShifts) {
           allPresent = false;
           enC.getEmployeeBySearch(widget.date, widget.clientId, widget.time,
-              '', true);
+              '');
         } else {
           allPresent = true;
           enC.searchList.clear();
