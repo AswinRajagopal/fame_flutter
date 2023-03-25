@@ -13,7 +13,6 @@ import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart' as mydio;
 import 'package:dio/dio.dart';
 import 'package:fame/utils/utils.dart';
-import 'package:fame/views/offline.dart';
 // import 'package:fame/connection/location_service_repository.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -1139,7 +1138,7 @@ class RemoteServices {
       }
   }
 
-  Future getEmployeeBySearch(date, clientId, empName) async {
+  Future getEmployeeBySearch(date, clientId, empName, allShifts) async {
       // var dt = date.toString().split('-')[2] + '-' + date.toString().split('-')[1] + '-' + date.toString().split('-')[0];
       var response = await client.post(
         '$baseURL/attendance/get_att_suggest',
@@ -1151,6 +1150,7 @@ class RemoteServices {
             'date': date,
             'clientId': clientId,
             'empName': empName,
+            'allShifts': allShifts
           },
         ),
       );
