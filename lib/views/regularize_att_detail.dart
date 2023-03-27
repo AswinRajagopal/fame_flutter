@@ -302,6 +302,10 @@ class _RegularizeAttDetailListState extends State<RegularizeAttDetailList> {
                               convertDate(
                                   regAtt['revisedCheckOutDateTime'] ?? 'NA')),
                           SizedBox(height: 15.0),
+                          titleParams('Reason', regAtt['reason'] ?? 'NA'),
+                          SizedBox(
+                            height: 15.0,
+                          ),
                           titleParams('Created On',
                               convertDateTime(regAtt['createdOn']) ?? 'NA'),
                           SizedBox(height: 15.0),
@@ -554,13 +558,11 @@ class _RegularizeAttDetailListState extends State<RegularizeAttDetailList> {
                                                     ),
                                                     onPressed: () {
                                                       raC.updateRegAtt(
-                                                          checkIn !=
-                                                                  null
+                                                          checkIn != null
                                                               ? checkIn
                                                               : regAtt[
                                                                   'revisedCheckInDateTime'],
-                                                          checkOut !=
-                                                                  null
+                                                          checkOut != null
                                                               ? checkOut
                                                               : regAtt[
                                                                   'revisedCheckOutDateTime'],

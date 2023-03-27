@@ -170,25 +170,26 @@ class _ViewExpenseState extends State<ViewExpense> {
                                         CrossAxisAlignment.center,
                                     children: [
                                       Obx(() {
-                                        return expC.isLoading.value==null?
-                                            CircularProgressIndicator():
-                                        Text(
-                                            expC.expDet != null &&
-                                                    expC.expDet[
-                                                            'totalExpenses'] !=
-                                                        null &&
-                                                    expC.expDet['totalExpenses']
-                                                                ['expense']
-                                                            .toString() !=
-                                                        'null'
-                                                ? numberFormatter(expC.expDet[
-                                                            'totalExpenses']
-                                                        ['expense'])
-                                                    .toString()
-                                                : '0.00',
-                                            style: new TextStyle(
-                                                fontSize: 40.0,
-                                                color: Colors.black));
+                                        return expC.isLoading.value == null
+                                            ? CircularProgressIndicator()
+                                            : Text(
+                                                expC.expDet != null &&
+                                                        expC.expDet[
+                                                                'totalExpenses'] !=
+                                                            null &&
+                                                        expC.expDet['totalExpenses']
+                                                                    ['expense']
+                                                                .toString() !=
+                                                            'null'
+                                                    ? numberFormatter(expC
+                                                                    .expDet[
+                                                                'totalExpenses']
+                                                            ['expense'])
+                                                        .toString()
+                                                    : '0.00',
+                                                style: new TextStyle(
+                                                    fontSize: 40.0,
+                                                    color: Colors.black));
                                       }),
                                       Text('Expenses This Month',
                                           style: new TextStyle(
@@ -204,26 +205,28 @@ class _ViewExpenseState extends State<ViewExpense> {
                                 Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Obx((){
-                                        return expC.isLoading.value==null?
-                                        CircularProgressIndicator():Text(
-                                            expC.expDet != null &&
-                                                    expC.expDet[
-                                                            'totalExpenses'] !=
-                                                        null &&
-                                                    expC.expDet['totalExpenses']
-                                                                ['advance']
-                                                            .toString() !=
-                                                        'null'
-                                                ? numberFormatter(expC.expDet[
-                                                            'totalExpenses']
-                                                        ['advance'])
-                                                    .toString()
-                                                : '0.00',
-                                            style: new TextStyle(
-                                                fontSize: 40.0,
-                                                color: Colors.black));}
-                                      ),
+                                      Obx(() {
+                                        return expC.isLoading.value == null
+                                            ? CircularProgressIndicator()
+                                            : Text(
+                                                expC.expDet != null &&
+                                                        expC.expDet[
+                                                                'totalExpenses'] !=
+                                                            null &&
+                                                        expC.expDet['totalExpenses']
+                                                                    ['advance']
+                                                                .toString() !=
+                                                            'null'
+                                                    ? numberFormatter(expC
+                                                                    .expDet[
+                                                                'totalExpenses']
+                                                            ['advance'])
+                                                        .toString()
+                                                    : '0.00',
+                                                style: new TextStyle(
+                                                    fontSize: 40.0,
+                                                    color: Colors.black));
+                                      }),
                                       Text('Advance This Month',
                                           style: new TextStyle(
                                               fontWeight: FontWeight.bold,
@@ -434,7 +437,7 @@ class _ViewExpenseState extends State<ViewExpense> {
                                   ' - ' +
                                   suggestion['empId'];
                           empId = suggestion['empId'];
-                          if(empId!=null){
+                          if (empId != null) {
                             expC.getEmpExpensesAll(empId);
                           }
                         },
@@ -447,11 +450,12 @@ class _ViewExpenseState extends State<ViewExpense> {
               ? Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal:30.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 30.0),
                       child: Row(
                         children: [
-                          Text('From',style: TextStyle(
-                              fontSize: 20.0, fontWeight: FontWeight.bold)),
+                          Text('From',
+                              style: TextStyle(
+                                  fontSize: 20.0, fontWeight: FontWeight.bold)),
                           Container(
                             width: 170,
                             child: Padding(
@@ -483,8 +487,9 @@ class _ViewExpenseState extends State<ViewExpense> {
                               ),
                             ),
                           ),
-                          Text('To',style: TextStyle(
-                              fontSize: 20.0, fontWeight: FontWeight.bold)),
+                          Text('To',
+                              style: TextStyle(
+                                  fontSize: 20.0, fontWeight: FontWeight.bold)),
                           Container(
                             width: 170,
                             child: Padding(
@@ -590,9 +595,11 @@ class _ViewExpenseState extends State<ViewExpense> {
                                     _expense = false;
                                   } else if (_chosenValue == 'Expenses') {
                                     empId != null
-                                        ? expC.getEmpExpensesAdmin(
-                                            empId, fDate, tDate)
-                                        : expC.getEmpExpenses();
+                                        ? expC.getEmpExpensesAll(empId)
+                                        : empId == null
+                                            ? expC.getEmpExpenses()
+                                            : expC.getEmpExpensesAdmin(
+                                                empId, fDate, tDate);
                                     _expense = true;
                                     _advance = false;
                                     _isRejectedList = false;
@@ -607,10 +614,10 @@ class _ViewExpenseState extends State<ViewExpense> {
                                     } else if (_chosenValue == 'All') {
                                       empId != null
                                           ? expC.getEmpExpensesAll(empId)
-                                          :roleId == AppUtils.ADMIN
-                                          ? expC.getEmpExpensesAdmin(
-                                                  empId, fDate, tDate)
-                                              : expC.getEmpExpenses();
+                                          : empId == null
+                                              ? expC.getEmpExpenses()
+                                              : expC.getEmpExpensesAdmin(
+                                                  empId, fDate, tDate);
                                       _expense = true;
                                       _advance = false;
                                       _isRejectedList = false;
