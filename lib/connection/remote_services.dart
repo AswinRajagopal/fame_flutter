@@ -13,7 +13,6 @@ import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart' as mydio;
 import 'package:dio/dio.dart';
 import 'package:fame/utils/utils.dart';
-import 'package:fame/views/offline.dart';
 // import 'package:fame/connection/location_service_repository.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -1172,30 +1171,32 @@ class RemoteServices {
     }
   }
 
-  Future getEmployeeBySearch(date, clientId, empName) async {
-    // var dt = date.toString().split('-')[2] + '-' + date.toString().split('-')[1] + '-' + date.toString().split('-')[0];
-    var response = await client.post(
-      '$baseURL/attendance/get_att_suggest',
-      headers: header,
-      body: jsonEncode(
-        <String, dynamic>{
-          'empId': box.get('empid').toString(),
-          'companyId': box.get('companyid').toString(),
-          'date': date,
-          'clientId': clientId,
-          'empName': empName,
-        },
-      ),
-    );
-    print(response.statusCode);
-    if (response.statusCode == 200) {
-      var jsonString = response.body;
-      print('jsonString: $jsonString');
-      // return employeeNotationsFromJson(jsonString);
-      return json.decode(jsonString);
-    } else {
-      return null;
-    }
+  Future getEmployeeBySearch(date, clientId, empName, allShifts) async {
+      // var dt = date.toString().split('-')[2] + '-' + date.toString().split('-')[1] + '-' + date.toString().split('-')[0];
+      var response = await client.post(
+        '$baseURL/attendance/get_att_suggest',
+        headers: header,
+        body: jsonEncode(
+          <String, dynamic>{
+            'empId': box.get('empid').toString(),
+            'companyId': box.get('companyid').toString(),
+            'date': date,
+            'clientId': clientId,
+            'empName': empName,
+            'allShifts': allShifts
+          },
+        ),
+      );
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        var jsonString = response.body;
+        print('jsonString: $jsonString');
+        // return employeeNotationsFromJson(jsonString);
+        return json.decode(jsonString);
+      } else {
+        return null;
+      }
+
   }
 
   Future giveAttendance(

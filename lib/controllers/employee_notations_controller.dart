@@ -168,11 +168,11 @@ class EmployeeNotationsController extends GetxController {
       );
     }
   }
-  Future<void> getEmployeeBySearch(date, clientId, time, empName) async {
+  Future<void> getEmployeeBySearch(date, clientId, time, empName,allShifts) async {
     searchList.clear();
     isSearchingNotations(true);
     try {
-      resSearch = await RemoteServices().getEmployeeBySearch(date, clientId, empName);
+      resSearch = await RemoteServices().getEmployeeBySearch(date, clientId, empName, allShifts);
       if (resSearch != null) {
         // print('res valid: $res');
         if (resSearch['success']) {
