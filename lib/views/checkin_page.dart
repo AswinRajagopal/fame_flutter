@@ -4,6 +4,12 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:fame/connection/remote_services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:location/location.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:fame/controllers/dashboard_controller.dart';
 import 'package:fame/controllers/profile_controller.dart';
 import '../utils/utils.dart';
@@ -36,6 +42,13 @@ class _CheckinPageState extends State<CheckinPage> {
   var size;
   var deviceRatio;
   var xScale;
+  GoogleMapController mapController;
+  Location location = Location();
+  LatLng _currentLocation;
+
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+  }
 
   @override
   void initState() {
@@ -80,6 +93,7 @@ class _CheckinPageState extends State<CheckinPage> {
     checkinController.pr.style(
       backgroundColor: Colors.white,
     );
+    _getCurrentLocation();
   }
 
   @override
@@ -88,14 +102,20 @@ class _CheckinPageState extends State<CheckinPage> {
     super.dispose();
   }
 
+  Future<void> _getCurrentLocation() async {
+    setState(() {
+      _currentLocation = LatLng(checkinController.currentPosition.latitude, checkinController.currentPosition.longitude);
+    });
+  }
+
   String convertTimeWithParse(time) {
     return DateFormat('h:mm')
             .format(DateFormat('HH:mm:ss').parse(time))
-            .toString() +
+            .toString() + " " +
         DateFormat('a')
             .format(DateFormat('HH:mm:ss').parse(time))
             .toString()
-            .toLowerCase();
+            .toUpperCase();
   }
 
   void initCam() async {
@@ -205,24 +225,8 @@ class _CheckinPageState extends State<CheckinPage> {
                 child: Column(
                   children: [
                     SizedBox(
-                      height: 25.0,
+                      height: 5.0,
                     ),
-                    Image.asset(
-                      'assets/images/success.png',
-                      scale: 2.0,
-                      color: AppUtils().greenColor,
-                    ),
-                    SizedBox(
-                      height: 15.0,
-                    ),
-                    Text(
-                      'Thank you!',
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Spacer(),
                     file != null
                         ? ClipOval(
                             child: Image.file(
@@ -251,7 +255,18 @@ class _CheckinPageState extends State<CheckinPage> {
                       ),
                     ),
                     SizedBox(
-                      height: 40.0,
+                      height: 10.0,
+                    ),
+                    Text(
+                      RemoteServices().box.get('empid').toString(),
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10.0,
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -261,30 +276,7 @@ class _CheckinPageState extends State<CheckinPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Employee ID',
-                                style: TextStyle(
-                                  fontSize: 18.0,
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 5.0,
-                              ),
-                              Text(
-                                RemoteServices().box.get('empid').toString(),
-                                style: TextStyle(
-                                  fontSize: 18.0,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )
-                            ]),
-                        Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Check in Time',
+                                'Check In Time',
                                 style: TextStyle(
                                   fontSize: 18.0,
                                   color: Colors.grey,
@@ -306,17 +298,115 @@ class _CheckinPageState extends State<CheckinPage> {
                                 ),
                               ),
                             ]),
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Check Out Time',
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 5.0,
+                              ),
+                              Text(
+                                convertTimeWithParse(
+                                    dbC.response['empdetails']['shiftEndTime']),
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ]),
                       ],
                     ),
                     SizedBox(
-                      height: 50.0,
+                      height: 10.0,
                     ),
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        Padding(
+                          padding: const EdgeInsets.only(left: 25.0),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Shift',
+                                  style: TextStyle(
+                                    fontSize: 18.0,
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 5.0,
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      convertTimeWithParse(
+                                          dbC.response['empdetails']
+                                              ['shiftStartTime']) + ' to '+convertTimeWithParse(
+                                          dbC.response['empdetails']
+                                          ['shiftEndTime']),
+                                      style: TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ]),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left:25.0),
+                      child: Row(
+                        children: [
+                          Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Address',
+                                  style: TextStyle(
+                                    fontSize: 18.0,
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 5.0,
+                                ),
+                                Container(
+                                  width: 300.0,
+                                  height: 85.0,
+                                  child: Obx(() {
+                                    return Text(
+                                      checkinController.currentAddress.value,
+                                      style: TextStyle(
+                                        fontSize: 18.0,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    );
+                                  }),
+                                )
+                              ]),
+                        ],
+                      ),
+                    ),
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left:25.0),
+                          child: Row(
                             children: [
                               Text(
                                 'Location',
@@ -325,99 +415,59 @@ class _CheckinPageState extends State<CheckinPage> {
                                   color: Colors.grey,
                                   fontWeight: FontWeight.bold,
                                 ),
-                              ),
-                              SizedBox(
-                                height: 5.0,
-                              ),
-                              Container(
-                                width: 150.0,
-                                height: 85.0,
-                                child: Obx(() {
-                                  return Text(
-                                    checkinController.currentAddress.value,
-                                    style: TextStyle(
-                                      fontSize: 18.0,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  );
-                                }),
                               )
-                            ]),
-                        Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Shift',
-                                style: TextStyle(
-                                  fontSize: 18.0,
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.bold,
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal:20.0),
+                          child: Card(
+                            elevation: 5.0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: Container(
+                                height: 130.0,
+                                child: GoogleMap(
+                                  onMapCreated: _onMapCreated,
+                                  zoomControlsEnabled: false,
+                                  initialCameraPosition: CameraPosition(
+                                    target: LatLng(checkinController.currentPosition.latitude, checkinController.currentPosition.longitude),
+                                    zoom: 12.0,
+                                  ),
+                                  markers: _currentLocation == null ? null : {
+                                    Marker(
+                                      markerId: MarkerId('Current Location'),
+                                      position: _currentLocation,
+                                      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+                                    ),
+                                  },
                                 ),
                               ),
-                              SizedBox(
-                                height: 5.0,
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    convertTimeWithParse(
-                                        dbC.response['empdetails']
-                                            ['shiftStartTime']),
-                                    style: TextStyle(
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    ' to ',
-                                    style: TextStyle(
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    convertTimeWithParse(
-                                        dbC.response['empdetails']
-                                            ['shiftEndTime']),
-                                    style: TextStyle(
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ]),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 100.0,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.offAll(DashboardPage());
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 25.0,
-                          vertical: 15.0,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppUtils().greenColor,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(
-                              30.0,
                             ),
                           ),
                         ),
-                        child: Text(
-                          'Okay',
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    SvgPicture.asset(
+                      'assets/images/Right Icon.svg',
+                    ),
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                    Text(
+                      'Thank you!',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     SizedBox(
@@ -428,6 +478,9 @@ class _CheckinPageState extends State<CheckinPage> {
               ),
             );
           });
+      Timer(Duration(seconds: 2), () {
+        Get.offAll(DashboardPage());
+      });
     }
   }
 
@@ -669,8 +722,43 @@ class _CheckinPageState extends State<CheckinPage> {
                         onPressed: checkinController.currentAddress.value ==
                                 'Fetching your location...'
                             ? null
-                            : () {
-                                takePicture(widget.faceApi);
+                            : () async {
+                                if (await Permission
+                                    .locationWhenInUse.isGranted) {
+                                  if (await Geolocator
+                                      .isLocationServiceEnabled()) {
+                                    await takePicture(widget.faceApi);
+                                  } else {
+                                    await Get.snackbar(
+                                      null,
+                                      'Please enable Location to checkin / checkout',
+                                      colorText: Colors.white,
+                                      backgroundColor: Colors.black87,
+                                      snackPosition: SnackPosition.BOTTOM,
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: 8.0, vertical: 10.0),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 12.0, vertical: 18.0),
+                                      borderRadius: 5.0,
+                                    );
+                                  }
+                                } else if (await Permission
+                                    .locationWhenInUse.isPermanentlyDenied) {
+                                  await Get.snackbar(
+                                    null,
+                                    'You cannot checkin / checkout without giving location permission',
+                                    colorText: Colors.white,
+                                    backgroundColor: Colors.black87,
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: 8.0, vertical: 10.0),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 12.0, vertical: 18.0),
+                                    borderRadius: 5.0,
+                                  );
+                                } else {
+                                  await Permission.locationWhenInUse.request();
+                                }
                               },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
@@ -717,24 +805,5 @@ class _CheckinPageState extends State<CheckinPage> {
         ),
       ),
     );
-  }
-}
-
-class CircleClipper extends CustomClipper<Rect> {
-  final double radius;
-
-  CircleClipper({this.radius});
-
-  @override
-  Rect getClip(Size size) {
-    return Rect.fromCircle(
-      center: Offset(size.width / 2, size.height / 2),
-      radius: radius,
-    );
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Rect> oldClipper) {
-    return true;
   }
 }

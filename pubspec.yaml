@@ -92,7 +92,7 @@ dependencies:
   custom_check_box: ^0.0.2
   number_to_character: ^0.0.8
   # workmanager: ^0.2.3
-  # location: ^3.2.4
+  location: ^3.2.4
   # background_location: ^0.3.1
   # flutter_background_location: ^0.0.4
   # background_locator: ^1.4.0+1

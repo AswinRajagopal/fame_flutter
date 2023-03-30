@@ -7,12 +7,16 @@ import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 import '../connection/remote_services.dart';
 import '../models/login.dart';
 
 class DashboardController extends GetxController {
+  var isLoading = true.obs;
   var isDashboardLoading = true.obs;
+  List dashboardList=[].obs;
+  ProgressDialog pr;
   var response;
   var todayString = (DateFormat.E().format(DateTime.now()).toString() + ' ' + DateFormat.d().format(DateTime.now()).toString() + ' ' + DateFormat.MMM().format(DateTime.now()).toString() + ', ' + DateFormat('h:mm').format(DateTime.now()).toString() + '' + DateFormat('a').format(DateTime.now()).toString().toLowerCase()).obs;
   var greetings = '...'.obs;
@@ -285,6 +289,62 @@ class DashboardController extends GetxController {
     } catch (e) {
       print(e);
       isDashboardLoading(false);
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
+      );
+    }
+  }
+
+  void getDashboardList(param)async{
+    try {
+      isLoading(true);
+      await pr.show();
+      var res = await RemoteServices().getDashboardList(param);
+      if (res != null) {
+        isLoading(false);
+        await pr.hide();
+        if (res['success']) {
+          if (res['empdetails'] != null) {
+            for (var i = 0; i < res['empdetails'].length; i++) {
+              dashboardList.add(res['empdetails'][i]);
+            }
+          }
+        } else {
+          Get.snackbar(
+            null,
+            'Something went wrong! Please try again later',
+            colorText: Colors.white,
+            backgroundColor: Colors.black87,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
+          );
+        }
+      }
+    } catch (e) {
+      print(e);
+      isLoading(false);
+      await pr.hide();
       Get.snackbar(
         null,
         'Something went wrong! Please try again later',
