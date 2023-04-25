@@ -16,6 +16,7 @@ class DashboardController extends GetxController {
   var isLoading = true.obs;
   var isDashboardLoading = true.obs;
   List dashboardList=[].obs;
+  List empDetailsList=[].obs;
   ProgressDialog pr;
   var response;
   var todayString = (DateFormat.E().format(DateTime.now()).toString() + ' ' + DateFormat.d().format(DateTime.now()).toString() + ' ' + DateFormat.MMM().format(DateTime.now()).toString() + ', ' + DateFormat('h:mm').format(DateTime.now()).toString() + '' + DateFormat('a').format(DateTime.now()).toString().toLowerCase()).obs;
@@ -317,9 +318,15 @@ class DashboardController extends GetxController {
         isLoading(false);
         await pr.hide();
         if (res['success']) {
-          if (res['empdetails'] != null) {
-            for (var i = 0; i < res['empdetails'].length; i++) {
-              dashboardList.add(res['empdetails'][i]);
+          if (res['dashboardLists'] != null) {
+            for (var i = 0; i < res['dashboardLists'].length; i++) {
+              dashboardList.add(res['dashboardLists'][i]);
+            }
+          }else if(param=='Employees'){
+            if(res['empdetails']!=null){
+              for(var i=0; i < res['empdetails'].length; i++){
+                empDetailsList.add(res['empdetails'][i]);
+              }
             }
           }
         } else {

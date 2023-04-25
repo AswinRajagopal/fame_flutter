@@ -478,7 +478,7 @@ class _CheckinPageState extends State<CheckinPage> {
               ),
             );
           });
-      Timer(Duration(seconds: 2), () {
+      Timer(Duration(seconds: 5), () {
         Get.offAll(DashboardPage());
       });
     }

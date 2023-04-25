@@ -1,5 +1,5 @@
 import 'package:fame/controllers/dashboard_controller.dart';
-import 'package:fame/widgets/dashboard_list_widget.dart';
+import 'package:fame/widgets/dashboard_list_late_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -15,7 +15,6 @@ class ViewDashboardLateList extends StatefulWidget {
 
 class _ViewDashboardLateListState extends State<ViewDashboardLateList> {
   final DashboardController dC = Get.put(DashboardController());
-  // var roleId = RemoteServices().box.get('role');
   var roleId;
 
   @override
@@ -116,7 +115,7 @@ class _ViewDashboardLateListState extends State<ViewDashboardLateList> {
                   itemCount: dC.dashboardList.length,
                   itemBuilder: (context, index) {
                     var dashboard = dC.dashboardList[index];
-                    return DashboardListWidget(dashboard);
+                    return DashboardListLateWidget(dashboard);
                   },
                 );
               }

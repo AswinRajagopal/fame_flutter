@@ -88,10 +88,7 @@ class _EditBillState extends State<EditBills> {
     if (billsList != null) {
       amount.text = billsList['amount'].toString();
       remarks.text = billsList['remarks'].toString();
-      attach.text = billsList['attachUrl'][0];
-      attachOne.text = billsList['attachUrl'][1];
-      attachTwo.text = billsList['attachUrl'][2];
-      expense.text=billsList['expenseTypeId'].toString();
+      expense.text = billsList['expenseTypeId'].toString();
     }
 
     super.initState();
@@ -527,8 +524,6 @@ class _EditBillState extends State<EditBills> {
                                                           '', 'image1.jpg');
                                                       setState(() {});
                                                     } else {
-
-
                                                       setState(() {});
                                                     }
                                                   },
@@ -612,7 +607,6 @@ class _EditBillState extends State<EditBills> {
                                                               '', 'image3.jpg');
                                                       setState(() {});
                                                     } else {
-
                                                       setState(() {});
                                                     }
                                                   },
@@ -658,7 +652,6 @@ class _EditBillState extends State<EditBills> {
                                                               '', 'image3.jpg');
                                                       setState(() {});
                                                     } else {
-
                                                       setState(() {});
                                                     }
                                                   },
@@ -698,137 +691,147 @@ class _EditBillState extends State<EditBills> {
                                     size: 40.0,
                                   ),
                                 )
-                              : GestureDetector(
-                                  onTap: () async {
-                                    await Get.bottomSheet(
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 15.0,
-                                          vertical: 15.0,
-                                        ),
-                                        child: ListView(
-                                          shrinkWrap: true,
-                                          physics: ScrollPhysics(),
-                                          children: [
-                                            Text(
-                                              'Please choose from...',
-                                              style: TextStyle(
-                                                fontSize: 20.0,
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w400,
-                                              ),
+                              : attachment != null
+                                  ? GestureDetector(
+                                      onTap: () async {
+                                        await Get.bottomSheet(
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 15.0,
+                                              vertical: 15.0,
                                             ),
-                                            SizedBox(
-                                              height: 15.0,
-                                            ),
-                                            Row(
+                                            child: ListView(
+                                              shrinkWrap: true,
+                                              physics: ScrollPhysics(),
                                               children: [
-                                                TextButton(
-                                                  onPressed: () async {
-                                                    Get.back();
-                                                    var pickedFile =
-                                                        await ImagePicker()
-                                                            .getImage(
-                                                      source:
-                                                          ImageSource.camera,
-                                                      imageQuality: 50,
-                                                    );
-                                                    if (pickedFile != null) {
-                                                      attachment2 = new File(
-                                                          pickedFile.path);
-                                                      String dir = path.dirname(
-                                                          pickedFile.path);
-                                                      attachOne.text =
-                                                          path.join(
-                                                              '', 'image2.jpg');
-                                                      setState(() {});
-                                                    } else {
-
-                                                      setState(() {});
-                                                    }
-                                                  },
-                                                  child: Row(
-                                                    children: [
-                                                      Icon(
-                                                        Icons.camera,
-                                                        size: 30.0,
-                                                      ),
-                                                      SizedBox(
-                                                        width: 10.0,
-                                                      ),
-                                                      Text(
-                                                        'Camera',
-                                                        style: TextStyle(
-                                                          fontSize: 20.0,
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .primaryColor,
-                                                        ),
-                                                      ),
-                                                    ],
+                                                Text(
+                                                  'Please choose from...',
+                                                  style: TextStyle(
+                                                    fontSize: 20.0,
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w400,
                                                   ),
                                                 ),
-                                                Spacer(),
-                                                TextButton(
-                                                  onPressed: () async {
-                                                    Get.back();
-                                                    var pickedFile =
-                                                        await ImagePicker()
-                                                            .getImage(
-                                                      source:
-                                                          ImageSource.gallery,
-                                                      imageQuality: 50,
-                                                    );
-                                                    if (pickedFile != null) {
-                                                      attachment2 = new File(
-                                                          pickedFile.path);
-                                                      String dir = path.dirname(
-                                                          pickedFile.path);
-                                                      attachOne.text =
-                                                          path.join(
-                                                              '', 'image2.jpg');
-                                                      setState(() {});
-                                                    } else {
-
-                                                      setState(() {});
-                                                    }
-                                                  },
-                                                  child: Row(
-                                                    children: [
-                                                      Icon(
-                                                        Icons.image,
-                                                        size: 30.0,
-                                                      ),
-                                                      SizedBox(
-                                                        width: 10.0,
-                                                      ),
-                                                      Text(
-                                                        'Gallery',
-                                                        style: TextStyle(
-                                                          fontSize: 20.0,
-                                                          color:
-                                                              Theme.of(context)
+                                                SizedBox(
+                                                  height: 15.0,
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    TextButton(
+                                                      onPressed: () async {
+                                                        Get.back();
+                                                        var pickedFile =
+                                                            await ImagePicker()
+                                                                .getImage(
+                                                          source: ImageSource
+                                                              .camera,
+                                                          imageQuality: 50,
+                                                        );
+                                                        if (pickedFile !=
+                                                            null) {
+                                                          attachment2 =
+                                                              new File(
+                                                                  pickedFile
+                                                                      .path);
+                                                          String dir =
+                                                              path.dirname(
+                                                                  pickedFile
+                                                                      .path);
+                                                          attachOne.text =
+                                                              path.join('',
+                                                                  'image2.jpg');
+                                                          setState(() {});
+                                                        } else {
+                                                          setState(() {});
+                                                        }
+                                                      },
+                                                      child: Row(
+                                                        children: [
+                                                          Icon(
+                                                            Icons.camera,
+                                                            size: 30.0,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 10.0,
+                                                          ),
+                                                          Text(
+                                                            'Camera',
+                                                            style: TextStyle(
+                                                              fontSize: 20.0,
+                                                              color: Theme.of(
+                                                                      context)
                                                                   .primaryColor,
-                                                        ),
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
-                                                    ],
-                                                  ),
+                                                    ),
+                                                    Spacer(),
+                                                    TextButton(
+                                                      onPressed: () async {
+                                                        Get.back();
+                                                        var pickedFile =
+                                                            await ImagePicker()
+                                                                .getImage(
+                                                          source: ImageSource
+                                                              .gallery,
+                                                          imageQuality: 50,
+                                                        );
+                                                        if (pickedFile !=
+                                                            null) {
+                                                          attachment2 =
+                                                              new File(
+                                                                  pickedFile
+                                                                      .path);
+                                                          String dir =
+                                                              path.dirname(
+                                                                  pickedFile
+                                                                      .path);
+                                                          attachOne.text =
+                                                              path.join('',
+                                                                  'image2.jpg');
+                                                          setState(() {});
+                                                        } else {
+                                                          setState(() {});
+                                                        }
+                                                      },
+                                                      child: Row(
+                                                        children: [
+                                                          Icon(
+                                                            Icons.image,
+                                                            size: 30.0,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 10.0,
+                                                          ),
+                                                          Text(
+                                                            'Gallery',
+                                                            style: TextStyle(
+                                                              fontSize: 20.0,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .primaryColor,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ],
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                          isDismissible: true,
+                                          backgroundColor: Colors.white,
+                                        );
+                                      },
+                                      child: Icon(
+                                        Icons.add_circle,
+                                        color: AppUtils().blueColor,
+                                        size: 40.0,
                                       ),
-                                      isDismissible: true,
-                                      backgroundColor: Colors.white,
-                                    );
-                                  },
-                                  child: Icon(
-                                    Icons.add_circle,
-                                    color: AppUtils().blueColor,
-                                    size: 40.0,
-                                  ),
-                                )
+                                    )
+                                  : Column()
                         ]),
                       ),
                       Row(

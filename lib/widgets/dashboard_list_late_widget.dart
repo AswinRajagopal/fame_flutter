@@ -2,9 +2,45 @@ import 'package:fame/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class DashboardListChkInWidget extends StatelessWidget {
+class DashboardListLateWidget extends StatefulWidget {
   final dashboard;
-  DashboardListChkInWidget(this.dashboard);
+  DashboardListLateWidget(this.dashboard);
+
+  @override
+  _DashboardListLateState createState() =>
+      _DashboardListLateState(this.dashboard);
+}
+
+class _DashboardListLateState extends State<DashboardListLateWidget> {
+  var minutes;
+  var hours;
+  var dashboard;
+  _DashboardListLateState(this.dashboard);
+
+  String convertDate(date) {
+    return DateFormat('h:mm').format(DateTime.parse(date)).toString() +
+        '' +
+        DateFormat('a').format(DateTime.parse(date)).toString().toUpperCase();
+  }
+
+  Future<Null> lateCheckInTime() {
+    String timeString = dashboard['shiftStartTime'];
+    DateTime shiftTime = DateTime.parse("2023-04-13 " + timeString);
+    DateTime now = DateTime.now();
+    shiftTime = DateTime(now.year, now.month, now.day, shiftTime.hour,
+        shiftTime.minute, shiftTime.second, shiftTime.millisecond);
+    print('shifttime->$shiftTime');
+    DateTime userCheckIn = DateTime.parse(dashboard['checkInDateTime']);
+    print(userCheckIn);
+    if (shiftTime != null) {
+      setState(() {
+        final checkedInMin = userCheckIn.difference(shiftTime).inMinutes;
+        final checkedInHrs=userCheckIn.difference(shiftTime).inHours;
+        minutes = checkedInMin;
+        hours=checkedInHrs;
+      });
+    }
+  }
 
   String convertDateTime(date) {
     String input = date;
@@ -13,12 +49,10 @@ class DashboardListChkInWidget extends StatelessWidget {
     return output;
   }
 
-  String convertDate(date) {
-    String inputDateStr = date;
-    DateTime inputDate = DateTime.parse(inputDateStr);
-
-    String outputDateStr = DateFormat('dd-MM-yyyy').format(inputDate);
-    return outputDateStr;
+  @override
+  void initState() {
+    super.initState();
+    lateCheckInTime();
   }
 
   @override
@@ -188,7 +222,69 @@ class DashboardListChkInWidget extends StatelessWidget {
                 ],
               ),
               SizedBox(
+                height: 4.0,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Checked-in time',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      dashboard['checkInDateTime'] == null
+                          ? "NA"
+                          : convertDate(dashboard['checkInDateTime']),
+                      style: TextStyle(
+                          color: AppUtils().blueColor,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
                 height: 4,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Minutes late',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      minutes.toString(),
+                      style: TextStyle(
+                          color: AppUtils().blueColor,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 4.0,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Hours late',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      hours.toString(),
+                      style: TextStyle(
+                          color: AppUtils().blueColor,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

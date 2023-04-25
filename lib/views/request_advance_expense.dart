@@ -345,7 +345,7 @@ class _RequestExpenseState extends State<RequestExpense> {
                                     borderRadius: BorderRadius.circular(5.0),
                                     side: BorderSide(color: Colors.black38)),
                                 child: Container(
-                                  width: 200,
+                                  width: double.infinity,
                                   height: 60,
                                   child: TextField(
                                     controller: amount,
@@ -373,38 +373,41 @@ class _RequestExpenseState extends State<RequestExpense> {
                             SizedBox(
                               width: 10.0,
                             ),
-                            Flexible(
-                              child: Card(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    side: BorderSide(color: Colors.black38)),
-                                child: Container(
-                                  width: 200,
-                                  height: 60,
-                                  child: DropdownSearch(
-                                      mode: Mode.MENU,
-                                      showSearchBox: true,
-                                      isFilteredOnline: true,
-                                      dropDownButton: const Icon(
-                                        Icons.keyboard_arrow_down,
-                                        color: Colors.grey,
-                                        size: 18.0,
-                                      ),
-                                      hint: 'Purpose',
-                                      showSelectedItem: true,
-                                      items: expC.purpose.map((item) {
-                                        var sC = item['expenseType'].toString();
-                                        return sC.toString();
-                                      }).toList(),
-                                      onChanged: (value) {
-                                        for (var e in expC.exp) {
-                                          if (e['expenseType'] == value) {
-                                            expenseTypeId = e['expenseTypeId'];
-                                            break;
+                            Visibility(
+                              visible: amount.text.isNotEmpty,
+                              child: Flexible(
+                                child: Card(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      side: BorderSide(color: Colors.black38)),
+                                  child: Container(
+                                    width: 200,
+                                    height: 60,
+                                    child: DropdownSearch(
+                                        mode: Mode.MENU,
+                                        showSearchBox: true,
+                                        isFilteredOnline: true,
+                                        dropDownButton: const Icon(
+                                          Icons.keyboard_arrow_down,
+                                          color: Colors.grey,
+                                          size: 18.0,
+                                        ),
+                                        hint: 'Purpose',
+                                        showSelectedItem: true,
+                                        items: expC.purpose.map((item) {
+                                          var sC = item['expenseType'].toString();
+                                          return sC.toString();
+                                        }).toList(),
+                                        onChanged: (value) {
+                                          for (var e in expC.exp) {
+                                            if (e['expenseType'] == value) {
+                                              expenseTypeId = e['expenseTypeId'];
+                                              break;
+                                            }
                                           }
-                                        }
-                                        setState(() {});
-                                      }),
+                                          setState(() {});
+                                        }),
+                                  ),
                                 ),
                               ),
                             ),

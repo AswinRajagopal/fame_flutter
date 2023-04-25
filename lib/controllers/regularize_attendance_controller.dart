@@ -13,6 +13,16 @@ class RegularizeAttController extends GetxController {
   var res;
   ProgressDialog pr;
   List regAttList = [].obs;
+  List notationList=[].obs;
+  bool isDisposed = false;
+
+
+
+  @override
+  void dispose() {
+    super.dispose();
+    isDisposed = true;
+  }
 
   void getRegularizeAtt() async {
     try {
@@ -70,10 +80,10 @@ class RegularizeAttController extends GetxController {
     }
   }
 
-  void updateRegAtt(checkIn,checkOut,status,adminRemarks,regAttId) async {
+  void updateRegAtt(checkIn,checkOut,alias,status,adminRemarks,regAttId) async {
     try {
       await pr.show();
-      var addRegAttRes = await RemoteServices().updateRegAtt(checkIn,checkOut,status,adminRemarks,regAttId);
+      var addRegAttRes = await RemoteServices().updateRegAtt(checkIn,checkOut,alias,status,adminRemarks,regAttId);
       if (addRegAttRes != null) {
         await pr.hide();
         if (addRegAttRes['success']) {
@@ -145,6 +155,66 @@ class RegularizeAttController extends GetxController {
       );
     }
   }
+
+  void getAllRegNotations() async {
+    if (isDisposed) {
+      return;
+    }
+    try {
+      isLoading(true);
+      await pr.show();
+      var notationTypeRes = await RemoteServices().getAllRegNotations();
+      if (notationTypeRes != null) {
+        await pr.hide();
+        isLoading(false);
+        print('notationTypeRes valid: $notationTypeRes');
+        if (notationTypeRes['success']) {
+          for (var i = 0; i < notationTypeRes['notationsList'].length; i++) {
+            notationList.add(notationTypeRes['notationsList'][i]);
+          }
+          print('notationsList: $notationList');
+        } else {
+          Get.snackbar(
+            null,
+            'Alias type not found',
+            colorText: Colors.white,
+            backgroundColor: Colors.black87,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
+          );
+        }
+      }
+    } catch (e) {
+      print(e);
+      isLoading(false);
+      await pr.hide();
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
+      );
+    }
+  }
+
 
   void addRegularizeAtt(alias, checkIn, checkOut,attId,reason) async {
     try {

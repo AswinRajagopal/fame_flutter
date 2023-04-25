@@ -13,6 +13,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart' as mydio;
 import 'package:dio/dio.dart';
 import 'package:fame/utils/utils.dart';
+import 'package:fame/views/offline.dart';
 // import 'package:fame/connection/location_service_repository.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -1276,6 +1277,27 @@ class RemoteServices {
     }
   }
 
+  Future getAllRegNotations() async{
+    var response = await client.post(
+      '$baseURL/attendance/all_notations',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      // return pitstopsFromJson(jsonString);
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
   Future getRegularizeAtt() async {
     var response = await client.post(
       '$baseURL/attendance/get_regularize_att',
@@ -1299,7 +1321,7 @@ class RemoteServices {
   }
 
   Future updateRegAtt(
-      checkInTime, checkOutTime, status, adminRemarks, regAttId) async {
+      checkInTime, checkOutTime,alias, status, adminRemarks, regAttId) async {
     var response = await client.post(
       '$baseURL/attendance/update_regularize_att',
       headers: header,
@@ -1308,7 +1330,7 @@ class RemoteServices {
           "companyId": box.get('companyid').toString(),
           "checkInDateTime": checkInTime.toString(),
           "checkOutDateTime": checkOutTime.toString(),
-          "attendanceAlias": "P",
+          "attendanceAlias":alias.toString(),
           "status": status.toString(),
           "updatedBy": box.get('empid').toString(),
           "adminRemarks": adminRemarks.toString(),
@@ -1588,12 +1610,49 @@ class RemoteServices {
     }
   }
 
-  Future getEmpExpenses() async {
+  Future getEmpExpenses(param) async {
     var response = await client.post('$baseURL/expense/get_emp_expenses',
         headers: header,
         body: jsonEncode(<String, String>{
           'empId': box.get('empid').toString(),
           'companyId': box.get('companyid').toString(),
+          'parameter':param.toString()
+        }));
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      return null;
+    }
+  }
+
+  Future getExpensesAdmin(fromDate,toDate) async {
+    var response = await client.post('$baseURL/expense/get_emp_expenses',
+        headers: header,
+        body: jsonEncode(<String, String>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'fromDate': fromDate.toString(),
+          'toDate': toDate.toString()
+        }));
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      return null;
+    }
+  }
+
+  Future getExpensesAdminFt(fromDate,toDate) async {
+    var response = await client.post('$baseURL/expense/get_emp_expenses',
+        headers: header,
+        body: jsonEncode(<String, String>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'fromDate': fromDate.toString(),
+          'toDate': toDate.toString()
         }));
     print(response.statusCode);
     if (response.statusCode == 200) {

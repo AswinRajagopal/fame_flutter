@@ -108,6 +108,18 @@ class _RegularizeAttDetailListState extends State<RegularizeAttDetailList> {
     }
   }
 
+  void _handleSubmit() async {
+    await raC.updateRegAtt(
+        regAtt['checkInDateTime'],
+        regAtt['checkOutDateTime'],
+        regAtt['attendanceAlias'],
+        '2',
+        remarks.text,
+        regAtt['regAttId'].toString());
+
+    Navigator.of(context).pop();
+  }
+
   Widget titleParams(title, value) {
     return Row(
       children: [
@@ -267,11 +279,6 @@ class _RegularizeAttDetailListState extends State<RegularizeAttDetailList> {
                           SizedBox(
                             height: 15.0,
                           ),
-                          titleParams('Revised alias',
-                              regAtt['revisedAttendanceAlias'] ?? 'NA'),
-                          SizedBox(
-                            height: 15.0,
-                          ),
                           titleParams(
                               'Status', getStatus(regAtt['status']) ?? 'NA'),
                           SizedBox(height: 15.0),
@@ -301,6 +308,9 @@ class _RegularizeAttDetailListState extends State<RegularizeAttDetailList> {
                               'Revised Check-out time',
                               convertDate(
                                   regAtt['revisedCheckOutDateTime'] ?? 'NA')),
+                          SizedBox(height: 15.0),
+                          titleParams('Revised alias',
+                              regAtt['revisedAttendanceAlias'] ?? 'NA'),
                           SizedBox(height: 15.0),
                           titleParams('Reason', regAtt['reason'] ?? 'NA'),
                           SizedBox(
@@ -380,6 +390,12 @@ class _RegularizeAttDetailListState extends State<RegularizeAttDetailList> {
                                                             maxLines: 4,
                                                             decoration:
                                                                 InputDecoration(
+                                                              errorText: remarks
+                                                                          .text
+                                                                          .length >
+                                                                      1000
+                                                                  ? 'please enter 1000 Characters only'
+                                                                  : null,
                                                               border:
                                                                   InputBorder
                                                                       .none,
@@ -412,17 +428,7 @@ class _RegularizeAttDetailListState extends State<RegularizeAttDetailList> {
                                                           fontWeight:
                                                               FontWeight.bold),
                                                     ),
-                                                    onPressed: () {
-                                                      raC.updateRegAtt(
-                                                          regAtt[
-                                                              'checkInDateTime'],
-                                                          regAtt[
-                                                              'checkOutDateTime'],
-                                                          '2',
-                                                          remarks.text,
-                                                          regAtt['regAttId']
-                                                              .toString());
-                                                    },
+                                                    onPressed: _handleSubmit,
                                                   )
                                                 ],
                                               );
@@ -566,6 +572,7 @@ class _RegularizeAttDetailListState extends State<RegularizeAttDetailList> {
                                                               ? checkOut
                                                               : regAtt[
                                                                   'revisedCheckOutDateTime'],
+                                                          regAtt['revisedAttendanceAlias'],
                                                           '1',
                                                           'approved',
                                                           regAtt['regAttId']

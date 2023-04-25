@@ -89,7 +89,7 @@ class _ViewDashboardEmpListState extends State<ViewDashboardEmpList> {
               if (dC.isLoading.value) {
                 return Column();
               } else {
-                if (dC.dashboardList.isEmpty || dC.dashboardList.isNull) {
+                if (dC.empDetailsList.isEmpty || dC.empDetailsList.isNull) {
                   return Container(
                     height: MediaQuery.of(context).size.height / 1.2,
                     child: Column(
@@ -113,9 +113,9 @@ class _ViewDashboardEmpListState extends State<ViewDashboardEmpList> {
                   shrinkWrap: true,
                   primary: true,
                   physics: ScrollPhysics(),
-                  itemCount: dC.dashboardList.length,
+                  itemCount: dC.empDetailsList.length,
                   itemBuilder: (context, index) {
-                    var dashboard = dC.dashboardList[index];
+                    var dashboard = dC.empDetailsList[index];
                     return DashboardListWidget(dashboard);
                   },
                 );

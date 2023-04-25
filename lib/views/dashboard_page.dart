@@ -70,6 +70,7 @@ class _DashboardPageState extends State<DashboardPage> {
     }
     Future.delayed(Duration(milliseconds: 100), () {
       setState(() {
+        dbC.empDetailsList.clear();
         dbC.dashboardList.clear();
       });
     });

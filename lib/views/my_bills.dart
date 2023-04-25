@@ -38,7 +38,7 @@ class _MyBillState extends State<MyBills> {
   var expenseTypeId;
   File attachment, attachment2, attachment3;
   var passDate;
-  var amountInWords = '';
+  var amountInWords = ' ';
 
   bool _isVisible1 = false;
   bool _isVisible2 = false;
@@ -138,6 +138,7 @@ class _MyBillState extends State<MyBills> {
             onPressed: () {
               Get.back();
               expC.expenseBillsList.clear();
+              expC.exp.clear();
             },
             icon: Icon(
               Icons.arrow_back,
@@ -284,7 +285,7 @@ class _MyBillState extends State<MyBills> {
                                       borderRadius: BorderRadius.circular(5.0),
                                       side: BorderSide(color: Colors.black38)),
                                   child: Container(
-                                    width: 200,
+                                    width: double.infinity,
                                     height: 60,
                                     child: TextField(
                                       controller: amount,
@@ -312,31 +313,34 @@ class _MyBillState extends State<MyBills> {
                               SizedBox(
                                 width: 10.0,
                               ),
-                              Flexible(
-                                child: DropdownSearch(
-                                    mode: Mode.MENU,
-                                    showSearchBox: true,
-                                    isFilteredOnline: true,
-                                    dropDownButton: const Icon(
-                                      Icons.keyboard_arrow_down,
-                                      color: Colors.grey,
-                                      size: 18.0,
-                                    ),
-                                    hint: 'Expenses Type',
-                                    showSelectedItem: true,
-                                    items: expC.exp.map((item) {
-                                      var sC = item['expenseType'].toString();
-                                      return sC.toString();
-                                    }).toList(),
-                                    onChanged: (value) {
-                                      for (var e in expC.exp) {
-                                        if (e['expenseType'] == value) {
-                                          expenseTypeId = e['expenseTypeId'];
-                                          break;
+                              Visibility(
+                                visible:amount.text.isNotEmpty,
+                                child: Flexible(
+                                  child: DropdownSearch(
+                                      mode: Mode.MENU,
+                                      showSearchBox: true,
+                                      isFilteredOnline: true,
+                                      dropDownButton: const Icon(
+                                        Icons.keyboard_arrow_down,
+                                        color: Colors.grey,
+                                        size: 18.0,
+                                      ),
+                                      hint: 'Expenses Type',
+                                      showSelectedItem: true,
+                                      items: expC.exp.map((item) {
+                                        var sC = item['expenseType'].toString();
+                                        return sC.toString();
+                                      }).toList(),
+                                      onChanged: (value) {
+                                        for (var e in expC.exp) {
+                                          if (e['expenseType'] == value) {
+                                            expenseTypeId = e['expenseTypeId'];
+                                            break;
+                                          }
                                         }
-                                      }
-                                      setState(() {});
-                                    }),
+                                        setState(() {});
+                                      }),
+                                ),
                               ),
                             ],
                           ),
@@ -691,7 +695,7 @@ class _MyBillState extends State<MyBills> {
                                       size: 40.0,
                                     ),
                                   )
-                                : GestureDetector(
+                                :attachment!=null? GestureDetector(
                                     onTap: () async {
                                       await Get.bottomSheet(
                                         Padding(
@@ -813,7 +817,7 @@ class _MyBillState extends State<MyBills> {
                                 color: AppUtils().blueColor,
                                 size: 40.0,
                               ),
-                            )
+                            ):Column()
                           ]),
                         ),
                         Row(
