@@ -131,11 +131,11 @@ class RejectedListWidget extends StatelessWidget {
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                             color: rejectedExp['status'] == 1
-                                ? Colors.yellow[100]
+                                ? Colors.teal[100]
                                 : Colors.red[100],
                             border: Border.all(
                               color: rejectedExp['status'] == 1
-                                  ? Colors.yellow[100]
+                                  ? Colors.teal[100]
                                   : Colors.red[100], // Set border color
                             ), // Set border width
                             borderRadius: BorderRadius.all(Radius.circular(
@@ -145,7 +145,7 @@ class RejectedListWidget extends StatelessWidget {
                             getStatus(rejectedExp['status']),
                             style: TextStyle(
                                 color: rejectedExp['status'] == 1
-                                    ? Colors.yellow
+                                    ? Colors.teal
                                     : Colors.red,
                                 fontSize: 12.0,
                                 fontWeight: FontWeight.bold),

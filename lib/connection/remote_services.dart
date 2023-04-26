@@ -13,6 +13,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart' as mydio;
 import 'package:dio/dio.dart';
 import 'package:fame/utils/utils.dart';
+import 'package:fame/views/offline.dart';
 // import 'package:fame/connection/location_service_repository.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -216,26 +217,30 @@ class RemoteServices {
   }
 
   Future<Login> login(username, empid, password) async {
-    var pushCode = await setFirebaseNotification();
-    var response = await client.post(
-      '$baseURL/user/login',
-      headers: header,
-      body: jsonEncode(
-        <String, String>{
-          'userName': username,
-          'empId': empid,
-          'password': password,
-          'pushCode': pushCode,
-        },
-      ),
-    );
-    print(response.statusCode);
-    if (response.statusCode == 200) {
-      var jsonString = response.body;
-      return loginFromJson(jsonString);
+    if (await checkInternet()) {
+      var pushCode = await setFirebaseNotification();
+      var response = await client.post(
+        '$baseURL/user/login',
+        headers: header,
+        body: jsonEncode(
+          <String, String>{
+            'userName': username,
+            'empId': empid,
+            'password': password,
+            'pushCode': pushCode,
+          },
+        ),
+      );
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        var jsonString = response.body;
+        return loginFromJson(jsonString);
+      } else {
+        //show error message
+        return null;
+      }
     } else {
-      //show error message
-      return null;
+      return Get.to(OfflinePage());
     }
   }
 
@@ -458,6 +463,7 @@ class RemoteServices {
   }
 
   Future<Dashboard> getDashboardDetails() async {
+    if (await checkInternet()) {
       var response = await client.post(
         '$baseURL/attendance/dashboard_flut',
         headers: header,
@@ -480,10 +486,13 @@ class RemoteServices {
         //show error message
         return null;
       }
-
+    } else {
+      return Get.to(OfflinePage());
+    }
   }
 
   Future getDbDetails() async {
+    if (await checkInternet()) {
       var pushCode = await setFirebaseNotification();
       print(box.get('companyid'));
       var response = await client.post(
@@ -504,247 +513,272 @@ class RemoteServices {
         //show error message
         return null;
       }
+    } else {
+      return Get.to(OfflinePage());
+    }
+  }
 
+  Future getDashboardList(param)async{
+    if (await checkInternet()) {
+      var response = await client.post(
+        '$baseURL/attendance/get_dash_list',
+        headers: header,
+        body: jsonEncode(
+          <String, String>{
+            'companyId': box.get('companyid').toString(),
+            "parameter": param.toString()
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        var jsonString = response.body;
+        return jsonDecode(jsonString);
+      } else {
+        //show error message
+        return null;
+      }
+    } else {
+      return Get.to(OfflinePage());
+    }
   }
 
   Future<EmpRPlan> getEmprPlan() async {
-      var response = await client.post(
-        '$baseURL/location/get_emp_rplan',
-        headers: header,
-        body: jsonEncode(
-          <String, dynamic>{
-            'empId': box.get('empid').toString(),
-            'companyId': box.get('companyid').toString(),
-            'roleId': box.get('role').toString(),
-            'pending': true,
-          },
-        ),
-      );
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return empRPlanFromJson(jsonString);
-      } else {
-        //show error message
-        return null;
-      }
-
+    var response = await client.post(
+      '$baseURL/location/get_emp_rplan',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'roleId': box.get('role').toString(),
+          'pending': true,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return empRPlanFromJson(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
   }
 
   Future<DbCalendar> getEmpCalendar(month) async {
-      var response = await client.post(
-        '$baseURL/attendance/emp_calendar',
-        headers: header,
-        body: jsonEncode(
-          <String, String>{
-            'empId': box.get('empid').toString(),
-            'companyId': box.get('companyid').toString(),
-            'month': month,
-          },
-        ),
-      );
-      // print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return dbCalendarFromJson(jsonString);
-      } else {
-        //show error message
-        return null;
-      }
+    var response = await client.post(
+      '$baseURL/attendance/emp_calendar',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'month': month,
+        },
+      ),
+    );
+    // print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return dbCalendarFromJson(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
   }
 
   Future getEmpCalendarNew(month) async {
-      var response = await client.post(
-        '$baseURL/attendance/emp_calendar',
-        headers: header,
-        body: jsonEncode(
-          <String, String>{
-            'empId': box.get('empid').toString(),
-            'companyId': box.get('companyid').toString(),
-            'month': month,
-          },
-        ),
-      );
-      // print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return json.decode(jsonString);
-      } else {
-        //show error message
-        return null;
-      }
+    var response = await client.post(
+      '$baseURL/attendance/emp_calendar',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'month': month,
+        },
+      ),
+    );
+    // print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
   }
 
   Future getAddressFromLatLng(double lat, double lng) async {
-      var _host = 'https://maps.googleapis.com/maps/api/geocode/json';
-      final url =
-          '$_host?key=AIzaSyADoNEFbFbgHCpu7mz7yLWhbbUMZqk4yHU&language=en&latlng=$lat,$lng';
-      if (lat != null && lng != null) {
-        var response = await http.get(Uri.parse(url));
-        if (response.statusCode == 200) {
-          Map data = jsonDecode(response.body);
-          String _formattedAddress = data['results'][0]['formatted_address'];
-          print('response ==== $_formattedAddress');
-          return _formattedAddress;
-        } else {
-          return null;
-        }
+    var _host = 'https://maps.googleapis.com/maps/api/geocode/json';
+    final url =
+        '$_host?key=AIzaSyADoNEFbFbgHCpu7mz7yLWhbbUMZqk4yHU&language=en&latlng=$lat,$lng';
+    if (lat != null && lng != null) {
+      var response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        Map data = jsonDecode(response.body);
+        String _formattedAddress = data['results'][0]['formatted_address'];
+        print('response ==== $_formattedAddress');
+        return _formattedAddress;
       } else {
         return null;
       }
+    } else {
+      return null;
+    }
   }
 
   Future nearestCheckin(lat, lng, address, clientId) async {
-      var response = await client.post(
-        '$baseURL/attendance/checkin',
-        headers: header,
-        body: jsonEncode(
-          <String, String>{
-            'empId': box.get('empid').toString(),
-            'companyId': box.get('companyid').toString(),
-            'shift': box.get('shift').toString(),
-            'clientId': clientId.toString(),
-            'lat': lat.toString(),
-            'lng': lng.toString(),
-            'address': address.toString(),
-          },
-        ),
-      );
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return json.decode(jsonString);
-      } else {
-        //show error message
-        return null;
-      }
+    var response = await client.post(
+      '$baseURL/attendance/checkin',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'shift': box.get('shift').toString(),
+          'clientId': clientId.toString(),
+          'lat': lat.toString(),
+          'lng': lng.toString(),
+          'address': address.toString(),
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
   }
 
   Future checkin(lat, lng, address) async {
-      var response = await client.post(
-        '$baseURL/attendance/checkin',
-        headers: header,
-        body: jsonEncode(
-          <String, String>{
-            'empId': box.get('empid').toString(),
-            'companyId': box.get('companyid').toString(),
-            'shift': box.get('shift').toString(),
-            'clientId': box.get('clientId').toString(),
-            'lat': lat.toString(),
-            'lng': lng.toString(),
-            'address': address.toString(),
-          },
-        ),
-      );
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return json.decode(jsonString);
-      } else {
-        //show error message
-        return null;
-      }
+    var response = await client.post(
+      '$baseURL/attendance/checkin',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'shift': box.get('shift').toString(),
+          'clientId': box.get('clientId').toString(),
+          'lat': lat.toString(),
+          'lng': lng.toString(),
+          'address': address.toString(),
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
   }
 
   Future checkout(lat, lng, address) async {
-      var response = await client.post(
-        '$baseURL/attendance/checkout',
-        headers: header,
-        body: jsonEncode(
-          <String, String>{
-            'empId': box.get('empid').toString(),
-            'companyId': box.get('companyid').toString(),
-            'shift': box.get('shift').toString(),
-            'clientId': box.get('clientId').toString(),
-            'lat': lat.toString(),
-            'lng': lng.toString(),
-            'address': address.toString(),
-          },
-        ),
-      );
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return json.decode(jsonString);
-      } else {
-        //show error message
-        return null;
-      }
+    var response = await client.post(
+      '$baseURL/attendance/checkout',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'shift': box.get('shift').toString(),
+          'clientId': box.get('clientId').toString(),
+          'lat': lat.toString(),
+          'lng': lng.toString(),
+          'address': address.toString(),
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
   }
 
   Future<FaceReg> registerFace(File imageFile, endPoint) async {
-      var dio = mydio.Dio();
+    var dio = mydio.Dio();
 
-      var formData = mydio.FormData.fromMap({
-        'companyID': box.get('companyid'),
-        'client_ID': box.get('empid'),
-        'name': box.get('empName'),
-        'access_key': accessKey,
-        'source': 'app',
-        'endPoint': endPoint,
-        'image1': await mydio.MultipartFile.fromFile(
-          imageFile.path,
-          filename: 'image.jpg',
-        ),
-      });
-      var response = await dio.post(
-        '$baseURL/face_rec/register',
-        data: formData,
-      );
+    var formData = mydio.FormData.fromMap({
+      'companyID': box.get('companyid'),
+      'client_ID': box.get('empid'),
+      'name': box.get('empName'),
+      'access_key': accessKey,
+      'source': 'app',
+      'endPoint': endPoint,
+      'image1': await mydio.MultipartFile.fromFile(
+        imageFile.path,
+        filename: 'image.jpg',
+      ),
+    });
+    var response = await dio.post(
+      '$baseURL/face_rec/register',
+      data: formData,
+    );
 
-      if (response.statusCode == 200) {
-        var jsonString = response.data;
-        return faceRegFromJson(jsonEncode(jsonString));
-      } else {
-        return null;
-      }
+    if (response.statusCode == 200) {
+      var jsonString = response.data;
+      return faceRegFromJson(jsonEncode(jsonString));
+    } else {
+      return null;
+    }
   }
 
   Future uploadPolicyDoc(File imageFile, name) async {
-      var dio = mydio.Dio();
+    var dio = mydio.Dio();
 
-      var formData = mydio.FormData.fromMap({
-        'companyId': box.get('companyid'),
-        'empId': box.get('empid'),
-        'label': name,
-        'file': await mydio.MultipartFile.fromFile(
-          imageFile.path,
-          filename: imageFile.path.split('/').last,
-        ),
-      });
-      var response = await dio.post(
-        '$baseURL/company/upload_policy',
-        data: formData,
-      );
+    var formData = mydio.FormData.fromMap({
+      'companyId': box.get('companyid'),
+      'empId': box.get('empid'),
+      'label': name,
+      'file': await mydio.MultipartFile.fromFile(
+        imageFile.path,
+        filename: imageFile.path.split('/').last,
+      ),
+    });
+    var response = await dio.post(
+      '$baseURL/company/upload_policy',
+      data: formData,
+    );
 
-      if (response.statusCode == 200) {
-        var jsonString = response.data;
-        return jsonString;
-      } else {
-        return null;
-      }
+    if (response.statusCode == 200) {
+      var jsonString = response.data;
+      return jsonString;
+    } else {
+      return null;
+    }
   }
 
   Future registerImage(empId, companyId, image) async {
-      var response = await client.post(
-        '$baseURL/user/register_image',
-        headers: header,
-        body: jsonEncode(
-          <String, String>{
-            'empId': box.get('empid').toString(),
-            'companyId': box.get('companyid').toString(),
-            'image': 'data:image/jpeg;base64,$image',
-          },
-        ),
-      );
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return json.decode(jsonString);
-      } else {
-        //show error message
-        return null;
-      }
+    var response = await client.post(
+      '$baseURL/user/register_image',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'image': 'data:image/jpeg;base64,$image',
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
   }
 
   Future leaveType(String empId) async {
@@ -796,24 +830,24 @@ class RemoteServices {
   }
 
   Future getShift(clientId) async {
-      var response = await client.post(
-        '$baseURL/transfer/client_shifts',
-        headers: header,
-        body: jsonEncode(
-          <String, String>{
-            'companyId': box.get('companyid').toString(),
-            'clientId': clientId,
-          },
-        ),
-      );
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return json.decode(jsonString);
-      } else {
-        //show error message
-        return null;
-      }
+    var response = await client.post(
+      '$baseURL/transfer/client_shifts',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'clientId': clientId,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
   }
 
   Future applyLeave(frmDt, toDt, reason, dayType, leaveTypeId, empId) async {
@@ -849,66 +883,66 @@ class RemoteServices {
   }
 
   Future getClients() async {
-      var response = await client.post(
-        '$baseURL/attendance/all_clients',
-        headers: header,
-        body: jsonEncode(
-          <String, String>{
-            'companyId': box.get('companyid').toString(),
-            'empId': box.get('empid').toString(),
-          },
-        ),
-      );
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return json.decode(jsonString);
-      } else {
-        //show error message
-        return null;
-      }
+    var response = await client.post(
+      '$baseURL/attendance/all_clients',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'empId': box.get('empid').toString(),
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
   }
 
   Future getActivityList() async {
-      var response = await client.post(
-        '$baseURL/company/get_activity_list',
-        headers: header,
-        body: jsonEncode(
-          <String, String>{
-            'companyId': box.get('companyid').toString(),
-            'empId': box.get('empid').toString(),
-          },
-        ),
-      );
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return json.decode(jsonString);
-      } else {
-        //show error message
-        return null;
-      }
+    var response = await client.post(
+      '$baseURL/company/get_activity_list',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'empId': box.get('empid').toString(),
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
   }
 
   Future getMyClients() async {
-      var response = await client.post(
-        '$baseURL/attendance/all_clients',
-        headers: header,
-        body: jsonEncode(
-          <String, String>{
-            'companyId': box.get('companyid').toString(),
-            'empId': box.get('empid').toString(),
-          },
-        ),
-      );
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return json.decode(jsonString);
-      } else {
-        //show error message
-        return null;
-      }
+    var response = await client.post(
+      '$baseURL/attendance/all_clients',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'empId': box.get('empid').toString(),
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
   }
 
   Future<SaveRPlan> saveRoutePlan(
@@ -917,160 +951,160 @@ class RemoteServices {
     date,
     pitstops,
   ) async {
-      var response = await client.post(
-        '$baseURL/location/save_rplan',
-        headers: header,
-        body: jsonEncode(
-          <String, dynamic>{
-            'empId': box.get('empid').toString(),
-            'assignedTo': assignedTo,
-            'planName': planName,
-            'date': date,
-            'companyId': box.get('companyid').toString(),
-            'pitstops': pitstops,
-          },
-        ),
-      );
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return saveRPlanFromJson(jsonString);
-      } else {
-        return null;
-      }
+    var response = await client.post(
+      '$baseURL/location/save_rplan',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'empId': box.get('empid').toString(),
+          'assignedTo': assignedTo,
+          'planName': planName,
+          'date': date,
+          'companyId': box.get('companyid').toString(),
+          'pitstops': pitstops,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return saveRPlanFromJson(jsonString);
+    } else {
+      return null;
+    }
   }
 
   Future getEmployees(empName) async {
-      var response = await client.post(
-        '$baseURL/transfer/get_suggest',
-        headers: header,
-        body: jsonEncode(
-          <String, String>{
-            'companyId': box.get('companyid').toString(),
-            'empId': box.get('empid').toString(),
-            'empName': empName,
-          },
-        ),
-      );
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return json.decode(jsonString)['empSuggest'];
-      } else {
-        //show error message
-        return null;
-      }
+    var response = await client.post(
+      '$baseURL/transfer/get_suggest',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'empId': box.get('empid').toString(),
+          'empName': empName,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString)['empSuggest'];
+    } else {
+      //show error message
+      return null;
+    }
   }
 
   Future getTransferEmployees(empName) async {
-      var response = await client.post(
-        '$baseURL/transfer/get_suggest',
-        headers: header,
-        body: jsonEncode(
-          <String, Object>{
-            'companyId': box.get('companyid').toString(),
-            'empId': box.get('empid').toString(),
-            'transfer': true,
-            'empName': empName,
-          },
-        ),
-      );
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return json.decode(jsonString)['empSuggest'];
-      } else {
-        //show error message
-        return null;
-      }
+    var response = await client.post(
+      '$baseURL/transfer/get_suggest',
+      headers: header,
+      body: jsonEncode(
+        <String, Object>{
+          'companyId': box.get('companyid').toString(),
+          'empId': box.get('empid').toString(),
+          'transfer': true,
+          'empName': empName,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString)['empSuggest'];
+    } else {
+      //show error message
+      return null;
+    }
   }
 
   Future getUnits(unitName) async {
-      var response = await client.post(
-        '$baseURL/transfer/get_unit_suggest',
-        headers: header,
-        body: jsonEncode(
-          <String, String>{
-            'companyId': box.get('companyid').toString(),
-            'unitName': unitName,
-          },
-        ),
-      );
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return json.decode(jsonString)['clientsSuggest'];
-      } else {
-        //show error message
-        return null;
-      }
+    var response = await client.post(
+      '$baseURL/transfer/get_unit_suggest',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'unitName': unitName,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString)['clientsSuggest'];
+    } else {
+      //show error message
+      return null;
+    }
   }
 
   Future<LeaveList> getLeaveList() async {
-      var response = await client.post(
-        '$baseURL/leave/leave_list',
-        headers: header,
-        body: jsonEncode(
-          <String, dynamic>{
-            'empId': box.get('empid').toString(),
-            'companyId': box.get('companyid').toString(),
-            'roleId': box.get('role').toString(),
-          },
-        ),
-      );
+    var response = await client.post(
+      '$baseURL/leave/leave_list',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'roleId': box.get('role').toString(),
+        },
+      ),
+    );
 
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        // var jsonString = response.body;
-        return leaveListFromJson(utf8.decode(response.bodyBytes));
-      } else {
-        return null;
-      }
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      // var jsonString = response.body;
+      return leaveListFromJson(utf8.decode(response.bodyBytes));
+    } else {
+      return null;
+    }
   }
 
   Future aprRejLeave(id, status) async {
-      var response = await client.post(
-        '$baseURL/leave/approve_leave',
-        headers: header,
-        body: jsonEncode(
-          <String, String>{
-            'companyId': box.get('companyid').toString(),
-            'approvedBy': box.get('empid').toString(),
-            'status': status,
-            'id': id,
-          },
-        ),
-      );
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return json.decode(jsonString);
-      } else {
-        //show error message
-        return null;
-      }
+    var response = await client.post(
+      '$baseURL/leave/approve_leave',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'approvedBy': box.get('empid').toString(),
+          'status': status,
+          'id': id,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
   }
 
   Future<Attendance> getClientTimings() async {
-      var response = await client.post(
-        '$baseURL/attendance/clients_timing',
-        headers: header,
-        body: jsonEncode(
-          <String, dynamic>{
-            'empId': box.get('empid').toString(),
-            'companyId': box.get('companyid').toString(),
-            'roleId': box.get('role').toString(),
-          },
-        ),
-      );
+    var response = await client.post(
+      '$baseURL/attendance/clients_timing',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'roleId': box.get('role').toString(),
+        },
+      ),
+    );
 
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return attendanceFromJson(jsonString);
-      } else {
-        return null;
-      }
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return attendanceFromJson(jsonString);
+    } else {
+      return null;
+    }
   }
 
   // Future<EmployeeNotations> getNotations(
@@ -1113,29 +1147,29 @@ class RemoteServices {
   }
 
   Future getNotationsBySearch(date, clientId, empName) async {
-      var response = await client.post(
-        '$baseURL/attendance/get_att_suggest',
-        headers: header,
-        body: jsonEncode(
-          <String, dynamic>{
-            'empId': box.get('empid').toString(),
-            'companyId': box.get('companyid').toString(),
-            'date': date,
-            'clientId': clientId,
-            'empName': empName,
-          },
-        ),
-      );
+    var response = await client.post(
+      '$baseURL/attendance/get_att_suggest',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'date': date,
+          'clientId': clientId,
+          'empName': empName,
+        },
+      ),
+    );
 
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        print('jsonString: $jsonString');
-        // return employeeNotationsFromJson(jsonString);
-        return json.decode(jsonString);
-      } else {
-        return null;
-      }
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      print('jsonString: $jsonString');
+      // return employeeNotationsFromJson(jsonString);
+      return json.decode(jsonString);
+    } else {
+      return null;
+    }
   }
 
   Future getEmployeeBySearch(date, clientId, empName, allShifts) async {
@@ -1163,6 +1197,7 @@ class RemoteServices {
       } else {
         return null;
       }
+
   }
 
   Future giveAttendance(
@@ -1178,140 +1213,161 @@ class RemoteServices {
     extraName,
     extraParam,
   }) async {
-      var fullDt = date.toString().split('-');
-      var dt = fullDt[2];
-      var month = fullDt[1] + fullDt[0].substring(2);
-      var response = await client.post(
-        '$baseURL/attendance/incharge_attendance',
-        headers: header,
-        body: jsonEncode(
-          <String, dynamic>{
-            'companyId': box.get('companyid').toString(),
-            'inchargeId': box.get('empid').toString(),
-            'date': dt,
-            'shift': shift,
-            'clientId': clientId,
-            'alies': alies,
-            'empId': empId,
-            'designation': designation,
-            'remarks': remarks,
-            'startTime': startTime.toString(),
-            'endTime': endTime.toString(),
-            'month': month,
-            'extraName': extraName ?? '',
-            'extraParam': extraParam ?? '',
-          },
-        ),
-      );
+    var fullDt = date.toString().split('-');
+    var dt = fullDt[2];
+    var month = fullDt[1] + fullDt[0].substring(2);
+    var response = await client.post(
+      '$baseURL/attendance/incharge_attendance',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'companyId': box.get('companyid').toString(),
+          'inchargeId': box.get('empid').toString(),
+          'date': dt,
+          'shift': shift,
+          'clientId': clientId,
+          'alies': alies,
+          'empId': empId,
+          'designation': designation,
+          'remarks': remarks,
+          'startTime': startTime.toString(),
+          'endTime': endTime.toString(),
+          'month': month,
+          'extraName': extraName ?? '',
+          'extraParam': extraParam ?? '',
+        },
+      ),
+    );
 
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        print(jsonString);
-        return json.decode(jsonString);
-      } else {
-        return null;
-      }
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      print(jsonString);
+      return json.decode(jsonString);
+    } else {
+      return null;
+    }
   }
 
-  Future addRegularizeAtt(alias, checkIn, checkOut, attId,reason) async {
-      var response = await client.post(
-        '$baseURL/attendance/add_regularize_att',
-        headers: header,
-        body: jsonEncode(
-          <String, String>{
-            "companyId": box.get('companyid').toString(),
-            "empId": box.get('empid').toString(),
-            "dailyAttId": attId.toString(),
-            "checkInDateTime": checkIn.toString(),
-            "checkOutDateTime": checkOut.toString(),
-            "attendanceAlias": alias.toString(),
-            "createdBy": box.get('empid').toString(),
-            "reason" : reason.toString()
-          },
-        ),
-      );
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        // return pitstopsFromJson(jsonString);
-        return json.decode(jsonString);
-      } else {
-        //show error message
-        return null;
-      }
+  Future addRegularizeAtt(alias, checkIn, checkOut, attId, reason) async {
+    var response = await client.post(
+      '$baseURL/attendance/add_regularize_att',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          "companyId": box.get('companyid').toString(),
+          "empId": box.get('empid').toString(),
+          "dailyAttId": attId.toString(),
+          "checkInDateTime": checkIn.toString(),
+          "checkOutDateTime": checkOut.toString(),
+          "attendanceAlias": alias.toString(),
+          "createdBy": box.get('empid').toString(),
+          "reason": reason.toString()
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      // return pitstopsFromJson(jsonString);
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future getAllRegNotations() async{
+    var response = await client.post(
+      '$baseURL/attendance/all_notations',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      // return pitstopsFromJson(jsonString);
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
   }
 
   Future getRegularizeAtt() async {
-      var response = await client.post(
-        '$baseURL/attendance/get_regularize_att',
-        headers: header,
-        body: jsonEncode(
-          <String, String>{
-            'companyId': box.get('companyid').toString(),
-            'empId': box.get('empid').toString(),
-          },
-        ),
-      );
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        // return pitstopsFromJson(jsonString);
-        return json.decode(jsonString);
-      } else {
-        //show error message
-        return null;
-      }
+    var response = await client.post(
+      '$baseURL/attendance/get_regularize_att',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'empId': box.get('empid').toString(),
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      // return pitstopsFromJson(jsonString);
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
   }
 
   Future updateRegAtt(
-      checkInTime, checkOutTime, status, adminRemarks, regAttId) async {
-      var response = await client.post(
-        '$baseURL/attendance/update_regularize_att',
-        headers: header,
-        body: jsonEncode(
-          <String, String>{
-            "companyId": box.get('companyid').toString(),
-            "checkInDateTime": checkInTime.toString(),
-            "checkOutDateTime": checkOutTime.toString(),
-            "attendanceAlias": "P",
-            "status": status.toString(),
-            "updatedBy": box.get('empid').toString(),
-            "adminRemarks": adminRemarks.toString(),
-            "regAttId": regAttId.toString()
-          },
-        ),
-      );
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return json.decode(jsonString);
-      } else {
-        //show error message
-        return null;
-      }
+      checkInTime, checkOutTime,alias, status, adminRemarks, regAttId) async {
+    var response = await client.post(
+      '$baseURL/attendance/update_regularize_att',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          "companyId": box.get('companyid').toString(),
+          "checkInDateTime": checkInTime.toString(),
+          "checkOutDateTime": checkOutTime.toString(),
+          "attendanceAlias":alias.toString(),
+          "status": status.toString(),
+          "updatedBy": box.get('empid').toString(),
+          "adminRemarks": adminRemarks.toString(),
+          "regAttId": regAttId.toString()
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
   }
 
   Future getPitstops(rplanId, companyId) async {
-      var response = await client.post(
-        '$baseURL/location/get_rplan_details',
-        headers: header,
-        body: jsonEncode(
-          <String, String>{
-            'rplanId': rplanId,
-            'companyId': companyId,
-          },
-        ),
-      );
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        // return pitstopsFromJson(jsonString);
-        return json.decode(jsonString);
-      } else {
-        //show error message
-        return null;
-      }
+    var response = await client.post(
+      '$baseURL/location/get_rplan_details',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'rplanId': rplanId,
+          'companyId': companyId,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      // return pitstopsFromJson(jsonString);
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
   }
 
   Future updatePitstops(
@@ -1321,29 +1377,28 @@ class RemoteServices {
       empRemarks,
       empId,
       attachment}) async {
-      var response = await client.post(
-        '$baseURL/location/update_pitstops',
-        headers: header,
-        body: jsonEncode(
-          <String, dynamic>{
-            'pitstopId': pitstopId,
-            'checkinLat': checkinLat,
-            'checkinLng': checkinLng,
-            'empRemarks': empRemarks,
-            'empId': empId,
-            'image':
-                attachment == '' ? '' : 'data:image/jpeg;base64,$attachment',
-          },
-        ),
-      );
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return json.decode(jsonString);
-      } else {
-        //show error message
-        return null;
-      }
+    var response = await client.post(
+      '$baseURL/location/update_pitstops',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'pitstopId': pitstopId,
+          'checkinLat': checkinLat,
+          'checkinLng': checkinLng,
+          'empRemarks': empRemarks,
+          'empId': empId,
+          'image': attachment == '' ? '' : 'data:image/jpeg;base64,$attachment',
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
   }
 
   Future pinMyVisit(
@@ -1355,304 +1410,341 @@ class RemoteServices {
       address,
       clientID,
       activity}) async {
-      var response = await client.post(
-        '$baseURL/location/update_pitstops',
-        headers: header,
-        body: jsonEncode(
-          <String, dynamic>{
-            'checkinLat': checkinLat,
-            'checkinLng': checkinLng,
-            'empRemarks': empRemarks,
-            'address': address,
-            'empId': empId,
-            'companyId': box.get('companyid').toString(),
-            'attachment':
-                attachment == '' ? '' : 'data:image/jpeg;base64,$attachment',
-            'clientID': clientID,
-            'activity': activity,
-          },
-        ),
-      );
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return json.decode(jsonString);
-      } else {
-        //show error message
-        return null;
-      }
+    var response = await client.post(
+      '$baseURL/location/update_pitstops',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'checkinLat': checkinLat,
+          'checkinLng': checkinLng,
+          'empRemarks': empRemarks,
+          'address': address,
+          'empId': empId,
+          'companyId': box.get('companyid').toString(),
+          'attachment':
+              attachment == '' ? '' : 'data:image/jpeg;base64,$attachment',
+          'clientID': clientID,
+          'activity': activity,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
   }
 
   Future newTransfer(
       empId, fromPeriod, toPeriod, fromUnit, shift, toUnit) async {
-      var response = await client.post(
-        '$baseURL/transfer/transfer_entry',
-        headers: header,
-        body: jsonEncode(
-          <String, String>{
-            'companyId': box.get('companyid').toString(),
-            'createdBy': box.get('empid').toString(),
-            'empId': empId,
-            'fromPeriod': fromPeriod,
-            'fromUnit': fromUnit,
-            'shift': shift,
-            'toPeriod': toPeriod,
-            'toUnit': toUnit,
-          },
-        ),
-      );
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return json.decode(jsonString);
-      } else {
-        //show error message
-        return null;
-      }
+    var response = await client.post(
+      '$baseURL/transfer/transfer_entry',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'createdBy': box.get('empid').toString(),
+          'empId': empId,
+          'fromPeriod': fromPeriod,
+          'fromUnit': fromUnit,
+          'shift': shift,
+          'toPeriod': toPeriod,
+          'toUnit': toUnit,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
   }
 
   Future<TransferList> getTransferList() async {
-      var response = await client.post(
-        '$baseURL/transfer/get_transfer_list',
-        headers: header,
-        body: jsonEncode(
-          <String, dynamic>{
-            'empId': box.get('empid').toString(),
-            'companyId': box.get('companyid').toString(),
-          },
-        ),
-      );
+    var response = await client.post(
+      '$baseURL/transfer/get_transfer_list',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+        },
+      ),
+    );
 
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return transferListFromJson(jsonString);
-      } else {
-        return null;
-      }
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return transferListFromJson(jsonString);
+    } else {
+      return null;
+    }
   }
 
   Future aprRejTransfer(empId, clientId, orderId, status) async {
-      var response = await client.post(
-        '$baseURL/transfer/approve_transfer',
-        headers: header,
-        body: jsonEncode(
-          <String, dynamic>{
-            'companyId': box.get('companyid').toString(),
-            'rejected': status == '0' ? true : false,
-            'orderId': orderId,
-            'empId': empId,
-            'clientId': clientId,
-          },
-        ),
-      );
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return json.decode(jsonString);
-      } else {
-        //show error message
-        return null;
-      }
+    var response = await client.post(
+      '$baseURL/transfer/approve_transfer',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'companyId': box.get('companyid').toString(),
+          'rejected': status == '0' ? true : false,
+          'orderId': orderId,
+          'empId': empId,
+          'clientId': clientId,
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
   }
 
   Future aprRejExpense(
       adminRemarks, amount, empId, expenseEmpId, status) async {
-      var response = await client.post(
-        '$baseURL/expense/update_expenses',
-        headers: header,
-        body: jsonEncode(
-          <String, dynamic>{
-            "companyId": box.get('companyid').toString(),
-            "adminRemarks": adminRemarks.toString(),
-            "amount": amount.toString(),
-            "empId": empId.toString(),
-            "expenseEmpId": expenseEmpId.toString(),
-            "status": status.toString(),
-          },
-        ),
-      );
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return json.decode(jsonString);
-      } else {
-        //show error message
-        return null;
-      }
+    var response = await client.post(
+      '$baseURL/expense/update_expenses',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          "companyId": box.get('companyid').toString(),
+          "adminRemarks": adminRemarks.toString(),
+          "amount": amount.toString(),
+          "empId": empId.toString(),
+          "expenseEmpId": expenseEmpId.toString(),
+          "status": status.toString(),
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
   }
 
   Future<Support> getSupport() async {
-      var response = await client.post(
-        '$baseURL/user/get_support',
-        headers: header,
-        body: jsonEncode(
-          <String, dynamic>{
-            'empId': box.get('empid').toString(),
-            'companyId': box.get('companyid').toString(),
-          },
-        ),
-      );
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return supportFromJson(jsonString);
-      } else {
-        //show error message
-        return null;
-      }
+    var response = await client.post(
+      '$baseURL/user/get_support',
+      headers: header,
+      body: jsonEncode(
+        <String, dynamic>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return supportFromJson(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
   }
 
   Future getNewEmpAdv(amount) async {
-      var response = await client.post('$baseURL/expense/new_adv_exp',
-          headers: header,
-          body: jsonEncode(<String, dynamic>{
-            "companyId": box.get('companyid').toString(),
-            "empId": box.get('empid').toString(),
-            "amount": amount,
-            "purpose": "expenses",
-            'expenseTypeId': "2"
-          }));
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return json.decode(jsonString);
-      } else {
-        //show error message
-        return null;
-      }
+    var response = await client.post('$baseURL/expense/new_adv_exp',
+        headers: header,
+        body: jsonEncode(<String, dynamic>{
+          "companyId": box.get('companyid').toString(),
+          "empId": box.get('empid').toString(),
+          "amount": amount,
+          "purpose": "expenses",
+          'expenseTypeId': "2"
+        }));
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
   }
 
   Future getExpAdv() async {
-      var response = await client.post('$baseURL/expense/get_emp_adv',
-          headers: header,
-          body: jsonEncode(<String, dynamic>{
-            'empId': box.get('empid').toString(),
-            'companyId': box.get('companyid').toString(),
-          }));
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return json.decode(jsonString);
-      } else {
-        return null;
-      }
+    var response = await client.post('$baseURL/expense/get_emp_adv',
+        headers: header,
+        body: jsonEncode(<String, dynamic>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+        }));
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      return null;
+    }
   }
 
   Future getExpAdvAdmin(empId) async {
-      var response = await client.post('$baseURL/expense/get_emp_adv',
-          headers: header,
-          body: jsonEncode(<String, dynamic>{
-            'empId': empId,
-            'companyId': box.get('companyid').toString(),
-          }));
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return json.decode(jsonString);
-      } else {
-        return null;
-      }
+    var response = await client.post('$baseURL/expense/get_emp_adv',
+        headers: header,
+        body: jsonEncode(<String, dynamic>{
+          'empId': empId,
+          'companyId': box.get('companyid').toString(),
+        }));
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      return null;
+    }
   }
 
-  Future getEmpExpenses() async {
-      var response = await client.post('$baseURL/expense/get_emp_expenses',
-          headers: header,
-          body: jsonEncode(<String, String>{
-            'empId': box.get('empid').toString(),
-            'companyId': box.get('companyid').toString(),
-          }));
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return json.decode(jsonString);
-      } else {
-        return null;
-      }
+  Future getEmpExpenses(param) async {
+    var response = await client.post('$baseURL/expense/get_emp_expenses',
+        headers: header,
+        body: jsonEncode(<String, String>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'parameter':param.toString()
+        }));
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      return null;
+    }
+  }
+
+  Future getExpensesAdmin(fromDate,toDate) async {
+    var response = await client.post('$baseURL/expense/get_emp_expenses',
+        headers: header,
+        body: jsonEncode(<String, String>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'fromDate': fromDate.toString(),
+          'toDate': toDate.toString()
+        }));
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      return null;
+    }
+  }
+
+  Future getExpensesAdminFt(fromDate,toDate) async {
+    var response = await client.post('$baseURL/expense/get_emp_expenses',
+        headers: header,
+        body: jsonEncode(<String, String>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          'fromDate': fromDate.toString(),
+          'toDate': toDate.toString()
+        }));
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      return null;
+    }
   }
 
   Future getEmpExpensesAll(empId) async {
-      var response = await client.post('$baseURL/expense/get_emp_expenses',
-          headers: header,
-          body: jsonEncode(<String, String>{
-            'empId': empId,
-            'companyId': box.get('companyid').toString(),
-          }));
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return json.decode(jsonString);
-      } else {
-        return null;
-      }
+    var response = await client.post('$baseURL/expense/get_emp_expenses',
+        headers: header,
+        body: jsonEncode(<String, String>{
+          'empId': empId,
+          'companyId': box.get('companyid').toString(),
+        }));
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      return null;
+    }
   }
 
   Future getEmpExpensesAdmin(empId, fromDate, toDate) async {
-      var response = await client.post('$baseURL/expense/get_emp_expenses',
-          headers: header,
-          body: jsonEncode(<String, String>{
-            'empId': empId,
-            'companyId': box.get('companyid').toString(),
-            'fromDate': fromDate.toString(),
-            'toDate': toDate.toString()
-          }));
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return json.decode(jsonString);
-      } else {
-        return null;
-      }
+    var response = await client.post('$baseURL/expense/get_emp_expenses',
+        headers: header,
+        body: jsonEncode(<String, String>{
+          'empId': empId,
+          'companyId': box.get('companyid').toString(),
+          'fromDate': fromDate.toString(),
+          'toDate': toDate.toString()
+        }));
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      return null;
+    }
   }
 
   Future getEmpExpense(status) async {
-      var response = await client.post('$baseURL/expense/get_emp_expenses',
-          headers: header,
-          body: jsonEncode(<String, String>{
-            'empId': box.get('empid').toString(),
-            'companyId': box.get('companyid').toString(),
-            "status": status
-          }));
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return json.decode(jsonString);
-      } else {
-        return null;
-      }
+    var response = await client.post('$baseURL/expense/get_emp_expenses',
+        headers: header,
+        body: jsonEncode(<String, String>{
+          'empId': box.get('empid').toString(),
+          'companyId': box.get('companyid').toString(),
+          "status": status
+        }));
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      return null;
+    }
   }
 
   Future getEmpExpenseAdmin(empId, status) async {
-      var response = await client.post('$baseURL/expense/get_emp_expenses',
-          headers: header,
-          body: jsonEncode(<String, String>{
-            'empId': empId,
-            'companyId': box.get('companyid').toString(),
-            "status": status
-          }));
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return json.decode(jsonString);
-      } else {
-        return null;
-      }
+    var response = await client.post('$baseURL/expense/get_emp_expenses',
+        headers: header,
+        body: jsonEncode(<String, String>{
+          'empId': empId,
+          'companyId': box.get('companyid').toString(),
+          "status": status
+        }));
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      return null;
+    }
   }
 
   Future getExpAttachments(expenseEmpId) async {
-      var response = await client.post('$baseURL/expense/exp_attachments',
-          headers: header,
-          body: jsonEncode({
-            "companyId": box.get('companyid').toString(),
-            "expenseEmpId": expenseEmpId
-          }));
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        return json.decode(jsonString);
-      } else {
-        return null;
-      }
+    var response = await client.post('$baseURL/expense/exp_attachments',
+        headers: header,
+        body: jsonEncode({
+          "companyId": box.get('companyid').toString(),
+          "expenseEmpId": expenseEmpId
+        }));
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      return null;
+    }
   }
 
   Future getBillAttachments(expenseBillId) async {

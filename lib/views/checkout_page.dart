@@ -5,7 +5,11 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:fame/connection/remote_services.dart';
 import 'package:fame/controllers/dashboard_controller.dart';
+import 'package:fame/controllers/dbcal_controller.dart';
 import 'package:fame/controllers/profile_controller.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:location/location.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../utils/utils.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
@@ -30,6 +34,7 @@ class CheckoutPage extends StatefulWidget {
 }
 
 class _CheckoutPageState extends State<CheckoutPage> {
+  final DBCalController calC = Get.put(DBCalController());
   final DashboardController dbC = Get.put(DashboardController());
   final ProfileController pC = Get.put(ProfileController());
   final CheckoutController checkoutController = Get.put(CheckoutController());
@@ -46,6 +51,15 @@ class _CheckoutPageState extends State<CheckoutPage> {
   var hours;
   var userCheckOutTime;
   var checkOutTime;
+  GoogleMapController mapController;
+  Location location = Location();
+  LatLng _currentLocation;
+
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+  }
+
+  final DateFormat formatter = DateFormat('jm');
 
   Future<Null> workSession() {
     final DateTime checkOutTime = DateTime.now();
@@ -62,15 +76,24 @@ class _CheckoutPageState extends State<CheckoutPage> {
     return DateFormat('h:mm')
             .format(DateFormat('HH:mm:ss').parse(time))
             .toString() +
+        " " +
         DateFormat('a')
             .format(DateFormat('HH:mm:ss').parse(time))
             .toString()
-            .toLowerCase();
+            .toUpperCase();
   }
 
   @override
   void initState() {
     super.initState();
+    String inputString = chkInDt;
+    DateTime dateTime = DateTime.parse(inputString);
+
+// Convert the DateTime object to a string in hh:mm a format
+    String formattedTime = DateFormat('h:mm a').format(dateTime);
+// Print the formatted time
+    print(formattedTime);
+    print(chkInDt);
     new Future.delayed(Duration.zero, () {
       String timeString = chkOutDt;
       TimeOfDay apiTimeOfDay =
@@ -175,6 +198,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
     checkoutController.pr.style(
       backgroundColor: Colors.white,
     );
+    _getCurrentLocation();
+  }
+
+  Future<void> _getCurrentLocation() async {
+    setState(() {
+      _currentLocation = LatLng(checkoutController.currentPosition.latitude,
+          checkoutController.currentPosition.longitude);
+    });
   }
 
   @override
@@ -267,7 +298,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
     print(res);
     if (res != null && res) {
-      // ignore: unawaited_futures
       showDialog(
           context: context,
           builder: (context) {
@@ -286,25 +316,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 ),
                 child: Column(
                   children: [
-                    SizedBox(
-                      height: 25.0,
-                    ),
-                    Image.asset(
-                      'assets/images/success.png',
-                      scale: 2.0,
-                      color: AppUtils().greenColor,
-                    ),
-                    SizedBox(
-                      height: 15.0,
-                    ),
-                    Text(
-                      'Thank you!',
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Spacer(),
                     file != null
                         ? ClipOval(
                             child: Image.file(
@@ -321,7 +332,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             ),
                             radius: 100.0,
                           ),
-                    // }),
                     SizedBox(
                       height: 15.0,
                     ),
@@ -334,7 +344,18 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       ),
                     ),
                     SizedBox(
-                      height: 40.0,
+                      height: 10.0,
+                    ),
+                    Text(
+                      RemoteServices().box.get('empid').toString(),
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.0,
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -344,7 +365,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Employee ID',
+                                'Check In Time',
                                 style: TextStyle(
                                   fontSize: 18.0,
                                   color: Colors.grey,
@@ -355,13 +376,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                 height: 5.0,
                               ),
                               Text(
-                                RemoteServices().box.get('empid').toString(),
+                                formatter.format(DateTime.parse(
+                                    dbC.response['dailyAttendance']
+                                        ['checkInDateTime'])),
                                 style: TextStyle(
                                   fontSize: 18.0,
-                                  color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                 ),
-                              )
+                              ),
                             ]),
                         Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -392,43 +414,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       ],
                     ),
                     SizedBox(
-                      height: 50.0,
+                      height: 20.0,
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 15.0),
+                      padding: const EdgeInsets.only(left: 5.0),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Location',
-                                  style: TextStyle(
-                                    fontSize: 18.0,
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 5.0,
-                                ),
-                                Container(
-                                  width: 150.0,
-                                  height: 85.0,
-                                  child: Obx(() {
-                                    return Text(
-                                      checkoutController.currentAddress.value,
-                                      style: TextStyle(
-                                        fontSize: 18.0,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    );
-                                  }),
-                                )
-                              ]),
                           Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -447,47 +440,63 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                   children: [
                                     Text(
                                       convertTimeWithParse(
-                                          dbC.response['empdetails']
-                                              ['shiftStartTime']),
+                                              dbC.response['empdetails']
+                                                  ['shiftStartTime']) +
+                                          ' to \n' +
+                                          convertTimeWithParse(
+                                              dbC.response['empdetails']
+                                                  ['shiftEndTime']),
                                       style: TextStyle(
                                         fontSize: 18.0,
                                         fontWeight: FontWeight.bold,
                                       ),
-                                    ),
-                                    Text(
-                                      ' to ',
-                                      style: TextStyle(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    Text(
-                                      convertTimeWithParse(
-                                          dbC.response['empdetails']
-                                              ['shiftEndTime']),
-                                      style: TextStyle(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
+                                    )
                                   ],
                                 ),
                               ]),
+                          SizedBox(
+                            height: 20.0,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right:40.0),
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Worked for',
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 5.0,
+                                  ),
+                                  Text(
+                                    '$hours' 'hours',
+                                    style: TextStyle(
+                                      fontSize: 20.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ]),
+                          ),
                         ],
                       ),
                     ),
                     SizedBox(
-                      height: 20.0,
+                      height: 10.0,
                     ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 25.0),
+                      child: Row(children: [
                         Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Worked for',
+                                'Address',
                                 style: TextStyle(
                                   fontSize: 18.0,
                                   color: Colors.grey,
@@ -497,58 +506,141 @@ class _CheckoutPageState extends State<CheckoutPage> {
                               SizedBox(
                                 height: 5.0,
                               ),
-                              Text(
-                                '$hours' 'hours',
-                                style: TextStyle(
-                                  fontSize: 20.0,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                              Container(
+                                width: 150.0,
+                                height: 85.0,
+                                child: Obx(() {
+                                  return Text(
+                                    checkoutController.currentAddress.value,
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  );
+                                }),
+                              )
                             ]),
-                      ],
+                        SizedBox(
+                          width: 30.0,
+                        ),
+                        Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Attendance alias',
+                                  style: TextStyle(
+                                    fontSize: 18.0,
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 5.0,
+                                ),
+                                Container(
+                                  width: 130,
+                                  height: 50.0,
+                                  child: Text(
+                                    checkoutController.checkOutAlias.toString(),
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ]),
+                      ]),
                     ),
                     SizedBox(
-                      height: 50.0,
+                      height: 5.0,
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.offAll(DashboardPage());
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 25.0,
-                          vertical: 15.0,
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 25.0, top: 10.0),
+                          child: Row(
+                            children: [
+                              Text(
+                                'Location',
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                        decoration: BoxDecoration(
-                          color: AppUtils().greenColor,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(
-                              30.0,
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Card(
+                            elevation: 5.0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: Container(
+                                height: 130.0,
+                                child: GoogleMap(
+                                  onMapCreated: _onMapCreated,
+                                  zoomControlsEnabled: false,
+                                  initialCameraPosition: CameraPosition(
+                                    target: LatLng(
+                                        checkoutController
+                                            .currentPosition.latitude,
+                                        checkoutController
+                                            .currentPosition.longitude),
+                                    zoom: 12.0,
+                                  ),
+                                  markers: _currentLocation == null
+                                      ? null
+                                      : {
+                                          Marker(
+                                            markerId:
+                                                MarkerId('Current Location'),
+                                            position: _currentLocation,
+                                            icon: BitmapDescriptor
+                                                .defaultMarkerWithHue(
+                                                    BitmapDescriptor.hueAzure),
+                                          ),
+                                        },
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                        child: Text(
-                          'Okay',
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    SvgPicture.asset(
+                      'assets/images/Right Icon.svg',
                     ),
                     SizedBox(
                       height: 15.0,
-                    )
+                    ),
+                    Text(
+                      'Thank you!',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ],
                 ),
               ),
             );
           });
-      // Timer(Duration(seconds: 2), () {
-      //   Get.offAll(DashboardPage());
-      // });
+      Timer(Duration(seconds: 5), () {
+        Get.offAll(DashboardPage());
+      });
     }
   }
 

@@ -154,9 +154,9 @@ class _BillsWidgetState extends State<BillsListWidget> {
                                       height: 30.0,
                                       alignment: Alignment.center,
                                       decoration: BoxDecoration(
-                                        color: Colors.yellow[100],
+                                        color: Colors.teal[100],
                                         border: Border.all(
-                                          color: Colors.yellow[100],
+                                          color: Colors.teal[100],
                                         ), // Set border width
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(
@@ -165,7 +165,7 @@ class _BillsWidgetState extends State<BillsListWidget> {
                                       child: Text(
                                         getStatus(billsList['status']),
                                         style: TextStyle(
-                                            color: Colors.yellow,
+                                            color: Colors.teal,
                                             fontSize: 12.0,
                                             fontWeight: FontWeight.bold),
                                       ),

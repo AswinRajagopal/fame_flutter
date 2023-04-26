@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dotted_line/dotted_line.dart';
 import 'package:fame/connection/remote_services.dart';
 import 'package:fame/controllers/expense_controller.dart';
@@ -36,7 +34,7 @@ class ExpensesDetailList extends StatefulWidget {
 class _ExpensesDetailListState extends State<ExpensesDetailList> {
   final ExpenseController expC = Get.put(ExpenseController());
   TextEditingController expense = TextEditingController();
-  TextEditingController adminRemarks=TextEditingController();
+  TextEditingController adminRemarks = TextEditingController();
   var expenses;
   final int length;
   final int index;
@@ -64,6 +62,26 @@ class _ExpensesDetailListState extends State<ExpensesDetailList> {
     } else {
       return 'Rejected';
     }
+  }
+
+  void _rejSubmit() async {
+    await expC.aprRejExpense(adminRemarks.text, expense.text, expenses['empId'],
+        expenses['expenseEmpId'], '2');
+
+    Navigator.of(context).pop();
+  }
+
+  void _acceptSubmit() async {
+    expenses['adminRemarks'] = adminRemarks.text.toString();
+    expenses['amount'] = expense.text.toString();
+    await expC.aprRejExpense(adminRemarks.text, expense.text, expenses['empId'],
+        expenses['expenseEmpId'], '1');
+    // var expRes = await RemoteServices().sendFeedback(expense.text);
+    // if (expRes['success']) {
+    //   Get.back();
+    // }
+
+    Navigator.of(context).pop();
   }
 
   @override
@@ -208,14 +226,15 @@ class _ExpensesDetailListState extends State<ExpensesDetailList> {
                             ),
                             SizedBox(height: 15.0),
                             RowWidget(
-                              'Admin Remarks', expenses['adminRemarks'],
+                              'Admin Remarks',
+                              expenses['adminRemarks'],
                             ),
                             SizedBox(height: 15.0),
-                            RowWidget(
-                                'UpdatedOn', convertDate(expenses['updatedOn'])),
+                            RowWidget('UpdatedOn',
+                                convertDate(expenses['updatedOn'])),
                             SizedBox(height: 15.0),
-                            RowWidget(
-                                'CreatedOn', convertDate(expenses['createdOn'])),
+                            RowWidget('CreatedOn',
+                                convertDate(expenses['createdOn'])),
                             SizedBox(height: 15.0),
                             Row(
                               children: [
@@ -242,7 +261,8 @@ class _ExpensesDetailListState extends State<ExpensesDetailList> {
                                                 image: NetworkImage(expC
                                                     .attachment[0]
                                                     .toString()),
-                                                fit: BoxFit.cover), //<-- SEE HERE
+                                                fit: BoxFit
+                                                    .cover), //<-- SEE HERE
                                           ),
                                         ),
                                       )
@@ -273,7 +293,8 @@ class _ExpensesDetailListState extends State<ExpensesDetailList> {
                                                 image: NetworkImage(expC
                                                     .attachment[1]
                                                     .toString()),
-                                                fit: BoxFit.cover), //<-- SEE HERE
+                                                fit: BoxFit
+                                                    .cover), //<-- SEE HERE
                                           ),
                                         ),
                                       )
@@ -304,7 +325,8 @@ class _ExpensesDetailListState extends State<ExpensesDetailList> {
                                                 image: NetworkImage(expC
                                                     .attachment[2]
                                                     .toString()),
-                                                fit: BoxFit.cover), //<-- SEE HERE
+                                                fit: BoxFit
+                                                    .cover), //<-- SEE HERE
                                           ),
                                         ),
                                       )
@@ -343,59 +365,80 @@ class _ExpensesDetailListState extends State<ExpensesDetailList> {
                                                     titleStyle: TextStyle(
                                                         fontSize: 20.0,
                                                         fontWeight:
-                                                        FontWeight.bold),
+                                                            FontWeight.bold),
                                                     radius: 20.0,
                                                     content: Padding(
                                                       padding:
-                                                      const EdgeInsets.only(
-                                                          bottom: 50.0),
+                                                          const EdgeInsets.only(
+                                                              bottom: 50.0),
                                                       child: Card(
-                                                        shape:
-                                                        RoundedRectangleBorder(
+                                                        shape: RoundedRectangleBorder(
                                                             borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                                5.0),
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        5.0),
                                                             side: BorderSide(
                                                                 color: Colors
                                                                     .black38)),
                                                         child: TextField(
-                                                            controller: adminRemarks,
+                                                          controller:
+                                                              adminRemarks,
                                                           maxLength: 160,
-                                                          maxLengthEnforced: true,
+                                                          maxLengthEnforced:
+                                                              true,
                                                           maxLines: 4,
-                                                          keyboardType: TextInputType.multiline,
-                                                            decoration:
-                                                            InputDecoration(
-                                                                border:
-                                                                InputBorder
-                                                                    .none,
-                                                                contentPadding:
-                                                                EdgeInsets
-                                                                    .all(
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .multiline,
+                                                          decoration:
+                                                              InputDecoration(
+                                                            border: InputBorder
+                                                                .none,
+                                                            contentPadding:
+                                                                EdgeInsets.all(
                                                                     10.0),
-                                                              hintStyle: TextStyle(
-                                                                color: Colors.grey[600],
-                                                                fontSize: 18.0,
-                                                              ),
-                                                              hintText: 'Remarks',),
+                                                            hintStyle:
+                                                                TextStyle(
+                                                              color: Colors
+                                                                  .grey[600],
+                                                              fontSize: 18.0,
+                                                            ),
+                                                            hintText: 'Remarks',
                                                           ),
+                                                        ),
                                                       ),
                                                     ),
                                                     barrierDismissible: false,
                                                     confirmTextColor:
-                                                    Colors.white,
-                                                    textConfirm: 'Reject',
+                                                        Colors.white,
+                                                    textConfirm: 'Submit',
                                                     buttonColor:
-                                                    AppUtils().blueColor,
+                                                        AppUtils().blueColor,
                                                     onConfirm: () async {
-                                                      expenses['adminRemarks']=adminRemarks.text.toString();
-                                                      expC.aprRejExpense(
-                                                          adminRemarks.text,
-                                                          expense.text,
-                                                          expenses['empId'],
-                                                          expenses['expenseEmpId'],
-                                                          '2');
+                                                      if(adminRemarks.text.isEmpty){
+                                                        Get.snackbar(
+                                                          null,
+                                                          'Please provide remarks',
+                                                          colorText: Colors.white,
+                                                          backgroundColor: Colors.black87,
+                                                          snackPosition: SnackPosition.BOTTOM,
+                                                          margin: EdgeInsets.symmetric(
+                                                            horizontal: 8.0,
+                                                            vertical: 10.0,
+                                                          ),
+                                                          padding: EdgeInsets.symmetric(
+                                                            horizontal: 12.0,
+                                                            vertical: 18.0,
+                                                          ),
+                                                          borderRadius: 5.0,
+                                                        );
+                                                      }
+                                                      else{
+                                                        expenses['adminRemarks'] =
+                                                            adminRemarks.text
+                                                                .toString();
+                                                        _rejSubmit();
+                                                      }
                                                     });
                                               },
                                               child: Text(
@@ -421,7 +464,8 @@ class _ExpensesDetailListState extends State<ExpensesDetailList> {
                                             RaisedButton(
                                               onPressed: () async {
                                                 expense.text =
-                                                    expenses['amount'].toString();
+                                                    expenses['amount']
+                                                        .toString();
                                                 await Get.defaultDialog(
                                                     title: 'Expenses',
                                                     titleStyle: TextStyle(
@@ -434,60 +478,56 @@ class _ExpensesDetailListState extends State<ExpensesDetailList> {
                                                           const EdgeInsets.only(
                                                               bottom: 50.0),
                                                       child: Card(
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5.0),
-                                                                side: BorderSide(
-                                                                    color: Colors
-                                                                        .black38)),
-                                                        child: Column(children: [
-                                                          TextField(
-                                                            controller: expense,
-                                                            keyboardType:
-                                                                TextInputType
-                                                                    .number,
-                                                            decoration:
-                                                                InputDecoration(
-                                                                    border:
-                                                                        InputBorder
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        5.0),
+                                                            side: BorderSide(
+                                                                color: Colors
+                                                                    .black38)),
+                                                        child: Column(
+                                                            children: [
+                                                              TextField(
+                                                                controller:
+                                                                    expense,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .number,
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                        border: InputBorder
                                                                             .none,
-                                                                    contentPadding:
-                                                                        EdgeInsets
-                                                                            .all(
+                                                                        contentPadding:
+                                                                            EdgeInsets.all(
                                                                                 10.0),
-                                                                    hintStyle:
-                                                                        TextStyle(
-                                                                      color: Colors
-                                                                              .grey[
-                                                                          600],
-                                                                      fontSize:
-                                                                          18.0,
-                                                                    )),
-                                                          ),
-                                                          TextField(
-                                                            controller: adminRemarks,
-                                                            decoration:
-                                                            InputDecoration(
-                                                                border:
-                                                                InputBorder
-                                                                    .none,
-                                                                contentPadding:
-                                                                EdgeInsets
-                                                                    .all(
-                                                                    10.0),
-                                                                hintStyle:
-                                                                TextStyle(
-                                                                  color: Colors
-                                                                      .grey[
-                                                                  600],
-                                                                  fontSize:
-                                                                  18.0,
-                                                                )),
-                                                          ),
-                                                        ]),
+                                                                        hintStyle:
+                                                                            TextStyle(
+                                                                          color:
+                                                                              Colors.grey[600],
+                                                                          fontSize:
+                                                                              18.0,
+                                                                        )),
+                                                              ),
+                                                              TextField(
+                                                                controller:
+                                                                    adminRemarks,
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                        border: InputBorder
+                                                                            .none,
+                                                                        contentPadding:
+                                                                            EdgeInsets.all(
+                                                                                10.0),
+                                                                        hintStyle:
+                                                                            TextStyle(
+                                                                          color:
+                                                                              Colors.grey[600],
+                                                                          fontSize:
+                                                                              18.0,
+                                                                        )),
+                                                              ),
+                                                            ]),
                                                       ),
                                                     ),
                                                     barrierDismissible: false,
@@ -497,22 +537,7 @@ class _ExpensesDetailListState extends State<ExpensesDetailList> {
                                                     buttonColor:
                                                         AppUtils().blueColor,
                                                     onConfirm: () async {
-                                                      expenses['adminRemarks']=adminRemarks.text.toString();
-                                                      expenses['amount'] =
-                                                          expense.text.toString();
-                                                      expC.aprRejExpense(
-                                                          adminRemarks.text,
-                                                          expense.text,
-                                                          expenses['empId'],
-                                                          expenses['expenseEmpId'],
-                                                          '1');
-                                                      var expRes =
-                                                          await RemoteServices()
-                                                              .sendFeedback(
-                                                                  expense.text);
-                                                      if (expRes['success']) {
-                                                        Get.back();
-                                                      }
+                                                      _acceptSubmit();
                                                     });
                                               },
                                               child: Text(

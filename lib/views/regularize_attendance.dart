@@ -2,6 +2,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:fame/controllers/regularize_attendance_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'dashboard_page.dart';
 
 import '../controllers/sos_controller.dart';
 import 'package:get/get.dart';
@@ -34,11 +35,10 @@ class _RegularizeAttendancePageState extends State<RegularizeAttendancePage> {
   var event;
   var checkInTime;
   var checkOutTime;
-  String _alias;
+  var _alias;
   var attId;
   _RegularizeAttendancePageState(this.dtFormat, this.event, this.checkInTime,
       this.checkOutTime, this.attId);
-
 
   Future<void> _checkInSelectTime(BuildContext context) async {
     TimeOfDay pickedTime = await showTimePicker(
@@ -84,7 +84,6 @@ class _RegularizeAttendancePageState extends State<RegularizeAttendancePage> {
     }
   }
 
-
   @override
   void initState() {
     raC.pr = ProgressDialog(
@@ -118,12 +117,18 @@ class _RegularizeAttendancePageState extends State<RegularizeAttendancePage> {
     raC.pr.style(
       backgroundColor: Colors.white,
     );
+    Future.delayed(Duration(milliseconds: 100), raC.getAllRegNotations);
+
     super.initState();
   }
 
   @override
   void dispose() {
     super.dispose();
+  }
+
+  Future<bool> backButtonPressed() {
+    return Get.offAll(DashboardPage());
   }
 
   @override
@@ -135,42 +140,44 @@ class _RegularizeAttendancePageState extends State<RegularizeAttendancePage> {
           'Regularize Attendance',
         ),
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-                child: Card(
-                  elevation: 5.0,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      side: BorderSide(color: Colors.white)),
-                  child: Container(
-                    width: 500,
-                    height: 150.0,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Expanded(child: RowWidget('Date', dtFormat)),
-                          Expanded(
-                            child: RowWidget('Attendance Alias', event),
-                          ),
-                          Expanded(
-                            child: RowWidget('Checkin Time', checkInTime),
-                          ),
-                          Expanded(
-                            child: RowWidget('Checkout Time', checkOutTime),
-                          ),
-                        ],
+      body: WillPopScope(
+        onWillPop: backButtonPressed,
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+                  child: Card(
+                    elevation: 5.0,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        side: BorderSide(color: Colors.white)),
+                    child: Container(
+                      width: 500,
+                      height: 150.0,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            Expanded(child: RowWidget('Date', dtFormat)),
+                            Expanded(
+                              child: RowWidget('Attendance Alias', event),
+                            ),
+                            Expanded(
+                              child: RowWidget('Checkin Time', checkInTime),
+                            ),
+                            Expanded(
+                              child: RowWidget('Checkout Time', checkOutTime),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              Padding(
+                Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
                   child: Card(
@@ -179,278 +186,284 @@ class _RegularizeAttendancePageState extends State<RegularizeAttendancePage> {
                         side: BorderSide(color: Colors.black38)),
                     child: Container(
                       height: 60,
-                      child: DropdownSearch<String>(
-                        validator: (v) => v == null ? "required field" : null,
-                        hint: "Alias",
-                        mode: Mode.MENU,
-                        dropdownSearchDecoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(left: 10.0, top: 20.0),
-                          fillColor: Colors.white,
-                          filled: true,
-                          border: UnderlineInputBorder(
-                            borderSide: BorderSide.none,
+                      child: TextField(
+                        controller: checkInDt,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          isDense: true,
+                          contentPadding: EdgeInsets.all(10),
+                          hintStyle: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 18.0,
+                            // fontWeight: FontWeight.bold,
+                          ),
+                          labelText: 'CheckIn Time',
+                          labelStyle:
+                              TextStyle(color: Colors.grey[600], fontSize: 18.0),
+                          suffixIcon: Icon(
+                            Icons.calendar_today,
+                            size: 25.0,
                           ),
                         ),
-                        showAsSuffixIcons: true,
-                        dropdownButtonBuilder: (_) => Padding(
-                          padding: const EdgeInsets.only(right: 10.0, top: 15.0),
-                          child: const Icon(
-                            Icons.arrow_drop_down,
-                            size: 24,
-                            color: Colors.black,
-                          ),
-                        ),
-                        showSelectedItem: true,
-                        items: [
-                          'P'
-                        ],
-                        onChanged: (String value) {
-                          setState(() {
-                            _alias = value;
-                          });
+                        readOnly: true,
+                        keyboardType: null,
+                        onTap: () {
+                          _checkInSelectTime(context);
+                          // _checkInTime(context);
                         },
                       ),
                     ),
-                  )),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      side: BorderSide(color: Colors.black38)),
-                  child: Container(
-                    height: 60,
-                    child: TextField(
-                      controller: checkInDt,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        isDense: true,
-                        contentPadding: EdgeInsets.all(10),
-                        hintStyle: TextStyle(
-                          color: Colors.grey[600],
-                          fontSize: 18.0,
-                          // fontWeight: FontWeight.bold,
-                        ),
-                        labelText: 'CheckIn Time',
-                        labelStyle:
-                            TextStyle(color: Colors.grey[600], fontSize: 18.0),
-                        suffixIcon: Icon(
-                          Icons.calendar_today,
-                          size: 25.0,
-                        ),
-                      ),
-                      readOnly: true,
-                      keyboardType: null,
-                      onTap: () {
-                        _checkInSelectTime(context);
-                        // _checkInTime(context);
-                      },
-                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      side: BorderSide(color: Colors.black38)),
-                  child: Container(
-                    height: 60,
-                    child: TextField(
-                      controller: checkOutDt,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        isDense: true,
-                        contentPadding: EdgeInsets.all(10),
-                        hintStyle: TextStyle(
-                          color: Colors.grey[600],
-                          fontSize: 18.0,
-                          // fontWeight: FontWeight.bold,
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        side: BorderSide(color: Colors.black38)),
+                    child: Container(
+                      height: 60,
+                      child: TextField(
+                        controller: checkOutDt,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          isDense: true,
+                          contentPadding: EdgeInsets.all(10),
+                          hintStyle: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 18.0,
+                            // fontWeight: FontWeight.bold,
+                          ),
+                          labelText: 'CheckOut Time',
+                          labelStyle:
+                              TextStyle(color: Colors.grey[600], fontSize: 18.0),
+                          suffixIcon: Icon(
+                            Icons.calendar_today,
+                            size: 25.0,
+                          ),
                         ),
-                        labelText: 'CheckOut Time',
-                        labelStyle:
-                            TextStyle(color: Colors.grey[600], fontSize: 18.0),
-                        suffixIcon: Icon(
-                          Icons.calendar_today,
-                          size: 25.0,
-                        ),
-                      ),
-                      readOnly: true,
-                      keyboardType: null,
-                      onTap: () {
-                        _checkOutSelectTime(context);
-                        // _checkOutTime(context);
-                      },
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius:
-                      BorderRadius
-                          .circular(
-                          5.0),
-                      side: BorderSide(
-                          color: Colors
-                              .black38)),
-                  child: Container(
-                    child: TextField(
-                      controller: reason,
-                      maxLength: 1000,
-                      maxLines: 4,
-                      decoration:
-                      InputDecoration(
-                        border:
-                        InputBorder
-                            .none,
-                        isDense: true,
-                        contentPadding:
-                        EdgeInsets
-                            .all(10),
-                        hintStyle:
-                        TextStyle(
-                          color: Colors
-                              .grey[600],
-                          fontSize: 18.0,
-                          // fontWeight: FontWeight.bold,
-                        ),
-                        hintText:
-                        'Reason',
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 12.0,
-                  horizontal: 20.0,
-                ),
-                child: RaisedButton(
-                  onPressed: () {
-                    FocusScope.of(context).requestFocus(FocusNode());
-                    if (_alias == null || checkIn == null || checkOut == null) {
-                      Get.snackbar(
-                        null,
-                        'Please provide all the details',
-                        colorText: Colors.white,
-                        backgroundColor: Colors.black87,
-                        snackPosition: SnackPosition.BOTTOM,
-                        margin: EdgeInsets.symmetric(
-                          horizontal: 8.0,
-                          vertical: 10.0,
-                        ),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 12.0,
-                          vertical: 18.0,
-                        ),
-                        borderRadius: 5.0,
-                      );
-                    } else if (checkIn == null) {
-                      Get.snackbar(
-                        null,
-                        'Please provide check-in date and time.',
-                        colorText: Colors.white,
-                        backgroundColor: Colors.black87,
-                        snackPosition: SnackPosition.BOTTOM,
-                        margin: EdgeInsets.symmetric(
-                          horizontal: 8.0,
-                          vertical: 10.0,
-                        ),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 12.0,
-                          vertical: 18.0,
-                        ),
-                        borderRadius: 5.0,
-                      );
-                    } else if (checkOut == null) {
-                      Get.snackbar(
-                        null,
-                        'Please provide check-out date and time.',
-                        colorText: Colors.white,
-                        backgroundColor: Colors.black87,
-                        snackPosition: SnackPosition.BOTTOM,
-                        margin: EdgeInsets.symmetric(
-                          horizontal: 8.0,
-                          vertical: 10.0,
-                        ),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 12.0,
-                          vertical: 18.0,
-                        ),
-                        borderRadius: 5.0,
-                      );
-                    }else if (reason.text.isEmpty) {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                            title: Text(
-                              'Reason..?',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 24.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            content: Text(
-                              'Please provide reason.',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18.0,
-                              ),
-                            ),
-                            actions: <Widget>[
-                              FlatButton(
-                                child: Text(
-                                  'Ok',
-                                  style: TextStyle(
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                onPressed: () => Navigator.of(context).pop(true),
-                              ),
-                            ],
-                          );
+                        readOnly: true,
+                        keyboardType: null,
+                        onTap: () {
+                          _checkOutSelectTime(context);
+                          // _checkOutTime(context);
                         },
-                      );
-                    } else {
-                      raC.addRegularizeAtt(_alias, checkIn, checkOut, attId,reason.text);
-                    }
-                  },
+                      ),
+                    ),
+                  ),
+                ),
+                Visibility(
+                  visible: checkIn!=null&&checkOut!=null,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 15.0, vertical: 12.0),
-                    child: Text(
-                      'Send For Approval',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16.0,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 5.0),
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            side: BorderSide(color: Colors.black38)),
+                        child: Container(
+                          height: 60,
+                          child: DropdownSearch<String>(
+                            validator: (v) => v == null ? "required field" : null,
+                            hint: "Alias",
+                            showSearchBox: true,
+                            isFilteredOnline: true,
+                            mode: Mode.MENU,
+                            dropdownSearchDecoration: InputDecoration(
+                              contentPadding:
+                              EdgeInsets.only(left: 10.0, top: 20.0),
+                              fillColor: Colors.white,
+                              // filled: true,
+                              border: UnderlineInputBorder(
+                                borderSide: BorderSide.none,
+                              ),
+                            ),
+                            showAsSuffixIcons: true,
+                            dropdownButtonBuilder: (_) => Padding(
+                              padding:
+                              const EdgeInsets.only(right: 10.0, top: 15.0),
+                              child: const Icon(
+                                Icons.arrow_drop_down,
+                                size: 24,
+                                color: Colors.black,
+                              ),
+                            ),
+                            showSelectedItem: true,
+                            items: raC.notationList.map((item) {
+                              var sC = item['notation'] +' - '+ item['alias'].toString();
+                              return sC.toString();
+                            }).toList(),
+                            onChanged: (value) {
+                              print('value:$value');
+                              for (var e in raC.notationList) {
+                                if (e['notation']+ ' - ' +e['alias'] == value) {
+                                  _alias = e['alias'];
+                                  break;
+                                }
+                              }
+                              setState(() {
+                              });
+                            },
+                          ),
+                        ),
+                      )),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        side: BorderSide(color: Colors.black38)),
+                    child: Container(
+                      child: TextField(
+                        controller: reason,
+                        maxLength: 250,
+                        maxLines: 4,
+                        decoration: InputDecoration(
+                          errorText: reason.text.length > 250
+                              ? 'please enter 250 Characters only'
+                              : null,
+                          border: InputBorder.none,
+                          isDense: true,
+                          contentPadding: EdgeInsets.all(10),
+                          hintStyle: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 18.0,
+                            // fontWeight: FontWeight.bold,
+                          ),
+                          hintText: 'Reason',
+                        ),
                       ),
                     ),
                   ),
-                  color: Colors.blue,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                    side: BorderSide(
-                      color: Colors.blue,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 12.0,
+                    horizontal: 20.0,
+                  ),
+                  child: RaisedButton(
+                    onPressed: () {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                      if (_alias == null || checkIn == null || checkOut == null) {
+                        Get.snackbar(
+                          null,
+                          'Please provide all the details',
+                          colorText: Colors.white,
+                          backgroundColor: Colors.black87,
+                          snackPosition: SnackPosition.BOTTOM,
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 10.0,
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12.0,
+                            vertical: 18.0,
+                          ),
+                          borderRadius: 5.0,
+                        );
+                      } else if (checkIn == null) {
+                        Get.snackbar(
+                          null,
+                          'Please provide check-in date and time.',
+                          colorText: Colors.white,
+                          backgroundColor: Colors.black87,
+                          snackPosition: SnackPosition.BOTTOM,
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 10.0,
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12.0,
+                            vertical: 18.0,
+                          ),
+                          borderRadius: 5.0,
+                        );
+                      } else if (checkOut == null) {
+                        Get.snackbar(
+                          null,
+                          'Please provide check-out date and time.',
+                          colorText: Colors.white,
+                          backgroundColor: Colors.black87,
+                          snackPosition: SnackPosition.BOTTOM,
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 10.0,
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12.0,
+                            vertical: 18.0,
+                          ),
+                          borderRadius: 5.0,
+                        );
+                      } else if (reason.text.isEmpty) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10.0))),
+                              title: Text(
+                                'Reason..?',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 24.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              content: Text(
+                                'Please provide reason.',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18.0,
+                                ),
+                              ),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child: Text(
+                                    'Ok',
+                                    style: TextStyle(
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  onPressed: () =>
+                                      Navigator.of(context).pop(true),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      } else {
+                        raC.addRegularizeAtt(_alias, checkIn, checkOut, attId, reason.text);
+                      }
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15.0, vertical: 12.0),
+                      child: Text(
+                        'Send For Approval',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16.0,
+                        ),
+                      ),
+                    ),
+                    color: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      side: BorderSide(
+                        color: Colors.blue,
+                      ),
                     ),
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),

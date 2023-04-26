@@ -276,7 +276,11 @@ class _AttachImgState extends State<AttachImg> {
                     });
                   },
                   decoration: InputDecoration(
-                    errorText: validateRemarks ? 'Please Enter Remarks' :remarks.text.length>1000?'please enter 1000 Characters only' :null,
+                    errorText: validateRemarks
+                        ? 'Please Enter Remarks'
+                        : remarks.text.length > 1000
+                            ? 'please enter 1000 Characters only'
+                            : null,
                     border: OutlineInputBorder(),
                     isDense: true,
                     contentPadding: EdgeInsets.all(10.0),
@@ -369,6 +373,41 @@ class _AttachImgState extends State<AttachImg> {
                               Get.snackbar(
                                 null,
                                 'Please provide all the details',
+                                colorText: Colors.white,
+                                backgroundColor: Colors.black87,
+                                snackPosition: SnackPosition.BOTTOM,
+                                margin: EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                  vertical: 10.0,
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 12.0,
+                                  vertical: 18.0,
+                                ),
+                                borderRadius: 5.0,
+                              );
+                            } else if (clientId == null ||
+                                clientText.text.isEmpty) {
+                              Get.snackbar(
+                                null,
+                                'Please provide client name',
+                                colorText: Colors.white,
+                                backgroundColor: Colors.black87,
+                                snackPosition: SnackPosition.BOTTOM,
+                                margin: EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                  vertical: 10.0,
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 12.0,
+                                  vertical: 18.0,
+                                ),
+                                borderRadius: 5.0,
+                              );
+                            } else if (remarks.text.isEmpty) {
+                              Get.snackbar(
+                                null,
+                                'Please provide remarks',
                                 colorText: Colors.white,
                                 backgroundColor: Colors.black87,
                                 snackPosition: SnackPosition.BOTTOM,

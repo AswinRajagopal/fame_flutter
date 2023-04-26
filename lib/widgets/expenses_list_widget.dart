@@ -144,10 +144,10 @@ class ExpensesListWidget extends StatelessWidget {
                                     height: 30.0,
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
-                                      color: Colors.yellow[100],
+                                      color: Colors.teal[100],
                                       border: Border.all(
                                         color: Colors
-                                            .yellow[100], // Set border color
+                                            .teal[100], // Set border color
                                       ), // Set border width
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(
@@ -156,7 +156,7 @@ class ExpensesListWidget extends StatelessWidget {
                                     child: Text(
                                       getStatus(expenses['status']),
                                       style: TextStyle(
-                                          color: Colors.yellow,
+                                          color: Colors.teal,
                                           fontSize: 12.0,
                                           fontWeight: FontWeight.bold),
                                     ),

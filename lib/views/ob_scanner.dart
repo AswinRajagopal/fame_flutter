@@ -109,7 +109,7 @@ class _OBScannerState extends State<OBScanner> {
                         horizontal: 20.0,
                       ),
                       child: Text(
-                        'We have filled below data from aadhar card',
+                        'We have filled below data from aadhaar card',
                         style: TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.w600,
@@ -441,7 +441,7 @@ class _OBScannerState extends State<OBScanner> {
                           horizontal: 20.0,
                         ),
                         child: Text(
-                          'We have filled below data from aadhar card',
+                          'We have filled below data from aadhaar card',
                           style: TextStyle(
                             fontSize: 18.0,
                             fontWeight: FontWeight.w600,

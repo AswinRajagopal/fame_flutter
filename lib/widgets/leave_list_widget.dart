@@ -303,7 +303,9 @@ class LeaveListWidget extends StatelessWidget {
                   width: secondWidth,
                 ),
                 Text(
-                  convertDate(leave['appliedOn']),
+                  leave['appliedOn'] == null
+                      ? 'N/A'
+                      : convertDate(leave['appliedOn']),
                   style: TextStyle(
                     fontSize: textSize,
                     color: Colors.grey,
@@ -340,11 +342,13 @@ class LeaveListWidget extends StatelessWidget {
                   width: secondWidth,
                 ),
                 Text(
-                  leave['status'].length > 1
-                      ? leave['status']
-                      : getStatus(
-                          int.parse(leave['status']),
-                        ),
+                  leave['status'] == null
+                      ? 'N/A'
+                      : leave['status'].length > 1
+                          ? leave['status']
+                          : getStatus(
+                              int.parse(leave['status']),
+                            ),
                   style: TextStyle(
                     fontSize: textSize,
                     color: Colors.grey,
