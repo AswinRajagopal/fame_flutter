@@ -19,6 +19,7 @@ class DashboardController extends GetxController {
   List empDetailsList=[].obs;
   ProgressDialog pr;
   var response;
+  var newBroadcast;
   var todayString = (DateFormat.E().format(DateTime.now()).toString() + ' ' + DateFormat.d().format(DateTime.now()).toString() + ' ' + DateFormat.MMM().format(DateTime.now()).toString() + ', ' + DateFormat('h:mm').format(DateTime.now()).toString() + '' + DateFormat('a').format(DateTime.now()).toString().toLowerCase()).obs;
   var greetings = '...'.obs;
   bool isDisposed = false;
@@ -144,6 +145,7 @@ class DashboardController extends GetxController {
       response = await RemoteServices().getDbDetails();
       // print('response: $response');
       if (response != null) {
+        newBroadcast=response['newBroadcastMsg'];
         if (response['success']) {
           if (response['dailyAttendance'] != null) {
             await RemoteServices().box.put('shift', response['dailyAttendance']['shift']);
@@ -153,6 +155,7 @@ class DashboardController extends GetxController {
             await RemoteServices().box.put('clientId', response['clientData']['id']);
           }
           await RemoteServices().box.put('empName', response['empdetails']['name']);
+          await RemoteServices().box.put('gender', response['empdetails']['gender']);
           if (response['empdetails']['reportView'] != null) {
             await RemoteServices().box.put('reportView', response['empdetails']['reportView']);
           } else {

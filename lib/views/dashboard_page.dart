@@ -573,10 +573,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                           ],
                                         ),
                                         appFeatures['nearestSiteCheckin'] ==
-                                                    null ||
-                                                appFeatures[
-                                                        'nearestSiteCheckin'] ==
-                                                    true
+                                                true
                                             ? RaisedButton(
                                                 onPressed: () async {
                                                   print(RemoteServices()
@@ -1202,10 +1199,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                     ],
                                                   ),
                                                   appFeatures['nearestSiteCheckin'] ==
-                                                              null ||
-                                                          appFeatures[
-                                                                  'nearestSiteCheckin'] ==
-                                                              true
+                                                          true
                                                       ? RaisedButton(
                                                           onPressed: () async {
                                                             print(RemoteServices()
@@ -1917,10 +1911,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                           ],
                                         ),
                                         appFeatures['nearestSiteCheckin'] ==
-                                                    null ||
-                                                appFeatures[
-                                                        'nearestSiteCheckin'] ==
-                                                    true
+                                                true
                                             ? RaisedButton(
                                                 onPressed: () async {
                                                   print(RemoteServices()
@@ -2528,10 +2519,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                     ],
                                                   ),
                                                   appFeatures['nearestSiteCheckin'] ==
-                                                              null ||
-                                                          appFeatures[
-                                                                  'nearestSiteCheckin'] ==
-                                                              true
+                                                          true
                                                       ? RaisedButton(
                                                           onPressed: () async {
                                                             print(RemoteServices()
@@ -3141,7 +3129,8 @@ class _DashboardPageState extends State<DashboardPage> {
                                                       roleId == AppUtils.ADMIN
                                                           ? GestureDetector(
                                                               onTap: () {
-                                                                Get.to(ViewDashboardLateList());
+                                                                Get.to(
+                                                                    ViewDashboardLateList());
                                                               },
                                                               child:
                                                                   CustomProgressIndicator(
@@ -3618,4 +3607,3 @@ class _DashboardPageState extends State<DashboardPage> {
     }
   }
 }
-
