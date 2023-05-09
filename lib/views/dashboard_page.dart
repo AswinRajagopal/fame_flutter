@@ -1,10 +1,6 @@
-// import 'dart:io';
-
-// import 'package:flutter/services.dart';
 
 import 'dart:convert';
 
-import 'package:fame/views/lat_lng_fetch.dart';
 import 'package:fame/views/routeplan_list.dart';
 import 'package:fame/views/settings_page.dart';
 import 'package:fame/views/view_dashboard_checkin.dart';
@@ -572,91 +568,104 @@ class _DashboardPageState extends State<DashboardPage> {
                                             ),
                                           ],
                                         ),
-                                        Visibility(
-                                          visible:
-                                              appFeatures['checkin'] == null ||
-                                                  appFeatures['checkin'],
-                                          child: RaisedButton(
-                                            onPressed: () async {
-                                              print(RemoteServices()
-                                                  .box
-                                                  .get('faceApi'));
-                                              if (await Permission
-                                                  .locationWhenInUse
-                                                  .isGranted) {
-                                                if (await Geolocator
-                                                    .isLocationServiceEnabled()) {
-                                                  await Get.to(CheckinPage(
-                                                      RemoteServices()
-                                                          .box
-                                                          .get('faceApi'),
-                                                      appFeatures[
-                                                          'checkinLocation']));
-                                                } else {
-                                                  await Get.snackbar(
-                                                    null,
-                                                    'Please enable Location to checkin / checkout',
-                                                    colorText: Colors.white,
-                                                    backgroundColor:
-                                                        Colors.black87,
-                                                    snackPosition:
-                                                        SnackPosition.BOTTOM,
-                                                    margin:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 8.0,
-                                                            vertical: 10.0),
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 12.0,
-                                                            vertical: 18.0),
-                                                    borderRadius: 5.0,
-                                                  );
-                                                }
-                                              } else if (await Permission
-                                                  .locationWhenInUse
-                                                  .isPermanentlyDenied) {
-                                                await Get.snackbar(
-                                                  null,
-                                                  'You cannot checkin / checkout without giving location permission',
-                                                  colorText: Colors.white,
-                                                  backgroundColor:
-                                                      Colors.black87,
-                                                  snackPosition:
-                                                      SnackPosition.BOTTOM,
-                                                  margin: EdgeInsets.symmetric(
-                                                      horizontal: 8.0,
-                                                      vertical: 10.0),
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: 12.0,
-                                                      vertical: 18.0),
-                                                  borderRadius: 5.0,
-                                                );
-                                              } else {
-                                                await Permission
-                                                    .locationWhenInUse
-                                                    .request();
-                                              }
-                                            },
-                                            child: Text(
-                                              'Check In',
-                                              style: TextStyle(
-                                                fontSize: 16.0,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
+                                   Visibility(
+                                                visible:
+                                                    appFeatures['checkin'] ==
+                                                            null ||
+                                                        appFeatures['checkin'],
+                                                child: RaisedButton(
+                                                  onPressed: () async {
+                                                    print(RemoteServices()
+                                                        .box
+                                                        .get('faceApi'));
+                                                    if (await Permission
+                                                        .locationWhenInUse
+                                                        .isGranted) {
+                                                      if (await Geolocator
+                                                          .isLocationServiceEnabled()) {
+                                                        await Get.to(CheckinPage(
+                                                            RemoteServices()
+                                                                .box
+                                                                .get('faceApi'),
+                                                            appFeatures[
+                                                                'checkinLocation']));
+                                                      } else {
+                                                        await Get.snackbar(
+                                                          null,
+                                                          'Please enable Location to checkin / checkout',
+                                                          colorText:
+                                                              Colors.white,
+                                                          backgroundColor:
+                                                              Colors.black87,
+                                                          snackPosition:
+                                                              SnackPosition
+                                                                  .BOTTOM,
+                                                          margin: EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      8.0,
+                                                                  vertical:
+                                                                      10.0),
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      12.0,
+                                                                  vertical:
+                                                                      18.0),
+                                                          borderRadius: 5.0,
+                                                        );
+                                                      }
+                                                    } else if (await Permission
+                                                        .locationWhenInUse
+                                                        .isPermanentlyDenied) {
+                                                      await Get.snackbar(
+                                                        null,
+                                                        'You cannot checkin / checkout without giving location permission',
+                                                        colorText: Colors.white,
+                                                        backgroundColor:
+                                                            Colors.black87,
+                                                        snackPosition:
+                                                            SnackPosition
+                                                                .BOTTOM,
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal: 8.0,
+                                                                vertical: 10.0),
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal:
+                                                                    12.0,
+                                                                vertical: 18.0),
+                                                        borderRadius: 5.0,
+                                                      );
+                                                    } else {
+                                                      await Permission
+                                                          .locationWhenInUse
+                                                          .request();
+                                                    }
+                                                  },
+                                                  child: Text(
+                                                    'Check In',
+                                                    style: TextStyle(
+                                                      fontSize: 16.0,
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  color: AppUtils().greenColor,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      25.0,
+                                                    ),
+                                                    side: BorderSide(
+                                                      color:
+                                                          AppUtils().greenColor,
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                            color: AppUtils().greenColor,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                25.0,
-                                              ),
-                                              side: BorderSide(
-                                                color: AppUtils().greenColor,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
                                       ],
                                     ),
                                   );
@@ -1104,125 +1113,129 @@ class _DashboardPageState extends State<DashboardPage> {
                                                       ),
                                                     ],
                                                   ),
-                                                  Visibility(
-                                                    visible: appFeatures[
-                                                                'checkin'] ==
-                                                            null ||
-                                                        appFeatures['checkin'],
-                                                    child: RaisedButton(
-                                                      onPressed: () async {
-                                                        //Check Condition
-                                                        var chk =
-                                                            checkCondition(
-                                                          dbC.response,
-                                                          'chkin',
-                                                        );
-                                                        if (chk) {
-                                                          print(RemoteServices()
-                                                              .box
-                                                              .get('faceApi'));
-                                                          if (await Permission
-                                                              .locationWhenInUse
-                                                              .isGranted) {
-                                                            if (await Geolocator
-                                                                .isLocationServiceEnabled()) {
-                                                              await Get.to(CheckinPage(
-                                                                  RemoteServices()
-                                                                      .box
-                                                                      .get(
-                                                                          'faceApi'),
-                                                                  appFeatures[
-                                                                      'checkinLocation']));
-                                                            } else {
-                                                              await Get
-                                                                  .snackbar(
-                                                                null,
-                                                                'Please enable Location to checkin / checkout',
-                                                                colorText:
-                                                                    Colors
-                                                                        .white,
-                                                                backgroundColor:
-                                                                    Colors
-                                                                        .black87,
-                                                                snackPosition:
-                                                                    SnackPosition
-                                                                        .BOTTOM,
-                                                                margin: EdgeInsets
-                                                                    .symmetric(
+                                                 Visibility(
+                                                          visible: appFeatures[
+                                                                      'checkin'] ==
+                                                                  null ||
+                                                              appFeatures[
+                                                                  'checkin'],
+                                                          child: RaisedButton(
+                                                            onPressed:
+                                                                () async {
+                                                              //Check Condition
+                                                              var chk =
+                                                                  checkCondition(
+                                                                dbC.response,
+                                                                'chkin',
+                                                              );
+                                                              if (chk) {
+                                                                print(RemoteServices()
+                                                                    .box
+                                                                    .get(
+                                                                        'faceApi'));
+                                                                if (await Permission
+                                                                    .locationWhenInUse
+                                                                    .isGranted) {
+                                                                  if (await Geolocator
+                                                                      .isLocationServiceEnabled()) {
+                                                                    await Get.to(CheckinPage(
+                                                                        RemoteServices()
+                                                                            .box
+                                                                            .get(
+                                                                                'faceApi'),
+                                                                        appFeatures[
+                                                                            'checkinLocation']));
+                                                                  } else {
+                                                                    await Get
+                                                                        .snackbar(
+                                                                      null,
+                                                                      'Please enable Location to checkin / checkout',
+                                                                      colorText:
+                                                                          Colors
+                                                                              .white,
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .black87,
+                                                                      snackPosition:
+                                                                          SnackPosition
+                                                                              .BOTTOM,
+                                                                      margin: EdgeInsets.symmetric(
+                                                                          horizontal:
+                                                                              8.0,
+                                                                          vertical:
+                                                                              10.0),
+                                                                      padding: EdgeInsets.symmetric(
+                                                                          horizontal:
+                                                                              12.0,
+                                                                          vertical:
+                                                                              18.0),
+                                                                      borderRadius:
+                                                                          5.0,
+                                                                    );
+                                                                  }
+                                                                } else if (await Permission
+                                                                    .locationWhenInUse
+                                                                    .isPermanentlyDenied) {
+                                                                  await Get
+                                                                      .snackbar(
+                                                                    null,
+                                                                    'You cannot checkin / checkout without giving location permission',
+                                                                    colorText:
+                                                                        Colors
+                                                                            .white,
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .black87,
+                                                                    snackPosition:
+                                                                        SnackPosition
+                                                                            .BOTTOM,
+                                                                    margin: EdgeInsets.symmetric(
                                                                         horizontal:
                                                                             8.0,
                                                                         vertical:
                                                                             10.0),
-                                                                padding: EdgeInsets
-                                                                    .symmetric(
+                                                                    padding: EdgeInsets.symmetric(
                                                                         horizontal:
                                                                             12.0,
                                                                         vertical:
                                                                             18.0),
-                                                                borderRadius:
-                                                                    5.0,
-                                                              );
-                                                            }
-                                                          } else if (await Permission
-                                                              .locationWhenInUse
-                                                              .isPermanentlyDenied) {
-                                                            await Get.snackbar(
-                                                              null,
-                                                              'You cannot checkin / checkout without giving location permission',
-                                                              colorText:
-                                                                  Colors.white,
-                                                              backgroundColor:
-                                                                  Colors
-                                                                      .black87,
-                                                              snackPosition:
-                                                                  SnackPosition
-                                                                      .BOTTOM,
-                                                              margin: EdgeInsets
-                                                                  .symmetric(
-                                                                      horizontal:
-                                                                          8.0,
-                                                                      vertical:
-                                                                          10.0),
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                      horizontal:
-                                                                          12.0,
-                                                                      vertical:
-                                                                          18.0),
-                                                              borderRadius: 5.0,
-                                                            );
-                                                          } else {
-                                                            await Permission
-                                                                .locationWhenInUse
-                                                                .request();
-                                                          }
-                                                        }
-                                                      },
-                                                      child: Text(
-                                                        'Check In',
-                                                        style: TextStyle(
-                                                          fontSize: 16.0,
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold,
+                                                                    borderRadius:
+                                                                        5.0,
+                                                                  );
+                                                                } else {
+                                                                  await Permission
+                                                                      .locationWhenInUse
+                                                                      .request();
+                                                                }
+                                                              }
+                                                            },
+                                                            child: Text(
+                                                              'Check In',
+                                                              style: TextStyle(
+                                                                fontSize: 16.0,
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                            color: AppUtils()
+                                                                .greenColor,
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                25.0,
+                                                              ),
+                                                              side: BorderSide(
+                                                                color: AppUtils()
+                                                                    .greenColor,
+                                                              ),
+                                                            ),
+                                                          ),
                                                         ),
-                                                      ),
-                                                      color:
-                                                          AppUtils().greenColor,
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                          25.0,
-                                                        ),
-                                                        side: BorderSide(
-                                                          color: AppUtils()
-                                                              .greenColor,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
                                                 ],
                                               ),
                                             ],
@@ -1472,11 +1485,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                 ),
                                 Spacer(),
                                 IconButton(
-                                  // icon: Icon(
-                                  //   Icons.notifications_none_outlined,
-                                  //   color: Colors.white,
-                                  //   size: 30.0,
-                                  // ),
+                                 
                                   icon: Image.asset(
                                     'assets/images/bell_icon.png',
                                     height: 22.0,
@@ -1708,90 +1717,103 @@ class _DashboardPageState extends State<DashboardPage> {
                                           ],
                                         ),
                                         Visibility(
-                                          visible:
-                                              appFeatures['checkin'] == null ||
-                                                  appFeatures['checkin'],
-                                          child: RaisedButton(
-                                            onPressed: () async {
-                                              print(RemoteServices()
-                                                  .box
-                                                  .get('faceApi'));
-                                              if (await Permission
-                                                  .locationWhenInUse
-                                                  .isGranted) {
-                                                if (await Geolocator
-                                                    .isLocationServiceEnabled()) {
-                                                  await Get.to(CheckinPage(
-                                                      RemoteServices()
-                                                          .box
-                                                          .get('faceApi'),
-                                                      appFeatures[
-                                                          'checkinLocation']));
-                                                } else {
-                                                  await Get.snackbar(
-                                                    null,
-                                                    'Please enable Location to checkin / checkout',
-                                                    colorText: Colors.white,
-                                                    backgroundColor:
-                                                        Colors.black87,
-                                                    snackPosition:
-                                                        SnackPosition.BOTTOM,
-                                                    margin:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 8.0,
-                                                            vertical: 10.0),
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 12.0,
-                                                            vertical: 18.0),
-                                                    borderRadius: 5.0,
-                                                  );
-                                                }
-                                              } else if (await Permission
-                                                  .locationWhenInUse
-                                                  .isPermanentlyDenied) {
-                                                await Get.snackbar(
-                                                  null,
-                                                  'You cannot checkin / checkout without giving location permission',
-                                                  colorText: Colors.white,
-                                                  backgroundColor:
-                                                      Colors.black87,
-                                                  snackPosition:
-                                                      SnackPosition.BOTTOM,
-                                                  margin: EdgeInsets.symmetric(
-                                                      horizontal: 8.0,
-                                                      vertical: 10.0),
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: 12.0,
-                                                      vertical: 18.0),
-                                                  borderRadius: 5.0,
-                                                );
-                                              } else {
-                                                await Permission
-                                                    .locationWhenInUse
-                                                    .request();
-                                              }
-                                            },
-                                            child: Text(
-                                              'Check In',
-                                              style: TextStyle(
-                                                fontSize: 16.0,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
+                                                visible:
+                                                    appFeatures['checkin'] ==
+                                                            null ||
+                                                        appFeatures['checkin'],
+                                                child: RaisedButton(
+                                                  onPressed: () async {
+                                                    print(RemoteServices()
+                                                        .box
+                                                        .get('faceApi'));
+                                                    if (await Permission
+                                                        .locationWhenInUse
+                                                        .isGranted) {
+                                                      if (await Geolocator
+                                                          .isLocationServiceEnabled()) {
+                                                        await Get.to(CheckinPage(
+                                                            RemoteServices()
+                                                                .box
+                                                                .get('faceApi'),
+                                                            appFeatures[
+                                                                'checkinLocation']));
+                                                      } else {
+                                                        await Get.snackbar(
+                                                          null,
+                                                          'Please enable Location to checkin / checkout',
+                                                          colorText:
+                                                              Colors.white,
+                                                          backgroundColor:
+                                                              Colors.black87,
+                                                          snackPosition:
+                                                              SnackPosition
+                                                                  .BOTTOM,
+                                                          margin: EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      8.0,
+                                                                  vertical:
+                                                                      10.0),
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      12.0,
+                                                                  vertical:
+                                                                      18.0),
+                                                          borderRadius: 5.0,
+                                                        );
+                                                      }
+                                                    } else if (await Permission
+                                                        .locationWhenInUse
+                                                        .isPermanentlyDenied) {
+                                                      await Get.snackbar(
+                                                        null,
+                                                        'You cannot checkin / checkout without giving location permission',
+                                                        colorText: Colors.white,
+                                                        backgroundColor:
+                                                            Colors.black87,
+                                                        snackPosition:
+                                                            SnackPosition
+                                                                .BOTTOM,
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal: 8.0,
+                                                                vertical: 10.0),
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal:
+                                                                    12.0,
+                                                                vertical: 18.0),
+                                                        borderRadius: 5.0,
+                                                      );
+                                                    } else {
+                                                      await Permission
+                                                          .locationWhenInUse
+                                                          .request();
+                                                    }
+                                                  },
+                                                  child: Text(
+                                                    'Check In',
+                                                    style: TextStyle(
+                                                      fontSize: 16.0,
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  color: AppUtils().greenColor,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      25.0,
+                                                    ),
+                                                    side: BorderSide(
+                                                      color:
+                                                          AppUtils().greenColor,
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                            color: AppUtils().greenColor,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                25.0,
-                                              ),
-                                              side: BorderSide(
-                                                color: AppUtils().greenColor,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
                                       ],
                                     ),
                                   );
@@ -2221,125 +2243,129 @@ class _DashboardPageState extends State<DashboardPage> {
                                                       ),
                                                     ],
                                                   ),
-                                                  Visibility(
-                                                    visible: appFeatures[
-                                                                'checkin'] ==
-                                                            null ||
-                                                        appFeatures['checkin'],
-                                                    child: RaisedButton(
-                                                      onPressed: () async {
-                                                        //Check Condition
-                                                        var chk =
-                                                            checkCondition(
-                                                          dbC.response,
-                                                          'chkin',
-                                                        );
-                                                        if (chk) {
-                                                          print(RemoteServices()
-                                                              .box
-                                                              .get('faceApi'));
-                                                          if (await Permission
-                                                              .locationWhenInUse
-                                                              .isGranted) {
-                                                            if (await Geolocator
-                                                                .isLocationServiceEnabled()) {
-                                                              await Get.to(CheckinPage(
-                                                                  RemoteServices()
-                                                                      .box
-                                                                      .get(
-                                                                          'faceApi'),
-                                                                  appFeatures[
-                                                                      'checkinLocation']));
-                                                            } else {
-                                                              await Get
-                                                                  .snackbar(
-                                                                null,
-                                                                'Please enable Location to checkin / checkout',
-                                                                colorText:
-                                                                    Colors
-                                                                        .white,
-                                                                backgroundColor:
-                                                                    Colors
-                                                                        .black87,
-                                                                snackPosition:
-                                                                    SnackPosition
-                                                                        .BOTTOM,
-                                                                margin: EdgeInsets
-                                                                    .symmetric(
+                                                 Visibility(
+                                                          visible: appFeatures[
+                                                                      'checkin'] ==
+                                                                  null ||
+                                                              appFeatures[
+                                                                  'checkin'],
+                                                          child: RaisedButton(
+                                                            onPressed:
+                                                                () async {
+                                                              //Check Condition
+                                                              var chk =
+                                                                  checkCondition(
+                                                                dbC.response,
+                                                                'chkin',
+                                                              );
+                                                              if (chk) {
+                                                                print(RemoteServices()
+                                                                    .box
+                                                                    .get(
+                                                                        'faceApi'));
+                                                                if (await Permission
+                                                                    .locationWhenInUse
+                                                                    .isGranted) {
+                                                                  if (await Geolocator
+                                                                      .isLocationServiceEnabled()) {
+                                                                    await Get.to(CheckinPage(
+                                                                        RemoteServices()
+                                                                            .box
+                                                                            .get(
+                                                                                'faceApi'),
+                                                                        appFeatures[
+                                                                            'checkinLocation']));
+                                                                  } else {
+                                                                    await Get
+                                                                        .snackbar(
+                                                                      null,
+                                                                      'Please enable Location to checkin / checkout',
+                                                                      colorText:
+                                                                          Colors
+                                                                              .white,
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .black87,
+                                                                      snackPosition:
+                                                                          SnackPosition
+                                                                              .BOTTOM,
+                                                                      margin: EdgeInsets.symmetric(
+                                                                          horizontal:
+                                                                              8.0,
+                                                                          vertical:
+                                                                              10.0),
+                                                                      padding: EdgeInsets.symmetric(
+                                                                          horizontal:
+                                                                              12.0,
+                                                                          vertical:
+                                                                              18.0),
+                                                                      borderRadius:
+                                                                          5.0,
+                                                                    );
+                                                                  }
+                                                                } else if (await Permission
+                                                                    .locationWhenInUse
+                                                                    .isPermanentlyDenied) {
+                                                                  await Get
+                                                                      .snackbar(
+                                                                    null,
+                                                                    'You cannot checkin / checkout without giving location permission',
+                                                                    colorText:
+                                                                        Colors
+                                                                            .white,
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .black87,
+                                                                    snackPosition:
+                                                                        SnackPosition
+                                                                            .BOTTOM,
+                                                                    margin: EdgeInsets.symmetric(
                                                                         horizontal:
                                                                             8.0,
                                                                         vertical:
                                                                             10.0),
-                                                                padding: EdgeInsets
-                                                                    .symmetric(
+                                                                    padding: EdgeInsets.symmetric(
                                                                         horizontal:
                                                                             12.0,
                                                                         vertical:
                                                                             18.0),
-                                                                borderRadius:
-                                                                    5.0,
-                                                              );
-                                                            }
-                                                          } else if (await Permission
-                                                              .locationWhenInUse
-                                                              .isPermanentlyDenied) {
-                                                            await Get.snackbar(
-                                                              null,
-                                                              'You cannot checkin / checkout without giving location permission',
-                                                              colorText:
-                                                                  Colors.white,
-                                                              backgroundColor:
-                                                                  Colors
-                                                                      .black87,
-                                                              snackPosition:
-                                                                  SnackPosition
-                                                                      .BOTTOM,
-                                                              margin: EdgeInsets
-                                                                  .symmetric(
-                                                                      horizontal:
-                                                                          8.0,
-                                                                      vertical:
-                                                                          10.0),
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                      horizontal:
-                                                                          12.0,
-                                                                      vertical:
-                                                                          18.0),
-                                                              borderRadius: 5.0,
-                                                            );
-                                                          } else {
-                                                            await Permission
-                                                                .locationWhenInUse
-                                                                .request();
-                                                          }
-                                                        }
-                                                      },
-                                                      child: Text(
-                                                        'Check In',
-                                                        style: TextStyle(
-                                                          fontSize: 16.0,
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold,
+                                                                    borderRadius:
+                                                                        5.0,
+                                                                  );
+                                                                } else {
+                                                                  await Permission
+                                                                      .locationWhenInUse
+                                                                      .request();
+                                                                }
+                                                              }
+                                                            },
+                                                            child: Text(
+                                                              'Check In',
+                                                              style: TextStyle(
+                                                                fontSize: 16.0,
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                            color: AppUtils()
+                                                                .greenColor,
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                25.0,
+                                                              ),
+                                                              side: BorderSide(
+                                                                color: AppUtils()
+                                                                    .greenColor,
+                                                              ),
+                                                            ),
+                                                          ),
                                                         ),
-                                                      ),
-                                                      color:
-                                                          AppUtils().greenColor,
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                          25.0,
-                                                        ),
-                                                        side: BorderSide(
-                                                          color: AppUtils()
-                                                              .greenColor,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
                                                 ],
                                               ),
                                             ],
@@ -2723,8 +2749,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                       roleId == AppUtils.ADMIN
                                                           ? GestureDetector(
                                                               onTap: () {
-                                                                Get.to(
-                                                                    ViewDashboardLateList());
+                                                                Get.to(ViewDashboardLateList());
                                                               },
                                                               child:
                                                                   CustomProgressIndicator(
