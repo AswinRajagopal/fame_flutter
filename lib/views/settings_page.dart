@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:fame/controllers/dashboard_controller.dart';
+
+import 'package:fame/controllers/reporting_manager_att_controller.dart';
 import 'package:fame/views/change_password.dart';
 import 'package:fame/views/reporting_manager_report.dart';
 import 'package:fame/views/view_expenses.dart';
@@ -30,6 +32,9 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   final DashboardController dbC = Get.put(DashboardController());
+
+  final RepoManagerAttController rmaC = Get.put(RepoManagerAttController());
+
   final InAppReview inAppReview = InAppReview.instance;
   TextEditingController feedback = TextEditingController();
   final AdminController adminC = Get.put(AdminController());
@@ -151,10 +156,12 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                 ),
               ),
-              roleId == AppUtils.ADMIN && roleId == AppUtils.MANAGER && dbC.newBroadcast == true
+
+              dbC.newBroadcast == true
                   ? GestureDetector(
                       onTap: () {
-                        dbC.newBroadcast=null;
+                        setState(() {
+                         dbC.newBroadcast = false;
                         Get.to(ViewBroadcast());
                       },
                       child: Stack(children: [
@@ -222,7 +229,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   Get.to(ViewReport());
                 },
                 child: Visibility(
-                  visible: roleId == AppUtils.ADMIN || roleId == AppUtils.MANAGER,
+
+                  visible: roleId != "1",
                   child: ListContainer(
                     'assets/images/repo_manager.png',
                     'Reporting Employee Attendance',

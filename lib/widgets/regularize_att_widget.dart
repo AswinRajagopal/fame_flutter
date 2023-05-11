@@ -80,16 +80,19 @@ class RegAttListWidget extends StatelessWidget {
                   height: 30.0,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: Colors.blue[100],
+                    color:regAtt['status']=='1'  ? Colors.teal[100]
+                        :regAtt['status']=='0'?Colors.blue[100]: Colors.red[100],
                     border: Border.all(
-                      color: Colors.blue[100], // Set border color
+                      color: regAtt['status']=='1'  ? Colors.teal[100]
+                          :regAtt['status']=='0'?Colors.blue[100]: Colors.red[100], // Set border color
                     ), // Set border width
                     borderRadius: BorderRadius.all(
                         Radius.circular(2.0)), // Set rounded corner radius
                   ),
                   child: Text(getStatus(regAtt['status']),
                       style: TextStyle(
-                          color: Colors.blue,
+                          color:regAtt['status']=='1'  ? Colors.teal
+                              :regAtt['status']=='0'?Colors.blue: Colors.red,
                           fontSize: 12.0,
                           fontWeight: FontWeight.bold)),
                 ),

@@ -1,6 +1,3 @@
-// import 'dart:io';
-
-// import 'package:flutter/services.dart';
 
 import 'dart:convert';
 
@@ -1486,11 +1483,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                 ),
                                 Spacer(),
                                 IconButton(
-                                  // icon: Icon(
-                                  //   Icons.notifications_none_outlined,
-                                  //   color: Colors.white,
-                                  //   size: 30.0,
-                                  // ),
+                                 
                                   icon: Image.asset(
                                     'assets/images/bell_icon.png',
                                     height: 22.0,

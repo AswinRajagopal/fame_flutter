@@ -80,23 +80,31 @@ class ReportingManagerAttWidget extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Column(children: [
-                      Text(
-                        report['name'],
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15.0,
-                          color: Colors.grey,
+                    Container(
+                      width:80.0,
+                      child: Column(children: [
+                        FittedBox(
+                          child: Text(
+                            report['name'],
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15.0,
+                              color: Colors.grey,
+                            ),
+                          ),
                         ),
-                      ),
-                      Text(
-                        report['empId'],
-                        style: TextStyle(
-                          fontSize: 15.0,
-                          color: Colors.grey,
-                        ),
-                      )
-                    ]),
+                        FittedBox(
+                          child: Text(
+                            report['empId'],
+                            style: TextStyle(
+                              fontSize: 15.0,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        )
+                      ]),
+                    ),
+
                     SizedBox(
                       width: 10.0,
                     ),
@@ -118,6 +126,7 @@ class ReportingManagerAttWidget extends StatelessWidget {
                               fontWeight: FontWeight.bold),
                         ),
                         Text(
+                          report['checkInDateTime']==null?'N/A':
                           report['attendanceAlias'] == 'A'
                               ? 'A - Absent'
                               : convertDateTime(report['checkInDateTime']),
@@ -135,6 +144,8 @@ class ReportingManagerAttWidget extends StatelessWidget {
                               fontWeight: FontWeight.bold),
                         ),
                         Text(
+
+                          report['checkOutDateTime']==null?'N/A':
                           report['attendanceAlias'] == 'A'
                               ? 'A - Absent'
                               : convertDateTime(report['checkOutDateTime']),

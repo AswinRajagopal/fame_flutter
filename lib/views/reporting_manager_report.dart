@@ -56,6 +56,10 @@ class _ViewReportState extends State<ViewReport> {
     Future.delayed(Duration(milliseconds: 100), () {
       rmaC.getRepoManagerEmpDt();
       // rmaC.getRepoManagerEmpAtt(sDate);
+    });Future.delayed(Duration(milliseconds: 50), () {
+      rmaC.empDetailsList.clear();
+      // rmaC.getRepoManagerEmpAtt(sDate);
+
     });
     super.initState();
     // date.text = DateFormat('dd-MM-yyyy').format(curDate).toString();
@@ -171,10 +175,24 @@ class _ViewReportState extends State<ViewReport> {
                           onTap: () {
                             getDate(context);
                             rmaC.repoAttViewList.clear();
+                            rmaC.empDetailsList.clear();
+
                           },
                         ),
                       ),
                     ),
+                    SizedBox(
+                      width: 20.0,
+                    ),
+                    ElevatedButton(onPressed:(){
+                      rmaC.getRepoManagerEmpDt();
+                      date.clear();
+                      setState(() {
+                        rmaC.repoAttViewList.clear();
+                      });
+                    }, child: Text('Employees',style: TextStyle(
+                        fontSize: 18.0, fontWeight: FontWeight.bold)))
+
                   ],
                 ),
               )
