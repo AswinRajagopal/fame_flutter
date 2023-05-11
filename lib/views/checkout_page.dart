@@ -335,14 +335,23 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     SizedBox(
                       height: 15.0,
                     ),
-                    Text(
-                      'Mr.' + RemoteServices().box.get('empName'),
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    RemoteServices().box.get('gender') == 'M'
+                        ? Text(
+                            'Mr.' + RemoteServices().box.get('empName'),
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
+                        : Text(
+                            'Ms.' + RemoteServices().box.get('empName'),
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                     SizedBox(
                       height: 10.0,
                     ),
@@ -458,7 +467,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             height: 20.0,
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(right:40.0),
+                            padding: const EdgeInsets.only(right: 40.0),
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -525,32 +534,32 @@ class _CheckoutPageState extends State<CheckoutPage> {
                           width: 30.0,
                         ),
                         Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Attendance alias',
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Attendance alias',
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 5.0,
+                              ),
+                              Container(
+                                width: 130,
+                                height: 50.0,
+                                child: Text(
+                                  checkoutController.checkOutAlias.toString(),
                                   style: TextStyle(
                                     fontSize: 18.0,
-                                    color: Colors.grey,
+                                    color: Colors.black,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 5.0,
-                                ),
-                                Container(
-                                  width: 130,
-                                  height: 50.0,
-                                  child: Text(
-                                    checkoutController.checkOutAlias.toString(),
-                                    style: TextStyle(
-                                      fontSize: 18.0,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ]),
+                              ),
+                            ]),
                       ]),
                     ),
                     SizedBox(

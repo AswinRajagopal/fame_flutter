@@ -2305,6 +2305,51 @@ class RemoteServices {
     }
   }
 
+  Future getRepoManagerEmpAtt(date) async {
+    var response = await client.post(
+      '$baseURL/attendance/get_repo_empAtt',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'date': date,
+          'empId': box.get('empid').toString(),
+
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+  Future getRepoManagerEmpDt() async {
+    var response = await client.post(
+      '$baseURL/attendance/get_repo_empAtt',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          'empId': box.get('empid').toString(),
+
+        },
+      ),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
   Future getClientReport(clientId, date, shift, orderBy) async {
     var response = await client.post(
       '$baseURL/attendance/daily_emp_report',

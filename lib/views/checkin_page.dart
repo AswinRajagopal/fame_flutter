@@ -104,14 +104,16 @@ class _CheckinPageState extends State<CheckinPage> {
 
   Future<void> _getCurrentLocation() async {
     setState(() {
-      _currentLocation = LatLng(checkinController.currentPosition.latitude, checkinController.currentPosition.longitude);
+      _currentLocation = LatLng(checkinController.currentPosition.latitude,
+          checkinController.currentPosition.longitude);
     });
   }
 
   String convertTimeWithParse(time) {
     return DateFormat('h:mm')
             .format(DateFormat('HH:mm:ss').parse(time))
-            .toString() + " " +
+            .toString() +
+        " " +
         DateFormat('a')
             .format(DateFormat('HH:mm:ss').parse(time))
             .toString()
@@ -246,14 +248,23 @@ class _CheckinPageState extends State<CheckinPage> {
                     SizedBox(
                       height: 15.0,
                     ),
-                    Text(
-                      'Mr.' + RemoteServices().box.get('empName'),
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    RemoteServices().box.get('gender') == 'M'
+                        ? Text(
+                            'Mr.' + RemoteServices().box.get('empName'),
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
+                        : Text(
+                            'Ms.' + RemoteServices().box.get('empName'),
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                     SizedBox(
                       height: 10.0,
                     ),
@@ -348,10 +359,12 @@ class _CheckinPageState extends State<CheckinPage> {
                                   children: [
                                     Text(
                                       convertTimeWithParse(
-                                          dbC.response['empdetails']
-                                              ['shiftStartTime']) + ' to '+convertTimeWithParse(
-                                          dbC.response['empdetails']
-                                          ['shiftEndTime']),
+                                              dbC.response['empdetails']
+                                                  ['shiftStartTime']) +
+                                          ' to ' +
+                                          convertTimeWithParse(
+                                              dbC.response['empdetails']
+                                                  ['shiftEndTime']),
                                       style: TextStyle(
                                         fontSize: 18.0,
                                         fontWeight: FontWeight.bold,
@@ -367,7 +380,7 @@ class _CheckinPageState extends State<CheckinPage> {
                       height: 10.0,
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left:25.0),
+                      padding: const EdgeInsets.only(left: 25.0),
                       child: Row(
                         children: [
                           Column(
@@ -405,7 +418,7 @@ class _CheckinPageState extends State<CheckinPage> {
                     Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left:25.0),
+                          padding: const EdgeInsets.only(left: 25.0),
                           child: Row(
                             children: [
                               Text(
@@ -423,7 +436,7 @@ class _CheckinPageState extends State<CheckinPage> {
                           height: 10.0,
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal:20.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
                           child: Card(
                             elevation: 5.0,
                             shape: RoundedRectangleBorder(
@@ -437,16 +450,25 @@ class _CheckinPageState extends State<CheckinPage> {
                                   onMapCreated: _onMapCreated,
                                   zoomControlsEnabled: false,
                                   initialCameraPosition: CameraPosition(
-                                    target: LatLng(checkinController.currentPosition.latitude, checkinController.currentPosition.longitude),
+                                    target: LatLng(
+                                        checkinController
+                                            .currentPosition.latitude,
+                                        checkinController
+                                            .currentPosition.longitude),
                                     zoom: 12.0,
                                   ),
-                                  markers: _currentLocation == null ? null : {
-                                    Marker(
-                                      markerId: MarkerId('Current Location'),
-                                      position: _currentLocation,
-                                      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
-                                    ),
-                                  },
+                                  markers: _currentLocation == null
+                                      ? null
+                                      : {
+                                          Marker(
+                                            markerId:
+                                                MarkerId('Current Location'),
+                                            position: _currentLocation,
+                                            icon: BitmapDescriptor
+                                                .defaultMarkerWithHue(
+                                                    BitmapDescriptor.hueAzure),
+                                          ),
+                                        },
                                 ),
                               ),
                             ),

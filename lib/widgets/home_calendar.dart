@@ -104,24 +104,37 @@ class _HomeCalendarState extends State<HomeCalendar>
           content: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                'Checked In @ ${calEvent[1].split(',')[0]}',
-              ),
-              Text(
-                'Checked Out @ ${calEvent[1].split(',')[1]}',
-              ),
-              difference<=2?
-              RaisedButton(
-                onPressed: () {
-                    Get.to(RegularizeAttendancePage(
-                        dtFormat,
-                        calEvent[0],
-                        calEvent[1].split(',')[0],
-                        calEvent[1].split(',')[1],
-                        calEvent[1].split(',')[2]));
-                  },
-                child: Text('Regularize'),
-              ):Column()
+              date.weekday == DateTime.sunday
+                  ? Text(
+                      'Checked In @ ${calEvent[1].split(',')[0]}',
+                    )
+                  : Text(
+                      calEvent[0] == 'A'
+                          ? 'Alias: A'
+                          : 'Checked In @ ${calEvent[1].split(',')[0]}',
+                    ),
+              date.weekday == DateTime.sunday
+                  ? Text(
+                      'Checked Out @ ${calEvent[1].split(',')[1]}',
+                    )
+                  : Text(
+                      calEvent[0] == 'A'
+                          ? ''
+                          : 'Checked Out @ ${calEvent[1].split(',')[1]}',
+                    ),
+              difference <= 2
+                  ? RaisedButton(
+                      onPressed: () {
+                        Get.to(RegularizeAttendancePage(
+                            dtFormat,
+                            calEvent[0],
+                            calEvent[0] == 'A'?'0':calEvent[1].split(',')[0],
+                            calEvent[0] == 'A'?'0':calEvent[1].split(',')[1],
+                            calEvent[1].split(',')[2]));
+                      },
+                      child: Text('Regularize'),
+                    )
+                  : Column()
             ],
           ),
           radius: 5.0,
@@ -160,6 +173,7 @@ class _HomeCalendarState extends State<HomeCalendar>
     return TableCalendar(
       calendarController: _calendarController,
       events: calC.events,
+      weekendDays: [DateTime.sunday],
       initialCalendarFormat: CalendarFormat.month,
       formatAnimation: FormatAnimation.slide,
       startingDayOfWeek: StartingDayOfWeek.sunday,
@@ -258,6 +272,15 @@ class _HomeCalendarState extends State<HomeCalendar>
         !events.first.toString().contains('*')) {
       var eventSplit = events.first.split(',');
       showEvent = eventSplit[0];
+    } else if (date.weekday == DateTime.sunday) {
+      int year = DateTime.now().year;
+      DateTime firstDayOfYear = DateTime(year, 1, 1);
+      for (int i = 0; i < 365; i++) {
+        DateTime currentDay = firstDayOfYear.add(Duration(days: i));
+        if (currentDay.weekday == 7) {
+          showEvent = 'W.O';
+        }
+      }
     } else {
       showEvent = events.first.split('*').first;
     }

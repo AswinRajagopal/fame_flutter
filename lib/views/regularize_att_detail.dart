@@ -319,6 +319,7 @@ class _RegularizeAttDetailListState extends State<RegularizeAttDetailList> {
                           titleParams('Created On',
                               convertDateTime(regAtt['createdOn']) ?? 'NA'),
                           SizedBox(height: 15.0),
+                          roleId != '1'?
                           Column(
                             children: [
                               DottedLine(
@@ -604,7 +605,7 @@ class _RegularizeAttDetailListState extends State<RegularizeAttDetailList> {
                                 ),
                               ),
                             ],
-                          )
+                          ):Column()
                         ],
                       ),
                     ),

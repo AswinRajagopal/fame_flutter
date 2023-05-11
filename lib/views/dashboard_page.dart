@@ -275,7 +275,6 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    // print('width: ${MediaQuery.of(context).size.width}');
     appFeatures = jsonDecode(RemoteServices().box.get('appFeature'));
     var liteMode = RemoteServices().box.get('lite');
     if (appFeatures['routePlan'] == null) {
@@ -504,7 +503,6 @@ class _DashboardPageState extends State<DashboardPage> {
                                                   ),
                                                 );
                                               } else {
-                                                // print('Length: ${dbC.response['clientData']['name'].length}');
                                                 var clientName =
                                                     dbC.response['clientData']
                                                             ['name'] ??
@@ -3233,4 +3231,3 @@ class _DashboardPageState extends State<DashboardPage> {
     }
   }
 }
-
