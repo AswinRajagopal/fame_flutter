@@ -104,6 +104,7 @@ class ReportingManagerAttWidget extends StatelessWidget {
                         )
                       ]),
                     ),
+
                     SizedBox(
                       width: 10.0,
                     ),
@@ -143,6 +144,7 @@ class ReportingManagerAttWidget extends StatelessWidget {
                               fontWeight: FontWeight.bold),
                         ),
                         Text(
+
                           report['checkOutDateTime']==null?'N/A':
                           report['attendanceAlias'] == 'A'
                               ? 'A - Absent'

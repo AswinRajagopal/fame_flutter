@@ -59,14 +59,12 @@ class _ViewReportState extends State<ViewReport> {
     });Future.delayed(Duration(milliseconds: 50), () {
       rmaC.empDetailsList.clear();
       // rmaC.getRepoManagerEmpAtt(sDate);
+
     });
     super.initState();
     // date.text = DateFormat('dd-MM-yyyy').format(curDate).toString();
     // sDate = DateFormat('yyyy-MM-dd').format(curDate).toString();
   }
-
-
-
 
   @override
   void dispose() {
@@ -178,6 +176,7 @@ class _ViewReportState extends State<ViewReport> {
                             getDate(context);
                             rmaC.repoAttViewList.clear();
                             rmaC.empDetailsList.clear();
+
                           },
                         ),
                       ),
@@ -193,6 +192,7 @@ class _ViewReportState extends State<ViewReport> {
                       });
                     }, child: Text('Employees',style: TextStyle(
                         fontSize: 18.0, fontWeight: FontWeight.bold)))
+
                   ],
                 ),
               )
