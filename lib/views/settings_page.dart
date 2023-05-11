@@ -163,6 +163,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         setState(() {
                          dbC.newBroadcast = false;
                         Get.to(ViewBroadcast());
+                      });
                       },
                       child: Stack(children: [
                         ListContainer(
