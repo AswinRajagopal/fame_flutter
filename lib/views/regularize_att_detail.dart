@@ -38,7 +38,6 @@ class _RegularizeAttDetailListState extends State<RegularizeAttDetailList> {
   );
   var checkIn;
   var checkOut;
-  var _alias;
 
   String convertDate(date) {
     return DateFormat('dd').format(DateTime.parse(date)).toString() +
@@ -293,7 +292,7 @@ class _RegularizeAttDetailListState extends State<RegularizeAttDetailList> {
                           ),
                           titleParams(
                               'Check-in time',
-                              regAtt['checkInDateTime']!=null
+                              regAtt['checkInDateTime'] != null
                                   ? convertDate(regAtt['checkInDateTime'])
                                   : 'NA'),
                           SizedBox(
@@ -301,7 +300,7 @@ class _RegularizeAttDetailListState extends State<RegularizeAttDetailList> {
                           ),
                           titleParams(
                               'Check-out time',
-                              regAtt['checkOutDateTime']!=null
+                              regAtt['checkOutDateTime'] != null
                                   ? convertDate(regAtt['checkOutDateTime'])
                                   : 'NA'),
                           SizedBox(
@@ -507,7 +506,7 @@ class _RegularizeAttDetailListState extends State<RegularizeAttDetailList> {
                                                                     context)
                                                                 .size
                                                                 .height /
-                                                            5.0,
+                                                            9.0,
                                                         child:
                                                             Column(children: [
                                                           TextField(
@@ -590,59 +589,6 @@ class _RegularizeAttDetailListState extends State<RegularizeAttDetailList> {
                                                                   context);
                                                             },
                                                           ),
-                                                              Padding(
-                                                                  padding: const EdgeInsets.symmetric(
-                                                                      horizontal: 5.0, vertical: 5.0),
-                                                                  child: Card(
-                                                                    shape: RoundedRectangleBorder(
-                                                                        borderRadius: BorderRadius.circular(5.0),
-                                                                        side: BorderSide(color: Colors.black38)),
-                                                                    child: Container(
-                                                                      height: 60,
-                                                                      child: DropdownSearch<String>(
-                                                                        validator: (v) => v == null ? "required field" : null,
-                                                                        hint: "Alias",
-                                                                        showSearchBox: true,
-                                                                        isFilteredOnline: true,
-                                                                        mode: Mode.MENU,
-                                                                        dropdownSearchDecoration: InputDecoration(
-                                                                          contentPadding:
-                                                                          EdgeInsets.only(left: 10.0, top: 20.0),
-                                                                          fillColor: Colors.white,
-                                                                          // filled: true,
-                                                                          border: UnderlineInputBorder(
-                                                                            borderSide: BorderSide.none,
-                                                                          ),
-                                                                        ),
-                                                                        showAsSuffixIcons: true,
-                                                                        dropdownButtonBuilder: (_) => Padding(
-                                                                          padding:
-                                                                          const EdgeInsets.only(right: 10.0, top: 15.0),
-                                                                          child: const Icon(
-                                                                            Icons.arrow_drop_down,
-                                                                            size: 24,
-                                                                            color: Colors.black,
-                                                                          ),
-                                                                        ),
-                                                                        showSelectedItem: true,
-                                                                        items: raC.notationList.map((item) {
-                                                                          var sC = item['notation'] +' - '+ item['alias'].toString();
-                                                                          return sC.toString();
-                                                                        }).toList(),
-                                                                        onChanged: (value) {
-                                                                          print('value:$value');
-                                                                          for (var e in raC.notationList) {
-                                                                            if (e['notation']+ ' - ' +e['alias'] == value) {
-                                                                              _alias = e['alias'];
-                                                                              break;
-                                                                            }
-                                                                          }
-                                                                          setState(() {
-                                                                          });
-                                                                        },
-                                                                      ),
-                                                                    ),
-                                                                  ))
                                                         ]),
                                                       ),
                                                       actions: [
@@ -665,9 +611,8 @@ class _RegularizeAttDetailListState extends State<RegularizeAttDetailList> {
                                                                     ? checkOut
                                                                     : regAtt[
                                                                         'revisedCheckOutDateTime'],
-                                                                _alias==null?
                                                                 regAtt[
-                                                                    'revisedAttendanceAlias']:_alias,
+                                                                    'revisedAttendanceAlias'],
                                                                 '1',
                                                                 'approved',
                                                                 regAtt['regAttId']
