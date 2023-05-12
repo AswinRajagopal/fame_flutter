@@ -185,8 +185,9 @@ class _ViewReportState extends State<ViewReport> {
                       width: 20.0,
                     ),
                     ElevatedButton(onPressed:(){
-                      rmaC.getRepoManagerEmpDt();
+                      rmaC.empDetailsList.clear();
                       date.clear();
+                      Future.delayed(Duration(milliseconds: 100),rmaC.getRepoManagerEmpDt);
                       setState(() {
                         rmaC.repoAttViewList.clear();
                       });

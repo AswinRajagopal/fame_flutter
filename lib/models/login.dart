@@ -25,9 +25,13 @@ class Login {
 
   factory Login.fromJson(Map<String, dynamic> json) => Login(
         msg: json['msg'],
-        loginDetails: json['valid'] ? LoginDetails.fromJson(json['loginDetails']) : null,
-        appFeature: json['valid'] ? AppFeature.fromJson(json['appFeature']) : null,
-        companyDetails: json['valid'] ? CompanyDetails.fromJson(json['companyDetails']) : null,
+        loginDetails:
+            json['valid'] ? LoginDetails.fromJson(json['loginDetails']) : null,
+        appFeature:
+            json['valid'] ? AppFeature.fromJson(json['appFeature']) : null,
+        companyDetails: json['valid']
+            ? CompanyDetails.fromJson(json['companyDetails'])
+            : null,
         valid: json['valid'],
       );
 
@@ -59,6 +63,8 @@ class AppFeature {
     this.routePlan,
     this.pinMyVisit,
     this.onboarding,
+    this.expenseManager,
+    this.repoManagerAtt,
     this.attendanceDaysPermitted,
     this.checkinLocation,
     this.paySlipUrl,
@@ -88,6 +94,8 @@ class AppFeature {
   int checkoutDialTime;
   int trackingInterval;
   bool onboarding;
+  bool expenseManager;
+  bool repoManagerAtt;
   bool routePlan;
   bool pinMyVisit;
   bool checkinLocation;
@@ -118,6 +126,8 @@ class AppFeature {
         routePlan: json['routePlan'],
         pinMyVisit: json['pinMyVisit'],
         onboarding: json['onboarding'],
+        expenseManager: json['expenseManager'],
+        repoManagerAtt: json['repoManagerAtt'],
         attendanceDaysPermitted: json['attendanceDaysPermitted'],
         checkinLocation: json['checkinLocation'],
         // weekOff: json['weekOff'],
@@ -127,7 +137,7 @@ class AppFeature {
         autoCheckout: json['autoCheckout'],
         validateOtp: json['validateOtp'],
         paySlipUrl: json['paySlipUrl'],
-    insuranceUrl:json['insuranceUrl'],
+        insuranceUrl: json['insuranceUrl'],
         compImg: json['compImg'],
         faceReregister: json['faceReregister'],
         hubFeature: json['hubFeature'],
@@ -150,6 +160,8 @@ class AppFeature {
         'routePlan': routePlan,
         'pinMyVisit': pinMyVisit,
         'onboarding': onboarding,
+        'expenseManager': expenseManager,
+        'repoManagerAtt': repoManagerAtt,
         'checkinLocation': checkinLocation,
         'attendanceDaysPermitted': attendanceDaysPermitted,
         // 'weekOff': weekOff,
@@ -160,7 +172,7 @@ class AppFeature {
         'autoCheckout': autoCheckout,
         'validateOtp': validateOtp,
         'paySlipUrl': paySlipUrl,
-        'insuranceUrl':insuranceUrl,
+        'insuranceUrl': insuranceUrl,
         'compImg': compImg,
         'hubFeature': hubFeature,
         'appUpdate': appUpdate,
