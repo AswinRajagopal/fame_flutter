@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:dotted_line/dotted_line.dart';
 import 'package:fame/connection/remote_services.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:fame/controllers/expense_controller.dart';
 import 'package:fame/controllers/regularize_attendance_controller.dart';
 import 'package:fame/utils/utils.dart';
@@ -194,8 +193,6 @@ class _RegularizeAttDetailListState extends State<RegularizeAttDetailList> {
     raC.pr.style(
       backgroundColor: Colors.white,
     );
-    Future.delayed(Duration(milliseconds: 100), raC.getAllRegNotations);
-
     super.initState();
     setState(() {
       checkinTime.text = convertTime(regAtt['revisedCheckInDateTime']);
@@ -290,19 +287,13 @@ class _RegularizeAttDetailListState extends State<RegularizeAttDetailList> {
                           SizedBox(
                             height: 15.0,
                           ),
-                          titleParams(
-                              'Check-in time',
-                              regAtt['checkInDateTime'] != null
-                                  ? convertDate(regAtt['checkInDateTime'])
-                                  : 'NA'),
+                          titleParams('Check-in time',
+                              convertDate(regAtt['checkInDateTime'] ?? 'NA')),
                           SizedBox(
                             height: 15.0,
                           ),
-                          titleParams(
-                              'Check-out time',
-                              regAtt['checkOutDateTime'] != null
-                                  ? convertDate(regAtt['checkOutDateTime'])
-                                  : 'NA'),
+                          titleParams('Check-out time',
+                              convertDate(regAtt['checkOutDateTime'] ?? 'NA')),
                           SizedBox(
                             height: 15.0,
                           ),
@@ -328,324 +319,293 @@ class _RegularizeAttDetailListState extends State<RegularizeAttDetailList> {
                           titleParams('Created On',
                               convertDateTime(regAtt['createdOn']) ?? 'NA'),
                           SizedBox(height: 15.0),
-                          roleId != '1'
-                              ? Column(
+                          roleId != '1'?
+                          Column(
+                            children: [
+                              DottedLine(
+                                direction: Axis.horizontal,
+                                lineLength: double.infinity,
+                                lineThickness: 1.0,
+                                dashLength: 4.0,
+                                dashColor: Colors.black,
+                                dashRadius: 0.0,
+                                dashGapLength: 4.0,
+                                dashGapColor: Colors.transparent,
+                                dashGapRadius: 0.0,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 20.0,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    DottedLine(
-                                      direction: Axis.horizontal,
-                                      lineLength: double.infinity,
-                                      lineThickness: 1.0,
-                                      dashLength: 4.0,
-                                      dashColor: Colors.black,
-                                      dashRadius: 0.0,
-                                      dashGapLength: 4.0,
-                                      dashGapColor: Colors.transparent,
-                                      dashGapRadius: 0.0,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        top: 20.0,
+                                    RaisedButton(
+                                      onPressed: () async {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                10.0))),
+                                                contentPadding:
+                                                    EdgeInsets.all(20.0),
+                                                title: Text(
+                                                  'Reject',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 24.0,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                content: Container(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .height /
+                                                      2.5,
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height /
+                                                      7.0,
+                                                  child: Column(children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Card(
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        5.0),
+                                                            side: BorderSide(
+                                                                color: Colors
+                                                                    .black38)),
+                                                        child: Container(
+                                                          child: TextField(
+                                                            controller: remarks,
+                                                            maxLength: 1000,
+                                                            maxLines: 4,
+                                                            decoration:
+                                                                InputDecoration(
+                                                              errorText: remarks
+                                                                          .text
+                                                                          .length >
+                                                                      1000
+                                                                  ? 'please enter 1000 Characters only'
+                                                                  : null,
+                                                              border:
+                                                                  InputBorder
+                                                                      .none,
+                                                              isDense: true,
+                                                              contentPadding:
+                                                                  EdgeInsets
+                                                                      .all(10),
+                                                              hintStyle:
+                                                                  TextStyle(
+                                                                color: Colors
+                                                                    .grey[600],
+                                                                fontSize: 18.0,
+                                                                // fontWeight: FontWeight.bold,
+                                                              ),
+                                                              hintText:
+                                                                  'Remarks...',
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ]),
+                                                ),
+                                                actions: [
+                                                  new FlatButton(
+                                                    child: new Text(
+                                                      'Submit',
+                                                      style: TextStyle(
+                                                          fontSize: 18.0,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    onPressed: _handleSubmit,
+                                                  )
+                                                ],
+                                              );
+                                            });
+                                      },
+                                      child: Text(
+                                        'Reject',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.0,
+                                        ),
                                       ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          RaisedButton(
-                                            onPressed: () async {
-                                              showDialog(
-                                                  context: context,
-                                                  builder: (context) {
-                                                    return AlertDialog(
-                                                      shape: RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius.circular(
-                                                                      10.0))),
-                                                      contentPadding:
-                                                          EdgeInsets.all(20.0),
-                                                      title: Text(
-                                                        'Reject',
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 24.0,
-                                                          fontWeight:
-                                                              FontWeight.bold,
+                                      color: Colors.black,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(5.0),
+                                        side: BorderSide(
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10.0,
+                                    ),
+                                    RaisedButton(
+                                      onPressed: () async {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                10.0))),
+                                                contentPadding:
+                                                    EdgeInsets.all(20.0),
+                                                title: Text(
+                                                  'Accept',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 24.0,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                content: Container(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .height /
+                                                      2.5,
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height /
+                                                      9.0,
+                                                  child: Column(children: [
+                                                    TextField(
+                                                      controller: checkinTime,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        border:
+                                                            InputBorder.none,
+                                                        isDense: true,
+                                                        contentPadding:
+                                                            EdgeInsets.all(10),
+                                                        hintStyle: TextStyle(
+                                                          color:
+                                                              Colors.grey[600],
+                                                          fontSize: 18.0,
+                                                          // fontWeight: FontWeight.bold,
+                                                        ),
+                                                        labelText:
+                                                            'CheckIn Time',
+                                                        labelStyle: TextStyle(
+                                                            color: Colors
+                                                                .grey[600],
+                                                            fontSize: 18.0),
+                                                        suffixIcon: Icon(
+                                                          Icons.calendar_today,
+                                                          size: 25.0,
                                                         ),
                                                       ),
-                                                      content: Container(
-                                                        width: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .height /
-                                                            2.5,
-                                                        height: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .height /
-                                                            7.0,
-                                                        child: Column(
-                                                            children: [
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .all(
-                                                                        8.0),
-                                                                child: Card(
-                                                                  shape: RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              5.0),
-                                                                      side: BorderSide(
-                                                                          color:
-                                                                              Colors.black38)),
-                                                                  child:
-                                                                      Container(
-                                                                    child:
-                                                                        TextField(
-                                                                      controller:
-                                                                          remarks,
-                                                                      maxLength:
-                                                                          1000,
-                                                                      maxLines:
-                                                                          4,
-                                                                      decoration:
-                                                                          InputDecoration(
-                                                                        errorText: remarks.text.length >
-                                                                                1000
-                                                                            ? 'please enter 1000 Characters only'
-                                                                            : null,
-                                                                        border:
-                                                                            InputBorder.none,
-                                                                        isDense:
-                                                                            true,
-                                                                        contentPadding:
-                                                                            EdgeInsets.all(10),
-                                                                        hintStyle:
-                                                                            TextStyle(
-                                                                          color:
-                                                                              Colors.grey[600],
-                                                                          fontSize:
-                                                                              18.0,
-                                                                          // fontWeight: FontWeight.bold,
-                                                                        ),
-                                                                        hintText:
-                                                                            'Remarks...',
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ]),
-                                                      ),
-                                                      actions: [
-                                                        new FlatButton(
-                                                          child: new Text(
-                                                            'Submit',
-                                                            style: TextStyle(
-                                                                fontSize: 18.0,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
-                                                          onPressed:
-                                                              _handleSubmit,
-                                                        )
-                                                      ],
-                                                    );
-                                                  });
-                                            },
-                                            child: Text(
-                                              'Reject',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16.0,
-                                              ),
-                                            ),
-                                            color: Colors.black,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5.0),
-                                              side: BorderSide(
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 10.0,
-                                          ),
-                                          RaisedButton(
-                                            onPressed: () async {
-                                              showDialog(
-                                                  context: context,
-                                                  builder: (context) {
-                                                    return AlertDialog(
-                                                      shape: RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius.circular(
-                                                                      10.0))),
-                                                      contentPadding:
-                                                          EdgeInsets.all(20.0),
-                                                      title: Text(
-                                                        'Accept',
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 24.0,
-                                                          fontWeight:
-                                                              FontWeight.bold,
+                                                      readOnly: true,
+                                                      keyboardType: null,
+                                                      onTap: () {
+                                                        _checkInSelectTime(
+                                                            context);
+                                                      },
+                                                    ),
+                                                    TextField(
+                                                      controller: checkOutTime,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        border:
+                                                            InputBorder.none,
+                                                        isDense: true,
+                                                        contentPadding:
+                                                            EdgeInsets.all(10),
+                                                        hintStyle: TextStyle(
+                                                          color:
+                                                              Colors.grey[600],
+                                                          fontSize: 18.0,
+                                                          // fontWeight: FontWeight.bold,
+                                                        ),
+                                                        labelText:
+                                                            'CheckOut Time',
+                                                        labelStyle: TextStyle(
+                                                            color: Colors
+                                                                .grey[600],
+                                                            fontSize: 18.0),
+                                                        suffixIcon: Icon(
+                                                          Icons.calendar_today,
+                                                          size: 25.0,
                                                         ),
                                                       ),
-                                                      content: Container(
-                                                        width: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .height /
-                                                            2.5,
-                                                        height: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .height /
-                                                            9.0,
-                                                        child:
-                                                            Column(children: [
-                                                          TextField(
-                                                            controller:
-                                                                checkinTime,
-                                                            decoration:
-                                                                InputDecoration(
-                                                              border:
-                                                                  InputBorder
-                                                                      .none,
-                                                              isDense: true,
-                                                              contentPadding:
-                                                                  EdgeInsets
-                                                                      .all(10),
-                                                              hintStyle:
-                                                                  TextStyle(
-                                                                color: Colors
-                                                                    .grey[600],
-                                                                fontSize: 18.0,
-                                                                // fontWeight: FontWeight.bold,
-                                                              ),
-                                                              labelText:
-                                                                  'CheckIn Time',
-                                                              labelStyle: TextStyle(
-                                                                  color: Colors
-                                                                          .grey[
-                                                                      600],
-                                                                  fontSize:
-                                                                      18.0),
-                                                              suffixIcon: Icon(
-                                                                Icons
-                                                                    .calendar_today,
-                                                                size: 25.0,
-                                                              ),
-                                                            ),
-                                                            readOnly: true,
-                                                            keyboardType: null,
-                                                            onTap: () {
-                                                              _checkInSelectTime(
-                                                                  context);
-                                                            },
-                                                          ),
-                                                          TextField(
-                                                            controller:
-                                                                checkOutTime,
-                                                            decoration:
-                                                                InputDecoration(
-                                                              border:
-                                                                  InputBorder
-                                                                      .none,
-                                                              isDense: true,
-                                                              contentPadding:
-                                                                  EdgeInsets
-                                                                      .all(10),
-                                                              hintStyle:
-                                                                  TextStyle(
-                                                                color: Colors
-                                                                    .grey[600],
-                                                                fontSize: 18.0,
-                                                                // fontWeight: FontWeight.bold,
-                                                              ),
-                                                              labelText:
-                                                                  'CheckOut Time',
-                                                              labelStyle: TextStyle(
-                                                                  color: Colors
-                                                                          .grey[
-                                                                      600],
-                                                                  fontSize:
-                                                                      18.0),
-                                                              suffixIcon: Icon(
-                                                                Icons
-                                                                    .calendar_today,
-                                                                size: 25.0,
-                                                              ),
-                                                            ),
-                                                            readOnly: true,
-                                                            keyboardType: null,
-                                                            onTap: () {
-                                                              _checkOutSelectTime(
-                                                                  context);
-                                                            },
-                                                          ),
-                                                        ]),
-                                                      ),
-                                                      actions: [
-                                                        new FlatButton(
-                                                          child: new Text(
-                                                            'Submit',
-                                                            style: TextStyle(
-                                                                fontSize: 18.0,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
-                                                          onPressed: () {
-                                                            raC.updateRegAtt(
-                                                                checkIn != null
-                                                                    ? checkIn
-                                                                    : regAtt[
-                                                                        'revisedCheckInDateTime'],
-                                                                checkOut != null
-                                                                    ? checkOut
-                                                                    : regAtt[
-                                                                        'revisedCheckOutDateTime'],
-                                                                regAtt[
-                                                                    'revisedAttendanceAlias'],
-                                                                '1',
-                                                                'approved',
-                                                                regAtt['regAttId']
-                                                                    .toString());
-                                                          },
-                                                        )
-                                                      ],
-                                                    );
-                                                  });
-                                            },
-                                            child: Text(
-                                              'Accept',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16.0,
-                                              ),
-                                            ),
-                                            color: AppUtils().blueColor,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5.0),
-                                              side: BorderSide(
-                                                color: AppUtils().blueColor,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                                                      readOnly: true,
+                                                      keyboardType: null,
+                                                      onTap: () {
+                                                        _checkOutSelectTime(
+                                                            context);
+                                                      },
+                                                    ),
+                                                  ]),
+                                                ),
+                                                actions: [
+                                                  new FlatButton(
+                                                    child: new Text(
+                                                      'Submit',
+                                                      style: TextStyle(
+                                                          fontSize: 18.0,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    onPressed: () {
+                                                      raC.updateRegAtt(
+                                                          checkIn != null
+                                                              ? checkIn
+                                                              : regAtt[
+                                                                  'revisedCheckInDateTime'],
+                                                          checkOut != null
+                                                              ? checkOut
+                                                              : regAtt[
+                                                                  'revisedCheckOutDateTime'],
+                                                          regAtt['revisedAttendanceAlias'],
+                                                          '1',
+                                                          'approved',
+                                                          regAtt['regAttId']
+                                                              .toString());
+                                                    },
+                                                  )
+                                                ],
+                                              );
+                                            });
+                                      },
+                                      child: Text(
+                                        'Accept',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.0,
+                                        ),
+                                      ),
+                                      color: AppUtils().blueColor,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(5.0),
+                                        side: BorderSide(
+                                          color: AppUtils().blueColor,
+                                        ),
                                       ),
                                     ),
                                   ],
-                                )
-                              : Column()
+                                ),
+                              ),
+                            ],
+                          ):Column()
                         ],
                       ),
                     ),
