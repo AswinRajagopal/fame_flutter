@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:fame/controllers/dashboard_controller.dart';
-
 import 'package:fame/controllers/reporting_manager_att_controller.dart';
 import 'package:fame/views/change_password.dart';
 import 'package:fame/views/reporting_manager_report.dart';
@@ -32,9 +31,7 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   final DashboardController dbC = Get.put(DashboardController());
-
   final RepoManagerAttController rmaC = Get.put(RepoManagerAttController());
-
   final InAppReview inAppReview = InAppReview.instance;
   TextEditingController feedback = TextEditingController();
   final AdminController adminC = Get.put(AdminController());
@@ -156,14 +153,13 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                 ),
               ),
-
               dbC.newBroadcast == true
                   ? GestureDetector(
                       onTap: () {
                         setState(() {
-                         dbC.newBroadcast = false;
+                          dbC.newBroadcast = false;
+                        });
                         Get.to(ViewBroadcast());
-                      });
                       },
                       child: Stack(children: [
                         ListContainer(
@@ -208,8 +204,9 @@ class _SettingsPageState extends State<SettingsPage> {
                 },
                 child: Visibility(
                   visible: jsonDecode(RemoteServices().box.get('appFeature'))[
-                          'expenseManager'] !=
-                      false,
+                          'expenseManager']
+                      ? true
+                      : false,
                   child: ListContainer(
                     'assets/images/expense.png',
                     'Expense Management',
@@ -230,8 +227,11 @@ class _SettingsPageState extends State<SettingsPage> {
                   Get.to(ViewReport());
                 },
                 child: Visibility(
-
-                  visible: roleId != "1",
+                  visible: ((roleId != '1') &&
+                          jsonDecode(RemoteServices().box.get('appFeature'))[
+                              'repoManagerAtt'])
+                      ? true
+                      : false,
                   child: ListContainer(
                     'assets/images/repo_manager.png',
                     'Reporting Employee Attendance',
