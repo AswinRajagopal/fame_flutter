@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fame/connection/remote_services.dart';
 import 'package:fame/controllers/profile_controller.dart';
 import 'package:fame/widgets/ProfileTabWidgets.dart';
@@ -16,7 +17,6 @@ import 'package:get/get.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
 import 'face_register.dart';
-
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -56,9 +56,13 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Text(text,
                 style: selected
                     ? const TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16)
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16)
                     : const TextStyle(
-                        color: Colors.grey, fontWeight: FontWeight.normal, fontSize: 14)),
+                        color: Colors.grey,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 14)),
           )),
         ));
   }
@@ -107,7 +111,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
 
     return Scaffold(
-
       body: SafeArea(
         child: Container(
           width: size.width,
@@ -217,25 +220,27 @@ class _ProfilePageState extends State<ProfilePage> {
                   var img;
                   if (pC.profileRes['profileImage'] != null) {
                     img = pC.profileRes['profileImage']['image'];
-                    img = img.contains('data:image') ? img.split(',').last : img;
+                    img =
+                        img.contains('data:image') ? img.split(',').last : img;
 
                     print('img.length: ${img.length}');
                   }
 
                   return // body
 
-                    Padding(
-                      padding: EdgeInsets.only(top: 300),
-                      child: Container(
-                        decoration: const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(12), topRight: Radius.circular(12))),
-                        width: double.infinity,
-                        height: size.height - 300,
-                        child: bodyList[selectedTabIndex],
-                      ),
-                    );
+                      Padding(
+                    padding: EdgeInsets.only(top: 300),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(12),
+                              topRight: Radius.circular(12))),
+                      width: double.infinity,
+                      height: size.height - 300,
+                      child: bodyList[selectedTabIndex],
+                    ),
+                  );
                   return Container(
                     // height: 220.0,
                     width: MediaQuery.of(context).size.width,
@@ -317,11 +322,10 @@ class _ProfilePageState extends State<ProfilePage> {
                   var url;
                   if (pC.profileRes['profileImage'] != null) {
                     img = pC.profileRes['profileImage']['image'];
-                    img = img.contains('data:image') ? img.split(',').last : img;
-
-                  }
-                  else{
-                    url=pC.profileRes['imageUrl'];
+                    img =
+                        img.contains('data:image') ? img.split(',').last : img;
+                  } else {
+                    url = pC.profileRes['imageUrl'];
                   }
 
                   return // body
@@ -341,7 +345,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                   width: double.infinity,
                                   decoration: BoxDecoration(
                                     color: Colors.white,
-                                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
                                     boxShadow: [
                                       BoxShadow(
                                         blurRadius: 15.0,
@@ -360,10 +365,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                           top: 15,
                                         ),
                                         child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
                                           children: [
                                             Text(
-                                              pC.profileRes['empDetails']['name'] ?? 'N/A',
+                                              pC.profileRes['empDetails']
+                                                      ['name'] ??
+                                                  'N/A',
                                               style: const TextStyle(
                                                   fontFamily: "Sofia",
                                                   fontSize: 22,
@@ -375,21 +383,34 @@ class _ProfilePageState extends State<ProfilePage> {
                                       ),
                                       const Spacer(),
                                       Container(
-                                      child:Theme(
-                                        data: ThemeData(
-                                          highlightColor: Colors.white,
+                                        child: Theme(
+                                          data: ThemeData(
+                                            highlightColor: Colors.white,
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              buildTabButton(
+                                                  selectedTabIndex == 0,
+                                                  "Personal Info",
+                                                  () => setState(() =>
+                                                      selectedTabIndex = 0)),
+                                              Container(
+                                                  padding: EdgeInsets.only(
+                                                      bottom: 20),
+                                                  height: 30,
+                                                  width: 2,
+                                                  color: Colors.greenAccent),
+                                              buildTabButton(
+                                                  selectedTabIndex == 1,
+                                                  "Compliance Info",
+                                                  () => setState(() =>
+                                                      selectedTabIndex = 1))
+                                            ],
+                                          ),
                                         ),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            buildTabButton(selectedTabIndex == 0, "Personal Info",
-                                                () => setState(() => selectedTabIndex = 0)),
-                                            Container(padding:EdgeInsets.only(bottom: 20),height: 30,width: 2,color: Colors.greenAccent),
-                                            buildTabButton(selectedTabIndex == 1, "Compliance Info",
-                                                () => setState(() => selectedTabIndex = 1))
-                                          ],
-                                        ),
-                                      ),)
+                                      )
                                     ],
                                   ),
                                 ),
@@ -403,9 +424,11 @@ class _ProfilePageState extends State<ProfilePage> {
                             GestureDetector(
                               onTap: () {
                                 print('take picture');
-                                if(jsonDecode(RemoteServices().box.get('appFeature'))['faceReregister']) {
+                                if (jsonDecode(RemoteServices()
+                                    .box
+                                    .get('appFeature'))['faceReregister']) {
                                   Get.to(FaceRegister(pC.endPoint));
-                                }else{
+                                } else {
                                   Get.snackbar(
                                     'Re-registration disabled',
                                     'Please contact your Incharge for Re-registration',
@@ -422,23 +445,28 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                     borderRadius: 5.0,
                                   );
-                                }                              },
+                                }
+                              },
                               child: CircleAvatar(
                                 // backgroundImage:AssetImage('assets/images/person_male.png'),
-                                backgroundImage : url != null ?
-                                NetworkImage(
-                                   url,
-                                  // fit: BoxFit.cover,
-                                ): img !=null?
-                                MemoryImage(
-                                    base64.decode(
-                                      img.replaceAll('\n', ''),
-                                    )
-                                ):
-                                NetworkImage(
-                                   'https://cdn.pixabay.com/photo/2018/08/28/12/41/avatar-3637425_960_720.png',
-                                  // fit: BoxFit.cover,
-                                ),
+                                backgroundImage: url != null
+                                    ? CachedNetworkImage(
+                                        imageUrl: url,
+                                        progressIndicatorBuilder:
+                                            (context, url, progress) => Center(
+                                          child: CircularProgressIndicator(
+                                            value: progress.progress,
+                                          ),
+                                        ),
+                                      )
+                                    : img != null
+                                        ? MemoryImage(base64.decode(
+                                            img.replaceAll('\n', ''),
+                                          ))
+                                        : NetworkImage(
+                                            'https://cdn.pixabay.com/photo/2018/08/28/12/41/avatar-3637425_960_720.png',
+                                            // fit: BoxFit.cover,
+                                          ),
                                 radius: 60.0,
                               ),
                             ),
@@ -452,8 +480,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
               // body
               // TODO: integrate this
-
-
 
               // Align(
               //   alignment: Alignment.topCenter,

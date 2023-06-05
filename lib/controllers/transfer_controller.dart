@@ -14,6 +14,7 @@ class TransferController extends GetxController {
   var res;
   final List shiftList = [];
   final List checkList = [];
+  final List stores=[].obs;
   bool isDisposed = false;
   final List transferList = [].obs;
 
@@ -82,10 +83,69 @@ class TransferController extends GetxController {
     }
   }
 
-  void newTransfer(employeeId, fromPeriod, toPeriod, currentUnit, shift, toUnit) async {
+  void getStores()async{
+    stores.clear();
+    try {
+      isLoading(true);
+      await pr.show();
+      res = await RemoteServices().getStores();
+      if (res != null) {
+        isLoading(false);
+        await pr.hide();
+        if (res['success']) {
+          print('storeRes:$res');
+          if (res['storeNames'] != null) {
+            for (var i = 0; i < res['storeNames'].length; i++) {
+              stores.add(res['storeNames'][i]);
+            }
+          }
+          // print('leaveList: $leaveList');
+        } else {
+          Get.snackbar(
+            null,
+            'stores not found',
+            colorText: Colors.white,
+            backgroundColor: Colors.black87,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
+          );
+        }
+      }
+    } catch (e) {
+      print(e);
+      isLoading(false);
+      await pr.hide();
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
+      );
+    }
+  }
+
+  void newTransfer(employeeId, fromPeriod, toPeriod, currentUnit, shift, toUnit,storeCode) async {
     try {
       await pr.show();
-      var transferRes = await RemoteServices().newTransfer(employeeId, fromPeriod, toPeriod, currentUnit, shift, toUnit);
+      var transferRes = await RemoteServices().newTransfer(employeeId, fromPeriod, toPeriod, currentUnit, shift, toUnit,storeCode);
       if (transferRes != null) {
         await pr.hide();
         print('transferRes valid: ${transferRes['success']}');

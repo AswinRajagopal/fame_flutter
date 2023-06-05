@@ -5,6 +5,7 @@ import 'package:fame/controllers/reporting_manager_att_controller.dart';
 import 'package:fame/views/change_password.dart';
 import 'package:fame/views/reporting_manager_report.dart';
 import 'package:fame/views/view_expenses.dart';
+import 'package:fame/views/view_emp_roster.dart';
 import 'package:fame/views/view_regularize_att.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -89,9 +90,7 @@ class _SettingsPageState extends State<SettingsPage> {
     super.dispose();
   }
 
-  Future<bool> backButtonPressed() {
-    return Get.offAll(DashboardPage());
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +103,6 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
       ),
       body: WillPopScope(
-        onWillPop: backButtonPressed,
         child: SafeArea(
           child: ListView(
             shrinkWrap: true,
@@ -236,6 +234,15 @@ class _SettingsPageState extends State<SettingsPage> {
                     'assets/images/repo_manager.png',
                     'Reporting Employee Attendance',
                   ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Get.to(ViewEmpRoster());
+                },
+                child: ListContainer(
+                  'assets/images/Roster.png',
+                  'Employee Roster',
                 ),
               ),
               GestureDetector(
