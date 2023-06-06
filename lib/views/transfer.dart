@@ -25,6 +25,8 @@ class _TransferPageState extends State<TransferPage> {
   TextEditingController clientShift = TextEditingController();
   TextEditingController fromDt = TextEditingController();
   TextEditingController toDt = TextEditingController();
+  TextEditingController store = TextEditingController();
+
   var employeeId;
   var shift;
   var toUnit;
@@ -71,6 +73,10 @@ class _TransferPageState extends State<TransferPage> {
     );
     tC.pr.style(
       backgroundColor: Colors.white,
+    );
+    Future.delayed(
+      Duration(milliseconds: 100),
+      tC.getStores,
     );
     super.initState();
   }
@@ -170,7 +176,8 @@ class _TransferPageState extends State<TransferPage> {
                         suggestionsCallback: (pattern) async {
                           // print(pattern);
                           if (pattern.isNotEmpty) {
-                            return await RemoteServices().getTransferEmployees(pattern);
+                            return await RemoteServices()
+                                .getTransferEmployees(pattern);
                           } else {
                             employeeId = null;
                           }
@@ -186,13 +193,23 @@ class _TransferPageState extends State<TransferPage> {
                               suggestion['name'],
                             ),
                             subtitle: Text(
-                              suggestion['empId']+" "+"(" +suggestion['clientName']+ ")",
+                              suggestion['empId'] +
+                                  " " +
+                                  "(" +
+                                  suggestion['clientName'] +
+                                  ")",
                             ),
                           );
                         },
                         onSuggestionSelected: (suggestion) {
                           print(suggestion);
-                          empName.text = suggestion['name'].toString().trimRight() + " (" + suggestion['inchargeName'] + ")" + ' - ' + suggestion['empId'];
+                          empName.text =
+                              suggestion['name'].toString().trimRight() +
+                                  " (" +
+                                  suggestion['inchargeName'] +
+                                  ")" +
+                                  ' - ' +
+                                  suggestion['empId'];
                           empId.text = suggestion['empId'];
                           inCharge.text = suggestion['inchargeName'];
                           currentUnit.text = suggestion['clientName'];
@@ -260,7 +277,8 @@ class _TransferPageState extends State<TransferPage> {
                         onSuggestionSelected: (suggestion) {
                           print(suggestion);
                           toUnit = suggestion['id'];
-                          requiredUnit.text = suggestion['name'].toString().trimRight();
+                          requiredUnit.text =
+                              suggestion['name'].toString().trimRight();
                           tC.getShift(suggestion['id']);
                         },
                       ),
@@ -308,13 +326,73 @@ class _TransferPageState extends State<TransferPage> {
                           decoration: InputDecoration(
                             // errorText: clientShift.text==null || clientShift.text == ''?'Please select shift':null,
                             contentPadding: EdgeInsets.only(
-                              left: clientShift.text == null || clientShift.text == '' ? 0.0 : 10.0,
+                              left: clientShift.text == null ||
+                                      clientShift.text == ''
+                                  ? 0.0
+                                  : 10.0,
                             ),
                           ),
                           onChanged: (value) {
                             print('value: $value');
                             setState(() {
                               clientShift.text = value.toString();
+                            });
+                          },
+                        ),
+                      );
+                    }),
+                    Obx(() {
+                      if (tC.isLoading.value) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 5.0,
+                          ),
+                          child: MyTextField(
+                            'Select Store',
+                            store,
+                            false,
+                          ),
+                        );
+                      }
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10.0,
+                          vertical: 5.0,
+                        ),
+                        child: DropdownButtonFormField<String>(
+                          hint: Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Text(
+                              'Select Store',
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 18.0,
+                                // fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          isExpanded: true,
+                          items: tC.stores.map((item) {
+                            print('item: $item');
+                            return DropdownMenuItem(
+                              child: Text(
+                                item['storeName'] + " - " + item['storeCode'],
+                              ),
+                              value: item['storeCode'].toString(),
+                            );
+                          }).toList(),
+                          decoration: InputDecoration(
+                            // errorText: clientShift.text==null || clientShift.text == ''?'Please select shift':null,
+                            contentPadding: EdgeInsets.only(
+                              left: store.text == null || store.text == ''
+                                  ? 0.0
+                                  : 10.0,
+                            ),
+                          ),
+                          onChanged: (value) {
+                            print('value: $value');
+                            setState(() {
+                              store.text = value.toString();
                             });
                           },
                         ),
@@ -407,7 +485,11 @@ class _TransferPageState extends State<TransferPage> {
                           onPressed: () {
                             print('Submit');
                             FocusScope.of(context).requestFocus(FocusNode());
-                            if (employeeId == null || fromPeriod == null || toPeriod == null || currentUnit.text == null || toUnit == null) {
+                            if (employeeId == null ||
+                                fromPeriod == null ||
+                                toPeriod == null ||
+                                currentUnit.text == null ||
+                                toUnit == null) {
                               Get.snackbar(
                                 null,
                                 'Please provide all the details',
@@ -424,10 +506,29 @@ class _TransferPageState extends State<TransferPage> {
                                 ),
                                 borderRadius: 5.0,
                               );
-                            }else if(clientShift.text==null||clientShift.text.isEmpty){
+                            } else if (clientShift.text == null ||
+                                clientShift.text.isEmpty) {
                               Get.snackbar(
                                 null,
                                 'Please provide shift',
+                                colorText: Colors.white,
+                                backgroundColor: Colors.black87,
+                                snackPosition: SnackPosition.BOTTOM,
+                                margin: EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                  vertical: 10.0,
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 12.0,
+                                  vertical: 18.0,
+                                ),
+                                borderRadius: 5.0,
+                              );
+                            } else if (store.text == null ||
+                                store.text.isEmpty) {
+                              Get.snackbar(
+                                null,
+                                'Please provide store',
                                 colorText: Colors.white,
                                 backgroundColor: Colors.black87,
                                 snackPosition: SnackPosition.BOTTOM,
@@ -448,7 +549,15 @@ class _TransferPageState extends State<TransferPage> {
                               print('fromUnit: ${currentUnit.text}');
                               print('shift: ${clientShift.text}');
                               print('toUnit: $toUnit');
-                              tC.newTransfer(employeeId, fromPeriod, toPeriod, currentUnit.text, clientShift.text, toUnit);
+                              print('store: ${store.text}');
+                              tC.newTransfer(
+                                  employeeId,
+                                  fromPeriod,
+                                  toPeriod,
+                                  currentUnit.text,
+                                  clientShift.text,
+                                  toUnit,
+                                  store.text);
                             }
                           },
                           child: Padding(
@@ -508,7 +617,7 @@ class MyTextField extends StatelessWidget {
           hintStyle: TextStyle(
             color: Colors.grey[600],
             fontSize: 18.0,
-           // fontWeight: FontWeight.bold,
+            // fontWeight: FontWeight.bold,
           ),
           hintText: hintText,
         ),

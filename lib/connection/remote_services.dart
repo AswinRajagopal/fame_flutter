@@ -609,6 +609,26 @@ class RemoteServices {
     }
   }
 
+  Future getStores()async{
+    var response = await client.post(
+      '$baseURL/transfer/get_stores',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+        },
+      ),
+    );
+    // print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
   Future getAddressFromLatLng(double lat, double lng) async {
     var _host = 'https://maps.googleapis.com/maps/api/geocode/json';
     final url =
@@ -1439,7 +1459,7 @@ class RemoteServices {
   }
 
   Future newTransfer(
-      empId, fromPeriod, toPeriod, fromUnit, shift, toUnit) async {
+      empId, fromPeriod, toPeriod, fromUnit, shift, toUnit,storeCode) async {
     var response = await client.post(
       '$baseURL/transfer/transfer_entry',
       headers: header,
@@ -1453,6 +1473,7 @@ class RemoteServices {
           'shift': shift,
           'toPeriod': toPeriod,
           'toUnit': toUnit,
+          'storeCode':storeCode
         },
       ),
     );
@@ -2210,12 +2231,12 @@ class RemoteServices {
 
   Future getVisitDownloads(empId, fromDate, toDate) async {
     Dio dio = Dio();
-    final directory = await getExternalStorageDirectory();
+    final directory = await getApplicationDocumentsDirectory();
     final filePath = '${directory.path}/myVisit.pdf';
     final file = File(filePath);
+    print(file.path);
 
-    var response =
-        await dio.download('$baseURL/location/pitstops_by_empId', filePath,
+    var response = await dio.download('$baseURL/location/pitstops_by_empId', filePath,
             options: Options(
               headers: header,
               method: 'POST',
@@ -2224,12 +2245,16 @@ class RemoteServices {
               <String, String>{
                 "fromDate": fromDate,
                 "toDate": toDate,
-                "empId": empId
+                "empId": empId,
+                "companyId" : box.get('companyid').toString()
               },
             ));
-
     if (response.statusCode == 200) {
-      return filePath;
+      if (await file.exists()) {
+        return filePath;
+      } else {
+        return null;
+      }
     } else {
       return null;
     }
