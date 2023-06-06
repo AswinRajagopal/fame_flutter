@@ -272,15 +272,6 @@ class _HomeCalendarState extends State<HomeCalendar>
         !events.first.toString().contains('*')) {
       var eventSplit = events.first.split(',');
       showEvent = eventSplit[0];
-    } else if (date.weekday == DateTime.sunday) {
-      int year = DateTime.now().year;
-      DateTime firstDayOfYear = DateTime(year, 1, 1);
-      for (int i = 0; i < 365; i++) {
-        DateTime currentDay = firstDayOfYear.add(Duration(days: i));
-        if (currentDay.weekday == 7) {
-          showEvent = 'W.O';
-        }
-      }
     } else {
       showEvent = events.first.split('*').first;
     }
