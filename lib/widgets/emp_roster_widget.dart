@@ -578,8 +578,7 @@ class EmpRosterWidget extends StatelessWidget {
                           combined,
                           roster['empId']),
                     ),
-                    dateList[30] != dateList[0]
-                        ? GestureDetector(
+                   dateList.value ==30?GestureDetector(
                             onTap: () {
                               Get.to(RosterPage(dateList[30].toString(),roster['empId'],
                                   roster['day31'] != null
@@ -595,8 +594,7 @@ class EmpRosterWidget extends StatelessWidget {
                                 roster['day31'] ?? 'NA',
                                 combined,
                                 roster['empId']),
-                          )
-                        : Column(),
+                          ):Column(),
                   ]),
             ),
           ],

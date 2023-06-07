@@ -233,14 +233,6 @@ class DBCalController extends GetxController {
     empRosterList.clear();
     dateList.clear();
     storeList.clear();
-    // var date = DateTime.now().toString();
-    // var dateParse = DateTime.parse(date);
-    // print('Month: ${dateParse.month}');
-    // changedDate =
-    //     '${dateParse.year}-${dateParse.month < 10 ? '0' + dateParse.month.toString() : dateParse.month}-${dateParse.day < 10 ? '0' + dateParse.day.toString() : dateParse.day}';
-    // var formattedDate =
-    //     '${dateParse.month}${dateParse.year.toString().substring(2)}';
-    // var month = formattedDate;
     print('month-->$month');
     try {
       isEventLoading(true);
@@ -278,6 +270,7 @@ class DBCalController extends GetxController {
                         String day = (index + 1).toString().padLeft(2, '0');
                         return "$day-$monthPass-$year";
                       });
+                      dateList.clear();
                       for (String date in dates) {
                         dateList.add(date);
                         print(dateList);
@@ -288,7 +281,6 @@ class DBCalController extends GetxController {
                         // Loop through each store in storeNames list
                         for (var store in storeList) {
                           var storeCode = store['storeCode'];
-
                           if (dayValue == storeCode) {
                             var storeName = store['storeName'];
                             // Add the storeName to the dayKey value
