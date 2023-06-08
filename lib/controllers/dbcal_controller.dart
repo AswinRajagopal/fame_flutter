@@ -64,7 +64,7 @@ class DBCalController extends GetxController {
     try {
       isEventLoading(true);
       // print('calRes:');
-      calRes = await RemoteServices().getEmpCalendarNew(month);
+      calRes = await RemoteServices().getEmpCalendarNew(month, '');
       if (calRes != null) {
         isEventLoading(false);
         // isCalLoading(false);
@@ -229,7 +229,7 @@ class DBCalController extends GetxController {
     }
   }
 
-  void getRoster(month) async {
+  void getRoster(month, empId) async {
     empRosterList.clear();
     dateList.clear();
     storeList.clear();
@@ -237,7 +237,7 @@ class DBCalController extends GetxController {
     try {
       isEventLoading(true);
       await pr.show();
-     calRes = await RemoteServices().getEmpCalendarNew(month);
+     calRes = await RemoteServices().getEmpCalendarNew(month, empId);
       if (calRes != null) {
         isEventLoading(false);
         await pr.hide();

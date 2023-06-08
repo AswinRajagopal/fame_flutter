@@ -1,4 +1,6 @@
+import 'package:fame/views/modify_emp_roster.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -20,7 +22,10 @@ class _ViewViewEmpRosterState extends State<ViewEmpRoster> {
   TextEditingController date = TextEditingController();
   // var roleId = RemoteServices().box.get('role');
   var roleId;
+  TextEditingController empName = TextEditingController();
   var _selectedMonthYear;
+  var empId = '';
+  DateTime picked = DateTime.now();
 
   @override
   void initState() {
@@ -57,7 +62,7 @@ class _ViewViewEmpRosterState extends State<ViewEmpRoster> {
     );
     Future.delayed(
       Duration(milliseconds: 100),
-      () => calC.getRoster(_selectedMonthYear),
+      () => calC.getRoster(_selectedMonthYear, empId),
     );
 
     roleId = RemoteServices().box.get('role');
@@ -65,6 +70,7 @@ class _ViewViewEmpRosterState extends State<ViewEmpRoster> {
     _selectedMonthYear =
         '${DateTime.now().month.toString().padLeft(2, '0')}${DateTime.now().year.toString().substring(2)}';
     date.text = DateFormat('MMMM-yyyy').format(DateTime.now()).toString();
+    picked = picked.subtract(Duration(days: picked.day-1));
   }
 
   @override
@@ -75,7 +81,7 @@ class _ViewViewEmpRosterState extends State<ViewEmpRoster> {
   final DateTime cureMonth = DateTime.now();
 
   Future<void> _selectMonth(BuildContext context) async {
-    final DateTime picked = await showMonthPicker(
+    picked = await showMonthPicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(DateTime.now().year - 1),
@@ -88,7 +94,7 @@ class _ViewViewEmpRosterState extends State<ViewEmpRoster> {
         print(picked);
         _selectedMonthYear =
             '${picked.month.toString().padLeft(2, '0')}${picked.year.toString().substring(2)}';
-        calC.getRoster(_selectedMonthYear);
+        calC.getRoster(_selectedMonthYear, empId);
         print(_selectedMonthYear);
       });
     }
@@ -127,6 +133,52 @@ class _ViewViewEmpRosterState extends State<ViewEmpRoster> {
             ),
             thickness: 5.0,
             child: Column(children: [
+              roleId!='1'?TypeAheadField(
+                textFieldConfiguration: TextFieldConfiguration(
+                  controller: empName,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    contentPadding: EdgeInsets.all(10),
+                    hintStyle: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 18.0,
+                      // fontWeight: FontWeight.bold,
+                    ),
+                    hintText: 'Employee Name',
+                  ),
+                ),
+                suggestionsCallback: (pattern) async {
+                  // print(pattern);
+                  if (pattern.isNotEmpty) {
+                    return await RemoteServices().getEmployees(pattern);
+                  } else {
+                    empId = null;
+                  }
+                  return null;
+                },
+                hideOnEmpty: true,
+                noItemsFoundBuilder: (context) {
+                  return Text('No employee found');
+                },
+                itemBuilder: (context, suggestion) {
+                  return ListTile(
+                    title: Text(
+                      suggestion['name'],
+                    ),
+                    subtitle: Text(
+                      suggestion['empId'],
+                    ),
+                  );
+                },
+                onSuggestionSelected: (suggestion) {
+                  print(suggestion);
+                  print(suggestion['name']);
+                  empName.text = suggestion['name'].toString().trimRight() +
+                      ' - ' +
+                      suggestion['empId'];
+                  empId = suggestion['empId'];
+                },
+              ):Container(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
                 child: Row(children: [
@@ -189,24 +241,42 @@ class _ViewViewEmpRosterState extends State<ViewEmpRoster> {
                         ],
                       ),
                     );
+                  }else {
+                    var rosterList = calC.empRosterList[0];
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: ScrollPhysics(),
+                      itemCount: DateTime(picked.year, picked.month + 1, 0).day,
+                      itemBuilder: (context, index) {
+                        return singleWidget( rosterList, index);
+                      },
+                    );
                   }
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    primary: true,
-                    physics: ScrollPhysics(),
-                    itemCount: calC.empRosterList.length,
-                    itemBuilder: (context, index) {
-                      var rosterList = calC.empRosterList[index];
-                      return EmpRosterWidget(
-                          rosterList, calC.combined, calC.dateList);
-                    },
-                  );
                 }
               }),
             ]),
           ),
         ),
       ),
+    );
+  }
+  Widget singleWidget( roster, index) {
+    String day = 'day' + index.toString();
+    DateTime thisDate = picked.add( Duration(days: index));
+    return GestureDetector(
+      onTap: () {
+        if (roleId!='1'){
+          Get.to(RosterPage(
+              DateFormat('dd-MM-yyyy').format(thisDate).toString(),
+              roster['empId'],
+              roster[day] != null ? roster[day].split(' ')[0] : '',
+              roster['clientId'],
+              roster[day] != null ? roster[day].split(" ")[2] : '',
+              roster['name']));
+        }
+      },
+      child: titleParams('Name', 'ClientId',
+          DateFormat('dd-MM-yy').format(thisDate).toString(), roster[day] ?? 'NA', roster[day]),
     );
   }
 }
