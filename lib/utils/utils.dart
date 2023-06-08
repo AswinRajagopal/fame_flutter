@@ -12,6 +12,7 @@ class AppUtils {
   Color lightBlueColor = HexColor('54D2DB');
   Color blueColor = HexColor('4a81db');
   Color orangeColor = HexColor('FF7933');
+  Color dividerColor = Color(0x86555555);
   static String snackbarTitle;
   static String snackbarErrorMessage =
       'Something went wrong! Please try again later';

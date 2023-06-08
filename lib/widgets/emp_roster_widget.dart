@@ -51,6 +51,8 @@ class EmpRosterWidget extends StatelessWidget {
         child: ListView.builder(
             scrollDirection: Axis.vertical,
             itemCount: 31,
+            shrinkWrap: true,
+            physics: ClampingScrollPhysics(),
             itemBuilder: (context, index) {
               return singleWidget('5', roster, index);
             }),
@@ -78,8 +80,8 @@ Widget singleWidget(dateList, roster, index) {
 
 Widget titleParams(name, id, date, shift, empId) {
   return Container(
-    width: 440,
-    height: 140,
+    // width: 440,
+    // height: 150,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.all(Radius.circular(5)),
       boxShadow: [
@@ -92,184 +94,374 @@ Widget titleParams(name, id, date, shift, empId) {
       ],
       color: Colors.white,
     ),
-    margin: EdgeInsets.symmetric(vertical: 5.0),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    margin: EdgeInsets.symmetric(vertical: 5.0,horizontal: 8),
+    padding: EdgeInsets.symmetric(vertical: 10.0,horizontal: 8),
+    child:
+    Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+        Expanded(
+            flex: 2,
+            child:
+            Column(
               children: [
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      name,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 15.0,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ),
+                Container(
+                  // alignment: Alignment.centerLeft,
+                  child:
+                  Text(
+                    "${date}",
+                    style:
+                   TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color:  Color(0xff555555), fontFamily: 'PoppinsRegular')              ),
                 ),
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      id,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 15.0,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ),
-                shift.contains('\$')
-                    ? Flexible(
+              ],
+            )),
+        SizedBox(width: 10,),
+        Container(width: 1,height: 70, color:  Color(0xff555555).withOpacity(0.3),),
+        SizedBox(width: 10,),
+        Expanded(
+            flex: 7,
+            child:
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    child:Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      shift.contains('\$')
+                          ?  Expanded(
+                        flex: 1,
                         child: Container(
-                          width: 100,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            border: Border.all(
-                                width: 2.0,
-                                color: Colors.red), // Set border width
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(5.0)),
-                          ),
-                          child: FittedBox(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                  '${shift.split(' ').last != null ? shift.split(' ').last.toString() : 'N/A'}',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                      color: Colors.white,
-                                      fontFamily: 'PoppinsRegular')),
-                            ),
+                          // alignment: Alignment.centerLeft,
+                          child:
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Flexible(
+                                child: Text(
+                                    "Store: ",
+                                    style:
+                                    TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color:  Colors.red.withOpacity(0.8), fontFamily: 'PoppinsRegular')
+                                ),
+                              ),
+                              Flexible(
+                                child: Text(
+                                    '${shift.split(' ').last != null ? shift.split(' ').last.toString() : 'N/A'}',
+                                    style:
+                                    TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color:  Colors.red, fontFamily: 'PoppinsRegular')
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       )
-                    : Column(),
-              ]),
-        ),
-        Container(
-          width: 2.0,
-          height: 50.0,
-          color: AppUtils().blueColor,
-        ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(children: [
-                  Text(
-                    date,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                        color: Colors.teal,
-                        fontFamily: 'PoppinsRegular'),
-                  )
-                ]),
-              ),
-            ),
-            shift.contains('\$')
-                ? Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Container(
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Colors.green,
-                          border: Border.all(
-                              width: 2.0,
-                              color: Colors.green), // Set border width
-                          borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Text(
-                            '${shift.split(' ')[2].toString()}',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                                color: Colors.white,
-                                fontFamily: 'PoppinsRegular'),
+
+                          : Column(),
+
+                      shift.contains('\$')
+                          ? Expanded(
+                        flex: 1,
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          child:
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Flexible(
+                                child: Text(
+                                    "StoreCode: ",
+                                    style:
+                                    TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color:  Colors.green.withOpacity(0.8), fontFamily: 'PoppinsRegular')
+                                ),
+                              ),
+                              Flexible(
+                                child: Text(
+                                    '${shift.split(' ')[2].toString()}',
+                                    style:
+                                    TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color:  Colors.green, fontFamily: 'PoppinsRegular')
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ),
-                    ),
-                  )
-                : SizedBox(),
-          ],
-        ),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Flexible(
-              child: Container(
-                width: 80,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: AppUtils().blueColor,
-                  border: Border.all(
-                      width: 2.0,
-                      color: AppUtils().blueColor), // Set border width
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                      )
+                          : Column(),
+
+                    ])),
+
+
+                SizedBox(height: 30,),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: Container(
+                            // alignment: Alignment.centerLeft,
+                            child:
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                      "Client:",
+                                      style:
+                                      TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color:  Color(
+                                          0xc7555555), fontFamily: 'PoppinsRegular')
+                                  ),
+                                ),
+                                Flexible(
+                                  child: Text(
+                                      " ${name}",
+                                      style:
+                                      TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color:  Color(0xff555555), fontFamily: 'PoppinsRegular')
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        shift.contains('\$')
+                            ?  Expanded(
+                          flex: 1,
+                          child:  Container(
+                            width: 80,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: AppUtils().blueColor.withOpacity(0.2),
+                              // border: Border.all(
+                              //     width: 2.0,
+                              //     color: AppUtils().blueColor), // Set border width
+                              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                            ),
+                            child: FittedBox(
+                              child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                      'Shift:${shift.contains('\$') ? shift.substring(0, shift.indexOf('\$')).trim() : shift}',
+                                      style:       TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color:  AppUtils().blueColor, fontFamily: 'PoppinsRegular')
+                                  )
+                              ),
+                            ),
+                          ),
+                        )
+                            : Column(),
+
+                      ]),
                 ),
-                child: FittedBox(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                        'Shift:${shift.contains('\$') ? shift.substring(0, shift.indexOf('\$')).trim() : shift}',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                            color: Colors.white,
-                            fontFamily: 'PoppinsRegular')),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 5.0,
-            ),
-            Flexible(
-              child: Container(
-                width: 80,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  border: Border.all(color: Colors.black), // Set border width
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                ),
-                child: FittedBox(
-                  child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Text('${empId != null ? empId.toString() : 'N/A'}',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                            color: Colors.white,
-                            fontFamily: 'PoppinsRegular')),
-                  ),
-                ),
-              ),
+
+              ],
             )
-          ]),
         ),
-        SizedBox(
-          height: 10.0,
-        )
       ],
     ),
+
+    // Column(
+    //   children: [
+    //     Row(
+    //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    //       children: [
+    //         Flexible(
+    //           flex: 2,
+    //           child: Column(
+    //             children: [
+    //               Padding(
+    //                 padding: const EdgeInsets.all(8.0),
+    //                 child: Row(children: [
+    //                   Text(
+    //                     date,
+    //                     style: TextStyle(
+    //                         fontWeight: FontWeight.w600,
+    //                         fontSize: 18,
+    //                         color: Colors.black.withOpacity(0.6),
+    //                         fontFamily: 'PoppinsRegular'), )   //                   )
+    //                 ]),
+    //               ),
+    //
+    //               Padding(
+    //                 padding: const EdgeInsets.all(8.0),
+    //                 child: Row(children: [
+    //                   Text(
+    //                     name,
+    //                     style: TextStyle(
+    //                         fontWeight: FontWeight.w500,
+    //                         fontSize: 18,
+    //                         color: Colors.black.withOpacity(0.6),
+    //                         fontFamily: 'PoppinsRegular'),)    //                   )
+    //                 ]),
+    //               ),
+    //             ],
+    //           ),
+    //         ),
+    //         Padding(
+    //           padding: const EdgeInsets.all(15.0),
+    //           child: Column(
+    //               mainAxisAlignment: MainAxisAlignment.center,
+    //               crossAxisAlignment: CrossAxisAlignment.center,
+    //               children: [
+    //                 Flexible(
+    //                   child: Padding(
+    //                     padding: const EdgeInsets.all(8.0),
+    //                     child: Text(
+    //                       name,
+    //                       style: TextStyle(
+    //                         fontWeight: FontWeight.w800,
+    //                         fontSize: 15.0,
+    //                         color: Colors.grey,
+    //                       ),
+    //                     ),
+    //                   ),
+    //                 ),
+    //                 Flexible(
+    //                   child: Padding(
+    //                     padding: const EdgeInsets.all(8.0),
+    //                     child: Text(
+    //                       id,
+    //                       style: TextStyle(
+    //                         fontWeight: FontWeight.w500,
+    //                         fontSize: 15.0,
+    //                         color: Colors.black,
+    //                       ),
+    //                     ),
+    //                   ),
+    //                 ),
+    //                 shift.contains('\$')
+    //                     ? Flexible(
+    //                         child: Container(
+    //                           width: 100,
+    //                           alignment: Alignment.center,
+    //                           decoration: BoxDecoration(
+    //                             color: Colors.red,
+    //                             border: Border.all(
+    //                                 width: 2.0,
+    //                                 color: Colors.red), // Set border width
+    //                             borderRadius:
+    //                                 BorderRadius.all(Radius.circular(5.0)),
+    //                           ),
+    //                           child: FittedBox(
+    //                             child: Padding(
+    //                               padding: const EdgeInsets.all(8.0),
+    //                               child: Text(
+    //                                   '${shift.split(' ').last != null ? shift.split(' ').last.toString() : 'N/A'}',
+    //                                   style: TextStyle(
+    //                                       fontWeight: FontWeight.bold,
+    //                                       fontSize: 16,
+    //                                       color: Colors.white,
+    //                                       fontFamily: 'PoppinsRegular'))
+    //                             ),
+    //                           ),
+    //                         ),
+    //                       )
+    //                     : Column(),
+    //               ]),
+    //         ),
+    //         Container(
+    //           width: 2.0,
+    //           height: 50.0,
+    //           color: AppUtils().blueColor,
+    //         ),
+    //         Flexible(
+    //           flex: 3,
+    //           child: Column(
+    //             mainAxisAlignment: MainAxisAlignment.center,
+    //             children: [
+    //
+    //               shift.contains('\$')
+    //                   ? Flexible(
+    //                 child: Padding(
+    //                   padding: const EdgeInsets.all(15.0),
+    //                   child: Container(
+    //                     alignment: Alignment.center,
+    //                     decoration: BoxDecoration(
+    //                       color: Colors.green,
+    //                       border: Border.all(
+    //                           width: 2.0,
+    //                           color: Colors.green), // Set border width
+    //                       borderRadius: BorderRadius.all(Radius.circular(5.0)),
+    //                     ),
+    //                     child: Padding(
+    //                       padding: const EdgeInsets.all(5.0),
+    //                       child: Text(
+    //                         '${shift.split(' ')[2].toString()}',
+    //                         style: TextStyle(
+    //                             fontWeight: FontWeight.bold,
+    //                             fontSize: 12,
+    //                             color: Colors.white,
+    //                             fontFamily: 'PoppinsRegular'),    //                       ),
+    //                     ),
+    //                   ),
+    //                 ),
+    //               )
+    //               ): SizedBox(),
+    //             ],
+    //           ),
+    //         ),
+    //         Container(
+    //           padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+    //           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+    //             Flexible(
+    //               child: Container(
+    //                 width: 80,
+    //                 alignment: Alignment.center,
+    //                 decoration: BoxDecoration(
+    //                   color: AppUtils().blueColor,
+    //                   border: Border.all(
+    //                       width: 2.0,
+    //                       color: AppUtils().blueColor), // Set border width
+    //                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
+    //                 ),
+    //                 child: FittedBox(
+    //                   child: Padding(
+    //                     padding: const EdgeInsets.all(8.0),
+    //                     child: Text(
+    //                         'Shift:${shift.contains('\$') ? shift.substring(0, shift.indexOf('\$')).trim() : shift}',
+    //                         style: TextStyle(
+    //                             fontWeight: FontWeight.w600,
+    //                             fontSize: 16,
+    //                             color: Colors.white,
+    //                             fontFamily: 'PoppinsRegular'))
+    //                   ),
+    //                 ),
+    //               ),
+    //             ),
+    //             SizedBox(
+    //               height: 5.0,
+    //             ),
+    //             Flexible(
+    //               child: Container(
+    //                 width: 80,
+    //                 alignment: Alignment.center,
+    //                 decoration: BoxDecoration(
+    //                   color: Colors.black,
+    //                   border: Border.all(color: Colors.black), // Set border width
+    //                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
+    //                 ),
+    //                 child: FittedBox(
+    //                   child: Padding(
+    //                     padding: const EdgeInsets.all(5.0),
+    //                     child: Text('${empId != null ? empId.toString() : 'N/A'}',
+    //                         style: TextStyle(
+    //                             fontWeight: FontWeight.w600,
+    //                             fontSize: 16,
+    //                             color: Colors.white,
+    //                             fontFamily: 'PoppinsRegular'))
+    //                   ),
+    //                 ),
+    //               ),
+    //             )
+    //           ]),
+    //         ),
+    //         SizedBox(
+    //           height: 10.0,
+    //         )
+    //       ],
+    //     ),
+    //   ],
+    // ),
   );
 }
