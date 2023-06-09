@@ -587,13 +587,16 @@ class RemoteServices {
     }
   }
 
-  Future getEmpCalendarNew(month) async {
+  Future getEmpCalendarNew(month, empId) async {
+    if (empId==null || empId == ''){
+      empId = box.get('empid').toString();
+    }
     var response = await client.post(
       '$baseURL/attendance/emp_calendar',
       headers: header,
       body: jsonEncode(
         <String, String>{
-          'empId': box.get('empid').toString(),
+          'empId': empId,
           'companyId': box.get('companyid').toString(),
           'month': month,
         },

@@ -1,18 +1,14 @@
 import 'package:fame/utils/utils.dart';
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:get/get.dart';
 import 'package:fame/views/modify_emp_roster.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class EmpRosterWidget extends StatelessWidget {
   final roster;
-  final combined;
-  var dateList;
 
   EmpRosterWidget(
     this.roster,
-    this.combined,
-    this.dateList,
   );
 
   String convertDate(date) {
@@ -52,562 +48,40 @@ class EmpRosterWidget extends StatelessWidget {
         padding: const EdgeInsets.symmetric(
           horizontal: 20.0,
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              height: MediaQuery.of(context).size.height * 4.5,
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(RosterPage(
-                            dateList[0].toString(),
-                            roster['empId'],
-                            roster['day1'] != null
-                                ? roster['day1'].split(' ')[0]
-                                : '',
-                            roster['clientId'],
-                          roster['day1']!=null?
-                          roster['day1'].split(" ")[2]:'',roster['name']
-                        ));
-                      },
-                      child: titleParams(
-                          roster['name'],
-                          roster['clientId'],
-                          dateList[0].toString(),
-                          roster['day1'] ?? 'NA',
-                          combined,
-                          roster['empId']),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(RosterPage(
-                            dateList[1].toString(),
-                            roster['empId'],
-                            roster['day2'] != null
-                                ? roster['day2'].split(' ')[0]
-                                : '',
-                            roster['clientId'],roster['day2']!=null?
-                        roster['day2'].split(" ")[2]:'',roster['name']));
-                      },
-                      child: titleParams(
-                          roster['name'],
-                          roster['clientId'],
-                          dateList[1].toString(),
-                          roster['day2'] ?? 'NA',
-                          combined,
-                          roster['empId']),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(RosterPage(dateList[2].toString(),roster['empId'],
-                            roster['day3'] != null
-                                ? roster['day3'].split(' ')[0]
-                                : '',
-                            roster['clientId'],roster['day3']!=null?
-                            roster['day3'].split(" ")[2]:'',roster['name']));
-                      },
-                      child: titleParams(
-                          roster['name'],
-                          roster['clientId'],
-                          dateList[2].toString(),
-                          roster['day3'] ?? 'NA',
-                          combined,
-                          roster['empId']),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(RosterPage(dateList[3].toString(),roster['empId'],
-                            roster['day4'] != null
-                                ? roster['day4'].split(' ')[0]
-                                : '',
-                            roster['clientId'],roster['day4']!=null?
-                            roster['day4'].split(" ")[2]:'',roster['name']));
-                      },
-                      child: titleParams(
-                          roster['name'],
-                          roster['clientId'],
-                          dateList[3].toString(),
-                          roster['day4'] ?? 'NA',
-                          combined,
-                          roster['empId']),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(RosterPage(dateList[4].toString(),roster['empId'],
-                            roster['day5'] != null
-                                ? roster['day5'].split(' ')[0]
-                                : '',
-                            roster['clientId'],roster['day5']!=null?
-                            roster['day5'].split(" ")[2]:'',roster['name']));
-                      },
-                      child: titleParams(
-                          roster['name'],
-                          roster['clientId'],
-                          dateList[4].toString(),
-                          roster['day5'] ?? 'NA',
-                          combined,
-                          roster['empId']),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(RosterPage(dateList[5].toString(),roster['empId'],
-                            roster['day6'] != null
-                                ? roster['day6'].split(' ')[0]
-                                : '',
-                            roster['clientId'],roster['day6']!=null?
-                            roster['day6'].split(" ")[2]:'',roster['name']));
-                      },
-                      child: titleParams(
-                          roster['name'],
-                          roster['clientId'],
-                          dateList[5].toString(),
-                          roster['day6'] ?? 'NA',
-                          combined,
-                          roster['empId']),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(RosterPage(dateList[6].toString(),roster['empId'],
-                            roster['day7'] != null
-                                ? roster['day7'].split(' ')[0]
-                                : '',
-                            roster['clientId'],roster['day7']!=null?
-                            roster['day7'].split(" ")[2]:'',roster['name']));
-                      },
-                      child: titleParams(
-                          roster['name'],
-                          roster['clientId'],
-                          dateList[6].toString(),
-                          roster['day7'] ?? 'NA',
-                          combined,
-                          roster['empId']),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(RosterPage(dateList[7].toString(),roster['empId'],
-                            roster['day8'] != null
-                                ? roster['day8'].split(' ')[0]
-                                : '',
-                            roster['clientId'],roster['day8']!=null?
-                            roster['day8'].split(" ")[2]:'',roster['name']));
-                      },
-                      child: titleParams(
-                          roster['name'],
-                          roster['clientId'],
-                          dateList[7].toString(),
-                          roster['day8'] ?? 'NA',
-                          combined,
-                          roster['empId']),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(RosterPage(dateList[8].toString(),roster['empId'],
-                            roster['day9'] != null
-                                ? roster['day9'].split(' ')[0]
-                                : '',
-                            roster['clientId'],roster['day9']!=null?
-                            roster['day9'].split(" ")[2]:'',roster['name']));
-                      },
-                      child: titleParams(
-                          roster['name'],
-                          roster['clientId'],
-                          dateList[8].toString(),
-                          roster['day9'] ?? 'NA',
-                          combined,
-                          roster['empId']),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(RosterPage(dateList[9].toString(),roster['empId'],
-                            roster['day10'] != null
-                                ? roster['day10'].split(' ')[0]
-                                : '',
-                            roster['clientId'],roster['day10']!=null?
-                            roster['day10'].split(" ")[2]:'',roster['name']));
-                      },
-                      child: titleParams(
-                          roster['name'],
-                          roster['clientId'],
-                          dateList[9].toString(),
-                          roster['day10'] ?? 'NA',
-                          combined,
-                          roster['empId']),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(RosterPage(dateList[10].toString(),roster['empId'],
-                            roster['day11'] != null
-                                ? roster['day11'].split(' ')[0]
-                                : '',
-                            roster['clientId'],roster['day11']!=null?
-                            roster['day11'].split(" ")[2]:'',roster['name']));
-                      },
-                      child: titleParams(
-                          roster['name'],
-                          roster['clientId'],
-                          dateList[10].toString(),
-                          roster['day11'] ?? 'NA',
-                          combined,
-                          roster['empId']),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(RosterPage(dateList[11].toString(),roster['empId'],
-                            roster['day12'] != null
-                                ? roster['day12'].split(' ')[0]
-                                : '',
-                            roster['clientId'],roster['day12']!=null?
-                            roster['day12'].split(" ")[2]:'',roster['name']));
-                      },
-                      child: titleParams(
-                          roster['name'],
-                          roster['clientId'],
-                          dateList[11].toString(),
-                          roster['day12'] ?? 'NA',
-                          combined,
-                          roster['empId']),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(RosterPage(dateList[12].toString(),roster['empId'],
-                            roster['day13'] != null
-                                ? roster['day13'].split(' ')[0]
-                                : '',
-                            roster['clientId'],roster['day13']!=null?
-                            roster['day13'].split(" ")[2]:'',roster['name']));
-                      },
-                      child: titleParams(
-                          roster['name'],
-                          roster['clientId'],
-                          dateList[12].toString(),
-                          roster['day13'] ?? 'NA',
-                          combined,
-                          roster['empId']),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(RosterPage(dateList[13].toString(),roster['empId'],
-                            roster['day14'] != null
-                                ? roster['day14'].split(' ')[0]
-                                : '',
-                            roster['clientId'],roster['day14']!=null?
-                            roster['day14'].split(" ")[2]:'',roster['name']));
-                      },
-                      child: titleParams(
-                          roster['name'],
-                          roster['clientId'],
-                          dateList[13].toString(),
-                          roster['day14'] ?? 'NA',
-                          combined,
-                          roster['empId']),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(RosterPage(dateList[14].toString(),roster['empId'],
-                            roster['day15'] != null
-                                ? roster['day15'].split(' ')[0]
-                                : '',
-                            roster['clientId'],roster['day15']!=null?
-                            roster['day15'].split(" ")[2]:'',roster['name']));
-                      },
-                      child: titleParams(
-                          roster['name'],
-                          roster['clientId'],
-                          dateList[14].toString(),
-                          roster['day15'] ?? 'NA',
-                          combined,
-                          roster['empId']),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(RosterPage(dateList[15].toString(),roster['empId'],
-                            roster['day16'] != null
-                                ? roster['day16'].split(' ')[0]
-                                : '',
-                            roster['clientId'],roster['day16']!=null?
-                            roster['day16'].split(" ")[2]:'',roster['name']));
-                      },
-                      child: titleParams(
-                          roster['name'],
-                          roster['clientId'],
-                          dateList[15].toString(),
-                          roster['day16'] ?? 'NA',
-                          combined,
-                          roster['empId']),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(RosterPage(dateList[16].toString(),roster['empId'],
-                            roster['day17'] != null
-                                ? roster['day17'].split(' ')[0]
-                                : '',
-                            roster['clientId'],roster['day17']!=null?
-                            roster['day17'].split(" ")[2]:'',roster['name']));
-                      },
-                      child: titleParams(
-                          roster['name'],
-                          roster['clientId'],
-                          dateList[16].toString(),
-                          roster['day17'] ?? 'NA',
-                          combined,
-                          roster['empId']),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(RosterPage(dateList[17].toString(),roster['empId'],
-                            roster['day18'] != null
-                                ? roster['day18'].split(' ')[0]
-                                : '',
-                            roster['clientId'],roster['day18']!=null?
-                            roster['day18'].split(" ")[2]:'',roster['name']));
-                      },
-                      child: titleParams(
-                          roster['name'],
-                          roster['clientId'],
-                          dateList[17].toString(),
-                          roster['day18'] ?? 'NA',
-                          combined,
-                          roster['empId']),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(RosterPage(dateList[18].toString(),roster['empId'],
-                            roster['day19'] != null
-                                ? roster['day19'].split(' ')[0]
-                                : '',
-                            roster['clientId'],roster['day19']!=null?
-                            roster['day19'].split(" ")[2]:'',roster['name']));
-                      },
-                      child: titleParams(
-                          roster['name'],
-                          roster['clientId'],
-                          dateList[18].toString(),
-                          roster['day19'] ?? 'NA',
-                          combined,
-                          roster['empId']),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(RosterPage(dateList[19].toString(),roster['empId'],
-                            roster['day20'] != null
-                                ? roster['day20'].split(' ')[0]
-                                : '',
-                            roster['clientId'],roster['day20']!=null?
-                            roster['day20'].split(" ")[2]:'',roster['name']));
-                      },
-                      child: titleParams(
-                          roster['name'],
-                          roster['clientId'],
-                          dateList[19].toString(),
-                          roster['day20'] ?? 'NA',
-                          combined,
-                          roster['empId']),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(RosterPage(dateList[20].toString(),roster['empId'],
-                            roster['day21'] != null
-                                ? roster['day21'].split(' ')[0]
-                                : '',
-                            roster['clientId'],roster['day21']!=null?
-                            roster['day21'].split(" ")[2]:'',roster['name']));
-                      },
-                      child: titleParams(
-                          roster['name'],
-                          roster['clientId'],
-                          dateList[20].toString(),
-                          roster['day21'] ?? 'NA',
-                          combined,
-                          roster['empId']),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(RosterPage(dateList[21].toString(),roster['empId'],
-                            roster['day22'] != null
-                                ? roster['day22'].split(' ')[0]
-                                : '',
-                            roster['clientId'],roster['day22']!=null?
-                            roster['day22'].split(" ")[2]:'',roster['name']));
-                      },
-                      child: titleParams(
-                          roster['name'],
-                          roster['clientId'],
-                          dateList[21].toString(),
-                          roster['day22'] ?? 'NA',
-                          combined,
-                          roster['empId']),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(RosterPage(dateList[22].toString(),roster['empId'],
-                            roster['day23'] != null
-                                ? roster['day23'].split(' ')[0]
-                                : '',
-                            roster['clientId'],roster['day23']!=null?
-                            roster['day23'].split(" ")[2]:'',roster['name']));
-                      },
-                      child: titleParams(
-                          roster['name'],
-                          roster['clientId'],
-                          dateList[22].toString(),
-                          roster['day23'] ?? 'NA',
-                          combined,
-                          roster['empId']),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(RosterPage(dateList[23].toString(),roster['empId'],
-                            roster['day24'] != null
-                                ? roster['day24'].split(' ')[0]
-                                : '',
-                            roster['clientId'],roster['day24']!=null?
-                            roster['day24'].split(" ")[2]:'',roster['name']));
-                      },
-                      child: titleParams(
-                          roster['name'],
-                          roster['clientId'],
-                          dateList[23].toString(),
-                          roster['day24'] ?? 'NA',
-                          combined,
-                          roster['empId']),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(RosterPage(dateList[24].toString(),roster['empId'],
-                            roster['day25'] != null
-                                ? roster['day25'].split(' ')[0]
-                                : '',
-                            roster['clientId'],roster['day25']!=null?
-                            roster['day25'].split(" ")[2]:'',roster['name']));
-                      },
-                      child: titleParams(
-                          roster['name'],
-                          roster['clientId'],
-                          dateList[24].toString(),
-                          roster['day25'] ?? 'NA',
-                          combined,
-                          roster['empId']),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(RosterPage(dateList[25].toString(),roster['empId'],
-                            roster['day26'] != null
-                                ? roster['day26'].split(' ')[0]
-                                : '',
-                            roster['clientId'],roster['day26']!=null?
-                            roster['day26'].split(" ")[2]:'',roster['name']));
-                      },
-                      child: titleParams(
-                          roster['name'],
-                          roster['clientId'],
-                          dateList[25].toString(),
-                          roster['day26'] ?? 'NA',
-                          combined,
-                          roster['empId']),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(RosterPage(dateList[26].toString(),roster['empId'],
-                            roster['day27'] != null
-                                ? roster['day27'].split(' ')[0]
-                                : '',
-                            roster['clientId'],roster['day27']!=null?
-                            roster['day27'].split(" ")[2]:'',roster['name']));
-                      },
-                      child: titleParams(
-                          roster['name'],
-                          roster['clientId'],
-                          dateList[26].toString(),
-                          roster['day27'] ?? 'NA',
-                          combined,
-                          roster['empId']),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(RosterPage(dateList[27].toString(),roster['empId'],
-                            roster['day28'] != null
-                                ? roster['day28'].split(' ')[0]
-                                : '',
-                            roster['clientId'],roster['day28']!=null?
-                            roster['day28'].split(" ")[2]:'',roster['name']));
-                      },
-                      child: titleParams(
-                          roster['name'],
-                          roster['clientId'],
-                          dateList[27].toString(),
-                          roster['da28'] ?? 'NA',
-                          combined,
-                          roster['empId']),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(RosterPage(dateList[28].toString(),roster['empId'],
-                            roster['day29'] != null
-                                ? roster['day29'].split(' ')[0]
-                                : '',
-                            roster['clientId'],roster['day29']!=null?
-                            roster['day29'].split(" ")[2]:'',roster['name']));
-                      },
-                      child: titleParams(
-                          roster['name'],
-                          roster['clientId'],
-                          dateList[28].toString(),
-                          roster['day29'] ?? 'NA',
-                          combined,
-                          roster['empId']),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(RosterPage(dateList[29].toString(),roster['empId'],
-                            roster['day30'] != null
-                                ? roster['day30'].split(' ')[0]
-                                : '',
-                            roster['clientId'],roster['day30']!=null?
-                            roster['day30'].split(" ")[2]:'',roster['name']));
-                      },
-                      child: titleParams(
-                          roster['name'],
-                          roster['clientId'],
-                          dateList[29].toString(),
-                          roster['day30'] ?? 'NA',
-                          combined,
-                          roster['empId']),
-                    ),
-                   dateList.value ==30?GestureDetector(
-                            onTap: () {
-                              Get.to(RosterPage(dateList[30].toString(),roster['empId'],
-                                  roster['day31'] != null
-                                      ? roster['day31'].split(' ')[0]
-                                      : '',
-                                  roster['clientId'],roster['day31']!=null?
-                                  roster['day31'].split(" ")[2]:'',roster['name']));
-                            },
-                            child: titleParams(
-                                roster['name'],
-                                roster['clientId'],
-                                dateList[30].toString(),
-                                roster['day31'] ?? 'NA',
-                                combined,
-                                roster['empId']),
-                          ):Column(),
-                  ]),
-            ),
-          ],
-        ),
+        child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            itemCount: 31,
+            shrinkWrap: true,
+            physics: ClampingScrollPhysics(),
+            itemBuilder: (context, index) {
+              return singleWidget('5', roster, index);
+            }),
       ),
     );
   }
 }
 
-Widget titleParams(name, id, date, shift, combined, empId) {
+Widget singleWidget(dateList, roster, index) {
+  String day = 'day' + index;
+  return GestureDetector(
+    onTap: () {
+      Get.to(RosterPage(
+          dateList,
+          roster['empId'],
+          roster[day] != null ? roster[day].split(' ')[0] : '',
+          roster['clientId'],
+          roster[day] != null ? roster[day].split(" ")[2] : '',
+          roster['name']));
+    },
+    child: titleParams('Name', 'ClientId',
+        '1', roster[day] ?? 'NA', roster[day]),
+  );
+}
+
+Widget titleParams(name, id, date, shift, empId) {
   return Container(
-    width: 440,
-    height: 140,
+    // width: 440,
+    // height: 150,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.all(Radius.circular(5)),
       boxShadow: [
@@ -620,184 +94,374 @@ Widget titleParams(name, id, date, shift, combined, empId) {
       ],
       color: Colors.white,
     ),
-    margin: EdgeInsets.symmetric(vertical: 5.0),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    margin: EdgeInsets.symmetric(vertical: 5.0,horizontal: 8),
+    padding: EdgeInsets.symmetric(vertical: 10.0,horizontal: 8),
+    child:
+    Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+        Expanded(
+            flex: 2,
+            child:
+            Column(
               children: [
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      name,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 15.0,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ),
+                Container(
+                  // alignment: Alignment.centerLeft,
+                  child:
+                  Text(
+                    "${date}",
+                    style:
+                   TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color:  Color(0xff555555), fontFamily: 'PoppinsRegular')              ),
                 ),
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      id,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 15.0,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ),
-                shift.contains('\$')
-                    ? Flexible(
+              ],
+            )),
+        SizedBox(width: 10,),
+        Container(width: 1,height: 70, color:  Color(0xff555555).withOpacity(0.3),),
+        SizedBox(width: 10,),
+        Expanded(
+            flex: 7,
+            child:
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    child:Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      shift.contains('\$')
+                          ?  Expanded(
+                        flex: 1,
                         child: Container(
-                          width: 100,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            border: Border.all(
-                                width: 2.0,
-                                color: Colors.red), // Set border width
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(5.0)),
-                          ),
-                          child: FittedBox(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                  '${shift.split(' ').last != null ? shift.split(' ').last.toString() : 'N/A'}',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                      color: Colors.white,
-                                      fontFamily: 'PoppinsRegular')),
-                            ),
+                          // alignment: Alignment.centerLeft,
+                          child:
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Flexible(
+                                child: Text(
+                                    "Store: ",
+                                    style:
+                                    TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color:  Colors.red.withOpacity(0.8), fontFamily: 'PoppinsRegular')
+                                ),
+                              ),
+                              Flexible(
+                                child: Text(
+                                    '${shift.split(' ').last != null ? shift.split(' ').last.toString() : 'N/A'}',
+                                    style:
+                                    TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color:  Colors.red, fontFamily: 'PoppinsRegular')
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       )
-                    : Column(),
-              ]),
-        ),
-        Container(
-          width: 2.0,
-          height: 50.0,
-          color: AppUtils().blueColor,
-        ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(children: [
-                  Text(
-                    date,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                        color: Colors.teal,
-                        fontFamily: 'PoppinsRegular'),
-                  )
-                ]),
-              ),
-            ),
-            shift.contains('\$')
-                ? Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Container(
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Colors.green,
-                          border: Border.all(
-                              width: 2.0,
-                              color: Colors.green), // Set border width
-                          borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Text(
-                            '${shift.split(' ')[2].toString()}',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                                color: Colors.white,
-                                fontFamily: 'PoppinsRegular'),
+
+                          : Column(),
+
+                      shift.contains('\$')
+                          ? Expanded(
+                        flex: 1,
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          child:
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Flexible(
+                                child: Text(
+                                    "StoreCode: ",
+                                    style:
+                                    TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color:  Colors.green.withOpacity(0.8), fontFamily: 'PoppinsRegular')
+                                ),
+                              ),
+                              Flexible(
+                                child: Text(
+                                    '${shift.split(' ')[2].toString()}',
+                                    style:
+                                    TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color:  Colors.green, fontFamily: 'PoppinsRegular')
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ),
-                    ),
-                  )
-                : SizedBox(),
-          ],
-        ),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Flexible(
-              child: Container(
-                width: 80,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: AppUtils().blueColor,
-                  border: Border.all(
-                      width: 2.0,
-                      color: AppUtils().blueColor), // Set border width
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                      )
+                          : Column(),
+
+                    ])),
+
+
+                SizedBox(height: 30,),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: Container(
+                            // alignment: Alignment.centerLeft,
+                            child:
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                      "Client:",
+                                      style:
+                                      TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color:  Color(
+                                          0xc7555555), fontFamily: 'PoppinsRegular')
+                                  ),
+                                ),
+                                Flexible(
+                                  child: Text(
+                                      " ${name}",
+                                      style:
+                                      TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color:  Color(0xff555555), fontFamily: 'PoppinsRegular')
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        shift.contains('\$')
+                            ?  Expanded(
+                          flex: 1,
+                          child:  Container(
+                            width: 80,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: AppUtils().blueColor.withOpacity(0.2),
+                              // border: Border.all(
+                              //     width: 2.0,
+                              //     color: AppUtils().blueColor), // Set border width
+                              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                            ),
+                            child: FittedBox(
+                              child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                      'Shift:${shift.contains('\$') ? shift.substring(0, shift.indexOf('\$')).trim() : shift}',
+                                      style:       TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color:  AppUtils().blueColor, fontFamily: 'PoppinsRegular')
+                                  )
+                              ),
+                            ),
+                          ),
+                        )
+                            : Column(),
+
+                      ]),
                 ),
-                child: FittedBox(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                        'Shift:${shift.contains('\$') ? shift.substring(0, shift.indexOf('\$')).trim() : shift}',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                            color: Colors.white,
-                            fontFamily: 'PoppinsRegular')),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 5.0,
-            ),
-            Flexible(
-              child: Container(
-                width: 80,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  border: Border.all(color: Colors.black), // Set border width
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                ),
-                child: FittedBox(
-                  child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Text('${empId != null ? empId.toString() : 'N/A'}',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                            color: Colors.white,
-                            fontFamily: 'PoppinsRegular')),
-                  ),
-                ),
-              ),
+
+              ],
             )
-          ]),
         ),
-        SizedBox(
-          height: 10.0,
-        )
       ],
     ),
+
+    // Column(
+    //   children: [
+    //     Row(
+    //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    //       children: [
+    //         Flexible(
+    //           flex: 2,
+    //           child: Column(
+    //             children: [
+    //               Padding(
+    //                 padding: const EdgeInsets.all(8.0),
+    //                 child: Row(children: [
+    //                   Text(
+    //                     date,
+    //                     style: TextStyle(
+    //                         fontWeight: FontWeight.w600,
+    //                         fontSize: 18,
+    //                         color: Colors.black.withOpacity(0.6),
+    //                         fontFamily: 'PoppinsRegular'), )   //                   )
+    //                 ]),
+    //               ),
+    //
+    //               Padding(
+    //                 padding: const EdgeInsets.all(8.0),
+    //                 child: Row(children: [
+    //                   Text(
+    //                     name,
+    //                     style: TextStyle(
+    //                         fontWeight: FontWeight.w500,
+    //                         fontSize: 18,
+    //                         color: Colors.black.withOpacity(0.6),
+    //                         fontFamily: 'PoppinsRegular'),)    //                   )
+    //                 ]),
+    //               ),
+    //             ],
+    //           ),
+    //         ),
+    //         Padding(
+    //           padding: const EdgeInsets.all(15.0),
+    //           child: Column(
+    //               mainAxisAlignment: MainAxisAlignment.center,
+    //               crossAxisAlignment: CrossAxisAlignment.center,
+    //               children: [
+    //                 Flexible(
+    //                   child: Padding(
+    //                     padding: const EdgeInsets.all(8.0),
+    //                     child: Text(
+    //                       name,
+    //                       style: TextStyle(
+    //                         fontWeight: FontWeight.w800,
+    //                         fontSize: 15.0,
+    //                         color: Colors.grey,
+    //                       ),
+    //                     ),
+    //                   ),
+    //                 ),
+    //                 Flexible(
+    //                   child: Padding(
+    //                     padding: const EdgeInsets.all(8.0),
+    //                     child: Text(
+    //                       id,
+    //                       style: TextStyle(
+    //                         fontWeight: FontWeight.w500,
+    //                         fontSize: 15.0,
+    //                         color: Colors.black,
+    //                       ),
+    //                     ),
+    //                   ),
+    //                 ),
+    //                 shift.contains('\$')
+    //                     ? Flexible(
+    //                         child: Container(
+    //                           width: 100,
+    //                           alignment: Alignment.center,
+    //                           decoration: BoxDecoration(
+    //                             color: Colors.red,
+    //                             border: Border.all(
+    //                                 width: 2.0,
+    //                                 color: Colors.red), // Set border width
+    //                             borderRadius:
+    //                                 BorderRadius.all(Radius.circular(5.0)),
+    //                           ),
+    //                           child: FittedBox(
+    //                             child: Padding(
+    //                               padding: const EdgeInsets.all(8.0),
+    //                               child: Text(
+    //                                   '${shift.split(' ').last != null ? shift.split(' ').last.toString() : 'N/A'}',
+    //                                   style: TextStyle(
+    //                                       fontWeight: FontWeight.bold,
+    //                                       fontSize: 16,
+    //                                       color: Colors.white,
+    //                                       fontFamily: 'PoppinsRegular'))
+    //                             ),
+    //                           ),
+    //                         ),
+    //                       )
+    //                     : Column(),
+    //               ]),
+    //         ),
+    //         Container(
+    //           width: 2.0,
+    //           height: 50.0,
+    //           color: AppUtils().blueColor,
+    //         ),
+    //         Flexible(
+    //           flex: 3,
+    //           child: Column(
+    //             mainAxisAlignment: MainAxisAlignment.center,
+    //             children: [
+    //
+    //               shift.contains('\$')
+    //                   ? Flexible(
+    //                 child: Padding(
+    //                   padding: const EdgeInsets.all(15.0),
+    //                   child: Container(
+    //                     alignment: Alignment.center,
+    //                     decoration: BoxDecoration(
+    //                       color: Colors.green,
+    //                       border: Border.all(
+    //                           width: 2.0,
+    //                           color: Colors.green), // Set border width
+    //                       borderRadius: BorderRadius.all(Radius.circular(5.0)),
+    //                     ),
+    //                     child: Padding(
+    //                       padding: const EdgeInsets.all(5.0),
+    //                       child: Text(
+    //                         '${shift.split(' ')[2].toString()}',
+    //                         style: TextStyle(
+    //                             fontWeight: FontWeight.bold,
+    //                             fontSize: 12,
+    //                             color: Colors.white,
+    //                             fontFamily: 'PoppinsRegular'),    //                       ),
+    //                     ),
+    //                   ),
+    //                 ),
+    //               )
+    //               ): SizedBox(),
+    //             ],
+    //           ),
+    //         ),
+    //         Container(
+    //           padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+    //           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+    //             Flexible(
+    //               child: Container(
+    //                 width: 80,
+    //                 alignment: Alignment.center,
+    //                 decoration: BoxDecoration(
+    //                   color: AppUtils().blueColor,
+    //                   border: Border.all(
+    //                       width: 2.0,
+    //                       color: AppUtils().blueColor), // Set border width
+    //                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
+    //                 ),
+    //                 child: FittedBox(
+    //                   child: Padding(
+    //                     padding: const EdgeInsets.all(8.0),
+    //                     child: Text(
+    //                         'Shift:${shift.contains('\$') ? shift.substring(0, shift.indexOf('\$')).trim() : shift}',
+    //                         style: TextStyle(
+    //                             fontWeight: FontWeight.w600,
+    //                             fontSize: 16,
+    //                             color: Colors.white,
+    //                             fontFamily: 'PoppinsRegular'))
+    //                   ),
+    //                 ),
+    //               ),
+    //             ),
+    //             SizedBox(
+    //               height: 5.0,
+    //             ),
+    //             Flexible(
+    //               child: Container(
+    //                 width: 80,
+    //                 alignment: Alignment.center,
+    //                 decoration: BoxDecoration(
+    //                   color: Colors.black,
+    //                   border: Border.all(color: Colors.black), // Set border width
+    //                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
+    //                 ),
+    //                 child: FittedBox(
+    //                   child: Padding(
+    //                     padding: const EdgeInsets.all(5.0),
+    //                     child: Text('${empId != null ? empId.toString() : 'N/A'}',
+    //                         style: TextStyle(
+    //                             fontWeight: FontWeight.w600,
+    //                             fontSize: 16,
+    //                             color: Colors.white,
+    //                             fontFamily: 'PoppinsRegular'))
+    //                   ),
+    //                 ),
+    //               ),
+    //             )
+    //           ]),
+    //         ),
+    //         SizedBox(
+    //           height: 10.0,
+    //         )
+    //       ],
+    //     ),
+    //   ],
+    // ),
   );
 }
