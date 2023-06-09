@@ -6,9 +6,10 @@ import 'package:intl/intl.dart';
 
 class EmpRosterWidget extends StatelessWidget {
   final roster;
-
+  var empName;
+  var empId;
   EmpRosterWidget(
-    this.roster,
+    this.roster,this.empId,this.empName
   );
 
   String convertDate(date) {
@@ -54,14 +55,14 @@ class EmpRosterWidget extends StatelessWidget {
             shrinkWrap: true,
             physics: ClampingScrollPhysics(),
             itemBuilder: (context, index) {
-              return singleWidget('5', roster, index);
+              return singleWidget('5', roster, index,empName,empId);
             }),
       ),
     );
   }
 }
 
-Widget singleWidget(dateList, roster, index) {
+Widget singleWidget(dateList, roster, index,empName,empID) {
   String day = 'day' + index;
   return GestureDetector(
     onTap: () {
@@ -71,7 +72,7 @@ Widget singleWidget(dateList, roster, index) {
           roster[day] != null ? roster[day].split(' ')[0] : '',
           roster['clientId'],
           roster[day] != null ? roster[day].split(" ")[2] : '',
-          roster['name']));
+          roster['name'],empName,empID));
     },
     child: titleParams('Name', 'ClientId',
         '1', roster[day] ?? 'NA', roster[day]),

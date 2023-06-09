@@ -602,7 +602,15 @@ class RemoteServices {
         },
       ),
     );
-    // print(response.statusCode);
+    var body =  <String, String>{
+      'empId': empId,
+      'companyId': box.get('companyid').toString(),
+      'month': month,
+    };
+    print("emp");
+    print(response.request);
+    print(response.body);
+    print(body);
     if (response.statusCode == 200) {
       var jsonString = response.body;
       return json.decode(jsonString);
@@ -1501,8 +1509,15 @@ class RemoteServices {
         },
       ),
     );
+    var body =  <String, dynamic>{
+      'empId': box.get('empid').toString(),
+      'companyId': box.get('companyid').toString(),
+    };
 
     print(response.statusCode);
+    print(response.body);
+    print(body);
+    print(response.request);
     if (response.statusCode == 200) {
       var jsonString = response.body;
       return transferListFromJson(jsonString);

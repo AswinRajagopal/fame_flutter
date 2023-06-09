@@ -182,7 +182,7 @@ class _HomeCalendarState extends State<HomeCalendar>
       availableCalendarFormats: const {
         CalendarFormat.month: '',
       },
-      rowHeight: 70.0,
+      rowHeight:90.0,
       calendarStyle: CalendarStyle(
         outsideDaysVisible: false,
       ),
@@ -212,19 +212,24 @@ class _HomeCalendarState extends State<HomeCalendar>
       ),
       builders: CalendarBuilders(
         selectedDayBuilder: (context, date, events) {
-          return Container(
-            margin: const EdgeInsets.only(top: 4.0),
-            padding: const EdgeInsets.only(top: 15.0, left: 28.0),
-            width: 100,
-            height: 300,
-            child: GestureDetector(
-              onTap: () {
-                showPopup(date, events);
-              },
-              child: Text(
-                '${date.day}',
-                style: TextStyle().copyWith(fontSize: 16.0),
-              ),
+          return GestureDetector(
+            // onTap: () {
+            //   showPopup(date, events);
+            // },
+            child: Container(
+              margin: const EdgeInsets.only(top: 4.0),
+              padding: const EdgeInsets.only(top: 15.0, left: 28.0),
+              width: 100,
+              height: 400,
+              // child: GestureDetector(
+              //   onTap: () {
+              //     showPopup(date, events);
+              //   },
+                child: Text(
+                  '${date.day}',
+                  style: TextStyle().copyWith(fontSize: 16.0),
+                ),
+              // ),
             ),
           );
         },
@@ -263,6 +268,9 @@ class _HomeCalendarState extends State<HomeCalendar>
       ),
       onVisibleDaysChanged: _onVisibleDaysChanged,
       onCalendarCreated: _onCalendarCreated,
+      onDaySelected: (date,events,holidays){
+        showPopup(date, events);
+      },
     );
   }
 
@@ -278,7 +286,7 @@ class _HomeCalendarState extends State<HomeCalendar>
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       width: 50.0,
-      height: 30.0,
+      height: 50.0,
       child: Center(
         child: showEvent == 'P'
             ? Text(

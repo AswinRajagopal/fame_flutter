@@ -25,6 +25,7 @@ class _ViewViewEmpRosterState extends State<ViewEmpRoster> {
   TextEditingController empName = TextEditingController();
   var _selectedMonthYear;
   var empId = '';
+  var employeeName = '';
   DateTime picked = DateTime.now();
 
   @override
@@ -113,7 +114,7 @@ class _ViewViewEmpRosterState extends State<ViewEmpRoster> {
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          FloatingActionButton(
+          RemoteServices().box.get('role') != '1'?  FloatingActionButton(
             onPressed: () {
               Get.to(NewRosterPage());
             },
@@ -122,7 +123,7 @@ class _ViewViewEmpRosterState extends State<ViewEmpRoster> {
               size: 32.0,
             ),
             backgroundColor: Theme.of(context).primaryColor,
-          ),
+          ):SizedBox(),
         ],
       ),
       body: SafeArea(
@@ -213,7 +214,10 @@ class _ViewViewEmpRosterState extends State<ViewEmpRoster> {
                                 empName.text = suggestion['name'].toString().trimRight() +
                                     ' - ' +
                                     suggestion['empId'];
-                                empId = suggestion['empId'];
+                                setState(() {
+                                  empId = suggestion['empId'];
+                                  employeeName = suggestion['name'];
+                                });
                               },
                             ),
                           ),
@@ -414,7 +418,7 @@ class _ViewViewEmpRosterState extends State<ViewEmpRoster> {
               roster[day] != null ? roster[day].split(' ')[0] : '',
               roster['clientId'],
               roster[day] != null ? roster[day].split(" ")[2] : '',
-              roster['name']));
+              roster['name'],employeeName,empId));
         }
       },
       child: titleParams(   roster['name'], 'ClientId',
