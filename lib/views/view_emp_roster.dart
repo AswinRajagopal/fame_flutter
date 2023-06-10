@@ -28,6 +28,10 @@ class _ViewViewEmpRosterState extends State<ViewEmpRoster> {
   var employeeName = '';
   DateTime picked = DateTime.now();
 
+  load() async {
+    await calC.getStores();
+  }
+
   @override
   void initState() {
     calC.pr = ProgressDialog(
@@ -67,6 +71,7 @@ class _ViewViewEmpRosterState extends State<ViewEmpRoster> {
     );
 
     roleId = RemoteServices().box.get('role');
+    load();
     super.initState();
     _selectedMonthYear =
         '${DateTime.now().month.toString().padLeft(2, '0')}${DateTime.now().year.toString().substring(2)}';
