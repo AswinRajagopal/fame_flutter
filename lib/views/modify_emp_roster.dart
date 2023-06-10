@@ -18,8 +18,10 @@ class RosterPage extends StatefulWidget {
   var clientId;
   var storeCode;
   var currentClient;
+  var empName;
+  var empId;
   RosterPage(this.dateList, this.id, this.shiftEmp, this.clientId,
-      this.storeCode, this.currentClient);
+      this.storeCode, this.currentClient,this.empName,this.empId);
 
   @override
   _RosterPageState createState() => _RosterPageState(this.dateList, this.id,
@@ -98,12 +100,13 @@ class _RosterPageState extends State<RosterPage> {
       tC.getStores,
     );
     setState(() {
-      empName.text = RemoteServices().box.get('empName').toString();
+      // empName.text = RemoteServices().box.get('empName').toString();
+      empName.text = widget.empName;
       fromDt.text = dateList.toString();
       toDt.text = dateList.toString();
-      empId.text = id.toString();
+      empId.text = widget.empId.toString();
       clientShift.text = shiftEmp.toString();
-      store.text = storeCode.toString();
+      store.text = widget.storeCode.toString();
     });
     super.initState();
   }

@@ -234,6 +234,7 @@ class DBCalController extends GetxController {
     dateList.clear();
     storeList.clear();
     print('month-->$month');
+    print('month-->$empId');
     try {
       isEventLoading(true);
       await pr.show();
