@@ -148,7 +148,7 @@ Widget titleParams(name, id, date, shift, empId) {
                               ),
                               Flexible(
                                 child: Text(
-                                    '${shift.split(' ').last != null ? shift.split(' ').last.toString() : 'N/A'}',
+                                    '${shift.split(' \$- ').last != null ? shift.split(' \$- ').last.toString() : 'N/A'}',
                                     style:
                                     TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color:  Colors.red, fontFamily: 'PoppinsRegular')
                                 ),

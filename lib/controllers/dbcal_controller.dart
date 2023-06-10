@@ -7,6 +7,9 @@ import 'package:progress_dialog/progress_dialog.dart';
 import '../connection/remote_services.dart';
 import 'package:get/get.dart';
 
+
+import '../models/srore_code.dart';
+
 class DBCalController extends GetxController {
   // var isCalLoading = true.obs;
   var isEventLoading = true.obs;
@@ -18,6 +21,7 @@ class DBCalController extends GetxController {
   var calendarType = 'myCal';
   final empRosterList = [].obs;
   final storeList = [].obs;
+  var storeCodeList = <StoreName>[].obs;
   var combined;
   var dateList=[].obs;
   // var dayValue;
@@ -31,6 +35,7 @@ class DBCalController extends GetxController {
   void init() {
     print('init custom getCalendar');
     getCalendar();
+
   }
 
   @override
@@ -38,11 +43,77 @@ class DBCalController extends GetxController {
     super.dispose();
   }
 
+
+
   String convertTimeWithoutParse(time) {
     return DateFormat('h:mm').format(DateTime.parse(time)).toString() +
         DateFormat('a').format(DateTime.parse(time)).toString().toLowerCase();
   }
-
+  var res;
+  void getStores()async{
+    storeCodeList.clear();
+    try {
+      // isLoading(true);
+      await pr.show();
+      res = await RemoteServices().getStores();
+      if (res != null) {
+        // isLoading(false);
+        await pr.hide();
+        if (res['success']) {
+          print('storeRes:$res');
+          if (res['storeNames'] != null) {
+            for (var i = 0; i < res['storeNames'].length; i++) {
+              Map<String, dynamic> store = res['storeNames'][i];
+              storeCodeList.value.insert(i,StoreName(
+                storeCode: store["storeCode"],
+                storeName: store["storeName"],
+                clientId: store["clientId"],
+              ));
+              update();
+            }
+          }
+          // print('leaveList: $leaveList');
+        } else {
+          Get.snackbar(
+            null,
+            'stores not found',
+            colorText: Colors.white,
+            backgroundColor: Colors.black87,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
+          );
+        }
+      }
+    } catch (e) {
+      print(e);
+      // isLoading(false);
+      await pr.hide();
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
+      );
+    }
+  }
   void getCalendar({month, chDt}) async {
     print('calendarType: $calendarType');
     events = {};
@@ -235,7 +306,7 @@ class DBCalController extends GetxController {
     storeList.clear();
     print('month-->$month');
     print('month-->$empId');
-    try {
+    // try {
       isEventLoading(true);
       await pr.show();
      calRes = await RemoteServices().getEmpCalendarNew(month, empId);
@@ -245,58 +316,79 @@ class DBCalController extends GetxController {
         if (calRes['success']) {
           if (calRes['empRosterList'] != null) {
             for (var i = 0; i < calRes['empRosterList'].length; i++) {
-              empRosterList.add(calRes['empRosterList'][i]);
-              if (calRes['storeNames'] != null) {
-                for(var i = 0; i < calRes['storeNames'].length; i++) {
-                  storeList.add(calRes['storeNames'][i]);
-                  Map<String, dynamic> store = calRes['storeNames'][i];
-                  String storeCode = store["storeCode"];
-                  print('storeCode:-->$storeCode');
-                // String storeCode = calRes['storeNames'][0]["storeCode"];
-                  for (var empRoster in empRosterList) {
-                    // Loop through each day in the current object
-                    for (int i = 1; i <= 31; i++) {
-                      String dayKey = "day$i";
-                      if (empRoster[dayKey] == null) {
-                        continue;
-                      }
-                      String monthPass = month.substring(0, 2);
-                      print('monthPass:$monthPass');
-                      String year = '20' + month.substring(2);
-                      print('year:-->$year');
-                      int daysInMonth = DateTime(
-                          int.parse(year), int.parse(monthPass) + 1, 0).day;
-                      print('days in month:-->$daysInMonth');
-                      List<String> dates = List.generate(daysInMonth, (index) {
-                        String day = (index + 1).toString().padLeft(2, '0');
-                        return "$day-$monthPass-$year";
-                      });
-                      dateList.clear();
-                      for (String date in dates) {
-                        dateList.add(date);
-                        print(dateList);
-                      }
-                      String dayValue = empRoster[dayKey].split(" ")[2];
-                      print('dayVALUE__>:$dayValue');
-                      if (dayValue != null) {
-                        // Loop through each store in storeNames list
-                        for (var store in storeList) {
-                          var storeCode = store['storeCode'];
-                          if (dayValue == storeCode) {
-                            var storeName = store['storeName'];
-                            // Add the storeName to the dayKey value
-                            empRoster[dayKey] =
-                            '${empRoster[dayKey]} , $storeName';
-                            print('emproster:-->${empRoster[dayKey]}');
-                          }
-                        }
-                      }
-                    }
+              empRosterList.insert(i,calRes['empRosterList'][i]);
+
+              // if (calRes['storeNames'] != null) {
+              //   for(var i = 0; i < calRes['storeNames'].length; i++) {
+              //     storeList.add(calRes['storeNames'][i]);
+              //     Map<String, dynamic> store = calRes['storeNames'][i];
+              //     String storeCode = store["storeCode"];
+              //     print('storeCode:-->$storeCode');
+              //   // String storeCode = calRes['storeNames'][0]["storeCode"];
+              //     for (var empRoster in empRosterList) {
+              //       // Loop through each day in the current object
+              //       for (int i = 1; i <= 31; i++) {
+              //         String dayKey = "day$i";
+              //         if (empRoster[dayKey] == null) {
+              //           continue;
+              //         }
+              //         String monthPass = month.substring(0, 2);
+              //         print('monthPass:$monthPass');
+              //         String year = '20' + month.substring(2);
+              //         print('year:-->$year');
+              //         int daysInMonth = DateTime(
+              //             int.parse(year), int.parse(monthPass) + 1, 0).day;
+              //         print('days in month:-->$daysInMonth');
+              //         List<String> dates = List.generate(daysInMonth, (index) {
+              //           String day = (index + 1).toString().padLeft(2, '0');
+              //           return "$day-$monthPass-$year";
+              //         });
+              //         dateList.clear();
+              //         for (String date in dates) {
+              //           dateList.add(date);
+              //           print(dateList);
+              //         }
+              //         String dayValue = empRoster[dayKey].split(" ")[2];
+              //         print('dayVALUE__>:$dayValue');
+              //         if (dayValue != null) {
+              //           // Loop through each store in storeNames list
+              //           for (var store in storeList) {
+              //             var storeCode = store['storeCode'];
+              //             if (dayValue == storeCode) {
+              //               var storeName = store['storeName'];
+              //               // Add the storeName to the dayKey value
+              //               empRoster[dayKey] =
+              //               '${empRoster[dayKey]} , $storeName';
+              //               print('emproster:-->${empRoster[dayKey]}');
+              //             }
+              //           }
+              //         }
+              //       }
+              //     }
+              //   }
+              // }
+            }
+          };
+
+          empRosterList.forEach((element) {
+            for(int i = 1 ; i<=31; i++){
+              String dayValue = "day${i}";
+              print("data ${storeCodeList.value} ${i}");
+              String storeNAme = '';
+              if(element[dayValue] != null && element[dayValue].split(' ').last != null){
+                storeCodeList.value.forEach((store) {
+                  if ( store.storeCode.trim() == element[dayValue].split(' ').last.toString().trim()) {
+                    storeNAme = store.storeName;
+                    element[dayValue] = element[dayValue] + " \$- " + storeNAme;
+                    print("store name ${element[dayValue]}");
+
                   }
-                }
+                });
+
               }
             }
-          }
+          });
+          update();
         } else {
           Get.snackbar(
             null,
@@ -316,27 +408,27 @@ class DBCalController extends GetxController {
           );
         }
       }
-    } catch (e) {
-      print(e);
-      isEventLoading(false);
-      await pr.hide();
-      Get.snackbar(
-        null,
-        'Something went wrong! Please try again later',
-        colorText: Colors.white,
-        backgroundColor: Colors.black87,
-        snackPosition: SnackPosition.BOTTOM,
-        margin: EdgeInsets.symmetric(
-          horizontal: 8.0,
-          vertical: 10.0,
-        ),
-        padding: EdgeInsets.symmetric(
-          horizontal: 12.0,
-          vertical: 18.0,
-        ),
-        borderRadius: 5.0,
-      );
-    }
+    // } catch (e) {
+    //   print(e);
+    //   isEventLoading(false);
+    //   await pr.hide();
+    //   Get.snackbar(
+    //     null,
+    //     'Something went wrong! Please try again later',
+    //     colorText: Colors.white,
+    //     backgroundColor: Colors.black87,
+    //     snackPosition: SnackPosition.BOTTOM,
+    //     margin: EdgeInsets.symmetric(
+    //       horizontal: 8.0,
+    //       vertical: 10.0,
+    //     ),
+    //     padding: EdgeInsets.symmetric(
+    //       horizontal: 12.0,
+    //       vertical: 18.0,
+    //     ),
+    //     borderRadius: 5.0,
+    //   );
+    // }
   }
 
 }
