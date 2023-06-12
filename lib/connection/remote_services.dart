@@ -1498,6 +1498,55 @@ class RemoteServices {
     }
   }
 
+  Future newRoster(
+      empId, fromPeriod, toPeriod, fromUnit, shift, toUnit,storeCode,clientID,design) async {
+    var response = await client.post(
+      '$baseURL/transfer/new_roster',
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'companyId': box.get('companyid').toString(),
+          // 'createdBy': box.get('empid').toString(),
+          'empId': empId,
+          'clientId':clientID,
+          'design':design,
+          'shift': shift,
+          'storeCode':storeCode,
+          'fromPeriod': fromPeriod,
+          'toPeriod': toPeriod,
+
+          // 'fromUnit': fromUnit,
+          // 'toUnit': toUnit,
+        },
+      ),
+    );
+    var b =   <String, String>{
+      'companyId': box.get('companyid').toString(),
+      'createdBy': box.get('empid').toString(),
+      'empId': empId,
+      'clientId':clientID,
+      'design':design,
+      'shift': shift,
+      'storeCode':storeCode,
+      'fromPeriod': fromPeriod,
+      'toPeriod': toPeriod,
+
+      // 'fromUnit': fromUnit,
+      // 'toUnit': toUnit,
+    };
+    print("res ${response.body}");
+    print("url ${response.request}");
+    print("body ${b}");
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return json.decode(jsonString);
+    } else {
+      //show error message
+      return null;
+    }
+  }
+
+
   Future<TransferList> getTransferList() async {
     var response = await client.post(
       '$baseURL/transfer/get_transfer_list',
