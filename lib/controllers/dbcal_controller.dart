@@ -314,9 +314,74 @@ class DBCalController extends GetxController {
         isEventLoading(false);
         await pr.hide();
         if (calRes['success']) {
-          if (calRes['empRosterList'] != null) {
+          print("inside succes employee roster");
+          if (calRes['empRosterList'] != null  ) {
+            print("inside if employee roster");
+            if (calRes['empRosterList'].isEmpty) {
+              print("inside ealse employee roster");
+              empRosterList.value.add(
+                (
+                    {
+                      "modified_On": null,
+                      "day29": null,
+                      "day28": null,
+                      "day27": null,
+                      "day26": null,
+                      "design": "",
+                      "day14": null,
+                      "month": "",
+                      "day13": "",
+                      "day12": null,
+                      "modified_By": null,
+                      "day11": null,
+                      "day10": null,
+                      "day31": null,
+                      "day30": null,
+                      "clientId": null,
+                      "empId": "",
+                      "created_On": "2023-06-12 19:38:01.157",
+                      "day19": null,
+                      "day18": null,
+                      "day17": null,
+                      "day16": null,
+                      "day15": null,
+                      "day25": null,
+                      "day24": null,
+                      "intId": "",
+                      "day8": null,
+                      "day23": null,
+                      "day9": null,
+                      "day22": null,
+                      "day6": null,
+                      "day21": null,
+                      "day7": null,
+                      "day20": null,
+                      "day4": null,
+                      "day5": null,
+                      "day2": null,
+                      "day3": null,
+                      "day1": null,
+                      "created_By": "",
+                      "name": null
+                    }
+                )
+
+              );
+
+
+              print("inside ealse employee roster ${empRosterList}");
+
+              empRosterList.forEach((element) {
+
+                for (int i = 1; i <= 31; i++) {
+                  String dayValue = "day${i}";
+                  print("data ${storeCodeList.value} ${i}");
+                  element[dayValue] = '';
+                }
+              });
+            }else{
             for (var i = 0; i < calRes['empRosterList'].length; i++) {
-              empRosterList.insert(i,calRes['empRosterList'][i]);
+              empRosterList.insert(i, calRes['empRosterList'][i]);
 
               // if (calRes['storeNames'] != null) {
               //   for(var i = 0; i < calRes['storeNames'].length; i++) {
@@ -368,26 +433,34 @@ class DBCalController extends GetxController {
               //   }
               // }
             }
-          };
-
-          empRosterList.forEach((element) {
-            for(int i = 1 ; i<=31; i++){
-              String dayValue = "day${i}";
-              print("data ${storeCodeList.value} ${i}");
-              String storeNAme = '';
-              if(element[dayValue] != null && element[dayValue].split(' ').last != null){
-                storeCodeList.value.forEach((store) {
-                  if ( store.storeCode.trim() == element[dayValue].split(' ').last.toString().trim()) {
-                    storeNAme = store.storeName;
-                    element[dayValue] = element[dayValue] + " \$- " + storeNAme;
-                    print("store name ${element[dayValue]}");
-
-                  }
-                });
-
+            empRosterList.forEach((element) {
+              for (int i = 1; i <= 31; i++) {
+                String dayValue = "day${i}";
+                print("data ${storeCodeList.value} ${i}");
+                String storeNAme = '';
+                if (element[dayValue] != null && element[dayValue]
+                    .split(' ')
+                    .last != null) {
+                  storeCodeList.value.forEach((store) {
+                    if (store.storeCode.trim() == element[dayValue]
+                        .split(' ')
+                        .last
+                        .toString()
+                        .trim()) {
+                      storeNAme = store.storeName;
+                      element[dayValue] =
+                          element[dayValue] + " \$- " + storeNAme;
+                      print("store name ${element[dayValue]}");
+                    }
+                  });
+                }
               }
-            }
-          });
+            });
+          }
+          }
+
+
+
           update();
         } else {
           Get.snackbar(
