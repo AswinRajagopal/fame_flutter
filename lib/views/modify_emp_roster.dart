@@ -36,6 +36,8 @@ class _RosterPageState extends State<RosterPage> {
   TextEditingController inCharge = TextEditingController();
   TextEditingController requiredUnit = TextEditingController();
   TextEditingController clientShift = TextEditingController();
+  TextEditingController clientID = TextEditingController();
+  TextEditingController design = TextEditingController();
   TextEditingController store = TextEditingController();
   TextEditingController fromDt = TextEditingController();
   TextEditingController toDt = TextEditingController();
@@ -427,7 +429,7 @@ class _RosterPageState extends State<RosterPage> {
                                   child: Container(
                                     // width: double.infinity,
                                     height: 60,
-                                    child: DropdownButtonFormField<String>(
+                                    child: DropdownButtonFormField(
                                       hint: Padding(
                                         padding:
                                             const EdgeInsets.only(left: 8.0),
@@ -447,7 +449,7 @@ class _RosterPageState extends State<RosterPage> {
                                           child: Text(
                                             item['shift'],
                                           ),
-                                          value: item['shift'].toString(),
+                                          value: item
                                         );
                                       }).toList(),
                                       decoration: InputDecoration(
@@ -463,7 +465,9 @@ class _RosterPageState extends State<RosterPage> {
                                       onChanged: (value) {
                                         print('value: $value');
                                         setState(() {
-                                          clientShift.text = value.toString();
+                                          clientShift.text = value['shift'].toString();
+                                          clientID.text = value['clientId'];
+                                          design.text = value['design'];
                                         });
                                       },
                                     ),
@@ -679,10 +683,17 @@ class _RosterPageState extends State<RosterPage> {
                             print('fromUnit: ${currentUnit.text}');
                             print('currentClient:$currentClient');
                             print('shift: ${clientShift.text}');
+                            print('shift: ${clientID.text}');
+                            print('shift: ${design.text}');
                             print(
                                 'toUnit: ${toUnit == null ? clientId.toString() : toUnit}');
                             print('storeCode:${store.text}');
-                            tC.newTransfer(
+                            toPeriod = DateFormat("yyyy-MM-dd").format(DateFormat('dd-MM-yyyy').parse(toPeriod));
+                            fromPeriod = DateFormat("yyyy-MM-dd").format(DateFormat('dd-MM-yyyy').parse(fromPeriod));
+                            print('fromPeriod: $fromPeriod');
+                            print('toPeriod: $toPeriod');
+
+                            tC.newRoster(
                                 employeeId != null ? employeeId : id,
                                 fromPeriod != null ? fromPeriod : dateList,
                                 toPeriod != null ? toPeriod : dateList,
@@ -691,7 +702,7 @@ class _RosterPageState extends State<RosterPage> {
                                     ? clientShift.text
                                     : shiftEmp,
                                 toUnit == null ? clientId.toString() : toUnit,
-                                store.text != null ? store.text : storeCode);
+                                store.text != null ? store.text : storeCode,clientID.text,design.text);
                           },
                           child: Padding(
                             padding: const EdgeInsets.symmetric(

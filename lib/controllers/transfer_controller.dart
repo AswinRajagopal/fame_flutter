@@ -214,6 +214,80 @@ class TransferController extends GetxController {
     }
   }
 
+
+
+  void newRoster(employeeId, fromPeriod, toPeriod, currentUnit, shift, toUnit,storeCode,clentId,design) async {
+    // try {/
+      await pr.show();
+      var transferRes = await RemoteServices().newRoster(employeeId, fromPeriod, toPeriod, currentUnit, shift, toUnit,storeCode,clentId,design);
+      if (transferRes != null) {
+        await pr.hide();
+        print('transferRes valid: ${transferRes['success']}');
+        if (transferRes['success']) {
+          Get.snackbar(
+            null,
+            'Transfer addedd successfully',
+            colorText: Colors.white,
+            backgroundColor: AppUtils().greenColor,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
+            duration: Duration(
+              seconds: 2,
+            ),
+          );
+          Timer(Duration(seconds: 2), () {
+            Get.back();
+            getTransferList();
+          });
+        } else {
+          Get.snackbar(
+            null,
+            'Transfer add failed',
+            colorText: Colors.white,
+            backgroundColor: Colors.black87,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 10.0,
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 18.0,
+            ),
+            borderRadius: 5.0,
+          );
+        }
+      }
+    // } catch (e) {
+    //   print(e);
+    //   await pr.hide();
+    //   Get.snackbar(
+    //     null,
+    //     'Something went wrong! Please try again later',
+    //     colorText: Colors.white,
+    //     backgroundColor: Colors.black87,
+    //     snackPosition: SnackPosition.BOTTOM,
+    //     margin: EdgeInsets.symmetric(
+    //       horizontal: 8.0,
+    //       vertical: 10.0,
+    //     ),
+    //     padding: EdgeInsets.symmetric(
+    //       horizontal: 12.0,
+    //       vertical: 18.0,
+    //     ),
+    //     borderRadius: 5.0,
+    //   );
+    // }
+  }
+
   void getTransferList() async {
     transferList.clear();
     try {

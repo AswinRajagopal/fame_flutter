@@ -1,4 +1,5 @@
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
@@ -24,6 +25,8 @@ class _NewRosterPageState extends State<NewRosterPage> {
   TextEditingController inCharge = TextEditingController();
   TextEditingController requiredUnit = TextEditingController();
   TextEditingController clientShift = TextEditingController();
+  TextEditingController clientId = TextEditingController();
+  TextEditingController design = TextEditingController();
   TextEditingController store = TextEditingController();
   TextEditingController fromDt = TextEditingController();
   TextEditingController toDt = TextEditingController();
@@ -360,7 +363,7 @@ class _NewRosterPageState extends State<NewRosterPage> {
                                   child: Container(
                                     // width: double.infinity,
                                     height: 60,
-                                    child: DropdownButtonFormField<String>(
+                                    child: DropdownButtonFormField(
                                       hint: Padding(
                                         padding: const EdgeInsets.only(left: 8.0),
                                         child: Text(
@@ -379,7 +382,7 @@ class _NewRosterPageState extends State<NewRosterPage> {
                                           child: Text(
                                             item['shift'],
                                           ),
-                                          value: item['shift'].toString(),
+                                          value: item,
                                         );
                                       }).toList(),
                                       decoration: InputDecoration(
@@ -395,7 +398,9 @@ class _NewRosterPageState extends State<NewRosterPage> {
                                       onChanged: (value) {
                                         print('value: $value');
                                         setState(() {
-                                          clientShift.text = value.toString();
+                                          clientShift.text = value['shift'].toString();
+                                          clientId.text = value['clientId'];
+                                          design.text = value['design'];
                                         });
                                       },
                                     ),
@@ -666,14 +671,20 @@ class _NewRosterPageState extends State<NewRosterPage> {
                               print('shift: ${clientShift.text}');
                               print('toUnit: $toUnit');
                               print('storeCode:${store.text}');
-                              tC.newTransfer(
+                              print('design:${design.text}');
+                              print('clientid:${clientId.text}');
+                              toPeriod = DateFormat("yyyy-MM-dd").format(DateFormat('dd-MM-yyyy').parse(toPeriod));
+                              fromPeriod = DateFormat("yyyy-MM-dd").format(DateFormat('dd-MM-yyyy').parse(fromPeriod));
+                              print('fromPeriod: $fromPeriod');
+                              print('toPeriod: $toPeriod');
+                              tC.newRoster(
                                   employeeId,
                                   fromPeriod,
                                   toPeriod,
                                   currentUnit.text,
                                   clientShift.text,
                                   toUnit,
-                                  store.text);
+                                  store.text,clientId.text,design.text);
                             }
                           },
                           child: Padding(
