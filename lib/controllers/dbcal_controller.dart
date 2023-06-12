@@ -54,7 +54,7 @@ class DBCalController extends GetxController {
     storeCodeList.clear();
     try {
       // isLoading(true);
-      await pr.show();
+      // await pr.show();
       res = await RemoteServices().getStores();
       if (res != null) {
         // isLoading(false);
@@ -95,7 +95,7 @@ class DBCalController extends GetxController {
     } catch (e) {
       print(e);
       // isLoading(false);
-      await pr.hide();
+      // await pr.hide();
       Get.snackbar(
         null,
         'Something went wrong! Please try again later',
@@ -306,7 +306,7 @@ class DBCalController extends GetxController {
     storeList.clear();
     print('month-->$month');
     print('month-->$empId');
-    // try {
+    try {
       isEventLoading(true);
       await pr.show();
      calRes = await RemoteServices().getEmpCalendarNew(month, empId);
@@ -408,27 +408,29 @@ class DBCalController extends GetxController {
           );
         }
       }
-    // } catch (e) {
-    //   print(e);
-    //   isEventLoading(false);
-    //   await pr.hide();
-    //   Get.snackbar(
-    //     null,
-    //     'Something went wrong! Please try again later',
-    //     colorText: Colors.white,
-    //     backgroundColor: Colors.black87,
-    //     snackPosition: SnackPosition.BOTTOM,
-    //     margin: EdgeInsets.symmetric(
-    //       horizontal: 8.0,
-    //       vertical: 10.0,
-    //     ),
-    //     padding: EdgeInsets.symmetric(
-    //       horizontal: 12.0,
-    //       vertical: 18.0,
-    //     ),
-    //     borderRadius: 5.0,
-    //   );
-    // }
+      await pr.hide();
+      update();
+    } catch (e) {
+      print(e);
+      isEventLoading(false);
+      await pr.hide();
+      Get.snackbar(
+        null,
+        'Something went wrong! Please try again later',
+        colorText: Colors.white,
+        backgroundColor: Colors.black87,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 10.0,
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 18.0,
+        ),
+        borderRadius: 5.0,
+      );
+    }
   }
 
 }
