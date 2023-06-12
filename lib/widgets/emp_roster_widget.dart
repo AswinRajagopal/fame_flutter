@@ -123,7 +123,7 @@ Widget titleParams(name, id, date, shift, empId) {
             flex: 7,
             child:
             Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 4),
@@ -193,7 +193,7 @@ Widget titleParams(name, id, date, shift, empId) {
                     ])),
 
 
-                SizedBox(height: 30,),
+                shift.contains('\$')? SizedBox(height: 30,):SizedBox() ,
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 4),
                   child: Row(
@@ -217,7 +217,7 @@ Widget titleParams(name, id, date, shift, empId) {
                                 ),
                                 Flexible(
                                   child: Text(
-                                      " ${name}",
+                                      " ${name??"N.A."}",
                                       style:
                                       TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color:  Color(0xff555555), fontFamily: 'PoppinsRegular')
                                   ),
