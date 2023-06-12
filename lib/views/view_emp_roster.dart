@@ -69,7 +69,7 @@ class _ViewViewEmpRosterState extends State<ViewEmpRoster> {
       Duration(milliseconds: 100),
       () => calC.getRoster(_selectedMonthYear, empId),
     );
-
+    empId = RemoteServices().box.get('empid');
     roleId = RemoteServices().box.get('role');
     load();
     super.initState();
@@ -194,8 +194,6 @@ class _ViewViewEmpRosterState extends State<ViewEmpRoster> {
                                 // print(pattern);
                                 if (pattern.isNotEmpty) {
                                   return await RemoteServices().getEmployees(pattern);
-                                } else {
-                                  empId = null;
                                 }
                                 return null;
                               },
