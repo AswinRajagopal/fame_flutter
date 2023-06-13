@@ -871,7 +871,11 @@ class RemoteServices {
         },
       ),
     );
+    print("shift data");
     print(response.statusCode);
+    print(response.body);
+    print(response.request);
+    print(clientId);
     if (response.statusCode == 200) {
       var jsonString = response.body;
       return json.decode(jsonString);
@@ -1061,7 +1065,11 @@ class RemoteServices {
         },
       ),
     );
+    print("unit list");
     print(response.statusCode);
+    print(response.body);
+    print(response.request);
+    print(unitName);
     if (response.statusCode == 200) {
       var jsonString = response.body;
       return json.decode(jsonString)['clientsSuggest'];
