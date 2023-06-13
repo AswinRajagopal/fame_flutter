@@ -65,10 +65,6 @@ class _ViewViewEmpRosterState extends State<ViewEmpRoster> {
     calC.pr.style(
       backgroundColor: Colors.white,
     );
-    Future.delayed(
-      Duration(milliseconds: 100),
-      () => calC.getRoster(_selectedMonthYear, empId),
-    );
     empId = RemoteServices().box.get('empid');
     roleId = RemoteServices().box.get('role');
     load();
@@ -410,7 +406,7 @@ class _ViewViewEmpRosterState extends State<ViewEmpRoster> {
     );
   }
   Widget singleWidget( roster, index) {
-    String day = 'day' + index.toString();
+    String day = 'day' + (index+1).toString();
     DateTime thisDate = picked.add( Duration(days: index));
     return GestureDetector(
       onTap: () {

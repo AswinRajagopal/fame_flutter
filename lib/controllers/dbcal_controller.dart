@@ -463,22 +463,52 @@ class DBCalController extends GetxController {
 
           update();
         } else {
-          Get.snackbar(
-            null,
-            'Something went wrong! Please try again later',
-            colorText: Colors.white,
-            backgroundColor: Colors.black87,
-            snackPosition: SnackPosition.BOTTOM,
-            margin: EdgeInsets.symmetric(
-              horizontal: 8.0,
-              vertical: 10.0,
-            ),
-            padding: EdgeInsets.symmetric(
-              horizontal: 12.0,
-              vertical: 18.0,
-            ),
-            borderRadius: 5.0,
-          );
+          empRosterList.value.add(
+            (
+                {
+                  "modified_On": null,
+                  "day29": null,
+                  "day28": null,
+                  "day27": null,
+                  "day26": null,
+                  "design": "",
+                  "day14": null,
+                  "month": "",
+                  "day13": "",
+                  "day12": null,
+                  "modified_By": null,
+                  "day11": null,
+                  "day10": null,
+                  "day31": null,
+                  "day30": null,
+                  "clientId": null,
+                  "empId": "",
+                  "created_On": "2023-06-12 19:38:01.157",
+                  "day19": null,
+                  "day18": null,
+                  "day17": null,
+                  "day16": null,
+                  "day15": null,
+                  "day25": null,
+                  "day24": null,
+                  "intId": "",
+                  "day8": null,
+                  "day23": null,
+                  "day9": null,
+                  "day22": null,
+                  "day6": null,
+                  "day21": null,
+                  "day7": null,
+                  "day20": null,
+                  "day4": null,
+                  "day5": null,
+                  "day2": null,
+                  "day3": null,
+                  "day1": null,
+                  "created_By": "",
+                  "name": null
+                }
+            ));
         }
       }
       await pr.hide();

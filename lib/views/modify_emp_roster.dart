@@ -21,7 +21,7 @@ class RosterPage extends StatefulWidget {
       this.storeCode, this.currentClient,this.empName,this.empId);
 
   @override
-  _RosterPageState createState() => _RosterPageState(this.dateList, this.id,
+  _RosterPageState createState() => _RosterPageState(this.dateList, this.empId,
       this.shiftEmp, this.clientId, this.storeCode, this.currentClient);
 }
 
@@ -255,8 +255,6 @@ class _RosterPageState extends State<RosterPage> {
                                       if (pattern.isNotEmpty) {
                                         return await RemoteServices()
                                             .getTransferEmployees(pattern);
-                                      } else {
-                                        employeeId = null;
                                       }
                                       return null;
                                     },
