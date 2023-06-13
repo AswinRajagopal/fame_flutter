@@ -60,7 +60,19 @@ class _RosterPageState extends State<RosterPage> {
     super.dispose();
     tC.shiftList.clear();
   }
-
+load() async {
+await    tC.getShift(widget.clientId);
+tC.shiftList.forEach((element) {
+  print("element shict ${element}");
+  if(element['shift']== widget.shiftEmp){
+    shiftData = element;
+    clientShift.text = element['shift'].toString();
+    clientID.text = element['clientId'];
+    design.text = element['design'];
+  }
+});
+}
+var shiftData;
   @override
   void initState() {
     tC.pr = ProgressDialog(
@@ -100,6 +112,7 @@ class _RosterPageState extends State<RosterPage> {
     );
     fromPeriod = dateList;
     toPeriod = dateList;
+    load();
     setState(() {
       // empName.text = RemoteServices().box.get('empName').toString();
       empName.text = widget.empName;
@@ -108,7 +121,10 @@ class _RosterPageState extends State<RosterPage> {
       empId.text = widget.empId.toString();
       toUnit = clientId;
       clientID.text = clientId;
-      clientShift.text = shiftEmp.toString();
+      requiredUnit.text = widget.currentClient;
+
+
+      // clientShift.text =  tC.shiftList.where((element) => ) shiftEmp.toString();
       store.text = widget.storeCode.toString();
     });
     super.initState();
@@ -442,6 +458,7 @@ class _RosterPageState extends State<RosterPage> {
                                         ),
                                       ),
                                       isExpanded: true,
+                                      value: shiftData,
                                       items: tC.shiftList.map((item) {
                                         print('item: $item');
                                         return DropdownMenuItem(
@@ -593,7 +610,8 @@ class _RosterPageState extends State<RosterPage> {
                               side: BorderSide(color: Colors.black38)),
                           child: Container(
                             height: 60.0,
-                            child: DropdownButtonFormField<String>(
+                            child:  store.text==null || store.text.isEmpty
+                                ? DropdownButtonFormField<String>(
                               hint: Padding(
                                 padding: const EdgeInsets.only(left: 8.0),
                                 child: Text(
@@ -606,6 +624,47 @@ class _RosterPageState extends State<RosterPage> {
                                 ),
                               ),
                               isExpanded: true,
+                              items: tC.stores.map((item) {
+                                print('item: $item');
+                                return DropdownMenuItem(
+                                  child: Text(
+                                    item['storeName'] +
+                                        " - " +
+                                        item['storeCode'],
+                                  ),
+                                  value: item['storeCode'].toString(),
+                                );
+                              }).toList(),
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                // errorText: clientShift.text==null || clientShift.text == ''?'Please select shift':null,
+                                contentPadding: EdgeInsets.only(
+                                    left: store.text == null || store.text == ''
+                                        ? 0.0
+                                        : 10.0,
+                                    top: 10.0),
+                              ),
+                              onChanged: (value) {
+                                print('value: $value');
+                                setState(() {
+                                  store.text = value.toString();
+                                });
+                              },
+                            )
+                            : DropdownButtonFormField<String>(
+                              hint: Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Text(
+                                  'Select Store',
+                                  style: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 18.0,
+                                    // fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              isExpanded: true,
+                              value: store.text,
                               items: tC.stores.map((item) {
                                 print('item: $item');
                                 return DropdownMenuItem(
