@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:fame/controllers/dbcal_controller.dart';
+import 'package:intl/intl.dart';
+
 import '../connection/remote_services.dart';
 import '../utils/utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,6 +12,7 @@ import 'package:progress_dialog/progress_dialog.dart';
 
 class TransferController extends GetxController {
   var isLoading = true.obs;
+  DBCalController calController = Get.put(DBCalController());
   ProgressDialog pr;
   var shiftRes;
   var res;
@@ -244,8 +248,11 @@ class TransferController extends GetxController {
             ),
           );
           Timer(Duration(seconds: 2), () {
+            DateTime dateTime = new DateFormat("yyyy-MM-dd").parse(fromPeriod);
+            var month =
+            '${dateTime.month.toString().padLeft(2, '0')}${dateTime.year.toString().substring(2)}';
             Get.back();
-            getTransferList();
+            calController.getRoster(month, employeeId);
           });
         } else {
           Get.snackbar(

@@ -1,15 +1,12 @@
-import 'package:dropdown_search/dropdown_search.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
-import '../controllers/transfer_controller.dart';
-import 'package:get/get.dart';
-
 import '../connection/remote_services.dart';
-
+import '../controllers/transfer_controller.dart';
 import '../utils/utils.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 class RosterPage extends StatefulWidget {
   var dateList;
@@ -101,12 +98,16 @@ class _RosterPageState extends State<RosterPage> {
       Duration(milliseconds: 100),
       tC.getStores,
     );
+    fromPeriod = dateList;
+    toPeriod = dateList;
     setState(() {
       // empName.text = RemoteServices().box.get('empName').toString();
       empName.text = widget.empName;
       fromDt.text = dateList.toString();
       toDt.text = dateList.toString();
       empId.text = widget.empId.toString();
+      toUnit = clientId;
+      clientID.text = clientId;
       clientShift.text = shiftEmp.toString();
       store.text = widget.storeCode.toString();
     });
@@ -695,8 +696,8 @@ class _RosterPageState extends State<RosterPage> {
 
                             tC.newRoster(
                                 employeeId != null ? employeeId : id,
-                                fromPeriod != null ? fromPeriod : dateList,
-                                toPeriod != null ? toPeriod : dateList,
+                                fromPeriod,
+                                toPeriod,
                                 currentClient.toString(),
                                 clientShift.text != null
                                     ? clientShift.text
