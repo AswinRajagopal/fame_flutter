@@ -61,6 +61,7 @@ class _RosterPageState extends State<RosterPage> {
     tC.shiftList.clear();
   }
 load() async {
+  tC.getStores();
     if (clientId != null && clientId!='') {
       await tC.getShift(widget.clientId);
       tC.shiftList.forEach((element) {
@@ -75,6 +76,12 @@ load() async {
     }else{
       await tC.pr.hide();
     }
+  await tC.pr.hide();
+}
+
+hideDialog() async {
+    print("pr hide");
+  await tC.pr.hide();
 }
 var shiftData;
   @override
@@ -110,13 +117,14 @@ var shiftData;
     tC.pr.style(
       backgroundColor: Colors.white,
     );
-    Future.delayed(
-      Duration(milliseconds: 100),
-      tC.getStores,
-    );
+    // Future.delayed(
+    //   Duration(milliseconds: 100),
+    //   tC.getStores(),
+    // );
     fromPeriod = dateList;
     toPeriod = dateList;
     load();
+
     setState(() {
       // empName.text = RemoteServices().box.get('empName').toString();
       empName.text = widget.empName;
@@ -127,10 +135,10 @@ var shiftData;
       clientID.text = clientId;
       requiredUnit.text = widget.currentClient;
 
-
       // clientShift.text =  tC.shiftList.where((element) => ) shiftEmp.toString();
       store.text = widget.storeCode.toString();
     });
+    hideDialog();
     super.initState();
   }
 
