@@ -27,11 +27,12 @@ class TransferController extends GetxController {
     checkList.clear();
     try {
       isLoading(true);
-      await pr.show();
+      // await pr.show();
       var res = await RemoteServices().getShift(clientId);
       if (res != null) {
-        await pr.hide();
         isLoading(false);
+        await pr.hide();
+        update();
         print('shiftRes valid: $res');
         if (res['success']) {
           if (res['manpowerReqList'] != null) {
@@ -68,6 +69,7 @@ class TransferController extends GetxController {
       print(e);
       isLoading(false);
       await pr.hide();
+      update();
       Get.snackbar(
         null,
         'Something went wrong! Please try again later',
@@ -96,6 +98,7 @@ class TransferController extends GetxController {
       if (res != null) {
         isLoading(false);
         await pr.hide();
+        update();
         if (res['success']) {
           print('storeRes:$res');
           if (res['storeNames'] != null) {
@@ -127,6 +130,7 @@ class TransferController extends GetxController {
       print(e);
       isLoading(false);
       await pr.hide();
+      update();
       Get.snackbar(
         null,
         'Something went wrong! Please try again later',
