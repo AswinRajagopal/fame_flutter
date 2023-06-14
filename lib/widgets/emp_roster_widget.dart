@@ -69,9 +69,9 @@ Widget singleWidget(dateList, roster, index,empName,empID) {
       Get.to(RosterPage(
           dateList,
           roster['empId'],
-          roster[day] != null ? roster[day].split(' ')[0] : '',
+          roster[day] != null && roster[day] != ""  ? roster[day].split(' ')[0] : '',
           roster['clientId'],
-          roster[day] != null ? roster[day].split(" ")[2] : '',
+          roster[day] != null && roster[day] != ""  ? roster[day].split(" ")[2] : '',
           roster['name'],empName,empID));
     },
     child: titleParams('Name', 'ClientId',

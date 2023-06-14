@@ -61,16 +61,18 @@ class _RosterPageState extends State<RosterPage> {
     tC.shiftList.clear();
   }
 load() async {
-await    tC.getShift(widget.clientId);
-tC.shiftList.forEach((element) {
-  print("element shict ${element}");
-  if(element['shift']== widget.shiftEmp){
-    shiftData = element;
-    clientShift.text = element['shift'].toString();
-    clientID.text = element['clientId'];
-    design.text = element['design'];
-  }
-});
+    if (clientId != null && clientId!='') {
+      await tC.getShift(widget.clientId);
+      tC.shiftList.forEach((element) {
+        print("element shict ${element}");
+        if (element['shift'] == widget.shiftEmp) {
+          shiftData = element;
+          clientShift.text = element['shift'].toString();
+          clientID.text = element['clientId'];
+          design.text = element['design'];
+        }
+      });
+    }
 }
 var shiftData;
   @override

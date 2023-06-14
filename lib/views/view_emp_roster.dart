@@ -208,8 +208,6 @@ class _ViewViewEmpRosterState extends State<ViewEmpRoster> {
                                 );
                               },
                               onSuggestionSelected: (suggestion) {
-                                print(suggestion);
-                                print(suggestion['name']);
                                 empName.text = suggestion['name'].toString().trimRight() +
                                     ' - ' +
                                     suggestion['empId'];
@@ -414,9 +412,9 @@ class _ViewViewEmpRosterState extends State<ViewEmpRoster> {
           Get.to(RosterPage(
               DateFormat('dd-MM-yyyy').format(thisDate).toString(),
               roster['empId'],
-              roster[day] != null ? roster[day].split(' ')[0] : '',
+              roster[day] != null && roster[day] != ""  ? roster[day].split(' ')[0] : '',
               roster['clientId'],
-              roster[day] != null ? roster[day].split(" ")[2] : '',
+              roster[day] != null && roster[day] != "" ? roster[day].split(" ")[2] : '',
               roster['name'],employeeName,empId));
         }
       },
