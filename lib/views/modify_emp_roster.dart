@@ -72,6 +72,8 @@ load() async {
           design.text = element['design'];
         }
       });
+    }else{
+      await tC.pr.hide();
     }
 }
 var shiftData;
