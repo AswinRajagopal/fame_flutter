@@ -1,3 +1,5 @@
+import 'package:fame/controllers/dashboard_controller.dart';
+
 import '../connection/remote_services.dart';
 
 import '../views/settings_page.dart';

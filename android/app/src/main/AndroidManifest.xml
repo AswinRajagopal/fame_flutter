@@ -105,6 +105,14 @@
         <service android:name=".BackgroundService" android:foregroundServiceType="location"
             android:exported="false"/>
 
+        <service
+            android:name="io.flutter.plugins.firebasemessaging.FlutterFirebaseMessagingService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
         <receiver
             android:name="rekab.app.background_locator.BootBroadcastReceiver"
             android:enabled="true"

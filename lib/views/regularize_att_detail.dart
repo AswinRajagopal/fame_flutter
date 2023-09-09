@@ -6,6 +6,7 @@ import 'package:fame/controllers/expense_controller.dart';
 import 'package:fame/controllers/regularize_attendance_controller.dart';
 import 'package:fame/utils/utils.dart';
 import 'package:fame/widgets/loading_widget.dart';
+import 'package:flip_card/flip_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';

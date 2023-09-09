@@ -76,7 +76,8 @@ class _ViewExpenseState extends State<ViewExpense> {
       expC.getExpensesAdmin(fDate, tDate);
     });
     super.initState();
-    frmDate.text = DateFormat('dd-MM-yyyy').format(lastWeekStartDate).toString();
+    frmDate.text =
+        DateFormat('dd-MM-yyyy').format(lastWeekStartDate).toString();
     toDate.text = DateFormat('dd-MM-yyyy').format(curDate).toString();
     fDate = DateFormat('yyyy-MM-dd').format(lastWeekStartDate).toString();
     tDate = DateFormat('yyyy-MM-dd').format(curDate).toString();
@@ -111,8 +112,9 @@ class _ViewExpenseState extends State<ViewExpense> {
       setState(() {
         frmDate.text = DateFormat('dd-MM-yyyy').format(picked).toString();
         fDate = DateFormat('yyyy-MM-dd').format(picked).toString();
-        empId==null?expC.getExpensesAdminFt(fDate, tDate):
-        expC.getEmpExpensesAdmin(empId, fDate, tDate);
+        empId == null
+            ? expC.getExpensesAdminFt(fDate, tDate)
+            : expC.getEmpExpensesAdmin(empId, fDate, tDate);
       });
     }
   }
@@ -133,8 +135,9 @@ class _ViewExpenseState extends State<ViewExpense> {
       setState(() {
         toDate.text = DateFormat('dd-MM-yyyy').format(picked).toString();
         tDate = DateFormat('yyyy-MM-dd').format(picked).toString();
-        empId==null?expC.getExpensesAdminFt(fDate, tDate):
-        expC.getEmpExpensesAdmin(empId, fDate, tDate);
+        empId == null
+            ? expC.getExpensesAdminFt(fDate, tDate)
+            : expC.getEmpExpensesAdmin(empId, fDate, tDate);
       });
     }
   }
@@ -297,8 +300,8 @@ class _ViewExpenseState extends State<ViewExpense> {
                                 children: [
                                   RaisedButton(
                                     onPressed: () async {
-                                      Get.to(ViewBills()).then(
-                                          (value) => expC.getEmpExpenses("All"));
+                                      Get.to(ViewBills()).then((value) =>
+                                          expC.getEmpExpenses("All"));
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
@@ -609,7 +612,7 @@ class _ViewExpenseState extends State<ViewExpense> {
                                     _expense = true;
                                     _advance = false;
                                     _isRejectedList = false;
-                                  }else if(_chosenValue=='Pending'){
+                                  } else if (_chosenValue == 'Pending') {
                                     expC.getEmpExpenses('Pending');
                                   } else {
                                     if (_chosenValue == 'Advance') {
@@ -629,7 +632,7 @@ class _ViewExpenseState extends State<ViewExpense> {
                                       _expense = true;
                                       _advance = false;
                                       _isRejectedList = false;
-                                    }else {
+                                    } else {
                                       empId != null
                                           ? expC.getEmpExpenseAdmin(empId, '1')
                                           : expC.getEmpExpense('1');
